@@ -12,16 +12,15 @@ import { controllers } from '#generated/controllers'
 import router from '@adonisjs/core/services/router'
 import '#start/routes/oauth'
 
-router.on('/').renderInertia('home', {}).as('home')
-
 router
   .group(() => {
+    router.on('/').renderInertia('home', {}).as('home')
     router.get('/create-account', [controllers.Account, 'create'])
   })
   .use(middleware.guest())
 
 router
   .group(() => {
-    // authenticated routes
+    router.get('/dashboard', [controllers.Dashboard, 'show'])
   })
   .use(middleware.auth())

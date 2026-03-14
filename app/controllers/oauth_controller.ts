@@ -53,7 +53,7 @@ export default class OAuthController {
 
     session.clear()
 
-    return response.redirect().back()
+    return response.redirect().toRoute('home')
   }
 
   async callback({ response, oauth, auth, session, logger }: HttpContext) {

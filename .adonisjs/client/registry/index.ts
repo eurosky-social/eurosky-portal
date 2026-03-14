@@ -42,6 +42,12 @@ const routes = {
     tokens: [{"old":"/create-account","type":0,"val":"create-account","end":""}],
     types: placeholder as Registry['account.create']['types'],
   },
+  'dashboard.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/dashboard',
+    tokens: [{"old":"/dashboard","type":0,"val":"dashboard","end":""}],
+    types: placeholder as Registry['dashboard.show']['types'],
+  },
 } as const satisfies Record<string, AdonisEndpoint>
 
 export { routes }

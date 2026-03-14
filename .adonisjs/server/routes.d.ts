@@ -10,16 +10,19 @@ export type ScannedRoutes = {
     'oauth.callback': { paramsTuple?: []; params?: {} }
     'home': { paramsTuple?: []; params?: {} }
     'account.create': { paramsTuple?: []; params?: {} }
+    'dashboard.show': { paramsTuple?: []; params?: {} }
   }
   GET: {
     'oauth.callback': { paramsTuple?: []; params?: {} }
     'home': { paramsTuple?: []; params?: {} }
     'account.create': { paramsTuple?: []; params?: {} }
+    'dashboard.show': { paramsTuple?: []; params?: {} }
   }
   HEAD: {
     'oauth.callback': { paramsTuple?: []; params?: {} }
     'home': { paramsTuple?: []; params?: {} }
     'account.create': { paramsTuple?: []; params?: {} }
+    'dashboard.show': { paramsTuple?: []; params?: {} }
   }
   POST: {
     'oauth.logout': { paramsTuple?: []; params?: {} }

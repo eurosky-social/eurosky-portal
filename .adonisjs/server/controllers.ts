@@ -5,5 +5,6 @@
 
 export const controllers = {
   Account: () => import('#controllers/account_controller'),
+  Dashboard: () => import('#controllers/dashboard_controller'),
   Oauth: () => import('#controllers/oauth_controller'),
 }
