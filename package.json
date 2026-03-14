@@ -76,17 +76,23 @@
     "@atproto/jwk-jose": "^0.1.11",
     "@atproto/lex": "^0.0.20",
     "@atproto/oauth-client-node": "^0.3.17",
+    "@headlessui/react": "^2.2.9",
+    "@heroicons/react": "^2.2.0",
     "@inertiajs/react": "^2.3.17",
+    "@tailwindcss/vite": "^4.2.1",
     "@thisismissem/adonisjs-atproto-oauth": "^3.0.0",
     "@tuyau/core": "^1.0.0",
     "@vinejs/vine": "^4.3.0",
     "better-sqlite3": "^12.8.0",
+    "clsx": "^2.1.1",
     "edge.js": "^6.5.0",
     "luxon": "^3.7.2",
+    "motion": "^12.36.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "reflect-metadata": "^0.2.2",
-    "sonner": "^2.0.7"
+    "sonner": "^2.0.7",
+    "tailwindcss": "^4.2.1"
   },
   "hotHook": {
     "boundaries": [
