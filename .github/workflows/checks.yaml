@@ -1,0 +1,59 @@
+name: checks
+
+on:
+  - push
+  - pull_request
+  - workflow_call
+
+jobs:
+  linting-and-formatting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.node-version'
+          cache: pnpm
+      - name: Install Dependencies
+        run: pnpm install
+      - name: Run lint
+        run: pnpm run lint
+      - name: Check format
+        run: pnpm run format:check
+
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.node-version'
+          cache: pnpm
+      - name: Install Dependencies
+        run: pnpm install
+      - name: Check typescript
+        run: pnpm run typecheck
+
+  # No test coverage
+  #
+  # tests:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Setup pnpm
+  #       uses: pnpm/action-setup@v4
+  #     - name: Use Node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: ".node-version"
+  #         cache: pnpm
+  #     - name: Install Dependencies
+  #       run: pnpm install
+  #     - name: Run tests
+  #       run: pnpm test
