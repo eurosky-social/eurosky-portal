@@ -28,4 +28,9 @@ export default await Env.create(new URL('../', import.meta.url), {
   // Database
   DATABASE_PATH: Env.schema.string.optional(),
   DATABASE_AUTOMIGRATE: Env.schema.boolean.optional(),
+
+  // AT Protocol OAuth:
+  OAUTH_SERVICE: Env.schema.string({ format: 'url', tld: true, protocol: true }),
+  ATPROTO_OAUTH_CLIENT_ID: Env.schema.string.optional({ format: 'url', tld: true, protocol: true }),
+  ATPROTO_OAUTH_JWT_PRIVATE_KEY: Env.schema.secret.optional(),
 })
