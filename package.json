@@ -5,7 +5,7 @@
   "type": "module",
   "license": "UNLICENSED",
   "engines": {
-    "node": ">=24.0.0"
+    "node": ">=24.13.0"
   },
   "packageManager": "pnpm@10.32.1+sha512.a706938f0e89ac1456b6563eab4edf1d1faf3368d1191fc5c59790e96dc918e4456ab2e67d613de1043d2e8c81f87303e6b40d4ffeca9df15ef1ad567348f2be",
   "scripts": {
@@ -74,7 +74,7 @@
     "@inertiajs/react": "^2.3.17",
     "@tuyau/core": "^1.0.0",
     "@vinejs/vine": "^4.3.0",
-    "better-sqlite3": "^12.6.2",
+    "better-sqlite3": "^12.8.0",
     "edge.js": "^6.5.0",
     "luxon": "^3.7.2",
     "react": "^19.2.4",
