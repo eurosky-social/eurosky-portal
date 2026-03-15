@@ -5,7 +5,7 @@ import ThemeToggle from './ThemeToggle'
 
 export default function PublicNavbar() {
   return (
-    <Navbar className="px-4">
+    <Navbar className="ps-4 pe-8">
       <Link route="home" aria-label="Home">
         <Logo />
       </Link>
