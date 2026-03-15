@@ -5,8 +5,8 @@ import { LockClosedIcon } from '@heroicons/react/24/solid'
 export function Hero() {
   return (
     <Container className="pt-10 pb-16 text-center lg:pt-24">
-      <div className="py-1 px-2 mb-6 inline-block rounded-xl bg-amber-100 border-amber-400 border-1 text-yellow-800">
-        Now open · Join the future of the web
+      <div className="py-1 px-4 mb-6 inline-block rounded-xl bg-amber-100 border-amber-300 border text-yellow-600 uppercase font-bold whitespace-nowrap">
+        Now open &middot; Join the future of the web
       </div>
       <h1 className="mx-auto max-w-4xl font-display text-5xl leading-[1.3] font-extrabold tracking-tight text-slate-900 dark:text-slate-200 sm:text-7xl">
         Eurosky: Your Portal to <div className="text-amber-400">the Atmosphere.</div>
