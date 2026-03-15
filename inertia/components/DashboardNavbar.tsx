@@ -7,6 +7,7 @@ import { Button } from '~/lib/button'
 import { Text } from '~/lib/text'
 import { useAuth } from '~/utils/use_auth'
 import { Dropdown, DropdownButton, DropdownMenu } from '~/lib/dropdown'
+import ThemeToggle from './ThemeToggle'
 
 export default function PublicNavbar() {
   const user = useAuth()
@@ -31,6 +32,7 @@ export default function PublicNavbar() {
             </Form>
           </DropdownMenu>
         </Dropdown>
+        <ThemeToggle />
       </NavbarSection>
     </Navbar>
   )
