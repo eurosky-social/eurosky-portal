@@ -178,16 +178,7 @@ type ButtonProps = (
   )
 
 export const Button = forwardRef(function Button(
-  {
-    color,
-    outline,
-    plain,
-    size,
-    className,
-    children,
-    type,
-    ...props
-  }: ButtonProps & { size?: ButtonSize },
+  { color, outline, plain, className, children, type, ...props }: ButtonProps,
   ref: React.ForwardedRef<HTMLElement>
 ) {
   let classes = clsx(

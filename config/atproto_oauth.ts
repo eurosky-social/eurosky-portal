@@ -13,7 +13,7 @@ export default defineConfig({
     client_name: 'Eurosky Portal',
     client_uri: new URL('/', env.get('APP_URL')).toString(),
     // See: https://atproto.com/guides/scopes
-    scope: 'atproto',
+    scope: 'atproto rpc:app.bsky.actor.getProfile?aud=did:web:api.bsky.app%23bsky_appview',
     // logo_uri: 'https://my-app.com/logo.png',
     // tos_uri: 'https://my-app.com/tos',
     // policy_uri: 'https://my-app.com/policy',

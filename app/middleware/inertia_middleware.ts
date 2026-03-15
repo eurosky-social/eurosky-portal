@@ -1,10 +1,13 @@
+import { Profile } from '#extensions/atprotouser'
+import ProfileTransformer from '#transformers/profile_transformer'
 import type { HttpContext } from '@adonisjs/core/http'
+import logger from '@adonisjs/core/services/logger'
 import type { NextFn } from '@adonisjs/core/types/http'
-// import UserTransformer from '#transformers/user_transformer'
 import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
+import { InferSharedProps } from '@adonisjs/inertia/types'
 
 export default class InertiaMiddleware extends BaseInertiaMiddleware {
-  share(ctx: HttpContext) {
+  async share(ctx: HttpContext) {
     /**
      * The share method is called everytime an Inertia page is rendered. In
      * certain cases, a page may get rendered before the session middleware
@@ -14,6 +17,12 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
      * with all the properties
      */
     const { session, auth } = ctx as Partial<HttpContext>
+
+    let profile: Profile | undefined
+    if (auth?.user) {
+      profile = await auth.user.fetchProfile(auth.user.did)
+      logger.debug(profile, 'user profile')
+    }
 
     /**
      * Fetching the first error from the flash messages
@@ -33,7 +42,9 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
         error: error,
       }),
       isAuthenticated: !!auth?.user,
-      // user: ctx.inertia.always(auth?.user ? UserTransformer.transform(auth.user) : undefined),
+      user: ctx.inertia.always(
+        auth?.user && profile ? ProfileTransformer.transform(profile) : undefined
+      ),
     }
   }
 
@@ -47,7 +58,14 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
   }
 }
 
+type MiddlewareSharedProps = InferSharedProps<InertiaMiddleware>
+
 declare module '@adonisjs/inertia/types' {
-  type MiddlewareSharedProps = InferSharedProps<InertiaMiddleware>
   export interface SharedProps extends MiddlewareSharedProps {}
+}
+
+declare module '@inertiajs/core' {
+  export interface InertiaConfig {
+    sharedPageProps: MiddlewareSharedProps
+  }
 }

@@ -18,11 +18,9 @@ export function Hero() {
         <Button route="account.create" color="amber">
           Create your account →
         </Button>
-        <Form route="oauth.login">
-          <Button outline type="submit">
-            Sign In
-          </Button>
-        </Form>
+        <Button route="auth.login" outline>
+          Login
+        </Button>
       </div>
       <div className="mt-4 text-lg text-gray-400">Your data is yours. We will never sell it.</div>
     </Container>

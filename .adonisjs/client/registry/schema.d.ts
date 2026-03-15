@@ -23,12 +23,12 @@ export interface Registry {
     methods: ["POST"]
     pattern: '/oauth/login'
     types: {
-      body: {}
+      body: ExtractBody<InferInput<(typeof import('#validators/oauth').loginRequestValidator)>>
       paramsTuple: []
       params: {}
-      query: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/oauth').loginRequestValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/oauth_controller').default['login']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/oauth_controller').default['login']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/oauth_controller').default['login']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'oauth.signup': {
@@ -77,6 +77,18 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/account_controller').default['create']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/account_controller').default['create']>>>
+    }
+  }
+  'auth.login': {
+    methods: ["GET","HEAD"]
+    pattern: '/login'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/auth_controller').default['login']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/auth_controller').default['login']>>>
     }
   }
   'dashboard.show': {

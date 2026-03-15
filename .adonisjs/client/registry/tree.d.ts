@@ -12,6 +12,9 @@ export interface ApiDefinition {
   account: {
     create: typeof routes['account.create']
   }
+  auth: {
+    login: typeof routes['auth.login']
+  }
   dashboard: {
     show: typeof routes['dashboard.show']
   }

@@ -82,6 +82,7 @@
     "@atproto/oauth-client-node": "^0.3.17",
     "@headlessui/react": "^2.2.9",
     "@heroicons/react": "^2.2.0",
+    "@inertiajs/core": "^2.3.18",
     "@inertiajs/react": "^2.3.17",
     "@tailwindcss/vite": "^4.2.1",
     "@thisismissem/adonisjs-atproto-oauth": "^3.0.0",

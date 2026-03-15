@@ -53,6 +53,9 @@ importers:
       '@heroicons/react':
         specifier: ^2.2.0
         version: 2.2.0(react@19.2.4)
+      '@inertiajs/core':
+        specifier: ^2.3.18
+        version: 2.3.18
       '@inertiajs/react':
         specifier: ^2.3.17
         version: 2.3.18(react-dom@19.2.4(react@19.2.4))(react@19.2.4)

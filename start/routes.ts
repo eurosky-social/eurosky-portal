@@ -16,6 +16,7 @@ router
   .group(() => {
     router.on('/').renderInertia('home', {}).as('home')
     router.get('/create-account', [controllers.Account, 'create'])
+    router.get('/login', [controllers.Auth, 'login'])
   })
   .use(middleware.guest())
 

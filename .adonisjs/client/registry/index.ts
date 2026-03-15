@@ -42,6 +42,12 @@ const routes = {
     tokens: [{"old":"/create-account","type":0,"val":"create-account","end":""}],
     types: placeholder as Registry['account.create']['types'],
   },
+  'auth.login': {
+    methods: ["GET","HEAD"],
+    pattern: '/login',
+    tokens: [{"old":"/login","type":0,"val":"login","end":""}],
+    types: placeholder as Registry['auth.login']['types'],
+  },
   'dashboard.show': {
     methods: ["GET","HEAD"],
     pattern: '/dashboard',

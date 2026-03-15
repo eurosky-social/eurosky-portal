@@ -1,19 +1,17 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import { OAuthResolverError } from '@atproto/oauth-client-node'
 import env from '#start/env'
-import { signupRequestValidator } from '#validators/oauth'
+import { loginRequestValidator, signupRequestValidator } from '#validators/oauth'
 import { DateTime } from 'luxon'
 
 const oauthServerUrl = env.get('OAUTH_SERVICE')
 
 export default class OAuthController {
-  async login({ response, inertia, oauth, session, logger }: HttpContext) {
-    // FIXME: We need the handle here:
-    // input should be a handle or service URL:
-    // const { input } = await request.validateUsing(loginRequestValidator)
+  async login({ request, response, inertia, oauth, session, logger }: HttpContext) {
+    const { input } = await request.validateUsing(loginRequestValidator)
 
     try {
-      const authorizationUrl = await oauth.authorize(oauthServerUrl)
+      const authorizationUrl = await oauth.authorize(input)
 
       session.put('source', 'login')
       inertia.location(authorizationUrl)
