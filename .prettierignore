@@ -3,3 +3,5 @@ node_modules
 build
 pnpm-lock.yaml
 .adonisjs/**
+app/lexicons/**
+lexicons/**

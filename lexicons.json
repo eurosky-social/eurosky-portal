@@ -1,8 +1,6 @@
 {
   "version": 1,
-  "lexicons": [
-    "app.bsky.actor.getProfile"
-  ],
+  "lexicons": ["app.bsky.actor.getProfile"],
   "resolutions": {
     "app.bsky.actor.defs": {
       "uri": "at://did:plc:4v4y5r3lwsbtmsxhile2ljac/com.atproto.lexicon.schema/app.bsky.actor.defs",

@@ -6,7 +6,7 @@ const NS_PER_SEC = 1e9
 const MS_PER_SEC = 1e6
 
 emitter.on('http:server_ready', () => {
-  logger.info(`Server available at: ${env.get('PUBLIC_URL')}`)
+  logger.info(`Server available at: ${env.get('APP_URL')}`)
 })
 
 const ignoredUrlPrefixes = [
