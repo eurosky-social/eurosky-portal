@@ -7,7 +7,7 @@ export default function PublicNavbar() {
   return (
     <Navbar className="px-4">
       <Link route="home" aria-label="Home">
-        <Logo className="size-10 sm:size-8" />
+        <Logo />
       </Link>
       <NavbarSpacer />
       <NavbarSection>
