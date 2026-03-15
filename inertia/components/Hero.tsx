@@ -1,6 +1,7 @@
 import { Container } from '~/lib/container'
 import { Button } from '~/lib/button'
 import { Form } from '@adonisjs/inertia/react'
+import { LockClosedIcon } from '@heroicons/react/24/solid'
 
 export function Hero() {
   return (
@@ -22,7 +23,10 @@ export function Hero() {
           Login
         </Button>
       </div>
-      <div className="mt-4 text-lg text-gray-400">Your data is yours. We will never sell it.</div>
+      <div className="mt-4 text-lg text-gray-400 flex justify-center items-center gap-2">
+        <LockClosedIcon className="h-6 w-6 inline-block" />
+        <span>Your data is yours. We will never sell it.</span>
+      </div>
     </Container>
   )
 }
