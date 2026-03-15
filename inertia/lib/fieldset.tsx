@@ -31,7 +31,7 @@ export function Legend({
 }
 
 export function FieldGroup({ className, ...props }: React.ComponentPropsWithoutRef<'div'>) {
-  return <div data-slot="control" {...props} className={clsx(className, 'space-y-8')} />
+  return <div data-slot="control" {...props} className={clsx(className, 'space-y-6')} />
 }
 
 export function Field({
