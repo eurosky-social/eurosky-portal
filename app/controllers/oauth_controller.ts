@@ -73,7 +73,7 @@ export default class OAuthController {
 
       await auth.use('web').login(result.user)
 
-      return response.redirect().toPath('/')
+      return response.redirect().toRoute('dashboard.show')
     } catch (err) {
       // Handle OAuth failing
       logger.error(err, 'Error completing AT Protocol OAuth flow')
@@ -82,7 +82,7 @@ export default class OAuthController {
         return response.redirect().toRoute('account.create')
       }
 
-      return response.redirect().toPath('/')
+      return response.redirect().toRoute('home')
     }
   }
 }
