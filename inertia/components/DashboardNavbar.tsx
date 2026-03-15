@@ -22,7 +22,7 @@ export default function PublicNavbar() {
         <Dropdown>
           <DropdownButton as={NavbarItem} aria-label="Account menu">
             <Text>@{user.handle}</Text>
-            <UserAvatar size="10" user={user} />
+            <UserAvatar user={user} />
           </DropdownButton>
           <DropdownMenu className="min-w-40" anchor="bottom end">
             <Form route="oauth.logout" className="col-span-full min-w-40 flex justify-stretch">

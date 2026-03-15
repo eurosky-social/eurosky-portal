@@ -1,10 +1,14 @@
 @import 'tailwindcss';
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* 100dvh - h-{number} */
 @utility min-h-dvh-minus-* {
   min-height: calc(100dvh - var(--spacing) * --value(integer));
   min-height: calc(100dvh - --value([length]));
+}
+
+.white-space-collapse {
+  white-space: collapse;
+  white-space-collapse: collapse;
 }
 
 .dark {
