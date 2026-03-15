@@ -71,6 +71,8 @@ export default class OAuthController {
     try {
       const result = await oauth.handleCallback()
 
+      await result.user.fetchProfile(result.user.did)
+
       await auth.use('web').login(result.user)
 
       return response.redirect().toRoute('dashboard.show')

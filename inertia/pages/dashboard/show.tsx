@@ -1,3 +1,4 @@
+import { UserAvatar } from '~/components/UserAvatar'
 import { Avatar } from '~/lib/avatar'
 import { Button } from '~/lib/button'
 import Card from '~/lib/card'
@@ -13,7 +14,7 @@ export default function Dashboard({}: InertiaProps<{}>) {
       <Card>
         <div className="flex flex-row justify-between">
           <div className="flex flex-row gap-6">
-            <Avatar className="size-20 self-center" src={user.avatar} />
+            <UserAvatar size="20" user={user} />
             <div className="flex flex-col">
               <Heading level={2}>{user.displayName ?? user.handle}</Heading>
               <Text className="text-slate-400!">@{user.handle}</Text>
