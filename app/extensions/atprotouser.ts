@@ -7,6 +7,10 @@ import * as lexicon from '#lexicons'
 
 export type Profile = lexicon.app.bsky.actor.defs.ProfileViewDetailed
 
+AtprotoUser.getter('authorizationServer', function (this: AtprotoUser) {
+  return this.session.server.issuer
+})
+
 AtprotoUser.macro(
   'fetchProfile',
   async function fetchProfile(this: AtprotoUser, actor: AtIdentifierString) {
@@ -60,5 +64,6 @@ async function slingshotMiniProfile(
 declare module '@thisismissem/adonisjs-atproto-oauth' {
   interface AtprotoUser {
     fetchProfile(actor: AtIdentifierString): Promise<undefined | Profile>
+    get authorizationServer(): string
   }
 }

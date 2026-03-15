@@ -1,7 +1,7 @@
 import { Data } from '@generated/data'
 import { toast, Toaster } from 'sonner'
 import { usePage } from '@inertiajs/react'
-import { ReactElement, useEffect } from 'react'
+import { ReactElement, useEffect, useMemo } from 'react'
 import PublicNavbar from '~/components/PublicNavbar'
 import DashboardNavbar from '~/components/DashboardNavbar'
 import {
@@ -18,6 +18,8 @@ import {
   QuestionMarkCircleIcon,
   ChatBubbleOvalLeftEllipsisIcon,
   DocumentTextIcon,
+  Cog6ToothIcon,
+  ArrowTopRightOnSquareIcon,
 } from '@heroicons/react/24/solid'
 
 export default function Layout({ children }: { children: ReactElement<Data.SharedProps> }) {
@@ -43,6 +45,14 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
 }
 
 function AuthLayout(props: { children: ReactElement<Data.SharedProps> }) {
+  const {
+    props: { authorizationServer },
+  } = usePage()
+
+  const manageUrl = useMemo(() => {
+    return new URL('/account', authorizationServer).toString()
+  }, [authorizationServer])
+
   return (
     <div>
       <DashboardNavbar />
@@ -56,6 +66,13 @@ function AuthLayout(props: { children: ReactElement<Data.SharedProps> }) {
                 <SidebarItem route="dashboard.show">
                   <HomeIcon />
                   <SidebarLabel>Dashboard</SidebarLabel>
+                </SidebarItem>
+                <SidebarItem href={manageUrl} target="_blank" as={'a'}>
+                  <Cog6ToothIcon />
+                  <SidebarLabel className="flex gap-1">
+                    Manage Account{' '}
+                    <ArrowTopRightOnSquareIcon className="size-4 inline-block self-center" />
+                  </SidebarLabel>
                 </SidebarItem>
               </SidebarSection>
               <SidebarHeading className="mt-10 font-bold">Support</SidebarHeading>

@@ -43,6 +43,7 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
         error: error,
       }),
       isAuthenticated: !!auth?.user,
+      authorizationServer: ctx.inertia.always(auth?.user?.authorizationServer),
       user: ctx.inertia.always(
         auth?.user && profile ? ProfileTransformer.transform(profile) : undefined
       ),
