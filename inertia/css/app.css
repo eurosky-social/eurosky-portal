@@ -6,6 +6,10 @@
   min-height: calc(100dvh - --value([length]));
 }
 
+*:focus-visible {
+  outline: 2px solid var(--color-blue-600);
+}
+
 .white-space-collapse {
   white-space: collapse;
   white-space-collapse: collapse;

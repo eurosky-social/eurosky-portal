@@ -14,7 +14,7 @@ export default function PublicNavbar() {
 
   return (
     <Navbar className="px-4">
-      <Link route="home" aria-label="Home">
+      <Link route="home" aria-label="Home" className="rounded-sm">
         <Logo />
       </Link>
       <NavbarSpacer />

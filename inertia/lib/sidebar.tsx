@@ -114,7 +114,9 @@ export const SidebarItem = forwardRef(function SidebarItem(
     'dark:text-white dark:*:data-[slot=icon]:fill-zinc-400',
     'dark:data-hover:bg-white/5 dark:data-hover:*:data-[slot=icon]:fill-white',
     'dark:data-active:bg-white/5 dark:data-active:*:data-[slot=icon]:fill-white',
-    'dark:data-current:*:data-[slot=icon]:fill-white'
+    'dark:data-current:*:data-[slot=icon]:fill-white',
+    // Focus
+    'focus:outline-2 focus:outline-solid! focus:outline-offset-2 focus:outline-blue-600'
   )
 
   return (

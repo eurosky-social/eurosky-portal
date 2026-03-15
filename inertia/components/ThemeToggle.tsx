@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import * as ThemeUtils from '~/utils/darkmode'
 import { type Theme } from '~/utils/darkmode'
 import { MoonIcon, SunIcon } from '@heroicons/react/24/solid'
+import { Button } from '~/lib/button'
 
 export default function ThemeToggle({}: React.ComponentPropsWithoutRef<'div'>) {
   const [theme, setTheme] = useState<Theme>(ThemeUtils.getTheme())
@@ -25,15 +26,12 @@ export default function ThemeToggle({}: React.ComponentPropsWithoutRef<'div'>) {
   }, [theme])
 
   return (
-    <div
-      className="relative inline-block h-6 w-6 hover:opacity-100 opacity-60"
-      onClick={toggleTheme}
-    >
+    <Button className="relative inline-block s-8 p-2" plain onClick={toggleTheme}>
       {theme === 'dark' ? (
         <SunIcon title="Set theme to light" />
       ) : (
         <MoonIcon title="Set theme to dark" />
       )}
-    </div>
+    </Button>
   )
 }
