@@ -18,26 +18,34 @@ AtprotoUser.macro(
         params: { actor: actor },
       })
       .catch(async (error) => {
-        // Fixes: XrpcInvalidResponseError: Invalid response:
-        //   Invalid datetime at $.createdAt (got "0001-01-01T00:00:00.000Z")
-        if (error instanceof XrpcInvalidResponseError) {
-          return slingshotMiniProfile(actor)
-        }
-
-        // Otherwise log and rethrow the error:
         logger.error(error)
-        throw error
+        return undefined
       })
 
     if (profile?.success) {
+      // Bluesky AppView will return handle.invalid for accounts it doesn't know about:
+      if (profile.body.handle === 'handle.invalid') {
+        const miniDoc = await slingshotMiniProfile(actor)
+        return {
+          ...profile.body,
+          handle: miniDoc.handle,
+        }
+      }
+
       return profile.body
+    } else {
+      const miniDoc = await slingshotMiniProfile(actor)
+      return {
+        did: miniDoc.did,
+        handle: miniDoc.handle,
+      }
     }
   }
 )
 
 async function slingshotMiniProfile(
   actor: AtIdentifierString
-): Promise<XrpcResponse<typeof lexicon.app.bsky.actor.getProfile.main>> {
+): Promise<{ did: l.DidString; handle: l.HandleString }> {
   const url = new URL(
     'https://slingshot.microcosm.blue/xrpc/blue.microcosm.identity.resolveMiniDoc'
   )
@@ -51,13 +59,10 @@ async function slingshotMiniProfile(
   }
 
   const result = json as { did: l.DidString; handle: l.HandleString }
-  return new XrpcResponse(lexicon.app.bsky.actor.getProfile.main, res.status, res.headers, {
-    encoding: 'application/json',
-    body: {
-      did: result.did,
-      handle: result.handle,
-    },
-  })
+  return {
+    did: result.did,
+    handle: result.handle,
+  }
 }
 
 declare module '@thisismissem/adonisjs-atproto-oauth' {

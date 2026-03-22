@@ -21,7 +21,6 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
     let profile: Profile | undefined
     if (auth?.user) {
       profile = await auth.user.fetchProfile(auth.user.did)
-      logger.debug(profile, 'user profile')
     }
 
     /**
