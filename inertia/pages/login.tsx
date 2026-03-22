@@ -1,20 +1,22 @@
 import { Form } from '@adonisjs/inertia/react'
 import { Container } from '~/lib/container'
 import { Button } from '~/lib/button'
-import { Field, FieldGroup, Label } from '~/lib/fieldset'
-import { Heading } from '~/lib/heading'
+import { ErrorMessage, Field, FieldGroup, Label } from '~/lib/fieldset'
 import { Input } from '~/lib/input'
 import { Text } from '~/lib/text'
+import { Link } from '~/lib/link'
 import Card from '~/lib/card'
 
 export default function Login() {
   return (
     <Container>
-      <Card className="mt-10 w-1/2 m-auto">
-        <Heading level={1}>Login to your account</Heading>
-        <Text>Enter your handle below to login to your account</Text>
+      <Card className="mt-10 w-1/2 m-auto p-4">
+        <h1 className="mx-auto max-w-4xl mb-2 text-center font-display text-3xl leading-[1.2] font-extrabold tracking-tight text-slate-900 dark:text-slate-200 sm:text-5xl">
+          Sign Into Your <div className="text-amber-400">Eurosky Account.</div>
+        </h1>
+        <Text className="text-center">Enter your handle below to login to your account</Text>
         <Form className="mt-6" route="oauth.login">
-          {({ errors }) => (
+          {({ errors, valid, isDirty }) => (
             <FieldGroup>
               <Field>
                 <Label htmlFor="input">Your Internet handle</Label>
@@ -29,15 +31,26 @@ export default function Login() {
                   autoCorrect="false"
                   autoComplete="true"
                 />
+                {errors?.input && (
+                  <ErrorMessage className="text-orange-500!">{errors.input}</ErrorMessage>
+                )}
               </Field>
-              <Field className="mt-2 flex justify-end justify-items-end">
-                <Button type="submit" color="amber">
-                  Login
+              <Field className="mt-2 flex justify-end justify-items-stretch">
+                <Button
+                  type="submit"
+                  color={!valid || !isDirty ? 'zinc' : 'amber'}
+                  className="w-full py-3! disabled:cursor-default"
+                  disabled={!valid || !isDirty}
+                >
+                  Continue &rarr;
                 </Button>
-                {/* <FieldDescription className="text-center">
-                      Don&apos;t have an account? <Link href="/signup">Sign up</Link>
-                    </FieldDescription> */}
               </Field>
+              <Text className="text-center">
+                Don&apos;t have an account?{' '}
+                <Link route="account.create" className="text-blue-500 hover:underline">
+                  Sign up
+                </Link>
+              </Text>
             </FieldGroup>
           )}
         </Form>

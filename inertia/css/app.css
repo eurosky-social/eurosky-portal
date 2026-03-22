@@ -33,3 +33,69 @@
 .dark #logo {
   background-image: url('../images/logo-dark.png');
 }
+
+details:open summary > svg {
+  rotate: -180deg;
+}
+
+.legal-details {
+  max-height: 400px;
+}
+.legal-details summary {
+  position: sticky;
+  top: 0;
+}
+
+.legal-document h1 {
+  font-size: large;
+  margin-bottom: calc(var(--spacing) * 4);
+}
+
+.legal-document p {
+  margin: calc(var(--spacing) * 2) 0;
+}
+
+.legal-document p + p {
+  margin-top: calc(var(--spacing) * 4);
+}
+
+.legal-document a {
+  color: var(--color-blue-500);
+}
+.legal-document a:hover {
+  text-decoration: underline;
+}
+
+.legal-document hr {
+  margin-top: calc(var(--spacing) * 6);
+  margin-bottom: calc(var(--spacing) * 6);
+  border-top: 1px solid var(--color-gray-300);
+
+  @variant dark {
+    border-top-color: var(--color-slate-700);
+  }
+}
+
+.legal-document blockquote {
+  margin-bottom: calc(var(--spacing) * 2);
+  margin-left: calc(var(--spacing) * 8);
+}
+
+.legal-document ol {
+  list-style: decimal;
+  list-style-position: inside;
+  margin-top: calc(var(--spacing) * 2);
+  margin-bottom: var(--spacing);
+}
+
+.legal-document ol li::marker {
+  font-weight: bold;
+}
+
+.legal-document ul {
+  list-style: disc;
+  list-style-position: outside;
+  margin-left: calc(var(--spacing) * 8);
+  margin-bottom: calc(var(--spacing) * 2);
+  margin-top: var(--spacing);
+}

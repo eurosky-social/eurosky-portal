@@ -1,38 +1,32 @@
 import { Data } from '@generated/data'
 import { toast, Toaster } from 'sonner'
 import { usePage } from '@inertiajs/react'
-import { ReactElement, useEffect, useMemo } from 'react'
+import { ReactElement, useEffect } from 'react'
 import PublicNavbar from '~/components/PublicNavbar'
 import DashboardNavbar from '~/components/DashboardNavbar'
-import {
-  Sidebar,
-  SidebarBody,
-  SidebarHeading,
-  SidebarItem,
-  SidebarLabel,
-  SidebarSection,
-} from '~/lib/sidebar'
-import { SidebarLayout } from '~/lib/sidebar-layout'
-import {
-  HomeIcon,
-  QuestionMarkCircleIcon,
-  ChatBubbleOvalLeftEllipsisIcon,
-  DocumentTextIcon,
-  Cog6ToothIcon,
-  ArrowTopRightOnSquareIcon,
-} from '@heroicons/react/24/solid'
+import { AuthenticatedLayout } from '~/components/layouts/authenticated'
 
 export default function Layout({ children }: { children: ReactElement<Data.SharedProps> }) {
+  const page = usePage()
   useEffect(() => {
     toast.dismiss()
-  }, [usePage().url])
+  }, [page.url])
 
   if (children.props.flash.error) {
     toast.error(children.props.flash.error)
   }
 
+  if (page.url.startsWith('/onboarding') || page.url.startsWith('/legal/')) {
+    return (
+      <div>
+        {children.props.isAuthenticated ? <DashboardNavbar /> : <PublicNavbar />}
+        {children}
+      </div>
+    )
+  }
+
   if (children.props.isAuthenticated) {
-    return <AuthLayout>{children}</AuthLayout>
+    return <AuthenticatedLayout>{children}</AuthenticatedLayout>
   }
 
   return (
@@ -40,66 +34,6 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
       {children.props.isAuthenticated ? <DashboardNavbar /> : <PublicNavbar />}
       <main>{children}</main>
       <Toaster position="top-center" richColors />
-    </div>
-  )
-}
-
-function AuthLayout(props: { children: ReactElement<Data.SharedProps> }) {
-  const {
-    props: { authorizationServer },
-  } = usePage()
-
-  const manageUrl = useMemo(() => {
-    return new URL('/account', authorizationServer).toString()
-  }, [authorizationServer])
-
-  return (
-    <div>
-      <DashboardNavbar />
-      <SidebarLayout
-        navbar={<div />}
-        sidebar={
-          <Sidebar>
-            <SidebarBody>
-              <SidebarHeading className="font-bold">My Account</SidebarHeading>
-              <SidebarSection>
-                <SidebarItem route="dashboard.show">
-                  <HomeIcon />
-                  <SidebarLabel>Dashboard</SidebarLabel>
-                </SidebarItem>
-                <SidebarItem href={manageUrl} target="_blank" as={'a'}>
-                  <Cog6ToothIcon />
-                  <SidebarLabel className="flex gap-1">
-                    Manage Account{' '}
-                    <ArrowTopRightOnSquareIcon className="size-4 inline-block self-center" />
-                  </SidebarLabel>
-                </SidebarItem>
-              </SidebarSection>
-              <SidebarHeading className="mt-10 font-bold">Support</SidebarHeading>
-              <SidebarSection>
-                <SidebarItem href="#">
-                  <QuestionMarkCircleIcon />
-                  <SidebarLabel>Help &amp; FAQ</SidebarLabel>
-                </SidebarItem>
-                <SidebarItem href="#">
-                  <ChatBubbleOvalLeftEllipsisIcon />
-                  <SidebarLabel>Contact Us</SidebarLabel>
-                </SidebarItem>
-                <SidebarItem href="#">
-                  <DocumentTextIcon />
-                  <SidebarLabel>Terms</SidebarLabel>
-                </SidebarItem>
-              </SidebarSection>
-            </SidebarBody>
-          </Sidebar>
-        }
-        children={
-          <>
-            <main>{props.children}</main>
-            <Toaster position="top-center" richColors />
-          </>
-        }
-      />
     </div>
   )
 }

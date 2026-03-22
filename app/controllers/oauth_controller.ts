@@ -1,13 +1,15 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import { OAuthResolverError } from '@atproto/oauth-client-node'
-import env from '#start/env'
-import { loginRequestValidator, signupRequestValidator } from '#validators/oauth'
 import { DateTime } from 'luxon'
+import env from '#start/env'
+import Account from '#models/account'
+import { loginRequestValidator, signupRequestValidator } from '#validators/oauth'
+import { createFieldError } from '#utils/errors'
 
 const oauthServerUrl = env.get('OAUTH_SERVICE')
 
 export default class OAuthController {
-  async login({ request, response, inertia, oauth, session, logger }: HttpContext) {
+  async login({ request, inertia, oauth, session, logger }: HttpContext) {
     const { input } = await request.validateUsing(loginRequestValidator)
 
     try {
@@ -16,18 +18,27 @@ export default class OAuthController {
       session.put('source', 'login')
       inertia.location(authorizationUrl)
     } catch (err) {
-      logger.error(err, 'Error starting AT Protocol OAuth flow')
+      // We expect this error, which is when the handle doesn't exist:
       if (err instanceof OAuthResolverError) {
-        // Handle the input not being AT Protocol OAuth compatible
-        response.abort('Something went wrong')
+        throw createFieldError('input', input, err.message)
       }
 
-      response.redirect().back()
+      logger.error(err, 'Error starting AT Protocol OAuth flow')
+      throw createFieldError('input', input, 'Unknown error occurred')
     }
   }
 
   async signup({ request, response, inertia, oauth, session }: HttpContext) {
-    await request.validateUsing(signupRequestValidator)
+    await request.validateUsing(signupRequestValidator, {
+      messagesProvider: {
+        getMessage(defaultMessage, rule, field) {
+          if (rule === 'required' && field.name === 'terms') {
+            return 'You must accept the terms of service & privacy policy to continue'
+          }
+          return defaultMessage
+        },
+      },
+    })
 
     session.put('source', 'signup')
     session.put('terms_accepted', DateTime.now().toISO())
@@ -72,6 +83,14 @@ export default class OAuthController {
       const result = await oauth.handleCallback()
 
       await result.user.fetchProfile(result.user.did)
+
+      // If we're coming from signup, then store that they accepted terms:
+      if (source === 'signup') {
+        await Account.firstOrCreate(
+          { did: result.user.did },
+          { did: result.user.did, termsAcceptedAt: termsAcceptedOn }
+        )
+      }
 
       await auth.use('web').login(result.user)
 

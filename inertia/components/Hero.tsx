@@ -19,7 +19,7 @@ export function Hero() {
           Create your account →
         </Button>
         <Button route="auth.login" outline>
-          Login
+          Sign in
         </Button>
       </div>
       <div className="mt-4 text-lg text-gray-400 flex justify-center items-center gap-2">

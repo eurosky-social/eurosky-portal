@@ -103,4 +103,40 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/dashboard_controller').default['show']>>>
     }
   }
+  'account.onboarding': {
+    methods: ["GET","HEAD"]
+    pattern: '/onboarding'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/account_controller').default['onboarding']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/account_controller').default['onboarding']>>>
+    }
+  }
+  'account.store_acceptance': {
+    methods: ["POST"]
+    pattern: '/onboarding'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/legal').termsRequestValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/legal').termsRequestValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/account_controller').default['storeAcceptance']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/account_controller').default['storeAcceptance']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'legal.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/legal/:document'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { document: ParamValue }
+      query: ExtractQueryForGet<InferInput<(typeof import('#validators/legal').legalValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/legal_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/legal_controller').default['show']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
 }

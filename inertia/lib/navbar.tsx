@@ -2,7 +2,7 @@
 
 import * as Headless from '@headlessui/react'
 import clsx from 'clsx'
-import { LayoutGroup, motion } from 'motion/react'
+import { LayoutGroup, motion, AnimatePresence } from 'motion/react'
 import React, { forwardRef, useId } from 'react'
 import { TouchTarget } from './button'
 import { Link } from './link'
@@ -73,12 +73,19 @@ export const NavbarItem = forwardRef(function NavbarItem(
 
   return (
     <span className={clsx(className, 'relative')}>
-      {current && (
-        <motion.span
-          layoutId="current-indicator"
-          className="absolute inset-x-2 -bottom-2.5 h-0.5 rounded-full bg-zinc-950 dark:bg-white"
-        />
-      )}
+      <AnimatePresence>
+        {current && (
+          <motion.span
+            key="current-indicator"
+            layoutId="current-indicator"
+            className="absolute inset-x-2 -bottom-2.5 h-0.5 rounded-full bg-zinc-950 dark:bg-white"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ ease: 'easeInOut', duration: 0.25 }}
+          />
+        )}
+      </AnimatePresence>
       {typeof props.href === 'string' || typeof props.route === 'string' ? (
         <Link
           {...props}

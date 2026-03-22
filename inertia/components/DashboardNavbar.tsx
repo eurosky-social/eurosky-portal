@@ -6,10 +6,10 @@ import { Button } from '~/lib/button'
 import { Text } from '~/lib/text'
 import { useAuth } from '~/utils/use_auth'
 import { Dropdown, DropdownButton, DropdownMenu } from '~/lib/dropdown'
-import ThemeToggle from './ThemeToggle'
+import { ThemeToggle } from './ThemeToggle'
 import { UserAvatar } from './UserAvatar'
 
-export default function PublicNavbar() {
+export default function DashboardNavbar() {
   const user = useAuth()
 
   return (

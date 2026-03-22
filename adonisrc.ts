@@ -61,6 +61,7 @@ export default defineConfig({
     () => import('#providers/api_provider'),
     () => import('@thisismissem/adonisjs-atproto-oauth/provider'),
     () => import('#extensions/atprotouser'),
+    () => import('@adonisjs/content/content_provider'),
   ],
 
   /*
@@ -77,6 +78,7 @@ export default defineConfig({
     () => import('#start/kernel'),
     () => import('#start/validator'),
     () => import('#start/logging'),
+    () => import('#start/view'),
   ],
 
   /*

@@ -54,6 +54,24 @@ const routes = {
     tokens: [{"old":"/dashboard","type":0,"val":"dashboard","end":""}],
     types: placeholder as Registry['dashboard.show']['types'],
   },
+  'account.onboarding': {
+    methods: ["GET","HEAD"],
+    pattern: '/onboarding',
+    tokens: [{"old":"/onboarding","type":0,"val":"onboarding","end":""}],
+    types: placeholder as Registry['account.onboarding']['types'],
+  },
+  'account.store_acceptance': {
+    methods: ["POST"],
+    pattern: '/onboarding',
+    tokens: [{"old":"/onboarding","type":0,"val":"onboarding","end":""}],
+    types: placeholder as Registry['account.store_acceptance']['types'],
+  },
+  'legal.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/legal/:document',
+    tokens: [{"old":"/legal/:document","type":0,"val":"legal","end":""},{"old":"/legal/:document","type":1,"val":"document","end":""}],
+    types: placeholder as Registry['legal.show']['types'],
+  },
 } as const satisfies Record<string, AdonisEndpoint>
 
 export { routes }

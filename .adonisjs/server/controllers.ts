@@ -7,5 +7,6 @@ export const controllers = {
   Account: () => import('#controllers/account_controller'),
   Auth: () => import('#controllers/auth_controller'),
   Dashboard: () => import('#controllers/dashboard_controller'),
+  Legal: () => import('#controllers/legal_controller'),
   Oauth: () => import('#controllers/oauth_controller'),
 }

@@ -11,11 +11,16 @@ export interface ApiDefinition {
   home: typeof routes['home']
   account: {
     create: typeof routes['account.create']
+    onboarding: typeof routes['account.onboarding']
+    storeAcceptance: typeof routes['account.store_acceptance']
   }
   auth: {
     login: typeof routes['auth.login']
   }
   dashboard: {
     show: typeof routes['dashboard.show']
+  }
+  legal: {
+    show: typeof routes['legal.show']
   }
 }

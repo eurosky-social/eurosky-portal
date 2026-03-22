@@ -23,5 +23,9 @@ router
 router
   .group(() => {
     router.get('/dashboard', [controllers.Dashboard, 'show'])
+    router.get('/onboarding', [controllers.Account, 'onboarding'])
+    router.post('/onboarding', [controllers.Account, 'storeAcceptance'])
   })
-  .use(middleware.auth())
+  .use([middleware.auth(), middleware.legalRoadblock()])
+
+router.get('/legal/:document', [controllers.Legal, 'show'])

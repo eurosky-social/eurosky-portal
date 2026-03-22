@@ -12,6 +12,9 @@ export type ScannedRoutes = {
     'account.create': { paramsTuple?: []; params?: {} }
     'auth.login': { paramsTuple?: []; params?: {} }
     'dashboard.show': { paramsTuple?: []; params?: {} }
+    'account.onboarding': { paramsTuple?: []; params?: {} }
+    'account.store_acceptance': { paramsTuple?: []; params?: {} }
+    'legal.show': { paramsTuple: [ParamValue]; params: {'document': ParamValue} }
   }
   GET: {
     'oauth.callback': { paramsTuple?: []; params?: {} }
@@ -19,6 +22,8 @@ export type ScannedRoutes = {
     'account.create': { paramsTuple?: []; params?: {} }
     'auth.login': { paramsTuple?: []; params?: {} }
     'dashboard.show': { paramsTuple?: []; params?: {} }
+    'account.onboarding': { paramsTuple?: []; params?: {} }
+    'legal.show': { paramsTuple: [ParamValue]; params: {'document': ParamValue} }
   }
   HEAD: {
     'oauth.callback': { paramsTuple?: []; params?: {} }
@@ -26,11 +31,14 @@ export type ScannedRoutes = {
     'account.create': { paramsTuple?: []; params?: {} }
     'auth.login': { paramsTuple?: []; params?: {} }
     'dashboard.show': { paramsTuple?: []; params?: {} }
+    'account.onboarding': { paramsTuple?: []; params?: {} }
+    'legal.show': { paramsTuple: [ParamValue]; params: {'document': ParamValue} }
   }
   POST: {
     'oauth.logout': { paramsTuple?: []; params?: {} }
     'oauth.login': { paramsTuple?: []; params?: {} }
     'oauth.signup': { paramsTuple?: []; params?: {} }
+    'account.store_acceptance': { paramsTuple?: []; params?: {} }
   }
 }
 declare module '@adonisjs/core/types/http' {
