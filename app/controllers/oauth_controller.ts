@@ -4,11 +4,12 @@ import { DateTime } from 'luxon'
 import env from '#start/env'
 import Account from '#models/account'
 import { loginRequestValidator, signupRequestValidator } from '#validators/oauth'
+import { createFieldError } from '#utils/errors'
 
 const oauthServerUrl = env.get('OAUTH_SERVICE')
 
 export default class OAuthController {
-  async login({ request, response, inertia, oauth, session, logger }: HttpContext) {
+  async login({ request, inertia, oauth, session, logger }: HttpContext) {
     const { input } = await request.validateUsing(loginRequestValidator)
 
     try {
@@ -17,13 +18,13 @@ export default class OAuthController {
       session.put('source', 'login')
       inertia.location(authorizationUrl)
     } catch (err) {
-      logger.error(err, 'Error starting AT Protocol OAuth flow')
+      // We expect this error, which is when the handle doesn't exist:
       if (err instanceof OAuthResolverError) {
-        // Handle the input not being AT Protocol OAuth compatible
-        response.abort('Something went wrong')
+        throw createFieldError('input', input, err.message)
       }
 
-      response.redirect().back()
+      logger.error(err, 'Error starting AT Protocol OAuth flow')
+      throw createFieldError('input', input, 'Unknown error occurred')
     }
   }
 
