@@ -1,4 +1,4 @@
-# Eurosky Personal Data Server (PDS) – Terms of Service 
+# Eurosky Personal Data Server (PDS) – Terms of Service
 
 Last updated: 4 February 2026
 
@@ -34,16 +34,16 @@ Applications you choose to connect to your PDS are provided by third parties and
 
 You agree not to use the Eurosky PDS in ways that are unlawful or that materially interfere with the operation or security of the service, including by:
 
-* storing, possessing, or distributing content where such storage, possession, or distribution is illegal under applicable law. This includes, but is not limited to:  
-  * materials that constitute child sexually exploitative material (including material which may not be illegal child sexual abuse material but which nonetheless sexually exploits or promotes the sexual exploitation of minors), unlawful pornography, or are otherwise indecent;  
-  * content that contains or promotes extreme acts of violence or terrorist activity, including terror or violent extremist propaganda;  
-* advocating bigotry, hatred, or the incitement of violence against any person or group of people based on their race, religion, ethnicity, national origin, sex, gender identity, sexual orientation, disability, impairment, or any other characteristic(s) associated with systemic discrimination or marginalization;  
-* violating the privacy or infringing the rights of others, including publishing, sharing, or storing other people’s confidential information, identifying information, or intimate imagery without authorization for the purposes of harassing, exposing, harming, or exploiting them;  
-* attempting unauthorised access to accounts or systems;  
-* deploying malware or deliberately disrupting service availability;  
-* otherwise violating the law in any way, including storing, publishing, or sharing content which depicts, promotes, or instructs on illegal activity, is fraudulent, defamatory, misleading, or exploitative, or that infringes the intellectual property rights of others.
+- storing, possessing, or distributing content where such storage, possession, or distribution is illegal under applicable law. This includes, but is not limited to:
+  - materials that constitute child sexually exploitative material (including material which may not be illegal child sexual abuse material but which nonetheless sexually exploits or promotes the sexual exploitation of minors), unlawful pornography, or are otherwise indecent;
+  - content that contains or promotes extreme acts of violence or terrorist activity, including terror or violent extremist propaganda;
+- advocating bigotry, hatred, or the incitement of violence against any person or group of people based on their race, religion, ethnicity, national origin, sex, gender identity, sexual orientation, disability, impairment, or any other characteristic(s) associated with systemic discrimination or marginalization;
+- violating the privacy or infringing the rights of others, including publishing, sharing, or storing other people’s confidential information, identifying information, or intimate imagery without authorization for the purposes of harassing, exposing, harming, or exploiting them;
+- attempting unauthorised access to accounts or systems;
+- deploying malware or deliberately disrupting service availability;
+- otherwise violating the law in any way, including storing, publishing, or sharing content which depicts, promotes, or instructs on illegal activity, is fraudulent, defamatory, misleading, or exploitative, or that infringes the intellectual property rights of others.
 
-Modal aims to enforce policies fairly and consistently. Where we become aware of content that we are legally required not to store, we reserve the right to  restrict access to or remove that content and take related account measures as required by law, up to and including removing user access to the PDS and suspending or terminating accounts.
+Modal aims to enforce policies fairly and consistently. Where we become aware of content that we are legally required not to store, we reserve the right to restrict access to or remove that content and take related account measures as required by law, up to and including removing user access to the PDS and suspending or terminating accounts.
 
 6. **Hosting and service infrastructure**
 
@@ -57,13 +57,13 @@ Where personal data is processed using such services, this is done in accordance
 
 We process personal data in accordance with the EU General Data Protection Regulation (GDPR) and applicable EU and Dutch law.
 
-Our Privacy Policy explains: 
+Our Privacy Policy explains:
 
-* what personal data we process;   
-* for what purposes;   
-* where it is processed;   
-* how long it is retained; and   
-* what rights you have.
+- what personal data we process;
+- for what purposes;
+- where it is processed;
+- how long it is retained; and
+- what rights you have.
 
 **This section should be read together with the [Privacy Policy](https://www.eurosky.tech/pds-privacy).**
 
@@ -71,12 +71,12 @@ Our Privacy Policy explains:
 
 We do not proactively monitor all content stored or served through the PDS.
 
-However, we will take proportionate measures where necessary to: 
+However, we will take proportionate measures where necessary to:
 
-* comply with applicable law;  
-* respond to valid orders from competent EU authorities;  
-* protect the security and integrity of the service; or   
-* address clearly unlawful content where we are legally required to act.
+- comply with applicable law;
+- respond to valid orders from competent EU authorities;
+- protect the security and integrity of the service; or
+- address clearly unlawful content where we are legally required to act.
 
 Measures may include restricting access to specific data or suspending or terminating accounts, where required by law or necessary to prevent harm.
 
@@ -98,11 +98,11 @@ You may stop using the Eurosky PDS at any time.
 
 Where supported by the AT Protocol and available tooling, you may migrate your identity and data to another compatible provider.
 
-We may suspend or terminate access if: 
+We may suspend or terminate access if:
 
-* you materially breach these Terms;   
-* continued provision of the service would violate applicable law; or   
-* suspension is necessary to protect the security or stability of the service.
+- you materially breach these Terms;
+- continued provision of the service would violate applicable law; or
+- suspension is necessary to protect the security or stability of the service.
 
 Where reasonable and lawful, we will provide notice and an opportunity to address the issue before termination.
 
@@ -152,10 +152,10 @@ For questions about these Terms or the Eurosky PDS:
 
 > Email: [support@eurosky.tech](mailto:support@eurosky.tech)
 
-For legal correspondence and notices under the EU Digital Services Act (DSA), including notices of illegal content: 
+For legal correspondence and notices under the EU Digital Services Act (DSA), including notices of illegal content:
 
 > Email: [notices@eurosky.tech](mailto:notices@eurosky.tech)
 
-For privacy-related questions: 
+For privacy-related questions:
 
-> Email: [privacy@eurosky.tech](mailto:privacy@eurosky.tech)  
+> Email: [privacy@eurosky.tech](mailto:privacy@eurosky.tech)

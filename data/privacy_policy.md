@@ -20,9 +20,9 @@ For the purposes of the EU General Data Protection Regulation (GDPR), Stichting 
 
 The Eurosky PDS provides personal data storage and identity hosting services for the AT Protocol. It allows you to:
 
-* create and manage an AT Protocol identity;  
-* store personal data and content associated with that identity; and  
-* connect your identity to compatible applications and services of your choosing.
+- create and manage an AT Protocol identity;
+- store personal data and content associated with that identity; and
+- connect your identity to compatible applications and services of your choosing.
 
 The Eurosky PDS is infrastructure. We do not operate social media feeds, recommend content, or curate speech.
 
@@ -32,12 +32,12 @@ The Eurosky PDS is infrastructure. We do not operate social media feeds, recomme
 
 Depending on how you use the service, we may process the following categories of personal data:
 
-* account identifiers and handles;  
-* profile information you choose to provide;  
-* content you post, upload, or store via your PDS;  
-* social graph data (such as follows and connections);  
-* technical and operational data required to operate the PDS (for example, IP addresses, timestamps, and logs);  
-* security and abuse-prevention signals.
+- account identifiers and handles;
+- profile information you choose to provide;
+- content you post, upload, or store via your PDS;
+- social graph data (such as follows and connections);
+- technical and operational data required to operate the PDS (for example, IP addresses, timestamps, and logs);
+- security and abuse-prevention signals.
 
 We do not intentionally process special category (sensitive) personal data.
 
@@ -47,11 +47,11 @@ We do not intentionally process special category (sensitive) personal data.
 
 We process personal data via the PDS in order to:
 
-* provide and operate identity hosting and personal data storage services;  
-* enable interoperability with AT Protocol applications chosen by you;  
-* maintain the security, stability, and integrity of the service;  
-* detect and prevent abuse or misuse of the PDS; and  
-* comply with applicable legal obligations.
+- provide and operate identity hosting and personal data storage services;
+- enable interoperability with AT Protocol applications chosen by you;
+- maintain the security, stability, and integrity of the service;
+- detect and prevent abuse or misuse of the PDS; and
+- comply with applicable legal obligations.
 
 ---
 
@@ -59,9 +59,9 @@ We process personal data via the PDS in order to:
 
 Under the EU GDPR, we rely on the following legal bases when processing PDS data:
 
-* **Performance of a contract**: to provide the PDS services to you;  
-* **Legitimate interests**: to operate, secure, and improve the PDS, and to prevent abuse, where those interests are not overridden by your fundamental rights and freedoms;  
-* **Legal obligation**: where processing is required to comply with EU or national law.
+- **Performance of a contract**: to provide the PDS services to you;
+- **Legitimate interests**: to operate, secure, and improve the PDS, and to prevent abuse, where those interests are not overridden by your fundamental rights and freedoms;
+- **Legal obligation**: where processing is required to comply with EU or national law.
 
 ---
 
@@ -77,9 +77,9 @@ To operate and secure the service, we may use service providers acting on our be
 
 Your PDS data may be shared in the following circumstances:
 
-* with applications and services you choose to connect to your PDS, in accordance with the AT Protocol;  
-* with infrastructure or security service providers acting as data processors on our behalf;  
-* with public authorities, where we are legally required to do so.
+- with applications and services you choose to connect to your PDS, in accordance with the AT Protocol;
+- with infrastructure or security service providers acting as data processors on our behalf;
+- with public authorities, where we are legally required to do so.
 
 We do not sell PDS data.
 
@@ -105,11 +105,11 @@ If you delete your account or migrate your identity to another compatible provid
 
 You have the right to:
 
-* access your personal data;  
-* correct inaccurate or incomplete data;  
-* request deletion of your data;  
-* restrict or object to certain processing;  
-* request data portability.
+- access your personal data;
+- correct inaccurate or incomplete data;
+- request deletion of your data;
+- restrict or object to certain processing;
+- request data portability.
 
 You can exercise these rights by contacting us at **privacy@eurosky.tech**.
 
@@ -130,4 +130,3 @@ We may update this Privacy Notice from time to time to reflect changes to the Eu
 ---
 
 This Privacy Notice should be read together with the [Eurosky PDS Terms of Service](https://www.eurosky.tech/pds-terms).
-
