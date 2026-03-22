@@ -1,0 +1,35 @@
+@import 'tailwindcss';
+@custom-variant dark (&:where(.dark, .dark *));
+
+@utility min-h-dvh-minus-* {
+  min-height: calc(100dvh - var(--spacing) * --value(integer));
+  min-height: calc(100dvh - --value([length]));
+}
+
+*:focus-visible {
+  outline: 2px solid var(--color-blue-600);
+}
+
+.white-space-collapse {
+  white-space: collapse;
+  white-space-collapse: collapse;
+}
+
+.dark {
+  color: var(--color-slate-100);
+  background: var(--color-slate-900);
+}
+
+#logo {
+  display: block;
+  height: 70px;
+  width: 170px;
+  background-image: url('../images/logo-light.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.dark #logo {
+  background-image: url('../images/logo-dark.png');
+}

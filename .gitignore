@@ -1,0 +1,22 @@
+# Dependencies and AdonisJS build
+node_modules
+build
+tmp/*
+!tmp/.gitkeep
+
+# Environment variable files
+.env
+.env.*.local
+.env.local
+
+# Frontend assets compiled code
+public/assets
+
+# Editors specific
+.fleet
+.idea
+.vscode/*
+!.vscode/settings.json
+
+# Platform specific
+.DS_Store
