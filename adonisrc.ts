@@ -126,7 +126,7 @@ export default defineConfig({
       reloadServer: false,
     },
     {
-      pattern: 'data/**/*.(json|md)',
+      pattern: 'data/**',
       reloadServer: false,
     },
     {

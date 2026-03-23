@@ -9,4 +9,5 @@ export const controllers = {
   Dashboard: () => import('#controllers/dashboard_controller'),
   Legal: () => import('#controllers/legal_controller'),
   Oauth: () => import('#controllers/oauth_controller'),
+  Home: () => import('#controllers/home_controller'),
 }

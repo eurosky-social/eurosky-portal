@@ -8,8 +8,13 @@ import { Heading } from '~/lib/heading'
 import { Text } from '~/lib/text'
 import { InertiaProps } from '~/types'
 import { useAuth } from '~/utils/use_auth'
+import { Data } from '@generated/data'
 
-export default function Dashboard({}: InertiaProps<{}>) {
+export default function Dashboard({
+  apps,
+}: InertiaProps<{
+  apps: Data.App[]
+}>) {
   const user = useAuth()
   const [showIntro, setShowIntro] = useState(localStorage.hide_intro !== 'true')
   const hideIntro = () => {
@@ -94,24 +99,26 @@ export default function Dashboard({}: InertiaProps<{}>) {
         role="list"
         className="mt-3 grid grid-cols-1 gap-5 sm:grid-cols-4 sm:gap-6 lg:grid-cols-5"
       >
-        <li className="col-span-1 flex rounded-md shadow-xs dark:shadow-none">
-          <ClickableCard href="#" target="_blank" className="w-full focus:outline-hidden p-4">
-            <Avatar square className="size-12 mb-2 bg-blue-400 text-white" initials="BS" />
-            <Heading level={4} className="text-base!">
-              Bluesky
-            </Heading>
-            <Text>The flagship social feed experience</Text>
-          </ClickableCard>
-        </li>
-        <li className="col-span-1 flex rounded-md shadow-xs dark:shadow-none">
-          <ClickableCard href="#" target="_blank" className="w-full focus:outline-hidden p-4">
-            <Avatar square className="size-12 mb-2 bg-yellow-400 text-white" initials="FL" />
-            <Heading level={4} className="text-base!">
-              Flashes
-            </Heading>
-            <Text>Photo &amp; video sharing</Text>
-          </ClickableCard>
-        </li>
+        {apps.map((app) => (
+          <li key={app.id} className="col-span-1 flex rounded-md shadow-xs dark:shadow-none">
+            <ClickableCard
+              href={app.url}
+              target="_blank"
+              className="w-full focus:outline-hidden p-4"
+            >
+              <Avatar
+                square
+                src={app.icon.path}
+                className={`size-12 mb-2 bg-${app.icon.fallback.color}-400 text-white`}
+                initials={app.icon.fallback.initials}
+              />
+              <Heading level={4} className="text-base!">
+                {app.name}
+              </Heading>
+              <Text>{app.summary}</Text>
+            </ClickableCard>
+          </li>
+        ))}
       </ul>
     </>
   )

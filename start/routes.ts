@@ -14,7 +14,7 @@ import '#start/routes/oauth'
 
 router
   .group(() => {
-    router.on('/').renderInertia('home', {}).as('home')
+    router.get('/', [controllers.Home, 'show']).as('home')
     router.get('/create-account', [controllers.Account, 'create'])
     router.get('/login', [controllers.Auth, 'login'])
   })

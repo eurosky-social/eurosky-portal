@@ -1,0 +1,27 @@
+[
+  {
+    "id": "bsky",
+    "name": "Bluesky",
+    "summary": "The flagship social feed experience",
+    "url": "https://bsky.app",
+    "icon": {
+      "path": "./icons/bluesky.png",
+      "fallback": {
+        "color": "blue",
+        "initials": "bs"
+      }
+    }
+  },
+  {
+    "id": "flashes",
+    "name": "Flashes",
+    "summary": "Photo & video sharing",
+    "url": "https://apps.apple.com/us/app/flashes-for-bluesky/id6741443033",
+    "icon": {
+      "fallback": {
+        "color": "yellow",
+        "initials": "fl"
+      }
+    }
+  }
+]
