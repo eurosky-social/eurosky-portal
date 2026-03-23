@@ -19,6 +19,8 @@ import {
   DocumentTextIcon,
   Cog6ToothIcon,
   ArrowTopRightOnSquareIcon,
+  LifebuoyIcon,
+  LockClosedIcon,
 } from '@heroicons/react/24/solid'
 
 export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedProps> }) {
@@ -55,17 +57,25 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
               </SidebarSection>
               <SidebarHeading className="mt-10 font-bold">Support</SidebarHeading>
               <SidebarSection>
-                <SidebarItem href="#">
-                  <QuestionMarkCircleIcon />
-                  <SidebarLabel>Help &amp; FAQ</SidebarLabel>
+                <SidebarItem href="https://help.eurosky.tech" target="_blank" as={'a'}>
+                  <LifebuoyIcon />
+                  <SidebarLabel>Help</SidebarLabel>
                 </SidebarItem>
-                <SidebarItem href="#">
+                <SidebarItem href="https://eurosky.tech/faq" target="_blank" as={'a'}>
+                  <QuestionMarkCircleIcon />
+                  <SidebarLabel>FAQ</SidebarLabel>
+                </SidebarItem>
+                <SidebarItem href="https://eurosky.tech/contact-us" target="_blank" as={'a'}>
                   <ChatBubbleOvalLeftEllipsisIcon />
                   <SidebarLabel>Contact Us</SidebarLabel>
                 </SidebarItem>
                 <SidebarItem route="legal.show" routeParams={{ document: 'terms' }}>
                   <DocumentTextIcon />
-                  <SidebarLabel>Terms</SidebarLabel>
+                  <SidebarLabel>Terms of Service</SidebarLabel>
+                </SidebarItem>
+                <SidebarItem route="legal.show" routeParams={{ document: 'privacy' }}>
+                  <LockClosedIcon />
+                  <SidebarLabel>Privacy Policy</SidebarLabel>
                 </SidebarItem>
               </SidebarSection>
             </SidebarBody>
