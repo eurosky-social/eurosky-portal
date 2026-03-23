@@ -48,7 +48,7 @@ export default function Dashboard({
               </dl>
             </div>
           </div>
-          <div className="self-center">
+          <div className="self-center hidden">
             <Button href="#" outline>
               Edit Profile
             </Button>
