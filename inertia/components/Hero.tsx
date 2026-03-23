@@ -15,10 +15,10 @@ export function Hero() {
         One account. Dozens of apps. No lock-in.
       </p>
       <div className="mt-6 flex justify-center gap-x-6 text-2xl">
-        <Button route="account.create" color="amber">
+        <Button route="account.create" className="py-3! px-6!" color="amber">
           Create your account →
         </Button>
-        <Button route="auth.login" outline>
+        <Button route="auth.login" className="py-3! px-6!" outline>
           Sign in
         </Button>
       </div>
