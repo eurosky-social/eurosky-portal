@@ -24,6 +24,7 @@ import {
 export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedProps> }) {
   const {
     props: { authorizationServer },
+    url,
   } = usePage()
 
   const manageUrl = useMemo(() => {
@@ -40,7 +41,7 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
             <SidebarBody>
               <SidebarHeading className="font-bold">My Account</SidebarHeading>
               <SidebarSection>
-                <SidebarItem route="dashboard.show">
+                <SidebarItem route="dashboard.show" current={url == '/dashboard'}>
                   <HomeIcon />
                   <SidebarLabel>Dashboard</SidebarLabel>
                 </SidebarItem>
@@ -62,7 +63,7 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
                   <ChatBubbleOvalLeftEllipsisIcon />
                   <SidebarLabel>Contact Us</SidebarLabel>
                 </SidebarItem>
-                <SidebarItem href="#">
+                <SidebarItem route="legal.show" routeParams={{ document: 'terms' }}>
                   <DocumentTextIcon />
                   <SidebarLabel>Terms</SidebarLabel>
                 </SidebarItem>
