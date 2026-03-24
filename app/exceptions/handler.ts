@@ -3,7 +3,9 @@ import { type HttpContext, ExceptionHandler } from '@adonisjs/core/http'
 import type { StatusPageRange, StatusPageRenderer } from '@adonisjs/core/types/http'
 import logger from '@adonisjs/core/services/logger'
 import { errors } from '@adonisjs/core/http'
+import { errors as authErrors } from '@adonisjs/auth'
 
+const silencedErrors = [errors.E_ROUTE_NOT_FOUND, authErrors.E_UNAUTHORIZED_ACCESS]
 export default class HttpExceptionHandler extends ExceptionHandler {
   /**
    * In debug mode, the exception handler will display verbose errors
@@ -42,7 +44,7 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    * @note You should not attempt to send a response from this method.
    */
   async report(error: unknown, ctx: HttpContext) {
-    if (!(error instanceof errors.E_ROUTE_NOT_FOUND)) {
+    if (!silencedErrors.some((type) => error instanceof type)) {
       logger.error(error)
     }
     return super.report(error, ctx)
