@@ -18,8 +18,8 @@ export default defineConfig({
       'rpc:app.bsky.actor.getProfile?aud=did:web:api.bsky.app%23bsky_appview',
     ].join(' '),
     // logo_uri: 'https://my-app.com/logo.png',
-    // tos_uri: 'https://my-app.com/tos',
-    // policy_uri: 'https://my-app.com/policy',
+    tos_uri: new URL('/legal/terms', env.get('APP_URL')).toString(),
+    policy_uri: new URL('/legal/privacy', env.get('APP_URL')).toString(),
   },
 
   // For a confidential client, set this environment variable:
