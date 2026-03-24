@@ -23,7 +23,7 @@ services:
     volumes:
       - type: bind
         source: /portal-app/db
-        target: /app/database
+        target: /data
     env_file:
       - /portal-app/app.env
     network_mode: host
