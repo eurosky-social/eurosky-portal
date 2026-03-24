@@ -72,7 +72,7 @@
   "dependencies": {
     "@adonisjs/auth": "^10.0.0",
     "@adonisjs/content": "^1.6.1",
-    "@adonisjs/core": "^7.0.0",
+    "@adonisjs/core": "^7.1.1",
     "@adonisjs/cors": "^3.0.0",
     "@adonisjs/inertia": "^4.1.0",
     "@adonisjs/lucid": "^22.0.0",
