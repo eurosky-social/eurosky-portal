@@ -1,3 +1,4 @@
+import proxyAddr from 'proxy-addr'
 import env from '#start/env'
 import app from '@adonisjs/core/services/app'
 import { defineConfig } from '@adonisjs/core/http'
@@ -40,6 +41,11 @@ export const http = defineConfig({
    * from anywhere inside your application.
    */
   useAsyncLocalStorage: false,
+
+  /**
+   * Enable trusting the IP address from caddy
+   */
+  trustProxy: proxyAddr.compile(['loopback', 'linklocal', 'uniquelocal']),
 
   /**
    * Manage cookies configuration. The settings for the session id cookie are
