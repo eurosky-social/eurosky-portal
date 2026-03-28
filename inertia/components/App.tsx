@@ -24,7 +24,7 @@ export function App({ app }: { app: Data.App }) {
         target="_blank"
         className="w-full focus:outline-hidden p-4 flex flex-col space-between gap-4"
       >
-        <div className="flex md:flex-col flex-row grow flex-1 gap-4">
+        <div className="flex flex-row grow flex-1 gap-4">
           <Avatar
             square
             src={app.icon.path}
@@ -38,13 +38,11 @@ export function App({ app }: { app: Data.App }) {
             <Text className="mb-2">{app.summary}</Text>
           </div>
         </div>
-        <div className="self-end w-full">
+        <div className="self-end w-full mt-3">
           <div className="flex flex-row space-between gap-2">
-            {app.madeInEU ? (
-              <div className="flex grow">
-                <Badge color="blue">Made in EU</Badge>
-              </div>
-            ) : null}
+            <div className="flex grow">
+              {app.madeInEU ? <Badge color="blue">Made in EU</Badge> : null}
+            </div>
 
             <div className="flex flex-row self-center items-center align-middle text-gray-500">
               {app.platforms.includes('web') && (
