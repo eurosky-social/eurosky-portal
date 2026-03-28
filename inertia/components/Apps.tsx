@@ -17,34 +17,26 @@ export function Apps({ apps, color }: { apps: Apps; color?: 'gray' | 'slate' }) 
   return (
     <>
       <h3 className={headingStyle}>Getting started</h3>
-      <ul
-        role="list"
-        className="mt-4 mb-8 grid grid-cols-1 gap-5 sm:gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-      >
-        {apps.gettingStarted.map((app) => (
-          <App key={app.id} app={app} />
-        ))}
-      </ul>
+      <AppGrid apps={apps.gettingStarted} />
 
       <h3 className={headingStyle}>Explore more</h3>
-      <ul
-        role="list"
-        className="mt-4 mb-8 grid grid-cols-1 gap-5 sm:gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-      >
-        {apps.exploreMore.map((app) => (
-          <App key={app.id} app={app} />
-        ))}
-      </ul>
+      <AppGrid apps={apps.exploreMore} />
 
       <h3 className={headingStyle}>For work</h3>
-      <ul
-        role="list"
-        className="mt-4 mb-8 grid grid-cols-1 gap-5 sm:gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-      >
-        {apps.forWork.map((app) => (
-          <App key={app.id} app={app} />
-        ))}
-      </ul>
+      <AppGrid apps={apps.forWork} />
     </>
+  )
+}
+
+function AppGrid({ apps }: { apps: Data.App[] }) {
+  return (
+    <ul
+      role="list"
+      className="mt-4 mb-8 grid grid-cols-1 gap-5 sm:gap-6 sm:grid-cols-2 md:grid-cols-3"
+    >
+      {apps.map((app) => (
+        <App key={app.id} app={app} />
+      ))}
+    </ul>
   )
 }
