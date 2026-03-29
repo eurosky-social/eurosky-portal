@@ -193,6 +193,7 @@
     "url": "https://sifa.id/",
     "platforms": ["web"],
     "category": "for-work",
+    "madeInEU": true,
     "icon": {
       "path": "./icons/sifa.png",
       "fallback": {
