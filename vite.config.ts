@@ -5,6 +5,8 @@ import inertia from '@adonisjs/inertia/vite'
 import tailwindcss from '@tailwindcss/vite'
 import env from '#start/env'
 
+const VITE_ALIAS_HOSTS = (process.env.VITE_ALIAS_HOSTS ?? 'localhost').split(',')
+
 export default defineConfig({
   plugins: [
     react(),
@@ -25,12 +27,12 @@ export default defineConfig({
   },
 
   server: {
-    allowedHosts: env.get('VITE_ALIAS_HOSTS', 'localhost').split(','),
+    allowedHosts: VITE_ALIAS_HOSTS,
     watch: {
       ignored: ['**/storage/**', '**/tmp/**'],
     },
   },
   preview: {
-    allowedHosts: env.get('VITE_ALIAS_HOSTS', 'localhost').split(','),
+    allowedHosts: VITE_ALIAS_HOSTS,
   },
 })
