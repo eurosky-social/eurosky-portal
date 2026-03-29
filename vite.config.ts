@@ -3,7 +3,6 @@ import react from '@vitejs/plugin-react'
 import adonisjs from '@adonisjs/vite/client'
 import inertia from '@adonisjs/inertia/vite'
 import tailwindcss from '@tailwindcss/vite'
-import env from '#start/env'
 
 const VITE_ALIAS_HOSTS = (process.env.VITE_ALIAS_HOSTS ?? 'localhost').split(',')
 
