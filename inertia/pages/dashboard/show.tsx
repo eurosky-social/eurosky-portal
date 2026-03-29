@@ -75,8 +75,8 @@ export default function Dashboard({
                 </Button>
               }
             >
-              Eurosky is your European home on the Atmosphere - a global network of social apps and
-              services — here's what's next.
+              Eurosky is your European home on the Atmosphere &ndash; a global network of social
+              apps and services &ndash; here's what's next.
             </ActionItem>
             <ActionItem heading="Your account is ready">
               <span className="white-space-collapse">
