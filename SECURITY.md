@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-This project is currently unsupported with any LTS policy.
+This project is currently does not have an LTS policy, only the latest version of `main` or the latest docker images are supported.
 
 ## Reporting a Vulnerability
 
