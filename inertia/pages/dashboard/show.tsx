@@ -27,7 +27,7 @@ export default function Dashboard({
   }
   return (
     <>
-      <Card className="p-3 md:p-4">
+      <Card className="p-3 md:p-4 mb-8">
         <div className="flex flex-row justify-between">
           <div className="flex flex-row gap-6">
             <div className="size-14 md:size-20 md:self-center">
@@ -66,19 +66,25 @@ export default function Dashboard({
               heading="Welcome to the Atmosphere"
               highlight={true}
               action={
-                <Button onClick={hideIntro} outline className="w-full md:w-auto">
+                <Button
+                  onClick={hideIntro}
+                  outline
+                  className="w-full md:w-auto dark:border-slate-600!"
+                >
                   Dismiss
                 </Button>
               }
             >
-              Eurosky is your European home on the Atmosphere - a global network of social apps and
-              services — here's what's next.
+              Eurosky is your European home on the Atmosphere &ndash; a global network of social
+              apps and services &ndash; here's what's next.
             </ActionItem>
             <ActionItem heading="Your account is ready">
               <span className="white-space-collapse">
                 You've joined the Atmosphere with Eurosky.
                 <span className="block visible md:hidden pb-2"></span> Your handle is{' '}
-                <strong className="text-amber-500 font-bold whitespace-pre">@{user.handle}</strong>
+                <strong className="text-brand-border font-bold whitespace-pre">
+                  @{user.handle}
+                </strong>
                 {'. '}
                 Don't forget to verify your email.
               </span>
@@ -94,14 +100,14 @@ export default function Dashboard({
           </ul>
         </Card>
       )}
-      <h2 className="text-xl text-center mt-8 font-medium text-slate-500 dark:text-slate-300">
+      <h2 className="text-xl text-center mt-8 font-medium text-neutral-500 dark:text-slate-200">
         Featured applications
       </h2>
-      <p className="text-center text-base md:textlg text-slate-400 dark:text-slate-400 mb-6">
+      <p className="text-center text-base md:textlg text-neutral-400 dark:text-slate-400 mb-6">
         Your Eurosky account works with all of these.
       </p>
 
-      <Apps apps={apps} color="slate" />
+      <Apps apps={apps} />
     </>
   )
 }
@@ -133,7 +139,9 @@ function ActionItem({
     <li
       className={clsx(
         className,
-        highlight ? 'bg-amber-100 dark:bg-slate-700/50' : '',
+        // highlight
+        //   ? 'bg-neutral-200/40 rounded-t-lg border border-neutral-300/60 dark:border-slate-800 dark:bg-slate-700/40'
+        //   : '',
         'flex flex-col md:flex-row items-center justify-between gap-x-6 gap-y-4 py-3 px-4'
       )}
     >

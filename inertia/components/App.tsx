@@ -35,7 +35,7 @@ export function App({ app }: { app: Data.App }) {
             <Heading level={4} className="text-base!">
               {app.name}
             </Heading>
-            <Text className="mb-2">{app.summary}</Text>
+            <Text className="mb-2 dark:text-slate-400!">{app.summary}</Text>
           </div>
         </div>
         <div className="self-end w-full mt-3">

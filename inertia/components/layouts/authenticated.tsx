@@ -41,8 +41,8 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
 
   return (
     <div>
-      <div className="hidden lg:block lg:pe-4">
-        <DashboardNavbar />
+      <div className="hidden lg:block">
+        <DashboardNavbar className="lg:pe-4" />
       </div>
       <SidebarLayout
         navbar={<DashboardNavbar />}

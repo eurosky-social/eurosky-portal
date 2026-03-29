@@ -10,7 +10,7 @@ export default function PublicNavbar() {
   const page = usePage()
 
   return (
-    <Navbar className="gap-2! md:gap-4! pe-6">
+    <Navbar className="gap-2! md:gap-4! md:px-6 px-3 bg-neutral-50 dark:bg-slate-800">
       <Link route="home" aria-label="Home">
         <Logo />
       </Link>

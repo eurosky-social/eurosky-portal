@@ -3,6 +3,15 @@
 
 @theme {
   --text-tiny: 0.625rem;
+  /* --color-brand: oklch(0.723 0.178 158.4);
+  --color-brand-border: oklch(0.603 0.178 158.4); */
+  --color-neutral-50: oklch(0.974 0.005 91.6);
+  --color-neutral-100: oklch(0.947 0.007 83.2);
+  --color-neutral-200: oklch(0.897 0.009 75.4);
+  --color-neutral-300: oklch(0.762 0.012 71.8);
+  --color-neutral-500: oklch(0.46 0.006 68.3);
+  --color-brand: oklch(0.793 0.103 243.6);
+  --color-brand-border: oklch(0.703 0.123 243.6);
 }
 
 @utility min-h-dvh-minus-* {
@@ -24,21 +33,23 @@
 
 .dark {
   color: var(--color-slate-100);
-  background: var(--color-slate-900);
+  background: var(--color-slate-800);
 }
 
 #logo {
+  margin-top: 6px;
+  margin-bottom: 6px;
   display: block;
-  height: 70px;
-  width: 170px;
-  background-image: url('../images/logo-light.png');
-  background-size: cover;
+  height: 40px;
+  width: 140px;
+  background-image: url('../images/logo-black.png');
+  background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
 }
 
 .dark #logo {
-  background-image: url('../images/logo-dark.png');
+  background-image: url('../images/logo-white.png');
 }
 
 details:open summary > svg {

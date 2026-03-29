@@ -16,11 +16,11 @@ export default function Home({
   return (
     <>
       <Hero />
-      <Container className="pb-16 py-4" id="apps">
-        <h2 className="text-lg text-gray-500 dark:text-gray-200 font-bold uppercase text-center">
+      <Container className="pt-8 pb-16 py-4" id="apps">
+        <h2 className="text-lg text-neutral-500 dark:text-slate-200 font-bold uppercase text-center">
           An app for everything
         </h2>
-        <p className="text-center text-gray-400 dark:text-gray-400">
+        <p className="text-center text-neutral-400 dark:text-slate-400 mb-12">
           There's always new apps being created!
         </p>
 

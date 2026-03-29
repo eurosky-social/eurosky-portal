@@ -51,7 +51,7 @@ export function PolicyForm({ route, terms, privacyPolicy }: PolicyFormProps<Rout
             <div className="inline-block">
               <CheckboxField>
                 <Checkbox
-                  color="amber"
+                  color="brand"
                   name="terms"
                   value="1"
                   checked={form.data.terms}
@@ -80,7 +80,7 @@ export function PolicyForm({ route, terms, privacyPolicy }: PolicyFormProps<Rout
             {errors.terms && <Text className="text-orange-500!">{errors.terms}</Text>}
             <Button
               type="submit"
-              color={!form.data.terms || processing ? 'zinc' : 'amber'}
+              color={!form.data.terms || processing ? 'zinc' : 'brand'}
               className="mt-2 py-3! disabled:cursor-default"
               disabled={!form.data.terms || processing}
             >

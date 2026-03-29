@@ -1,5 +1,4 @@
 import { Data } from '@generated/data'
-import clsx from 'clsx'
 import { App } from '~/components/App'
 
 export type Apps = {
@@ -8,11 +7,8 @@ export type Apps = {
   forWork: Data.App[]
 }
 
-export function Apps({ apps, color }: { apps: Apps; color?: 'gray' | 'slate' }) {
-  const headingStyle = clsx(
-    'text-lg',
-    color == 'slate' ? 'text-slate-400 dark:text-slate-400' : 'text-gray-400 dark:text-gray-400'
-  )
+export function Apps({ apps }: { apps: Apps }) {
+  const headingStyle = 'text-lg font-semibold text-neutral-400 dark:text-slate-400'
 
   return (
     <>
