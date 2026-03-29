@@ -5,6 +5,9 @@ on:
   - pull_request
   - workflow_call
 
+permissions:
+  contents: read
+
 jobs:
   linting-and-formatting:
     runs-on: ubuntu-latest
