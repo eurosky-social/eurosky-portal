@@ -1,6 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import { OAuthResolverError } from '@atproto/oauth-client-node'
-import { asAtIdentifierString, type AtIdentifierString } from '@atproto/lex'
+import { isUriString, asAtIdentifierString, type AtIdentifierString } from '@atproto/lex'
 import { DateTime } from 'luxon'
 import env from '#start/env'
 import Account from '#models/account'
@@ -9,6 +9,18 @@ import { createFieldError } from '#utils/errors'
 
 const oauthServerUrl = env.get('OAUTH_SERVICE')
 const allowExternalLogins = env.get('ALLOW_EXTERNAL_LOGINS', false)
+const handleDomain = getHandleDomain()
+
+function getHandleDomain(): string | undefined {
+  let value = env.get('ATPROTO_HANDLE_DOMAIN')
+  if (!value) {
+    return undefined
+  }
+  if (value.startsWith('.')) {
+    return value
+  }
+  return '.' + value
+}
 
 function isIdentifier(input: string): input is AtIdentifierString {
   try {
@@ -21,7 +33,15 @@ function isIdentifier(input: string): input is AtIdentifierString {
 
 export default class OAuthController {
   async login({ request, inertia, oauth, session, logger }: HttpContext) {
-    const { input } = await request.validateUsing(loginRequestValidator)
+    const data = await request.validateUsing(loginRequestValidator)
+    let input = data.input
+
+    if (!isIdentifier(input) && !isUriString(input)) {
+      if (!handleDomain) {
+        throw createFieldError('input', input, 'Please enter a handle')
+      }
+      input += handleDomain
+    }
 
     if (allowExternalLogins !== true) {
       // the validation is accepting handles, dids, and services, so we need to
