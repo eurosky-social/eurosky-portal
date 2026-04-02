@@ -2,7 +2,7 @@
   {
     "id": "bsky",
     "name": "Bluesky",
-    "summary": "The flagship social feed experience",
+    "summary": "Flagship social feed experience",
     "url": "https://bsky.app",
     "platforms": ["ios", "android", "web"],
     "category": "getting-started",
@@ -157,7 +157,7 @@
   {
     "id": "semble",
     "name": "Semble",
-    "summary": "The network for researchers",
+    "summary": "Social knowledge network for researchers",
     "url": "https://semble.so/",
     "platforms": ["web"],
     "category": "for-work",
