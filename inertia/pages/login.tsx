@@ -14,17 +14,19 @@ export default function Login() {
         <h1 className="mx-auto max-w-4xl mb-2 text-center font-display text-3xl leading-[1.2] font-extrabold tracking-tight text-slate-900 dark:text-slate-200 sm:text-5xl">
           Sign Into Your <div className="text-brand">Eurosky Account.</div>
         </h1>
-        <Text className="text-center">Enter your handle below to login to your account</Text>
+        <Text className="text-center">
+          Enter your handle, Eurosky username, or DID below to login to your account
+        </Text>
         <Form className="mt-6" route="oauth.login">
           {({ errors, valid, isDirty }) => (
             <FieldGroup>
               <Field>
-                <Label htmlFor="input">Your Internet handle</Label>
+                <Label htmlFor="input">Your identity</Label>
                 <Input
                   id="input"
                   name="input"
                   type="input"
-                  placeholder="sebastian.eurosky.social"
+                  placeholder="sebastian.eurosky.social, sebastian, or did:plc:1234…"
                   defaultValue={errors.old_input ?? ''}
                   required
                   autoCapitalize="false"
