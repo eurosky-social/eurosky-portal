@@ -89,7 +89,7 @@
     "@inertiajs/core": "^2.3.18",
     "@inertiajs/react": "^2.3.17",
     "@tailwindcss/vite": "^4.2.1",
-    "@thisismissem/adonisjs-atproto-oauth": "^3.0.2",
+    "@thisismissem/adonisjs-atproto-oauth": "^3.0.3",
     "@tuyau/core": "^1.0.0",
     "@vinejs/vine": "^4.3.0",
     "better-sqlite3": "^12.8.0",
