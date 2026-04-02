@@ -33,6 +33,7 @@ export default await Env.create(new URL('../', import.meta.url), {
   DATABASE_AUTOMIGRATE: Env.schema.boolean.optional(),
 
   // AT Protocol OAuth:
+  ATPROTO_HANDLE_DOMAIN: Env.schema.string.optional({ format: 'url', tld: true, protocol: false }),
   ALLOW_EXTERNAL_LOGINS: Env.schema.boolean.optional(),
   OAUTH_SERVICE: Env.schema.string({ format: 'url', tld: true, protocol: true }),
   ATPROTO_OAUTH_CLIENT_ID: Env.schema.string.optional({ format: 'url', tld: true, protocol: true }),
