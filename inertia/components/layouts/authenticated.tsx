@@ -93,7 +93,7 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
                   <UserAvatar user={user} />
                   <SidebarLabel>@{user.handle}</SidebarLabel>
                 </SidebarItem>
-                <SidebarItem>
+                <SidebarItem as={'div'}>
                   <Form route="oauth.logout" className="w-full flex justify-stretch">
                     <Button type="submit" className="w-full text-left dark:bg-slate-800">
                       Logout
