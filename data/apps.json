@@ -161,7 +161,6 @@
     "url": "https://semble.so/",
     "platforms": ["web"],
     "category": "for-work",
-    "madeInEU": true,
     "icon": {
       "path": "./icons/semble.png",
       "fallback": {
