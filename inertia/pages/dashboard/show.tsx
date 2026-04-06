@@ -1,5 +1,4 @@
-import clsx from 'clsx'
-import { ReactNode, useCallback } from 'react'
+import { useCallback } from 'react'
 import { UserAvatar } from '~/components/UserAvatar'
 import { Button } from '~/lib/button'
 import Card from '~/lib/card'
@@ -103,7 +102,11 @@ export default function Dashboard({
             Your Eurosky account works with dozens of apps. Browse the featured apps below and click
             one to get started.
           </p>
-          <Button href="#" className="mt-3 w-full sm:w-auto">
+          <Button
+            route="dashboard.explore"
+            color="zinc"
+            className="mt-3 w-full sm:w-auto dark:bg-slate-700!"
+          >
             Learn more
           </Button>
         </Card>

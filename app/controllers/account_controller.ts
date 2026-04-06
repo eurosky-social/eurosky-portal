@@ -12,7 +12,7 @@ export default class RegistrationController {
     const documents = query.all()
     const rendered = await Promise.all(
       documents.map((document) => {
-        return view.render('legal', {
+        return view.render('markdown', {
           document: app.makePath('data', document.filename),
         })
       })

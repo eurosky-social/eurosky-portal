@@ -23,6 +23,7 @@ router
 router
   .group(() => {
     router.get('/dashboard', [controllers.Dashboard, 'show'])
+    router.get('/dashboard/explore', [controllers.Dashboard, 'explore'])
     router.get('/onboarding', [controllers.Account, 'onboarding'])
     router.post('/onboarding', [controllers.Account, 'storeAcceptance'])
     router.post('/account/dismiss-welcome', [controllers.Account, 'dismissWelcome'])

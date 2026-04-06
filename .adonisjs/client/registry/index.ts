@@ -54,6 +54,12 @@ const routes = {
     tokens: [{"old":"/dashboard","type":0,"val":"dashboard","end":""}],
     types: placeholder as Registry['dashboard.show']['types'],
   },
+  'dashboard.explore': {
+    methods: ["GET","HEAD"],
+    pattern: '/dashboard/explore',
+    tokens: [{"old":"/dashboard/explore","type":0,"val":"dashboard","end":""},{"old":"/dashboard/explore","type":0,"val":"explore","end":""}],
+    types: placeholder as Registry['dashboard.explore']['types'],
+  },
   'account.onboarding': {
     methods: ["GET","HEAD"],
     pattern: '/onboarding',
