@@ -25,8 +25,16 @@
 /* We need to inline bg-$color-400 for the app icon fallbacks */
 @source inline("bg-{red,orange,amber,yellow,lime,green,emerald,teal,cyan,sky,blue,indigo,violet,purple,fuchsia,pink,rose,slate,gray,zinc,neutral,stone,taupe,mauve,mist,olive}-400");
 
+#nprogress .bar {
+  background: var(--color-black) !important;
+
+  @variant dark {
+    background: var(--color-white) !important;
+  }
+}
+
 :root {
-  scroll-padding-top: 88px;
+  scroll-padding-top: 100px;
 }
 
 *:focus-visible {

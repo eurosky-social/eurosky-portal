@@ -9,12 +9,7 @@ import { Link } from './link'
 import type { LinkProps } from '@adonisjs/inertia/react'
 
 export function Navbar({ className, ...props }: React.ComponentPropsWithoutRef<'nav'>) {
-  return (
-    <nav
-      {...props}
-      className={clsx(className, 'flex flex-1 items-center gap-4 md:py-2.5 sticky top-0 z-50')}
-    />
-  )
+  return <nav {...props} className={clsx(className, 'flex flex-1 items-center gap-4 md:py-2.5')} />
 }
 
 export function NavbarDivider({ className, ...props }: React.ComponentPropsWithoutRef<'div'>) {

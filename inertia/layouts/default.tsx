@@ -5,6 +5,7 @@ import { ReactElement, useEffect } from 'react'
 import PublicNavbar from '~/components/PublicNavbar'
 import DashboardNavbar from '~/components/DashboardNavbar'
 import { AuthenticatedLayout } from '~/components/layouts/authenticated'
+import BetaWarning from '~/components/BetaWarning'
 
 export default function Layout({ children }: { children: ReactElement<Data.SharedProps> }) {
   const page = usePage()
@@ -19,8 +20,10 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
   if (page.url.startsWith('/onboarding') || page.url.startsWith('/legal/')) {
     return (
       <div>
+        <BetaWarning />
         {children.props.isAuthenticated ? <DashboardNavbar /> : <PublicNavbar />}
-        {children}
+        <main className="mb-2">{children}</main>
+        <Toaster position="top-center" richColors />
       </div>
     )
   }
@@ -31,7 +34,8 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
 
   return (
     <div>
-      {children.props.isAuthenticated ? <DashboardNavbar /> : <PublicNavbar />}
+      <BetaWarning />
+      <PublicNavbar />
       <main className="mb-2">{children}</main>
       <Toaster position="top-center" richColors />
     </div>
