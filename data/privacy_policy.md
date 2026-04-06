@@ -1,4 +1,4 @@
-# **Eurosky Personal Data Server (PDS) – Privacy Notice**
+# Eurosky Personal Data Server (PDS) – Privacy Notice
 
 Last updated: 4 February 2026
 

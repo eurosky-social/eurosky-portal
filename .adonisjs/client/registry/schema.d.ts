@@ -103,6 +103,18 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/dashboard_controller').default['show']>>>
     }
   }
+  'dashboard.explore': {
+    methods: ["GET","HEAD"]
+    pattern: '/dashboard/explore'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/dashboard_controller').default['explore']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/dashboard_controller').default['explore']>>>
+    }
+  }
   'account.onboarding': {
     methods: ["GET","HEAD"]
     pattern: '/onboarding'
@@ -125,6 +137,18 @@ export interface Registry {
       query: ExtractQuery<InferInput<(typeof import('#validators/legal').termsRequestValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/account_controller').default['storeAcceptance']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/account_controller').default['storeAcceptance']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'account.dismiss_welcome': {
+    methods: ["POST"]
+    pattern: '/account/dismiss-welcome'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/account_controller').default['dismissWelcome']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/account_controller').default['dismissWelcome']>>>
     }
   }
   'legal.show': {

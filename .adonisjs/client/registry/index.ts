@@ -54,6 +54,12 @@ const routes = {
     tokens: [{"old":"/dashboard","type":0,"val":"dashboard","end":""}],
     types: placeholder as Registry['dashboard.show']['types'],
   },
+  'dashboard.explore': {
+    methods: ["GET","HEAD"],
+    pattern: '/dashboard/explore',
+    tokens: [{"old":"/dashboard/explore","type":0,"val":"dashboard","end":""},{"old":"/dashboard/explore","type":0,"val":"explore","end":""}],
+    types: placeholder as Registry['dashboard.explore']['types'],
+  },
   'account.onboarding': {
     methods: ["GET","HEAD"],
     pattern: '/onboarding',
@@ -65,6 +71,12 @@ const routes = {
     pattern: '/onboarding',
     tokens: [{"old":"/onboarding","type":0,"val":"onboarding","end":""}],
     types: placeholder as Registry['account.store_acceptance']['types'],
+  },
+  'account.dismiss_welcome': {
+    methods: ["POST"],
+    pattern: '/account/dismiss-welcome',
+    tokens: [{"old":"/account/dismiss-welcome","type":0,"val":"account","end":""},{"old":"/account/dismiss-welcome","type":0,"val":"dismiss-welcome","end":""}],
+    types: placeholder as Registry['account.dismiss_welcome']['types'],
   },
   'legal.show': {
     methods: ["GET","HEAD"],

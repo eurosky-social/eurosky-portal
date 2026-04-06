@@ -8,6 +8,7 @@ import { Link } from '~/lib/link'
 import { Text } from '~/lib/text'
 import { useForm } from '@inertiajs/react'
 import type { routes } from '@generated/registry'
+import MarkdownDocument from './MarkdownDocument'
 
 type Routes = keyof typeof routes
 type PolicyFormProps<Route extends Routes> = {
@@ -111,10 +112,7 @@ function PolicyDetails({ header, document }: { header: ReactNode; document: stri
         <span className="flex flex-row gap-1">{header}</span>
         <ChevronDownIcon className="details-icon w-6 h-6 flex" />
       </summary>
-      <div
-        className="legal-document p-4 dark:text-slate-200 text-gray-800"
-        dangerouslySetInnerHTML={{ __html: document }}
-      ></div>
+      <MarkdownDocument className="p-4" document={document} />
     </details>
   )
 }

@@ -3,11 +3,16 @@ import logger from '@adonisjs/core/services/logger'
 import { type l, type AtIdentifierString } from '@atproto/lex'
 
 import * as lexicon from '#lexicons'
+import Account from '#models/account'
 
 export type Profile = lexicon.app.bsky.actor.defs.ProfileViewDetailed
 
 AtprotoUser.getter('authorizationServer', function (this: AtprotoUser) {
   return this.session.server.issuer
+})
+
+AtprotoUser.macro('getAccount', async function getAccount(this: AtprotoUser) {
+  return Account.findOrFail(this.did)
 })
 
 AtprotoUser.macro(
@@ -67,6 +72,7 @@ async function slingshotMiniProfile(
 
 declare module '@thisismissem/adonisjs-atproto-oauth' {
   interface AtprotoUser {
+    getAccount(): Promise<Account>
     fetchProfile(actor: AtIdentifierString): Promise<undefined | Profile>
     get authorizationServer(): string
   }

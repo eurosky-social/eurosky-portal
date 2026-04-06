@@ -8,7 +8,7 @@ import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 
 export class AccountSchema extends BaseModel {
-  static $columns = ['createdAt', 'did', 'termsAcceptedAt', 'updatedAt'] as const
+  static $columns = ['createdAt', 'did', 'termsAcceptedAt', 'updatedAt', 'welcomeDismissed'] as const
   $columns = AccountSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime | null
@@ -18,13 +18,15 @@ export class AccountSchema extends BaseModel {
   declare termsAcceptedAt: DateTime | null
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
+  @column({ consume: (value) => !!value })
+  declare welcomeDismissed: boolean | null
 }
 
 export class OauthSessionSchema extends BaseModel {
   static $columns = ['sub', 'updatedAt', 'value'] as const
   $columns = OauthSessionSchema.$columns
   @column({ isPrimary: true })
-  declare sub: string | null
+  declare sub: string
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
   @column()
@@ -35,7 +37,7 @@ export class OauthStateSchema extends BaseModel {
   static $columns = ['key', 'updatedAt', 'value'] as const
   $columns = OauthStateSchema.$columns
   @column({ isPrimary: true })
-  declare key: string | null
+  declare key: string
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
   @column()

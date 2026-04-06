@@ -13,12 +13,14 @@ export interface ApiDefinition {
     create: typeof routes['account.create']
     onboarding: typeof routes['account.onboarding']
     storeAcceptance: typeof routes['account.store_acceptance']
+    dismissWelcome: typeof routes['account.dismiss_welcome']
   }
   auth: {
     login: typeof routes['auth.login']
   }
   dashboard: {
     show: typeof routes['dashboard.show']
+    explore: typeof routes['dashboard.explore']
   }
   legal: {
     show: typeof routes['legal.show']

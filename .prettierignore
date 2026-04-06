@@ -5,3 +5,4 @@ pnpm-lock.yaml
 .adonisjs/**
 app/lexicons/**
 lexicons/**
+database/schema.ts

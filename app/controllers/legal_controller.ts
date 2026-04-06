@@ -13,7 +13,7 @@ export default class LegalController {
       return response.notFound()
     }
 
-    const renderedHtml = await view.render('legal', {
+    const renderedHtml = await view.render('markdown', {
       document: app.makePath('data', document?.filename),
     })
 
