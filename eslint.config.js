@@ -1,4 +1,4 @@
 import { configApp } from '@adonisjs/eslint-config'
 export default configApp({
-  ignores: ['app/lexicons/**/*'],
+  ignores: ['app/lexicons/**/*', 'database/schema.ts'],
 })
