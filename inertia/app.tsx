@@ -8,7 +8,7 @@ import { createInertiaApp } from '@inertiajs/react'
 import { TuyauProvider } from '@adonisjs/inertia/react'
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
 
-import.meta.glob(['../data/icons/**'])
+import.meta.glob(['../data/icons/**', '../resources/images/og-image.png'])
 
 const appName = import.meta.env.VITE_APP_NAME || 'Eurosky'
 
@@ -29,6 +29,7 @@ createInertiaApp({
     )
   },
   progress: {
-    color: '#9ac2ff',
+    delay: 200,
+    color: '#1a1a1a',
   },
 })

@@ -25,6 +25,30 @@
 /* We need to inline bg-$color-400 for the app icon fallbacks */
 @source inline("bg-{red,orange,amber,yellow,lime,green,emerald,teal,cyan,sky,blue,indigo,violet,purple,fuchsia,pink,rose,slate,gray,zinc,neutral,stone,taupe,mauve,mist,olive}-400");
 
+#nprogress .bar {
+  background: var(--color-black) !important;
+
+  @variant dark {
+    background: var(--color-white) !important;
+  }
+}
+
+#nprogress .bar .peg {
+  box-shadow:
+    0 0 10px var(--color-black),
+    0 0 5px var(--color-black) !important;
+
+  @variant dark {
+    box-shadow:
+      0 0 10px var(--color-white),
+      0 0 5px var(--color-white) !important;
+  }
+}
+
+:root {
+  scroll-padding-top: 100px;
+}
+
 *:focus-visible {
   outline: 2px solid var(--color-blue-600);
 }

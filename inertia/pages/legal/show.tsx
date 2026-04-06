@@ -5,7 +5,7 @@ import { InertiaProps } from '~/types'
 
 export default function Legal(props: InertiaProps<{ document: string }>) {
   return (
-    <div className="bg-neutral-50 py-10">
+    <div className="bg-neutral-50 dark:bg-slate-900 py-10 md:pt-24">
       <Container>
         <Card className="w-full md:w-3/4 m-auto p-4">
           <MarkdownDocument document={props.document} />

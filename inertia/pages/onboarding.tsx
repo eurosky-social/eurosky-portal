@@ -10,17 +10,19 @@ export default function Onboarding(
   }>
 ) {
   return (
-    <Container>
-      <Card className="mt-10 w-full md:w-1/2 m-auto p-4 mb-6">
-        <h1 className="mx-auto max-w-4xl mb-2 text-center font-display text-3xl leading-[1.2] font-extrabold tracking-tight text-slate-900 dark:text-slate-200 sm:text-5xl">
-          Welcome to <div className="text-brand">Eurosky.</div>
-        </h1>
-        <PolicyForm
-          route="account.store_acceptance"
-          terms={props.legalDocuments.terms}
-          privacyPolicy={props.legalDocuments.privacy}
-        />
-      </Card>
-    </Container>
+    <div className="bg-neutral-50 dark:bg-slate-900 py-10 md:pt-24">
+      <Container>
+        <Card className="w-full md:w-1/2 m-auto p-4 mb-6">
+          <h1 className="mx-auto max-w-4xl mb-2 text-center font-display text-3xl leading-[1.2] font-extrabold tracking-tight text-slate-900 dark:text-slate-200 sm:text-5xl">
+            Welcome to <div className="text-brand">Eurosky.</div>
+          </h1>
+          <PolicyForm
+            route="account.store_acceptance"
+            terms={props.legalDocuments.terms}
+            privacyPolicy={props.legalDocuments.privacy}
+          />
+        </Card>
+      </Container>
+    </div>
   )
 }

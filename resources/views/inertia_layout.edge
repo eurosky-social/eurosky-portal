@@ -1,10 +1,13 @@
+@let(title = "Eurosky")
+@let(description = "Your Portal to the Atmosphere")
+
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title inertia>
-      Eurosky
+      {{ title }}
     </title>
     <link rel="preconnect" href="https://fonts.bunny.net" />
     <link
@@ -12,10 +15,54 @@
       rel="stylesheet"
     />
 
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/android-icon-192x192.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-icon-180x180.png" />
+    <link rel="manifest" href="/icons/icons_manifest.json" />
+    <meta name="msapplication-TileColor" content="#ffffff" />
+    <meta name="msapplication-TileImage" content="/icons/ms-icon-144x144.png" />
+    <meta name="theme-color" content="#ffffff" />
+
+    <meta name="description" content="{{ description }}" inertia />
+
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="{{ opengraph_url() }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Eurosky" />
+    <meta property="og:description" content="{{ description }}" />
+    <meta property="og:image" content="{{ opengraph_url(asset('resources/images/og-image.png')) }}" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:width" content="1200" />
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="twitter:domain" content="{{ service_domain }}" />
+    <meta property="twitter:url" content="{{ opengraph_url() }}" />
+    <meta name="twitter:title" content="Eurosky" />
+    <meta name="twitter:description" content="{{ description }}" />
+    <meta name="twitter:image" content="{{ opengraph_url(asset('resources/images/og-image.png')) }}" />
+
     <script type="text/javascript">
-      if (localStorage.theme === "dark" || !("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches) {
-        document.documentElement.classList.add("dark");
-      }
+      (function() {
+        try {
+          var root = document.documentElement;
+          var stored = window.localStorage.getItem("theme");
+          if (stored === "dark") {
+            root.classList.add("dark");
+          } else if (stored === "light") {
+            root.classList.remove("dark");
+          } else {
+            var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+            if (prefersDark) {
+              root.classList.add("dark");
+            } else {
+              root.classList.remove("dark");
+            }
+          }
+        } catch (e) {}
+      })();
     </script>
 
     @viteReactRefresh()
