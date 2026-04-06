@@ -85,7 +85,7 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
                   <QuestionMarkCircleIcon />
                   <SidebarLabel>FAQ</SidebarLabel>
                 </SidebarItem>
-                <SidebarItem href="https://eurosky.tech/contact-us" target="_blank" as={'a'}>
+                <SidebarItem href="https://eurosky.tech/contact/" target="_blank" as={'a'}>
                   <ChatBubbleOvalLeftEllipsisIcon />
                   <SidebarLabel>Contact Us</SidebarLabel>
                 </SidebarItem>
