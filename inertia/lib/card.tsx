@@ -1,15 +1,23 @@
 import clsx from 'clsx'
+import { JSXElementConstructor, createElement } from 'react'
+export type ReactTag = keyof React.JSX.IntrinsicElements | JSXElementConstructor<any>
 
-export default function Card({ className, ...props }: React.ComponentPropsWithoutRef<'div'>) {
-  return (
-    <div
-      className={clsx(
+export default function Card<TTag extends ReactTag = 'div'>({
+  className,
+  as: asElement,
+  children,
+  ...props
+}: React.ComponentPropsWithoutRef<TTag> & { as?: TTag }) {
+  return createElement(
+    asElement ?? 'div',
+    {
+      className: clsx(
         className,
         'overflow-hidden rounded-lg bg-white shadow-sm dark:bg-slate-800/50 dark:shadow-none dark:outline dark:-outline-offset-1 dark:outline-white/5'
-      )}
-    >
-      {props.children}
-    </div>
+      ),
+      ...props,
+    },
+    children
   )
 }
 
