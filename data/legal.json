@@ -1,11 +1,13 @@
 [
   {
     "name": "terms",
+    "title": "Terms of Service",
     "filename": "terms_of_service.md",
     "updatedAt": "2026-02-04"
   },
   {
     "name": "privacy",
+    "title": "Privacy Policy",
     "filename": "privacy_policy.md",
     "updatedAt": "2026-02-04"
   }

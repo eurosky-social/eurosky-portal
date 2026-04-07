@@ -7,10 +7,12 @@ import { Text } from '~/lib/text'
 import { Link } from '~/lib/link'
 import Card from '~/lib/card'
 import { InertiaProps } from '~/types'
+import { Head } from '@inertiajs/react'
 
 export default function Login({ migrationUrl }: InertiaProps<{ migrationUrl?: string }>) {
   return (
     <div className="bg-neutral-50 dark:bg-slate-900 min-h-dvh-minus-35">
+      <Head title="Sign in" />
       <Container className="pt-10 md:pt-24">
         <Card className="w-full md:w-3/4 lg:w-1/2 m-auto p-4 mb-8">
           <h1 className="mx-auto max-w-4xl mb-2 text-center font-display text-3xl leading-[1.2] font-extrabold tracking-tight text-slate-900 dark:text-slate-200 sm:text-5xl">
@@ -80,9 +82,3 @@ export default function Login({ migrationUrl }: InertiaProps<{ migrationUrl?: st
     </div>
   )
 }
-
-;<Form route="oauth.login">
-  <Button outline type="submit">
-    Sign In
-  </Button>
-</Form>
