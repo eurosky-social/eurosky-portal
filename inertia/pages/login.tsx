@@ -61,13 +61,16 @@ export default function Login({ migrationUrl }: InertiaProps<{ migrationUrl?: st
           <Card
             as="a"
             href={migrationUrl}
-            className="w-full md:w-3/4 lg:w-1/2 m-auto p-4 bg-black! text-white! flex flex-row gap-4"
+            className="w-full md:w-3/4 lg:w-1/2 m-auto p-4 bg-black! text-white! dark:bg-brand! dark:text-black! flex flex-row gap-4"
           >
             <h1 className="mb-2 text-2xl/9 font-medium">
               If you're on Bluesky, you can move your account today.
             </h1>
             <div className="flex items-center">
-              <Button color="brand" className="text-black! text-nowrap">
+              <Button
+                color="brand"
+                className="text-black! dark:bg-black dark:text-white! text-nowrap"
+              >
                 Migrate now
               </Button>
             </div>
