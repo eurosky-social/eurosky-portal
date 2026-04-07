@@ -6,12 +6,13 @@ import { Input } from '~/lib/input'
 import { Text } from '~/lib/text'
 import { Link } from '~/lib/link'
 import Card from '~/lib/card'
+import { InertiaProps } from '~/types'
 
-export default function Login() {
+export default function Login({ migrationUrl }: InertiaProps<{ migrationUrl?: string }>) {
   return (
-    <div className="bg-neutral-50 dark:bg-slate-900 py-10 md:pt-24">
-      <Container>
-        <Card className="w-full md:w-3/4 lg:w-1/2 m-auto p-4">
+    <div className="bg-neutral-50 dark:bg-slate-900 min-h-dvh-minus-35">
+      <Container className="pt-10 md:pt-24">
+        <Card className="w-full md:w-3/4 lg:w-1/2 m-auto p-4 mb-8">
           <h1 className="mx-auto max-w-4xl mb-2 text-center font-display text-3xl leading-[1.2] font-extrabold tracking-tight text-slate-900 dark:text-slate-200 sm:text-5xl">
             Sign Into Your <div className="text-brand">Eurosky Account.</div>
           </h1>
@@ -56,6 +57,25 @@ export default function Login() {
             )}
           </Form>
         </Card>
+        {migrationUrl && (
+          <Card
+            as="a"
+            href={migrationUrl}
+            className="w-full md:w-3/4 lg:w-1/2 m-auto p-4 bg-black! text-white! dark:bg-brand! dark:text-black! flex flex-row gap-4"
+          >
+            <h1 className="mb-2 text-2xl/9 font-medium">
+              If you're on Bluesky, you can move your account today.
+            </h1>
+            <div className="flex items-center">
+              <Button
+                color="brand"
+                className="text-black! dark:bg-black dark:text-white! text-nowrap"
+              >
+                Migrate now
+              </Button>
+            </div>
+          </Card>
+        )}
       </Container>
     </div>
   )
