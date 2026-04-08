@@ -14,15 +14,16 @@ import {
 } from '~/lib/sidebar'
 import { SidebarLayout } from '~/lib/sidebar-layout'
 import {
-  HomeIcon,
-  QuestionMarkCircleIcon,
-  ChatBubbleOvalLeftEllipsisIcon,
-  DocumentTextIcon,
-  Cog6ToothIcon,
   ArrowTopRightOnSquareIcon,
+  CircleStackIcon,
+  ChatBubbleOvalLeftEllipsisIcon,
+  Cog6ToothIcon,
+  DocumentTextIcon,
+  FingerPrintIcon,
+  HomeIcon,
   LifebuoyIcon,
   LockClosedIcon,
-  FingerPrintIcon,
+  QuestionMarkCircleIcon,
 } from '@heroicons/react/24/solid'
 import { UserAvatar } from '../UserAvatar'
 import { useAuth } from '~/utils/use_auth'
@@ -62,6 +63,10 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
                   <SidebarItem route="dashboard.show" current={url == '/dashboard'}>
                     <HomeIcon />
                     <SidebarLabel>Dashboard</SidebarLabel>
+                  </SidebarItem>
+                  <SidebarItem route="storage.show" current={url == '/storage'}>
+                    <CircleStackIcon />
+                    <SidebarLabel>Storage</SidebarLabel>
                   </SidebarItem>
                   <SidebarItem href={manageUrl} target="_blank" as={'a'}>
                     <Cog6ToothIcon />

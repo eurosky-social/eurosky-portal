@@ -12,4 +12,5 @@ export const controllers = {
   Home: () => import('#controllers/home_controller'),
   Legal: () => import('#controllers/legal_controller'),
   Oauth: () => import('#controllers/oauth_controller'),
+  Storage: () => import('#controllers/storage_controller'),
 }

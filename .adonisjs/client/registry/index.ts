@@ -72,6 +72,12 @@ const routes = {
     tokens: [{"old":"/onboarding","type":0,"val":"onboarding","end":""}],
     types: placeholder as Registry['account.store_acceptance']['types'],
   },
+  'storage.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/storage',
+    tokens: [{"old":"/storage","type":0,"val":"storage","end":""}],
+    types: placeholder as Registry['storage.show']['types'],
+  },
   'account.dismiss_welcome': {
     methods: ["POST"],
     pattern: '/account/dismiss-welcome',

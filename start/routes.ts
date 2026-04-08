@@ -27,6 +27,7 @@ router
     router.get('/explore/learn-more', [controllers.Explore, 'learnMore'])
     router.get('/onboarding', [controllers.Account, 'onboarding'])
     router.post('/onboarding', [controllers.Account, 'storeAcceptance'])
+    router.get('/storage', [controllers.Storage, 'show'])
     router.post('/account/dismiss-welcome', [controllers.Account, 'dismissWelcome'])
   })
   .use([middleware.auth(), middleware.legalRoadblock()])
