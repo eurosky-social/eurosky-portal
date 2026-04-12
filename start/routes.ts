@@ -23,7 +23,8 @@ router
 router
   .group(() => {
     router.get('/dashboard', [controllers.Dashboard, 'show'])
-    router.get('/dashboard/explore', [controllers.Dashboard, 'explore'])
+    router.on('/dashboard/explore').redirectToPath('/explore/learn-more')
+    router.get('/explore/learn-more', [controllers.Explore, 'learnMore'])
     router.get('/onboarding', [controllers.Account, 'onboarding'])
     router.post('/onboarding', [controllers.Account, 'storeAcceptance'])
     router.post('/account/dismiss-welcome', [controllers.Account, 'dismissWelcome'])

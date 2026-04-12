@@ -103,7 +103,7 @@ export default function Dashboard({
             one to get started.
           </p>
           <Button
-            route="dashboard.explore"
+            route="explore.learn_more"
             color="zinc"
             className="mt-3 w-full sm:w-auto dark:bg-slate-700!"
           >

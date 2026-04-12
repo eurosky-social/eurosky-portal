@@ -20,7 +20,9 @@ export interface ApiDefinition {
   }
   dashboard: {
     show: typeof routes['dashboard.show']
-    explore: typeof routes['dashboard.explore']
+  }
+  explore: {
+    learnMore: typeof routes['explore.learn_more']
   }
   legal: {
     show: typeof routes['legal.show']

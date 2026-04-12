@@ -1,7 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Apps from '#collections/apps'
 import AppsTransformer from '#transformers/apps_transformer'
-import app from '@adonisjs/core/services/app'
 
 export default class DashboardController {
   async show({ auth, inertia }: HttpContext) {
@@ -16,13 +15,5 @@ export default class DashboardController {
         forWork: query.findByCategory('for-work'),
       }),
     })
-  }
-
-  async explore({ inertia, view }: HttpContext) {
-    const renderedHtml = await view.render('markdown', {
-      document: app.makePath('data', 'explore.md'),
-    })
-
-    return inertia.render('dashboard/explore', { document: renderedHtml })
   }
 }

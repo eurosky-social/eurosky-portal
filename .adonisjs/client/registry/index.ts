@@ -54,11 +54,11 @@ const routes = {
     tokens: [{"old":"/dashboard","type":0,"val":"dashboard","end":""}],
     types: placeholder as Registry['dashboard.show']['types'],
   },
-  'dashboard.explore': {
+  'explore.learn_more': {
     methods: ["GET","HEAD"],
-    pattern: '/dashboard/explore',
-    tokens: [{"old":"/dashboard/explore","type":0,"val":"dashboard","end":""},{"old":"/dashboard/explore","type":0,"val":"explore","end":""}],
-    types: placeholder as Registry['dashboard.explore']['types'],
+    pattern: '/explore/learn-more',
+    tokens: [{"old":"/explore/learn-more","type":0,"val":"explore","end":""},{"old":"/explore/learn-more","type":0,"val":"learn-more","end":""}],
+    types: placeholder as Registry['explore.learn_more']['types'],
   },
   'account.onboarding': {
     methods: ["GET","HEAD"],

@@ -103,16 +103,16 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/dashboard_controller').default['show']>>>
     }
   }
-  'dashboard.explore': {
+  'explore.learn_more': {
     methods: ["GET","HEAD"]
-    pattern: '/dashboard/explore'
+    pattern: '/explore/learn-more'
     types: {
       body: {}
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/dashboard_controller').default['explore']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/dashboard_controller').default['explore']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/explore_controller').default['learnMore']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/explore_controller').default['learnMore']>>>
     }
   }
   'account.onboarding': {
