@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  axios: ^1.15.0
+
 importers:
 
   .:
@@ -22,7 +25,7 @@ importers:
         version: 3.0.0(@adonisjs/assembler@8.4.0(typescript@5.9.3))(@adonisjs/core@7.3.1(@adonisjs/assembler@8.4.0(typescript@5.9.3))(@vinejs/vine@4.3.1)(edge.js@6.5.0)(pino-pretty@13.1.3)(youch@4.1.1))
       '@adonisjs/inertia':
         specifier: ^4.2.0
-        version: 4.2.0(e9b438575143de2bcd37328686d59183)
+        version: 4.2.0(eef34c9c36ebcfbcb3796eb01bb7f79f)
       '@adonisjs/lucid':
         specifier: ^22.4.2
         version: 22.4.2(@adonisjs/assembler@8.4.0(typescript@5.9.3))(@adonisjs/core@7.3.1(@adonisjs/assembler@8.4.0(typescript@5.9.3))(@vinejs/vine@4.3.1)(edge.js@6.5.0)(pino-pretty@13.1.3)(youch@4.1.1))(@vinejs/vine@4.3.1)(better-sqlite3@12.9.0)(luxon@3.7.2)
@@ -57,11 +60,11 @@ importers:
         specifier: ^2.2.0
         version: 2.2.0(react@19.2.5)
       '@inertiajs/core':
-        specifier: ^2.3.18
-        version: 2.3.18
+        specifier: ^2.3.21
+        version: 2.3.21
       '@inertiajs/react':
-        specifier: ^2.3.17
-        version: 2.3.18(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+        specifier: ^2.3.21
+        version: 2.3.21(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       '@tailwindcss/vite':
         specifier: ^4.2.2
         version: 4.2.2(vite@7.3.2(@types/node@24.11.2)(jiti@2.6.1)(lightningcss@1.32.0)(yaml@2.8.3))
@@ -1058,11 +1061,11 @@ packages:
     resolution: {integrity: sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ==}
     engines: {node: '>=18.18'}
 
-  '@inertiajs/core@2.3.18':
-    resolution: {integrity: sha512-StOszdE28nx9uxY4I28d7oLRGLdu/F9pRgWody2k29Qe9WqAoPHVQ5VJabTi2RTYHJXZrZZ+Wgtw3qVRZMrwOA==}
+  '@inertiajs/core@2.3.21':
+    resolution: {integrity: sha512-grHSCUiWDBWqpRxaobyxUJu0FV6HLkkuJwvoNLVkHwkexLvoaLhb9BmtoQydlIYL5pk2O3jcKaGtWJ83JwTB4A==}
 
-  '@inertiajs/react@2.3.18':
-    resolution: {integrity: sha512-kcoPveEDN7vyjqhyFEa9dlBjgvAsrz9k9YlrSK9PFJxRBGpCAnovmU37/a9AG2ORUP1zLw2P8y+5QfMgRdEPfw==}
+  '@inertiajs/react@2.3.21':
+    resolution: {integrity: sha512-puyk610JRni/ex8T3Di3dyz2c1eYU/u5bmef2BdKhMnn2nrC2hITXtpcFf0emk1yR8Q3+rdO6aaq68Lwk+P3Rw==}
     peerDependencies:
       react: ^16.9.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
       react-dom: ^16.9.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
@@ -1982,8 +1985,8 @@ packages:
     resolution: {integrity: sha512-kNOjDqAh7px0XWNI+4QbzoiR/nTkHAWNud2uvnJquD1/x5a7EQZMJT0AczqK0Qn67oY/TTQ1LbUKajZpp3I9tQ==}
     engines: {node: '>=8.0.0'}
 
-  axios@1.13.6:
-    resolution: {integrity: sha512-ChTCHMouEe2kn713WHbQGcuYrr6fXTBiu460OTwWrWob16g1bXn4vtz07Ope7ewMozJAnEquLk5lWQWtBig9DQ==}
+  axios@1.15.0:
+    resolution: {integrity: sha512-wWyJDlAatxk30ZJer+GeCWS209sA42X+N5jU2jy6oHTp7ufw8uzUTVFBX9+wTfAlhiJXGS0Bq7X6efruWjuK9Q==}
 
   bail@2.0.2:
     resolution: {integrity: sha512-0xO6mYd7JB2YesxDKplafRpsiOzPt9V02ddPCLbY1xYGPOX24NTyN50qnUxgCPcSoYMhKpAuBTjQoRZCAkUDRw==}
@@ -3146,6 +3149,9 @@ packages:
   lodash-es@4.17.23:
     resolution: {integrity: sha512-kVI48u3PZr38HdYz98UmfPnXl2DXrpdctLrFLCd3kOx1xUkOmpFPx7gCWWM5MPkL/fD8zb+Ph0QzjGFs4+hHWg==}
 
+  lodash-es@4.18.1:
+    resolution: {integrity: sha512-J8xewKD/Gk22OZbhpOVSwcs60zhd95ESDwezOFuA3/099925PdHJ7OFHNTGtajL3AlZkykD32HykiMo+BIBI8A==}
+
   lodash@4.18.1:
     resolution: {integrity: sha512-dMInicTPVE8d1e5otfwmmjlxkZoUpiVLwyeTdUsi/Caj/gfzzblBcCE5sRHV/AsjuCmxWrte2TNGSYuCeCq+0Q==}
 
@@ -3617,8 +3623,9 @@ packages:
     resolution: {integrity: sha512-llQsMLSUDUPT44jdrU/O37qlnifitDP+ZwrmmZcoSKyLKvtZxpyV0n2/bD/N4tBAAZ/gJEdZU7KMraoK1+XYAg==}
     engines: {node: '>= 0.10'}
 
-  proxy-from-env@1.1.0:
-    resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
+  proxy-from-env@2.1.0:
+    resolution: {integrity: sha512-cJ+oHTW1VAEa8cJslgmUZrc+sjRKgAKl3Zyse6+PV38hZe/V6Z14TbCuXcan9F9ghlz4QrFr2c92TNF82UkYHA==}
+    engines: {node: '>=10'}
 
   pump@3.0.4:
     resolution: {integrity: sha512-VS7sjc6KR7e1ukRFhQSY5LM2uBWAUPiOPa/A3mkKmiMwSmRFUITt0xuj+/lesgnCv+dPIEYlkzrcyXgquIHMcA==}
@@ -4557,7 +4564,7 @@ snapshots:
       '@poppinss/exception': 1.2.3
       '@poppinss/types': 1.2.1
 
-  '@adonisjs/inertia@4.2.0(e9b438575143de2bcd37328686d59183)':
+  '@adonisjs/inertia@4.2.0(eef34c9c36ebcfbcb3796eb01bb7f79f)':
     dependencies:
       '@adonisjs/core': 7.3.1(@adonisjs/assembler@8.4.0(typescript@5.9.3))(@vinejs/vine@4.3.1)(edge.js@6.5.0)(pino-pretty@13.1.3)(youch@4.1.1)
       '@adonisjs/session': 8.1.0(@adonisjs/assembler@8.4.0(typescript@5.9.3))(@adonisjs/core@7.3.1(@adonisjs/assembler@8.4.0(typescript@5.9.3))(@vinejs/vine@4.3.1)(edge.js@6.5.0)(pino-pretty@13.1.3)(youch@4.1.1))(@adonisjs/lucid@22.4.2(@adonisjs/assembler@8.4.0(typescript@5.9.3))(@adonisjs/core@7.3.1(@adonisjs/assembler@8.4.0(typescript@5.9.3))(@vinejs/vine@4.3.1)(edge.js@6.5.0)(pino-pretty@13.1.3)(youch@4.1.1))(@vinejs/vine@4.3.1)(better-sqlite3@12.9.0)(luxon@3.7.2))(@japa/browser-client@2.3.0(@japa/assert@4.2.0(@japa/runner@5.3.0))(@japa/runner@5.3.0)(playwright@1.58.2))(@japa/plugin-adonisjs@5.2.0(@adonisjs/core@7.3.1(@adonisjs/assembler@8.4.0(typescript@5.9.3))(@vinejs/vine@4.3.1)(edge.js@6.5.0)(pino-pretty@13.1.3)(youch@4.1.1))(@japa/browser-client@2.3.0(@japa/assert@4.2.0(@japa/runner@5.3.0))(@japa/runner@5.3.0)(playwright@1.58.2))(@japa/runner@5.3.0)(playwright@1.58.2))(edge.js@6.5.0)
@@ -4568,7 +4575,7 @@ snapshots:
       html-entities: 2.6.0
     optionalDependencies:
       '@adonisjs/assembler': 8.4.0(typescript@5.9.3)
-      '@inertiajs/react': 2.3.18(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      '@inertiajs/react': 2.3.21(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       '@japa/plugin-adonisjs': 5.2.0(@adonisjs/core@7.3.1(@adonisjs/assembler@8.4.0(typescript@5.9.3))(@vinejs/vine@4.3.1)(edge.js@6.5.0)(pino-pretty@13.1.3)(youch@4.1.1))(@japa/browser-client@2.3.0(@japa/assert@4.2.0(@japa/runner@5.3.0))(@japa/runner@5.3.0)(playwright@1.58.2))(@japa/runner@5.3.0)(playwright@1.58.2)
       '@tuyau/core': 1.2.2(@adonisjs/assembler@8.4.0(typescript@5.9.3))(@adonisjs/core@7.3.1(@adonisjs/assembler@8.4.0(typescript@5.9.3))(@vinejs/vine@4.3.1)(edge.js@6.5.0)(pino-pretty@13.1.3)(youch@4.1.1))
       react: 19.2.5
@@ -5271,22 +5278,22 @@ snapshots:
 
   '@humanwhocodes/retry@0.4.3': {}
 
-  '@inertiajs/core@2.3.18':
+  '@inertiajs/core@2.3.21':
     dependencies:
       '@types/lodash-es': 4.17.12
-      axios: 1.13.6
+      axios: 1.15.0
       laravel-precognition: 1.0.2
-      lodash-es: 4.17.23
+      lodash-es: 4.18.1
       qs: 6.15.0
     transitivePeerDependencies:
       - debug
 
-  '@inertiajs/react@2.3.18(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
+  '@inertiajs/react@2.3.21(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
     dependencies:
-      '@inertiajs/core': 2.3.18
+      '@inertiajs/core': 2.3.21
       '@types/lodash-es': 4.17.12
       laravel-precognition: 1.0.2
-      lodash-es: 4.17.23
+      lodash-es: 4.18.1
       react: 19.2.5
       react-dom: 19.2.5(react@19.2.5)
     transitivePeerDependencies:
@@ -6175,11 +6182,11 @@ snapshots:
 
   atomic-sleep@1.0.0: {}
 
-  axios@1.13.6:
+  axios@1.15.0:
     dependencies:
       follow-redirects: 1.15.11
       form-data: 4.0.5
-      proxy-from-env: 1.1.0
+      proxy-from-env: 2.1.0
     transitivePeerDependencies:
       - debug
 
@@ -7204,8 +7211,8 @@ snapshots:
 
   laravel-precognition@1.0.2:
     dependencies:
-      axios: 1.13.6
-      lodash-es: 4.17.23
+      axios: 1.15.0
+      lodash-es: 4.18.1
     transitivePeerDependencies:
       - debug
 
@@ -7268,6 +7275,8 @@ snapshots:
       p-locate: 5.0.0
 
   lodash-es@4.17.23: {}
+
+  lodash-es@4.18.1: {}
 
   lodash@4.18.1: {}
 
@@ -7934,7 +7943,7 @@ snapshots:
       forwarded: 0.2.0
       ipaddr.js: 1.9.1
 
-  proxy-from-env@1.1.0: {}
+  proxy-from-env@2.1.0: {}
 
   pump@3.0.4:
     dependencies:

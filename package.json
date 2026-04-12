@@ -86,8 +86,8 @@
     "@atproto/oauth-client-node": "^0.3.17",
     "@headlessui/react": "^2.2.10",
     "@heroicons/react": "^2.2.0",
-    "@inertiajs/core": "^2.3.18",
-    "@inertiajs/react": "^2.3.17",
+    "@inertiajs/core": "^2.3.21",
+    "@inertiajs/react": "^2.3.21",
     "@tailwindcss/vite": "^4.2.2",
     "@thisismissem/adonisjs-atproto-oauth": "^3.0.3",
     "@tuyau/core": "^1.2.2",
@@ -105,6 +105,11 @@
     "simple-icons": "^16.16.0",
     "sonner": "^2.0.7",
     "tailwindcss": "^4.2.2"
+  },
+  "pnpm": {
+    "overrides": {
+      "axios": "^1.15.0"
+    }
   },
   "hotHook": {
     "boundaries": [
