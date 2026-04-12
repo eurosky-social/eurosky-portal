@@ -4,6 +4,36 @@ import app from '@adonisjs/core/services/app'
 import { Collection } from '@adonisjs/content'
 import { loaders } from '@adonisjs/content/loaders'
 import '#extensions/vine.fileExists'
+import path from 'node:path'
+
+const tailwindColors = [
+  'red',
+  'orange',
+  'amber',
+  'yellow',
+  'lime',
+  'green',
+  'emerald',
+  'teal',
+  'cyan',
+  'sky',
+  'blue',
+  'indigo',
+  'violet',
+  'purple',
+  'fuchsia',
+  'pink',
+  'rose',
+  'slate',
+  'gray',
+  'zinc',
+  'neutral',
+  'stone',
+  'taupe',
+  'mauve',
+  'mist',
+  'olive',
+] as const
 
 const categories = ['getting-started', 'explore-more', 'for-work'] as const
 type Category = (typeof categories)[number]
@@ -12,36 +42,26 @@ const appSchema = vine.object({
   id: vine.string().alphaNumeric({ allowUnderscores: true }),
   name: vine.string(),
   icon: vine.object({
-    path: vine.string().toAbsolutePath().fileExists().toVitePath().optional(),
+    // We're taking the path of `icons/sifa.png` converting it to
+    // assets/icons/sifa.png, then resolving that relative to the `data`
+    // directory, validating that the file exists, and then converting that path
+    // back to a `assets/{file}` path
+    path: vine
+      .string()
+      .parse((value) => {
+        if (typeof value === 'string') {
+          return path.join('assets', value)
+        }
+        return value
+      })
+      .toAbsolutePath()
+      .fileExists()
+      .transform((value) => {
+        return path.relative(app.makePath('data'), value)
+      })
+      .optional(),
     fallback: vine.object({
-      color: vine.enum([
-        'red',
-        'orange',
-        'amber',
-        'yellow',
-        'lime',
-        'green',
-        'emerald',
-        'teal',
-        'cyan',
-        'sky',
-        'blue',
-        'indigo',
-        'violet',
-        'purple',
-        'fuchsia',
-        'pink',
-        'rose',
-        'slate',
-        'gray',
-        'zinc',
-        'neutral',
-        'stone',
-        'taupe',
-        'mauve',
-        'mist',
-        'olive',
-      ]),
+      color: vine.enum(tailwindColors),
       initials: vine
         .string()
         .maxLength(2)

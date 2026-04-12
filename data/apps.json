@@ -7,7 +7,7 @@
     "platforms": ["ios", "android", "web"],
     "category": "getting-started",
     "icon": {
-      "path": "./icons/bluesky.png",
+      "path": "icons/bluesky.png",
       "fallback": {
         "color": "blue",
         "initials": "bs"
@@ -23,7 +23,7 @@
     "category": "getting-started",
     "madeInEU": true,
     "icon": {
-      "path": "./icons/blento.png",
+      "path": "icons/blento.png",
       "fallback": {
         "color": "purple",
         "initials": "b"
@@ -39,7 +39,7 @@
     "category": "getting-started",
     "madeInEU": true,
     "icon": {
-      "path": "./icons/flashes.png",
+      "path": "icons/flashes.png",
       "fallback": {
         "color": "blue",
         "initials": "fl"
@@ -54,7 +54,7 @@
     "platforms": ["web"],
     "category": "getting-started",
     "icon": {
-      "path": "./icons/leaflet.png",
+      "path": "icons/leaflet.png",
       "fallback": {
         "color": "green",
         "initials": "lf"
@@ -70,7 +70,7 @@
     "category": "getting-started",
     "madeInEU": true,
     "icon": {
-      "path": "./icons/skywalker.png",
+      "path": "icons/skywalker.png",
       "fallback": {
         "color": "blue",
         "initials": "sw"
@@ -86,7 +86,7 @@
     "category": "getting-started",
     "madeInEU": true,
     "icon": {
-      "path": "./icons/skeets.png",
+      "path": "icons/skeets.png",
       "fallback": {
         "color": "blue",
         "initials": "sk"
@@ -101,7 +101,7 @@
     "platforms": ["web"],
     "category": "explore-more",
     "icon": {
-      "path": "./icons/popfeed.png",
+      "path": "icons/popfeed.png",
       "fallback": {
         "color": "purple",
         "initials": "pf"
@@ -117,7 +117,7 @@
     "category": "explore-more",
     "madeInEU": true,
     "icon": {
-      "path": "./icons/sill.png",
+      "path": "icons/sill.png",
       "fallback": {
         "color": "yellow",
         "initials": "s"
@@ -147,7 +147,7 @@
     "platforms": ["web", "ios", "android"],
     "category": "explore-more",
     "icon": {
-      "path": "./icons/streamplace.png",
+      "path": "icons/streamplace.png",
       "fallback": {
         "color": "pink",
         "initials": "sp"
@@ -162,7 +162,7 @@
     "platforms": ["web"],
     "category": "for-work",
     "icon": {
-      "path": "./icons/semble.png",
+      "path": "icons/semble.png",
       "fallback": {
         "color": "orange",
         "initials": "se"
@@ -178,7 +178,7 @@
     "category": "for-work",
     "madeInEU": true,
     "icon": {
-      "path": "./icons/tangled.png",
+      "path": "icons/tangled.png",
       "fallback": {
         "color": "gray",
         "initials": "t"
@@ -194,7 +194,7 @@
     "category": "for-work",
     "madeInEU": true,
     "icon": {
-      "path": "./icons/sifa.png",
+      "path": "icons/sifa.png",
       "fallback": {
         "color": "gray",
         "initials": "id"

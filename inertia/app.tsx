@@ -8,7 +8,7 @@ import { createInertiaApp } from '@inertiajs/react'
 import { TuyauProvider } from '@adonisjs/inertia/react'
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
 
-import.meta.glob(['../data/icons/**', '../resources/images/og-image.png'])
+import.meta.glob(['../resources/images/og-image.png'])
 
 const appName = import.meta.env.VITE_APP_NAME || 'Eurosky'
 
