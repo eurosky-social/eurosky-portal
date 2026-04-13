@@ -24,7 +24,7 @@ export default function Faq(props: InertiaProps<{ faq: { question: string; answe
                 <ArrowDownIcon className="w-6 h-6 flex text-charcoal dark:text-slate-400 transition-transform" />
               </summary>
               <MarkdownDocument
-                className="p-4 bg-white text-charcoal dark:text-slate-400 leading-relaxed dark:bg-slate-800 border-stone-light dark:border-slate-700 border-t"
+                className="p-4 bg-white text-charcoal! dark:text-slate-400! leading-relaxed dark:bg-slate-800 border-stone-light dark:border-slate-700 border-t"
                 document={entry.answer}
               />
             </details>
