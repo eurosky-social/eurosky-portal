@@ -7,6 +7,7 @@ const LegalDocuments = Collection.create({
   schema: vine.array(
     vine.object({
       name: vine.enum(['terms', 'privacy']),
+      title: vine.string(),
       filename: vine.string(),
       updatedAt: vine.date({ formats: ['YYYY-MM-DD'] }),
     })

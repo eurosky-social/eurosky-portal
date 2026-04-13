@@ -10,7 +10,7 @@ import { resolvePageComponent } from '@adonisjs/inertia/helpers'
 
 import.meta.glob(['../resources/images/og-image.png', './images/**'])
 
-const appName = import.meta.env.VITE_APP_NAME || 'Eurosky'
+const appName = import.meta.env.VITE_APP_NAME || 'Eurosky Portal'
 
 createInertiaApp({
   title: (title) => (title ? `${title} - ${appName}` : appName),

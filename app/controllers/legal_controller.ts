@@ -18,6 +18,7 @@ export default class LegalController {
     })
 
     return inertia.render('legal/show', {
+      title: inertia.always(document.title),
       document: inertia.always(renderedHtml),
     })
   }
