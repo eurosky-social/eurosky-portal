@@ -9,7 +9,7 @@ export default function Dashboard({
 }>) {
   return (
     <Card className="py-3 px-4">
-      <h2 className="text-lg/8 sm:text-xl/8 font-semibold text-gray-900 dark:text-gray-200 mb-2">
+      <h2 className="mt-2 text-lg/8 sm:text-3xl/8 font-semibold text-gray-900 dark:text-gray-200">
         Explore the ecosystem
       </h2>
       <MarkdownDocument document={document} />
