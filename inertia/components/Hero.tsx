@@ -30,7 +30,7 @@ export function Hero() {
             Sign in
           </Button>
         </div>
-        <div className="mt-6 text-lg text-gray-400 dark:text-slate-400 flex justify-center items-center gap-2">
+        <div className="mt-6 text-base md:text-lg text-gray-400 dark:text-slate-400 flex justify-center items-center gap-2">
           <LockClosedIcon className="h-6 w-6 inline-block" />
           <span>Your data is yours. We will never sell it.</span>
         </div>

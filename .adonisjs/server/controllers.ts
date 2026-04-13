@@ -8,6 +8,7 @@ export const controllers = {
   Auth: () => import('#controllers/auth_controller'),
   Dashboard: () => import('#controllers/dashboard_controller'),
   Explore: () => import('#controllers/explore_controller'),
+  Faq: () => import('#controllers/faq_controller'),
   Home: () => import('#controllers/home_controller'),
   Legal: () => import('#controllers/legal_controller'),
   Oauth: () => import('#controllers/oauth_controller'),

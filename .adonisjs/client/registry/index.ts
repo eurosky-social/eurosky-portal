@@ -84,6 +84,12 @@ const routes = {
     tokens: [{"old":"/legal/:document","type":0,"val":"legal","end":""},{"old":"/legal/:document","type":1,"val":"document","end":""}],
     types: placeholder as Registry['legal.show']['types'],
   },
+  'faq.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/faq',
+    tokens: [{"old":"/faq","type":0,"val":"faq","end":""}],
+    types: placeholder as Registry['faq.show']['types'],
+  },
 } as const satisfies Record<string, AdonisEndpoint>
 
 export { routes }

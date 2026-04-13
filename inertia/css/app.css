@@ -15,6 +15,11 @@
   --color-brand: oklch(0.793 0.103 243.6);
   --color-brand-border: oklch(0.703 0.123 243.6);
   --color-black: #1a1a1a;
+  --color-stone: rgb(236 234 229);
+  --color-stone-light: rgb(236 234 229);
+  --color-charcoal: rgb(107 105 101);
+  --color-ink: rgb(26 26 26);
+  --color-cotton: rgb(247 246 242);
 }
 
 @utility min-h-dvh-minus-* {
@@ -83,6 +88,9 @@
   background-image: url('../images/logo-white.png');
 }
 
+details summary > svg {
+  @apply transition-transform;
+}
 details:open summary > svg {
   rotate: -180deg;
 }
@@ -178,4 +186,8 @@ details:open summary > svg {
   @variant dark {
     border: 1px solid var(--color-slate-700);
   }
+}
+
+.faq details a {
+  @apply hover:text-ink dark:text-slate-400 dark:hover:text-slate-200 underline;
 }

@@ -17,7 +17,11 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
     toast.error(children.props.flash.error)
   }
 
-  if (page.url.startsWith('/onboarding') || page.url.startsWith('/legal/')) {
+  if (
+    page.url.startsWith('/onboarding') ||
+    page.url.startsWith('/legal/') ||
+    page.url.startsWith('/faq')
+  ) {
     return (
       <div>
         <BetaWarning />

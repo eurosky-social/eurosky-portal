@@ -163,4 +163,16 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/legal_controller').default['show']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
+  'faq.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/faq'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/faq_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/faq_controller').default['show']>>>
+    }
+  }
 }

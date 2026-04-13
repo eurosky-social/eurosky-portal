@@ -27,4 +27,7 @@ export interface ApiDefinition {
   legal: {
     show: typeof routes['legal.show']
   }
+  faq: {
+    show: typeof routes['faq.show']
+  }
 }

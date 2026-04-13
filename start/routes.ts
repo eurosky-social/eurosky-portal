@@ -32,3 +32,4 @@ router
   .use([middleware.auth(), middleware.legalRoadblock()])
 
 router.get('/legal/:document', [controllers.Legal, 'show'])
+router.get('/faq', [controllers.Faq, 'show'])

@@ -1,3 +1,9 @@
-@markdown({
-  file: document
-})
+@if(document)
+  @markdown({
+    file: document
+  })
+@else
+  @markdown({
+    content: content
+  })
+@end
