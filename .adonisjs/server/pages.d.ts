@@ -16,11 +16,11 @@ declare module '@adonisjs/inertia/types' {
     'dashboard/show': ExtractProps<(typeof import('../../inertia/pages/dashboard/show.tsx'))['default']>
     'errors/not_found': ExtractProps<(typeof import('../../inertia/pages/errors/not_found.tsx'))['default']>
     'errors/server_error': ExtractProps<(typeof import('../../inertia/pages/errors/server_error.tsx'))['default']>
+    'explore/learn-more': ExtractProps<(typeof import('../../inertia/pages/explore/learn-more.tsx'))['default']>
+    'faq/show': ExtractProps<(typeof import('../../inertia/pages/faq/show.tsx'))['default']>
     'home': ExtractProps<(typeof import('../../inertia/pages/home.tsx'))['default']>
     'legal/show': ExtractProps<(typeof import('../../inertia/pages/legal/show.tsx'))['default']>
     'login': ExtractProps<(typeof import('../../inertia/pages/login.tsx'))['default']>
     'onboarding': ExtractProps<(typeof import('../../inertia/pages/onboarding.tsx'))['default']>
-    'faq/show': ExtractProps<(typeof import('../../inertia/pages/faq/show.tsx'))['default']>
-    'explore/learn-more': ExtractProps<(typeof import('../../inertia/pages/explore/learn-more.tsx'))['default']>
   }
 }

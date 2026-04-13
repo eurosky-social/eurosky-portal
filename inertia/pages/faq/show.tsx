@@ -1,4 +1,5 @@
 import { ArrowDownIcon } from '@heroicons/react/24/solid'
+import { Head } from '@inertiajs/react'
 import MarkdownDocument from '~/components/MarkdownDocument'
 import { Container } from '~/lib/container'
 import { InertiaProps } from '~/types'
@@ -6,6 +7,7 @@ import { InertiaProps } from '~/types'
 export default function Faq(props: InertiaProps<{ faq: { question: string; answer: string }[] }>) {
   return (
     <>
+      <Head title="Frequently Asked Questions" />
       <Container className="py-16 md:py-24 px-4">
         <h1 className="mb-6 text-4xl md:text-5xl text-black dark:text-slate-200 font-semibold text-center">
           Frequently Asked Questions
