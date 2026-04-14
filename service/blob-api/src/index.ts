@@ -1,7 +1,6 @@
-import { serve } from '@hono/node-server'
-import Database from 'better-sqlite3'
 import { Hono } from 'hono'
 import { HTTPException } from 'hono/http-exception'
+import type Database from 'better-sqlite3'
 import {
   portalSyncPath,
   type ListBlobDetailsBlob,
@@ -14,7 +13,7 @@ import {
 /**
  * Blob row.
  */
-interface BlobRow extends Cursor {
+export interface BlobRow extends Cursor {
   /**
    * MIME type (example: `image/png`).
    */
@@ -75,254 +74,21 @@ type Did = ListBlobDetailsParams['did']
 type FilterCategory = 'image' | 'other' | 'video'
 
 /**
- * Shared token.
+ * Configuration.
  */
-const blobApiToken = process.env.BLOB_API_TOKEN ?? ''
+interface Options {
+  /**
+   * Database.
+   */
+  database: Pick<Database.Database, 'prepare'>
 
-if (blobApiToken.length < 16) {
-  throw new Error('`BLOB_API_TOKEN` must be at least 16 characters long')
+  /**
+   * Token.
+   */
+  token: string
 }
-
-/**
- * Path to PDS database.
- */
-const pdsDbPath = process.env.PDS_DB_PATH
-
-if (!pdsDbPath) {
-  throw new Error('`PDS_DB_PATH` is required')
-}
-
-/**
- * Port to listen on.
- */
-const port = Number(process.env.PORT ?? 4001)
-
-if (!Number.isInteger(port) || port < 1 || port > 65535) {
-  throw new Error('`PORT` must be an integer between `1` and `65535`')
-}
-
-const db = new Database(pdsDbPath, { fileMustExist: true, readonly: true })
-
-db.pragma('query_only = ON')
 
 const didExpression = /^did:[^:]+:.+$/
-
-const app = new Hono()
-
-/**
- * Probably good to have a health check.
- */
-app.get('/health', function (context) {
-  return context.text('OK')
-})
-
-/**
- * Require a valid token on XRPC routes.
- */
-app.use('/xrpc/*', async function (context, next) {
-  const [scheme, token] = (context.req.header('authorization') ?? '').split(' ')
-
-  if (scheme !== 'Bearer' || token !== blobApiToken) {
-    return context.json({ error: 'Unauthorized' }, 401)
-  }
-
-  return next()
-})
-
-/**
- * List blob metadata details for a given DID.
- * Like <https://docs.bsky.app/docs/api/com-atproto-sync-list-blobs> but with
- * `mimeType` and `size` fields.
- *
- * Optional query parameters:
- * - `category`: restricts results to a single category (`image`/`video`/`other`)
- *
- * Cursor behavior:
- * - the cursor is scoped to the current query shape (DID + category filter +
- *   ordering)
- * - changing the `category` filter between requests invalidates the cursor
- */
-app.get(portalSyncPath.listBlobDetails, async function (context) {
-  const url = new URL(context.req.url)
-  const cursorParameter = url.searchParams.get('cursor')
-  let cursor: Cursor | undefined
-
-  if (cursorParameter) {
-    try {
-      cursor = decodeCursor(cursorParameter)
-    } catch {
-      throw new HTTPException(400, { message: 'Invalid cursor' })
-    }
-  }
-
-  const didParameter = url.searchParams.get('did')
-
-  if (!didParameter) {
-    throw new HTTPException(400, { message: 'Missing required parameter: did' })
-  }
-
-  let did: Did
-
-  try {
-    assertDid(didParameter)
-    did = didParameter
-  } catch {
-    throw new HTTPException(400, { message: 'Invalid DID format' })
-  }
-
-  // Default page size; see: <https://docs.bsky.app/docs/api/com-atproto-sync-list-blobs>.
-  const limitText = url.searchParams.get('limit') ?? '500'
-
-  if (!/^\d+$/.test(limitText)) {
-    throw new HTTPException(400, { message: 'Limit must be an integer' })
-  }
-
-  const limit = Number(limitText)
-
-  if (limit < 1) {
-    throw new HTTPException(400, { message: 'Limit must be at least 1' })
-  }
-  if (limit > 1000) {
-    throw new HTTPException(400, { message: 'Limit must not exceed 1000' })
-  }
-
-  let category: FilterCategory | undefined
-  const categoryParameter = url.searchParams.get('category')
-
-  if (categoryParameter) {
-    try {
-      assertFilterCategory(categoryParameter)
-      category = categoryParameter
-    } catch {
-      throw new HTTPException(400, {
-        message: 'Category must be one of: image, other, video',
-      })
-    }
-  }
-
-  const sql = [
-    'SELECT cid, createdAt, mimeType, COALESCE(size, 0) AS size FROM blob WHERE creator = ?',
-  ]
-  const parameters: Array<unknown> = [did]
-
-  if (category) {
-    sql.push(
-      "AND (CASE WHEN mimeType LIKE 'image/%' THEN 'image' WHEN mimeType LIKE 'video/%' THEN 'video' ELSE 'other' END) = ?"
-    )
-    parameters.push(category)
-  }
-
-  if (cursor) {
-    sql.push('AND (createdAt < ? OR (createdAt = ? AND cid < ?))')
-    parameters.push(cursor.createdAt, cursor.createdAt, cursor.cid)
-  }
-
-  sql.push('ORDER BY createdAt DESC, cid DESC LIMIT ?')
-  parameters.push(limit)
-
-  const rows = db.prepare<Array<unknown>, BlobRow>(sql.join(' ')).all(...parameters)
-  const last = rows.at(-1)
-
-  const result: ListBlobDetailsOutputBody = {
-    blobs: rows.map(function (row) {
-      const { cid, createdAt, mimeType, size } = row
-      assertDatetimeString(createdAt)
-      return mimeType ? { cid, createdAt, mimeType, size } : { cid, createdAt, size }
-    }),
-    cursor: rows.length === limit && last ? encodeCursor(last) : undefined,
-    did,
-  }
-
-  return context.json(result)
-})
-
-/**
- * Get a breakdown of storage use.
- */
-app.get(portalSyncPath.getStorageBreakdown, async function (context) {
-  const url = new URL(context.req.url)
-  const didParameter = url.searchParams.get('did')
-
-  if (!didParameter) {
-    throw new HTTPException(400, { message: 'Missing required parameter: did' })
-  }
-
-  let did: Did
-
-  try {
-    assertDid(didParameter)
-    did = didParameter
-  } catch {
-    throw new HTTPException(400, { message: 'Invalid DID format' })
-  }
-
-  const rows = db
-    .prepare<Array<unknown>, BreakdownRow>(
-      `
-      SELECT
-        CASE
-          WHEN mimeType LIKE 'image/%' THEN 'image'
-          WHEN mimeType LIKE 'video/%' THEN 'video'
-          ELSE 'other'
-        END AS category,
-        COUNT(*) AS files,
-        COALESCE(SUM(size), 0) AS bytes
-      FROM blob
-      WHERE creator = ?
-      GROUP BY category
-      ORDER BY bytes DESC
-      `
-    )
-    .all(did)
-
-  let totalBytes = 0
-
-  for (const row of rows) {
-    totalBytes += row.bytes
-  }
-
-  const generatedAt = new Date().toISOString()
-  // Never throws, just for the type system.
-  assertDatetimeString(generatedAt)
-
-  const result: StorageBreakdownOutputBody = {
-    categories: rows.map(function (row) {
-      const { bytes, files, category } = row
-      return { bytes, files, category }
-    }),
-    did,
-    generatedAt,
-    totalBytes,
-  }
-
-  return context.json(result)
-})
-
-/**
- * 404.
- */
-app.notFound(function (context) {
-  return context.json({ error: 'Not Found' }, 404)
-})
-
-/**
- * Handle errors.
- */
-app.onError(function (error, context) {
-  if (error instanceof HTTPException) {
-    return context.json({ error: error.message }, error.status)
-  }
-
-  console.error(error)
-  return context.json({ error: 'Internal Server Error' }, 500)
-})
-
-/**
- * Start the server.
- */
-serve({ fetch: app.fetch, port }, function () {
-  console.log(`blob-api running on :${port}`)
-})
 
 /**
  * Check if `value` is a date time string.
@@ -373,6 +139,218 @@ function assertFilterCategory(value: unknown): asserts value is FilterCategory {
 }
 
 /**
+ * Create API.
+ *
+ * @param options
+ *   Configuration.
+ * @returns
+ *   Hono app.
+ */
+export function createApi(options: Options): Hono {
+  const { database, token: apiToken } = options
+
+  const app = new Hono()
+
+  /**
+   * Probably good to have a health check.
+   */
+  app.get('/health', function (context) {
+    return context.text('OK')
+  })
+
+  /**
+   * Require a valid token on XRPC routes.
+   */
+  app.use('/xrpc/*', async function (context, next) {
+    const [scheme, token] = (context.req.header('authorization') ?? '').split(' ')
+
+    if (scheme !== 'Bearer' || token !== apiToken) {
+      return context.json({ error: 'Unauthorized' }, 401)
+    }
+
+    return next()
+  })
+
+  /**
+   * List blob metadata details for a given DID.
+   * Like <https://docs.bsky.app/docs/api/com-atproto-sync-list-blobs> but with
+   * `mimeType` and `size` fields.
+   *
+   * Optional query parameters:
+   * - `category`: restricts results to a single category (`image`/`video`/`other`)
+   *
+   * Cursor behavior:
+   * - the cursor is scoped to the current query shape (DID + category filter +
+   *   ordering)
+   * - changing the `category` filter between requests invalidates the cursor
+   */
+  app.get(portalSyncPath.listBlobDetails, async function (context) {
+    const url = new URL(context.req.url)
+    const cursorParameter = url.searchParams.get('cursor')
+    let cursor: Cursor | undefined
+
+    if (cursorParameter) {
+      try {
+        cursor = decodeCursor(cursorParameter)
+      } catch {
+        throw new HTTPException(400, { message: 'Invalid cursor' })
+      }
+    }
+
+    const didParameter = url.searchParams.get('did')
+
+    if (!didParameter) {
+      throw new HTTPException(400, { message: 'Missing required parameter: did' })
+    }
+
+    let did: Did
+
+    try {
+      assertDid(didParameter)
+      did = didParameter
+    } catch {
+      throw new HTTPException(400, { message: 'Invalid DID format' })
+    }
+
+    // Default page size; see: <https://docs.bsky.app/docs/api/com-atproto-sync-list-blobs>.
+    const limitText = url.searchParams.get('limit') ?? '500'
+
+    if (!/^\d+$/.test(limitText)) {
+      throw new HTTPException(400, { message: 'Limit must be an integer' })
+    }
+
+    const limit = Number(limitText)
+
+    if (limit < 1) {
+      throw new HTTPException(400, { message: 'Limit must be at least 1' })
+    }
+    if (limit > 1000) {
+      throw new HTTPException(400, { message: 'Limit must not exceed 1000' })
+    }
+
+    let category: FilterCategory | undefined
+    const categoryParameter = url.searchParams.get('category')
+
+    if (categoryParameter) {
+      try {
+        assertFilterCategory(categoryParameter)
+        category = categoryParameter
+      } catch {
+        throw new HTTPException(400, {
+          message: 'Category must be one of: image, other, video',
+        })
+      }
+    }
+
+    const sql = [
+      'SELECT cid, createdAt, mimeType, COALESCE(size, 0) AS size FROM blob WHERE creator = ?',
+    ]
+    const parameters: Array<unknown> = [did]
+
+    if (category) {
+      sql.push(
+        "AND (CASE WHEN mimeType LIKE 'image/%' THEN 'image' WHEN mimeType LIKE 'video/%' THEN 'video' ELSE 'other' END) = ?"
+      )
+      parameters.push(category)
+    }
+
+    if (cursor) {
+      sql.push('AND (createdAt < ? OR (createdAt = ? AND cid < ?))')
+      parameters.push(cursor.createdAt, cursor.createdAt, cursor.cid)
+    }
+
+    sql.push('ORDER BY createdAt DESC, cid DESC LIMIT ?')
+    parameters.push(limit)
+
+    const rows = database.prepare(sql.join(' ')).all(...parameters) as Array<BlobRow>
+    const last = rows.at(-1)
+
+    const result: ListBlobDetailsOutputBody = {
+      blobs: rows.map(function (row) {
+        const { cid, createdAt, mimeType, size } = row
+        assertDatetimeString(createdAt)
+        return mimeType ? { cid, createdAt, mimeType, size } : { cid, createdAt, size }
+      }),
+      cursor: rows.length === limit && last ? encodeCursor(last) : undefined,
+      did,
+    }
+
+    return context.json(result)
+  })
+
+  /**
+   * Get a breakdown of storage use.
+   */
+  app.get(portalSyncPath.getStorageBreakdown, async function (context) {
+    const url = new URL(context.req.url)
+    const didParameter = url.searchParams.get('did')
+
+    if (!didParameter) {
+      throw new HTTPException(400, { message: 'Missing required parameter: did' })
+    }
+
+    let did: Did
+
+    try {
+      assertDid(didParameter)
+      did = didParameter
+    } catch {
+      throw new HTTPException(400, { message: 'Invalid DID format' })
+    }
+
+    const rows = database
+      .prepare(
+        `
+      SELECT
+        CASE
+          WHEN mimeType LIKE 'image/%' THEN 'image'
+          WHEN mimeType LIKE 'video/%' THEN 'video'
+          ELSE 'other'
+        END AS category,
+        COUNT(*) AS files,
+        COALESCE(SUM(size), 0) AS bytes
+      FROM blob
+      WHERE creator = ?
+      GROUP BY category
+      ORDER BY bytes DESC
+      `
+      )
+      .all(did) as Array<BreakdownRow>
+
+    const result: StorageBreakdownOutputBody = {
+      categories: rows.map(function (row) {
+        const { bytes, files, category } = row
+        return { bytes, files, category }
+      }),
+      did,
+    }
+
+    return context.json(result)
+  })
+
+  /**
+   * 404.
+   */
+  app.notFound(function (context) {
+    return context.json({ error: 'Not Found' }, 404)
+  })
+
+  /**
+   * Handle errors.
+   */
+  app.onError(function (error, context) {
+    if (error instanceof HTTPException) {
+      return context.json({ error: error.message }, error.status)
+    }
+
+    console.error(error)
+    return context.json({ error: 'Internal Server Error' }, 500)
+  })
+
+  return app
+}
+
+/**
  * Decode a cursor.
  *
  * @param value
@@ -382,7 +360,7 @@ function assertFilterCategory(value: unknown): asserts value is FilterCategory {
  * @throws
  *   When `value` is invalid.
  */
-function decodeCursor(value: string): Cursor {
+export function decodeCursor(value: string): Cursor {
   const json = Buffer.from(value, 'base64url').toString('utf8')
   const parsed: unknown = JSON.parse(json)
 
@@ -408,7 +386,7 @@ function decodeCursor(value: string): Cursor {
  * @returns
  *   Cursor string.
  */
-function encodeCursor(value: Cursor): string {
+export function encodeCursor(value: Cursor): string {
   const json = JSON.stringify({ cid: value.cid, createdAt: value.createdAt })
 
   return Buffer.from(json, 'utf8').toString('base64url')

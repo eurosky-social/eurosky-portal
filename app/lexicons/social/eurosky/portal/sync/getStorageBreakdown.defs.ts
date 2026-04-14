@@ -15,8 +15,6 @@ const main = l.query(
   l.jsonPayload({
     categories: l.array(l.ref<Category>((() => category) as any)),
     did: l.string({ format: 'did' }),
-    generatedAt: l.string({ format: 'datetime' }),
-    totalBytes: l.integer({ minimum: 0 }),
   }),
 )
 export { main }

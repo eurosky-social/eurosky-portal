@@ -21,7 +21,7 @@
         "encoding": "application/json",
         "schema": {
           "type": "object",
-          "required": ["categories", "did", "generatedAt", "totalBytes"],
+          "required": ["categories", "did"],
           "properties": {
             "categories": {
               "type": "array",
@@ -33,14 +33,6 @@
             "did": {
               "type": "string",
               "format": "did"
-            },
-            "generatedAt": {
-              "type": "string",
-              "format": "datetime"
-            },
-            "totalBytes": {
-              "type": "integer",
-              "minimum": 0
             }
           }
         }
