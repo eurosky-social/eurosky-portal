@@ -2,11 +2,14 @@ import app from '@adonisjs/core/services/app'
 import { type HttpContext, ExceptionHandler } from '@adonisjs/core/http'
 import type { StatusPageRange, StatusPageRenderer } from '@adonisjs/core/types/http'
 import logger from '@adonisjs/core/services/logger'
-import { errors } from '@adonisjs/core/http'
-import { errors as authErrors } from '@adonisjs/auth'
 
-const silencedErrors = [errors.E_ROUTE_NOT_FOUND, authErrors.E_UNAUTHORIZED_ACCESS]
 export default class HttpExceptionHandler extends ExceptionHandler {
+  /**
+   * Controls whether errors should be reported to logging systems
+   * When disabled, errors are handled but not logged or reported
+   */
+  protected reportErrors = true
+
   /**
    * In debug mode, the exception handler will display verbose errors
    * with pretty printed stack traces.
@@ -21,12 +24,48 @@ export default class HttpExceptionHandler extends ExceptionHandler {
   protected renderStatusPages = app.inProduction
 
   /**
+   * HTTP status codes that should not be reported.
+   * These are typically client errors that don't indicate
+   * problems with your application.
+   */
+  protected ignoreStatuses = [401, 403, 404, 422, 429]
+
+  /**
+   * Error codes that should not be reported.
+   * These are application-specific error codes for
+   * expected error conditions.
+   */
+  protected ignoreCodes = ['E_ROUTE_NOT_FOUND', 'E_VALIDATION_ERROR', 'E_UNAUTHORIZED_ACCESS']
+
+  /**
    * Status pages is a collection of error code range and a callback
    * to return the HTML contents to send as a response.
    */
   protected statusPages: Record<StatusPageRange, StatusPageRenderer> = {
     '404': (_, { inertia }) => inertia.render('errors/not_found', {}),
     '500..599': (_, { inertia }) => inertia.render('errors/server_error', {}),
+  }
+
+  protected context(ctx: HttpContext) {
+    return {
+      /**
+       * Include the unique request ID for tracking
+       * this specific request across logs
+       */
+      requestId: ctx.request.id(),
+
+      /**
+       * Add the authenticated user's ID if available
+       * to identify which user encountered the error
+       */
+      user: ctx.auth.user?.did,
+
+      /**
+       * Include the IP address for security monitoring
+       * and identifying patterns in errors
+       */
+      ip: ctx.request.ip(),
+    }
   }
 
   /**
@@ -44,9 +83,13 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    * @note You should not attempt to send a response from this method.
    */
   async report(error: unknown, ctx: HttpContext) {
-    if (!silencedErrors.some((type) => error instanceof type)) {
+    const httpError = this.toHttpError(error)
+
+    // Only log errors in development:
+    if (!app.inProduction && this.shouldReport(httpError)) {
       logger.error(error)
     }
+
     return super.report(error, ctx)
   }
 }
