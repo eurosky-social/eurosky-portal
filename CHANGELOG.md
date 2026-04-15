@@ -1,5 +1,11 @@
 # eurosky-portal
 
+## 1.4.9
+
+### Patch Changes
+
+- [#117](https://github.com/eurosky-social/eurosky-portal/pull/117) [`eb9f670`](https://github.com/eurosky-social/eurosky-portal/commit/eb9f670d142d1ffb0db8454ec1077d30f355ae12) Thanks [@ThisIsMissEm](https://github.com/ThisIsMissEm)! - Fix the release (again)
+
 ## 1.4.8
 
 ### Patch Changes
