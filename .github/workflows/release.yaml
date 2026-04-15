@@ -10,6 +10,11 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: false
 
+permissions:
+  contents: read
+  id-token: write
+  packages: write
+
 jobs:
   release:
     name: Release
@@ -19,6 +24,9 @@ jobs:
       id-token: write
       pull-requests: write
       contents: write
+    outputs:
+      published: ${{ steps.changesets.outputs.published }}
+      tag_ref: ${{ steps.release.outputs.tag_ref }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -57,8 +65,11 @@ jobs:
       - name: Print tag_ref
         run: echo '${{ steps.release.outputs.tag_ref }}'
 
-      - name: Publish release
-        if: steps.changesets.outputs.published == 'true'
-        uses: ./.github/workflows/publish.yaml
-        with:
-          tag_ref: ${{ steps.release.outputs.tag_ref }}
+  publish:
+    needs: [release]
+    name: Publish release
+    if: ${{ needs.release.outputs.published == 'true' }}
+    uses: ./.github/workflows/publish.yaml
+    secrets: inherit
+    with:
+      tag_ref: ${{ needs.release.outputs.tag_ref }}
