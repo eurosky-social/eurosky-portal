@@ -2,7 +2,10 @@
  * OpenTelemetry initialization - MUST be the first import
  * @see https://opentelemetry.io/docs/languages/js/getting-started/nodejs/
  */
-import '../otel.js'
+// const COMMANDS_WITH_OTEL = []
+// if (COMMANDS_WITH_OTEL.includes(process.argv[2])) {
+//   await import('../otel.ts')
+// }
 
 /*
 |--------------------------------------------------------------------------
