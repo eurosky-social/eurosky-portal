@@ -1,5 +1,11 @@
 # eurosky-portal
 
+## 1.4.8
+
+### Patch Changes
+
+- [#115](https://github.com/eurosky-social/eurosky-portal/pull/115) [`74130c6`](https://github.com/eurosky-social/eurosky-portal/commit/74130c62b957efd92b8634709393104c34dd4e6c) Thanks [@ThisIsMissEm](https://github.com/ThisIsMissEm)! - Fix release
+
 ## 1.4.7
 
 ### Patch Changes
