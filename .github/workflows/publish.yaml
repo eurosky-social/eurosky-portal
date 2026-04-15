@@ -14,9 +14,9 @@ on:
       - main
 
 env:
-  publish_ref: ${{ case(github.event_name == 'workflow_call', inputs.tag_ref, github.ref) }}
+  publish_ref: ${{ inputs.tag_ref || github.ref }}
 concurrency:
-  group: ${{ github.workflow }}-${{ case(github.event_name == 'workflow_call', inputs.tag_ref, github.ref) }}
+  group: publish-${{ github.workflow }}-${{ inputs.tag_ref || github.ref }}
   cancel-in-progress: false
 
 jobs:
