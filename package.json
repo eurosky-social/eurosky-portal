@@ -1,13 +1,13 @@
 {
   "name": "eurosky-portal",
-  "version": "0.0.0",
+  "version": "1.4.4",
   "private": true,
   "type": "module",
   "license": "MIT",
   "engines": {
     "node": "^24.13.0"
   },
-  "packageManager": "pnpm@10.32.1+sha512.a706938f0e89ac1456b6563eab4edf1d1faf3368d1191fc5c59790e96dc918e4456ab2e67d613de1043d2e8c81f87303e6b40d4ffeca9df15ef1ad567348f2be",
+  "packageManager": "pnpm@10.33.0+sha512.10568bb4a6afb58c9eb3630da90cc9516417abebd3fabbe6739f0ae795728da1491e9db5a544c76ad8eb7570f5c4bb3d6c637b2cb41bfdcdb47fa823c8649319",
   "scripts": {
     "start": "node bin/server.js",
     "build": "node ace build",
@@ -19,7 +19,10 @@
     "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit && tsc --noEmit --project inertia/tsconfig.json",
     "lex": "./node_modules/.bin/lex",
-    "lex:build": "pnpm lex build --clear --indexFile --out ./app/lexicons"
+    "lex:build": "pnpm lex build --clear --indexFile --out ./app/lexicons",
+    "changeset": "changeset",
+    "release": "changeset publish",
+    "version-package": "changeset version"
   },
   "imports": {
     "#controllers/*": "./app/controllers/*.js",
@@ -50,6 +53,8 @@
     "@adonisjs/eslint-config": "^3.0.0",
     "@adonisjs/prettier-config": "^1.4.5",
     "@adonisjs/tsconfig": "^2.0.0",
+    "@changesets/changelog-github": "^0.6.0",
+    "@changesets/cli": "^2.30.0",
     "@japa/assert": "^4.2.0",
     "@japa/browser-client": "^2.3.0",
     "@japa/plugin-adonisjs": "^5.2.0",

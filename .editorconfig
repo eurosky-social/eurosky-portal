@@ -20,3 +20,6 @@ indent_style = space
 
 [*.md]
 trim_trailing_whitespace = false
+
+[*.yaml]
+indent_style = space
