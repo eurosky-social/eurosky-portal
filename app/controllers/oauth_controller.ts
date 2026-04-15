@@ -6,6 +6,7 @@ import env from '#start/env'
 import Account from '#models/account'
 import { loginRequestValidator, signupRequestValidator } from '#validators/oauth'
 import { createFieldError } from '#utils/errors'
+import { Monocle } from '@monocle.sh/adonisjs-agent'
 
 const oauthServerUrl = env.get('OAUTH_SERVICE')
 const allowExternalLogins = env.get('ALLOW_EXTERNAL_LOGINS', false)
@@ -75,12 +76,17 @@ export default class OAuthController {
         throw createFieldError('input', input, err.message)
       }
 
+      Monocle.captureException(err, {
+        tags: { component: 'oauth' },
+        extra: { source: 'login' },
+      })
+
       logger.error(err, 'Error starting AT Protocol OAuth flow')
       throw createFieldError('input', input, 'Unknown error occurred')
     }
   }
 
-  async signup({ request, response, inertia, oauth, session }: HttpContext) {
+  async signup({ request, response, inertia, oauth, session, logger }: HttpContext) {
     await request.validateUsing(signupRequestValidator, {
       messagesProvider: {
         getMessage(defaultMessage, rule, field) {
@@ -103,9 +109,19 @@ export default class OAuthController {
       return response.abort('Registration not supported')
     }
 
-    const authorizationUrl = await oauth.register(oauthServerUrl)
+    try {
+      const authorizationUrl = await oauth.register(oauthServerUrl)
 
-    inertia.location(authorizationUrl)
+      inertia.location(authorizationUrl)
+    } catch (err) {
+      Monocle.captureException(err, {
+        tags: { component: 'oauth' },
+        extra: { source: 'login' },
+      })
+
+      logger.error(err, 'Error starting AT Protocol OAuth flow')
+      throw err
+    }
   }
 
   async logout({ auth, oauth, session, response }: HttpContext) {
@@ -129,6 +145,12 @@ export default class OAuthController {
     // to cancel the flow:
     const termsAcceptedOn = DateTime.fromISO(termsAccepted)
     if (source === 'signup' && !termsAcceptedOn.isValid) {
+      Monocle.captureMessage('Invalid datetime for terms accepted from session cookie', {
+        level: 'warning',
+        tags: { component: 'oauth' },
+        extra: { source, value: termsAccepted },
+      })
+
       session.flash('error', 'An error occurred during signup')
       return response.redirect().toRoute('account.create')
     }
@@ -160,6 +182,11 @@ export default class OAuthController {
     } catch (err) {
       // Handle OAuth failing
       logger.error(err, 'Error completing AT Protocol OAuth flow')
+
+      Monocle.captureException(err, {
+        tags: { component: 'oauth' },
+        extra: { source },
+      })
 
       if (source === 'signup') {
         return response.redirect().toRoute('account.create')

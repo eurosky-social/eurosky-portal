@@ -4,6 +4,7 @@ import { type l, type AtIdentifierString } from '@atproto/lex'
 
 import * as lexicon from '#lexicons'
 import Account from '#models/account'
+import { Monocle } from '@monocle.sh/adonisjs-agent'
 
 export type Profile = lexicon.app.bsky.actor.defs.ProfileViewDetailed
 
@@ -24,6 +25,10 @@ AtprotoUser.macro(
       })
       .catch(async (error) => {
         logger.error(error)
+        Monocle.captureException(error, {
+          tags: { component: 'atprotouser' },
+          extra: { actor },
+        })
         return undefined
       })
 
@@ -60,7 +65,12 @@ async function slingshotMiniProfile(
   const json = await res.json()
 
   if (!res.ok) {
-    throw new Error('Unable to resolve identity with slingshot')
+    const error = new Error('Unable to resolve identity with slingshot')
+    Monocle.captureException(error, {
+      tags: { component: 'atprotouser' },
+      extra: { actor },
+    })
+    throw error
   }
 
   const result = json as { did: l.DidString; handle: l.HandleString }

@@ -24,6 +24,7 @@ export default await Env.create(new URL('../', import.meta.url), {
   // App
   APP_KEY: Env.schema.secret(),
   APP_URL: Env.schema.string({ format: 'url', tld: false }),
+  APP_ENV: Env.schema.enum(['development', 'staging', 'production'] as const),
 
   // Session
   SESSION_DRIVER: Env.schema.enum(['cookie', 'memory', 'database'] as const),
@@ -39,4 +40,7 @@ export default await Env.create(new URL('../', import.meta.url), {
   MIGRATION_SERVICE: Env.schema.string.optional({ format: 'url', tld: true, protocol: true }),
   ATPROTO_OAUTH_CLIENT_ID: Env.schema.string.optional({ format: 'url', tld: true, protocol: true }),
   ATPROTO_OAUTH_JWT_PRIVATE_KEY: Env.schema.secret.optional(),
+
+  // Monocle.sh for observerability
+  MONOCLE_API_KEY: Env.schema.string.optional(),
 })
