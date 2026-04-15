@@ -33,3 +33,6 @@ router
 
 router.get('/legal/:document', [controllers.Legal, 'show'])
 router.get('/faq', [controllers.Faq, 'show'])
+
+router.get('/_health', [controllers.HealthChecks, 'live'])
+router.get('/_readiness', [controllers.HealthChecks, 'ready'])

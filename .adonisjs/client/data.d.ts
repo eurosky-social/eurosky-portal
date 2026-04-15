@@ -8,6 +8,7 @@ import type { InferData, InferVariants } from '@adonisjs/core/types/transformers
 import type { InferSharedProps } from '@adonisjs/inertia/types'
 import type AppTransformer from '#transformers/app_transformer'
 import type AppsTransformer from '#transformers/apps_transformer'
+import type HealthTransformer from '#transformers/health_transformer'
 import type LegalDocumentsTransformer from '#transformers/legal_documents_transformer'
 import type ProfileTransformer from '#transformers/profile_transformer'
 import type InertiaMiddleware from '#middleware/inertia_middleware'
@@ -20,6 +21,10 @@ export namespace Data {
   export type Apps = InferData<AppsTransformer>
   export namespace Apps {
     export type Variants = InferVariants<AppsTransformer>
+  }
+  export type Health = InferData<HealthTransformer>
+  export namespace Health {
+    export type Variants = InferVariants<HealthTransformer>
   }
   export type LegalDocuments = InferData<LegalDocumentsTransformer>
   export namespace LegalDocuments {

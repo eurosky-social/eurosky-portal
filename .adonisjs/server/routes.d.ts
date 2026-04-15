@@ -18,6 +18,8 @@ export type ScannedRoutes = {
     'account.dismiss_welcome': { paramsTuple?: []; params?: {} }
     'legal.show': { paramsTuple: [ParamValue]; params: {'document': ParamValue} }
     'faq.show': { paramsTuple?: []; params?: {} }
+    'health_checks.live': { paramsTuple?: []; params?: {} }
+    'health_checks.ready': { paramsTuple?: []; params?: {} }
   }
   GET: {
     'oauth.callback': { paramsTuple?: []; params?: {} }
@@ -29,6 +31,8 @@ export type ScannedRoutes = {
     'account.onboarding': { paramsTuple?: []; params?: {} }
     'legal.show': { paramsTuple: [ParamValue]; params: {'document': ParamValue} }
     'faq.show': { paramsTuple?: []; params?: {} }
+    'health_checks.live': { paramsTuple?: []; params?: {} }
+    'health_checks.ready': { paramsTuple?: []; params?: {} }
   }
   HEAD: {
     'oauth.callback': { paramsTuple?: []; params?: {} }
@@ -40,6 +44,8 @@ export type ScannedRoutes = {
     'account.onboarding': { paramsTuple?: []; params?: {} }
     'legal.show': { paramsTuple: [ParamValue]; params: {'document': ParamValue} }
     'faq.show': { paramsTuple?: []; params?: {} }
+    'health_checks.live': { paramsTuple?: []; params?: {} }
+    'health_checks.ready': { paramsTuple?: []; params?: {} }
   }
   POST: {
     'oauth.logout': { paramsTuple?: []; params?: {} }
