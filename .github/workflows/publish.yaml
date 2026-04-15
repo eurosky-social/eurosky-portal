@@ -1,13 +1,13 @@
 name: Publish docker image
 
+# We publish the docker image as dev for pushes to main,
+# and we create releases via Changesets for the tags.
 on:
+  release:
+    types: [published]
   push:
-    # We publish the docker image as dev for pushes to main,
-    # and we create releases via Changesets for the tags.
     branches:
       - main
-    tags:
-      - 'v*'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
