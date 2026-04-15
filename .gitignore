@@ -1,6 +1,7 @@
 # Dependencies and AdonisJS build
 node_modules
 build
+service/blob-api/dist
 tmp/*
 !tmp/.gitkeep
 
@@ -8,6 +9,7 @@ tmp/*
 .env
 .env.*.local
 .env.local
+service/blob-api/.env
 
 # Frontend assets compiled code
 public/assets

@@ -1,2 +1,5 @@
+packages:
+  - service/blob-api
+
 onlyBuiltDependencies:
   - better-sqlite3

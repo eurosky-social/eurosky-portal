@@ -25,7 +25,6 @@ export function getTheme(): Theme {
 }
 
 export function setTheme(theme: Theme) {
-  console.log('setTheme', theme)
   if (theme === 'system') {
     localStorage.removeItem('theme')
     document.documentElement.classList.toggle('dark', prefersDark())

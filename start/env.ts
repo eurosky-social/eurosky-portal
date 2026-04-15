@@ -39,4 +39,8 @@ export default await Env.create(new URL('../', import.meta.url), {
   MIGRATION_SERVICE: Env.schema.string.optional({ format: 'url', tld: true, protocol: true }),
   ATPROTO_OAUTH_CLIENT_ID: Env.schema.string.optional({ format: 'url', tld: true, protocol: true }),
   ATPROTO_OAUTH_JWT_PRIVATE_KEY: Env.schema.secret.optional(),
+
+  // Blob API
+  BLOB_API_URL: Env.schema.string({ format: 'url', tld: false, protocol: true }),
+  BLOB_API_TOKEN: Env.schema.string(),
 })
