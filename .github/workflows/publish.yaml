@@ -3,14 +3,20 @@ name: Publish docker image
 # We publish the docker image as dev for pushes to main,
 # and we create releases via Changesets for the tags.
 on:
-  release:
-    types: [published]
+  workflow_call:
+    inputs:
+      tag_ref:
+        description: 'A github ref passed from the publish workflow'
+        required: true
+        type: string
   push:
     branches:
       - main
 
+env:
+  publish_ref: ${{ case(github.event_name == 'workflow_call', inputs.tag_ref, github.ref) }}
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ case(github.event_name == 'workflow_call', inputs.tag_ref, github.ref) }}
   cancel-in-progress: false
 
 jobs:
@@ -24,6 +30,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+        with:
+          ref: ${{ env.publish_ref }}
 
       - uses: docker/setup-buildx-action@v4
         id: buildx
@@ -44,10 +52,10 @@ jobs:
             ghcr.io/eurosky-social/eurosky-portal
           tags: |
             type=sha,enable=true,priority=100,format=long
-            type=match,pattern=v(\d+\.\d+\.\d+),group=1,enable=${{ startsWith(github.ref, 'refs/tags/v') }}
-            type=match,pattern=v(\d+\.\d+),group=1,enable=${{ startsWith(github.ref, 'refs/tags/v') }}
-            type=raw,value=latest,enable=${{ startsWith(github.ref, 'refs/tags/v') }}
-            type=raw,value=dev,enable=${{ startsWith(github.ref, 'refs/heads/main') }}
+            type=match,pattern=v(\d+\.\d+\.\d+),group=1,enable=${{ startsWith(env.publish_ref, 'refs/tags/v') }}
+            type=match,pattern=v(\d+\.\d+),group=1,enable=${{ startsWith(env.publish_ref, 'refs/tags/v') }}
+            type=raw,value=latest,enable=${{ startsWith(env.publish_ref, 'refs/tags/v') }}
+            type=raw,value=dev,enable=${{ startsWith(env.publish_ref, 'refs/heads/main') }}
 
       - name: Build and push Docker image
         id: build-and-push
