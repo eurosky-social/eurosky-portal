@@ -42,7 +42,7 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
   }, [authorizationServer])
 
   const changePasswordUrl = useMemo(() => {
-    return new URL('/.well-known/change-password', authorizationServer).toString()
+    return new URL('/account/password', authorizationServer).toString()
   }, [authorizationServer])
 
   return (
