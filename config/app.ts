@@ -18,6 +18,7 @@ export const appKey = env.get('APP_KEY')
  * use absolute URLs.
  */
 export const appUrl = env.get('APP_URL')
+export const publicUrl = env.get('PUBLIC_URL', appUrl)
 
 /**
  * The configuration settings used by the HTTP server
@@ -82,5 +83,15 @@ export const http = defineConfig({
      * Cross-site policy for cookie sending.
      */
     sameSite: 'lax',
+  },
+
+  redirect: {
+    /**
+     * Array of allowed hosts for referrer-based redirects.
+     * When empty, only the request's own host is allowed.
+     *
+     * Defaults to []
+     */
+    allowedHosts: [new URL(publicUrl).host],
   },
 })
