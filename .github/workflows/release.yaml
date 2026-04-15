@@ -47,11 +47,18 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Print changeset output
-        run: echo '${{ toJson(steps.changesets.outputs) }}'
+      - name: Setup release variables
+        id: release
+        run: |
+          echo '${{steps.changesets.outputs.publishedPackages}}'
+          release_version=$(jq -cr '.[] | select(.name | contains("eurosky-portal")) | .version' <<< '${{ steps.changesets.outputs.publishedPackages }}')
+          echo "tag_ref='refs/tags/v${release_version%,}'" >> "$GITHUB_OUTPUT"
+
+      - name: Print tag_ref
+        run: echo '${{ steps.release.outputs.tag_ref }}'
 
       - name: Publish release
         if: steps.changesets.outputs.published == 'true'
         uses: ./.github/workflows/publish.yaml
         with:
-          tag_ref: 'refs/tags/v${{steps.changesets.outputs.publishedPackages[0].version}}'
+          tag_ref: ${{ steps.release.outputs.tag_ref }}
