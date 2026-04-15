@@ -90,6 +90,18 @@ const routes = {
     tokens: [{"old":"/faq","type":0,"val":"faq","end":""}],
     types: placeholder as Registry['faq.show']['types'],
   },
+  'health_checks.live': {
+    methods: ["GET","HEAD"],
+    pattern: '/_health',
+    tokens: [{"old":"/_health","type":0,"val":"_health","end":""}],
+    types: placeholder as Registry['health_checks.live']['types'],
+  },
+  'health_checks.ready': {
+    methods: ["GET","HEAD"],
+    pattern: '/_readiness',
+    tokens: [{"old":"/_readiness","type":0,"val":"_readiness","end":""}],
+    types: placeholder as Registry['health_checks.ready']['types'],
+  },
 } as const satisfies Record<string, AdonisEndpoint>
 
 export { routes }

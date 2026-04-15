@@ -30,4 +30,8 @@ export interface ApiDefinition {
   faq: {
     show: typeof routes['faq.show']
   }
+  healthChecks: {
+    live: typeof routes['health_checks.live']
+    ready: typeof routes['health_checks.ready']
+  }
 }

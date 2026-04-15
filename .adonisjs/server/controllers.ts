@@ -9,6 +9,7 @@ export const controllers = {
   Dashboard: () => import('#controllers/dashboard_controller'),
   Explore: () => import('#controllers/explore_controller'),
   Faq: () => import('#controllers/faq_controller'),
+  HealthChecks: () => import('#controllers/health_checks_controller'),
   Home: () => import('#controllers/home_controller'),
   Legal: () => import('#controllers/legal_controller'),
   Oauth: () => import('#controllers/oauth_controller'),
