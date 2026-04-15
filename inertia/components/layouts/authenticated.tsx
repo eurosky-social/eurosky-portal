@@ -41,6 +41,8 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
     return new URL('/account', authorizationServer).toString()
   }, [authorizationServer])
 
+  // FIXME: We're not using `/.well-known/change-password` due to
+  // https://github.com/bluesky-social/atproto/issues/4858
   const changePasswordUrl = useMemo(() => {
     return new URL('/account/password', authorizationServer).toString()
   }, [authorizationServer])
