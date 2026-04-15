@@ -393,7 +393,6 @@ test('blob-api', async function (t) {
       let loggedError: unknown
       console.error = captureConsoleError
 
-
       try {
         const app = createApi({ database, token })
         const url = getStorageBreakdown + '?' + new URLSearchParams({ did })

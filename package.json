@@ -83,6 +83,7 @@
     "@atproto-labs/simple-store": "^0.3.0",
     "@atproto/jwk-jose": "^0.1.11",
     "@atproto/lex": "^0.0.24",
+    "@atproto/lex-client": "^0.0.18",
     "@atproto/oauth-client-node": "^0.3.17",
     "@headlessui/react": "^2.2.10",
     "@heroicons/react": "^2.2.0",

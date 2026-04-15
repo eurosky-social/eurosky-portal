@@ -3,20 +3,27 @@ import { ArrowDownTrayIcon, ArrowsPointingOutIcon } from '@heroicons/react/24/so
 import { Button } from '~/lib/button'
 import { Code } from '~/lib/text'
 import { displayByteSize } from './bytes'
+import { fileCategoryFromMimeType } from './category'
+import type { StorageBlob } from './show'
 
 /**
  * Properties for {@linkcode BlobItem}.
  */
 interface BlobItemProperties {
   /**
-   * CID.
+   * Base.
    */
-  cid: string
+  authorizationServer: string
 
   /**
-   * State.
+   * Metadata.
    */
-  state?: BlobItemState | undefined
+  blob: StorageBlob
+
+  /**
+   * DID.
+   */
+  did: string
 }
 
 /**
@@ -35,8 +42,7 @@ interface Cell {
 }
 
 /**
- * Threshold to defer media loading until user request; note that the server
- * does not yet support `Range` request so this does not do much yet.
+ * Threshold to defer media loading until user request.
  */
 const defaultDeferThreshold = 2 * 1024 * 1024
 
@@ -83,7 +89,7 @@ const supportedMediaTypeLabels = new Map([
  *   Element.
  */
 export default function BlobItem(properties: BlobItemProperties): React.ReactNode {
-  const { cid, state } = properties
+  const { authorizationServer, blob, did } = properties
   const [downloading, setDownloading] = useState<boolean>(false)
   const [opening, setOpening] = useState<boolean>(false)
   const [reduceData, setReduceData] = useState<boolean>(
@@ -100,7 +106,7 @@ export default function BlobItem(properties: BlobItemProperties): React.ReactNod
       setOpening(false)
       setRequested(false)
     },
-    [state]
+    [blob]
   )
 
   useEffect(function () {
@@ -126,107 +132,104 @@ export default function BlobItem(properties: BlobItemProperties): React.ReactNod
   )
   const cells: Array<Cell> = []
 
-  if (state) {
-    if (state.type === 'error') {
+  const url = new URL('/xrpc/com.atproto.sync.getBlob', authorizationServer)
+  url.searchParams.set('cid', blob.cid)
+  url.searchParams.set('did', did)
+
+  const threshold = reduceData ? reducedDataDeferThreshold : defaultDeferThreshold
+  const category = fileCategoryFromMimeType(blob.mimeType)
+
+  if (category === 'image' || category === 'video') {
+    // Defer loading for large media.
+    if (blob.size >= threshold && !requested) {
       value = (
-        <div className="mb-2 block aspect-square break-all rounded-md bg-red-50 p-2 text-red-600 dark:bg-red-900/20 dark:text-red-400">
-          <strong>Error</strong>: {state.reason}
+        <div className="mb-2 aspect-square w-full rounded-md border border-zinc-200 bg-zinc-50 p-3 dark:border-white/10 dark:bg-zinc-900/40 flex flex-col items-center justify-center gap-2">
+          <Button
+            aria-label={'Load large ' + blob.mimeType + ' preview'}
+            className="dark:border-slate-600!"
+            onClick={function () {
+              setRequested(true)
+            }}
+            outline
+          >
+            Load large {blob.mimeType}
+          </Button>
         </div>
       )
+    } else if (category === 'image') {
+      value = (
+        <img
+          alt=""
+          className="mb-2 aspect-square w-full rounded-md object-cover"
+          decoding="async"
+          fetchPriority={requested ? 'auto' : 'low'}
+          loading={requested ? 'eager' : 'lazy'}
+          src={String(url)}
+        />
+      )
     } else {
-      if (state.type === 'image' || state.type === 'video') {
-        const threshold = reduceData ? reducedDataDeferThreshold : defaultDeferThreshold
-
-        // Defer loading for large media.
-        if (state.size >= threshold && !requested) {
-          value = (
-            <div className="mb-2 aspect-square w-full rounded-md border border-zinc-200 bg-zinc-50 p-3 dark:border-white/10 dark:bg-zinc-900/40 flex flex-col items-center justify-center gap-2">
-              <Button
-                aria-label={'Load large ' + state.type + ' preview'}
-                className="dark:border-slate-600!"
-                onClick={function () {
-                  setRequested(true)
-                }}
-                outline
-              >
-                Load large {state.type}
-              </Button>
-            </div>
-          )
-        } else if (state.type === 'image') {
-          value = (
-            <img
-              alt=""
-              className="mb-2 aspect-square w-full rounded-md object-cover"
-              decoding="async"
-              fetchPriority={requested ? 'auto' : 'low'}
-              loading={requested ? 'eager' : 'lazy'}
-              src={state.url}
-            />
-          )
-        } else {
-          value = (
-            <video
-              className="mb-2 aspect-square w-full rounded-md object-cover"
-              controls
-              preload={requested ? 'auto' : 'metadata'}
-              src={state.url}
-            />
-          )
-        }
-      } else if (state.type === 'unknown') {
-        value = <Code className="mb-2 aspect-square block break-all">{state.preview}</Code>
-      }
-
-      cells.push(
-        { key: 'Size', value: displayByteSize(state.size) },
-        { key: 'Type', value: displayFileType(state.contentType) }
+      value = (
+        <video
+          className="mb-2 aspect-square w-full rounded-md object-cover"
+          controls
+          preload={requested ? 'auto' : 'metadata'}
+          src={String(url)}
+        />
       )
     }
+  } else {
+    value = (
+      <div className="mb-2 aspect-square w-full rounded-md border border-zinc-200 bg-zinc-50 p-3 dark:border-white/10 dark:bg-zinc-900/40 flex flex-col items-center justify-center gap-2">
+        Preview not available.
+      </div>
+    )
   }
+
+  cells.push(
+    { key: 'Size', value: displayByteSize(blob.size) },
+    { key: 'Type', value: displayFileType(blob.mimeType) }
+  )
 
   return (
     <li className="group relative rounded-lg border border-zinc-200 p-3 dark:border-white/10">
-      {state && state.type !== 'error' ? (
-        <div className="absolute top-5 right-5 z-10 inline-flex items-center gap-2 transition-opacity duration-200 sm:pointer-events-none sm:opacity-0 sm:group-hover:pointer-events-auto sm:group-hover:opacity-100 sm:group-focus-within:pointer-events-auto sm:group-focus-within:opacity-100">
-          <button
-            aria-label="Open file in a new tab"
-            className="inline-flex items-center gap-1 rounded-md border border-zinc-300 bg-white/90 px-2 py-1 text-xs font-medium text-zinc-900 shadow-sm backdrop-blur-sm transition-colors hover:bg-white active:bg-zinc-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 disabled:cursor-not-allowed disabled:opacity-60 dark:border-zinc-700 dark:bg-zinc-900/90 dark:text-zinc-100 dark:hover:bg-zinc-800 dark:active:bg-zinc-700 dark:focus-visible:ring-blue-300/40"
-            disabled={opening}
-            onClick={async function () {
-              setOpening(true)
+      <div className="absolute top-5 right-5 z-10 inline-flex items-center gap-2 transition-opacity duration-200 sm:pointer-events-none sm:opacity-0 sm:group-hover:pointer-events-auto sm:group-hover:opacity-100 sm:group-focus-within:pointer-events-auto sm:group-focus-within:opacity-100">
+        <button
+          aria-label="Open file in a new tab"
+          className="inline-flex items-center gap-1 rounded-md border border-zinc-300 bg-white/90 px-2 py-1 text-xs font-medium text-zinc-900 shadow-sm backdrop-blur-sm transition-colors hover:bg-white active:bg-zinc-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 disabled:cursor-not-allowed disabled:opacity-60 dark:border-zinc-700 dark:bg-zinc-900/90 dark:text-zinc-100 dark:hover:bg-zinc-800 dark:active:bg-zinc-700 dark:focus-visible:ring-blue-300/40"
+          disabled={opening}
+          onClick={async function () {
+            setOpening(true)
 
-              try {
-                await openBlob(state.url)
-              } finally {
-                setOpening(false)
-              }
-            }}
-            type="button"
-          >
-            <ArrowsPointingOutIcon aria-hidden="true" className="size-4" data-slot="icon" />
-            {opening ? 'Opening…' : 'Open'}
-          </button>
-          <button
-            aria-label="Download file"
-            className="inline-flex items-center gap-1 rounded-md border border-zinc-300 bg-white/90 px-2 py-1 text-xs font-medium text-zinc-900 shadow-sm backdrop-blur-sm transition-colors hover:bg-white active:bg-zinc-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 disabled:cursor-not-allowed disabled:opacity-60 dark:border-zinc-700 dark:bg-zinc-900/90 dark:text-zinc-100 dark:hover:bg-zinc-800 dark:active:bg-zinc-700 dark:focus-visible:ring-blue-300/40"
-            disabled={downloading}
-            onClick={async function () {
-              setDownloading(true)
+            try {
+              await openBlob(String(url))
+            } finally {
+              setOpening(false)
+            }
+          }}
+          type="button"
+        >
+          <ArrowsPointingOutIcon aria-hidden="true" className="size-4" data-slot="icon" />
+          {opening ? 'Opening…' : 'Open'}
+        </button>
+        <button
+          aria-label="Download file"
+          className="inline-flex items-center gap-1 rounded-md border border-zinc-300 bg-white/90 px-2 py-1 text-xs font-medium text-zinc-900 shadow-sm backdrop-blur-sm transition-colors hover:bg-white active:bg-zinc-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 disabled:cursor-not-allowed disabled:opacity-60 dark:border-zinc-700 dark:bg-zinc-900/90 dark:text-zinc-100 dark:hover:bg-zinc-800 dark:active:bg-zinc-700 dark:focus-visible:ring-blue-300/40"
+          disabled={downloading}
+          onClick={async function () {
+            setDownloading(true)
 
-              try {
-                await downloadBlob(state.url, displayFilename(cid, state.contentType))
-              } finally {
-                setDownloading(false)
-              }
-            }}
-            type="button"
-          >
-            <ArrowDownTrayIcon aria-hidden="true" className="size-4" data-slot="icon" />
-            {downloading ? 'Downloading…' : 'Download'}
-          </button>
-        </div>
-      ) : undefined}
+            try {
+              await downloadBlob(String(url), displayFilename(blob.cid, blob.mimeType))
+            } finally {
+              setDownloading(false)
+            }
+          }}
+          type="button"
+        >
+          <ArrowDownTrayIcon aria-hidden="true" className="size-4" data-slot="icon" />
+          {downloading ? 'Downloading…' : 'Download'}
+        </button>
+      </div>
       {value}
       {cells.length > 0 ? (
         <dl>
@@ -245,17 +248,16 @@ export default function BlobItem(properties: BlobItemProperties): React.ReactNod
 }
 
 /**
- * Display a `content-type`.
+ * Display a mime type.
  *
  * @param type
  *   Value from `content-type` header.
  * @returns
  *   Human-friendly file type.
  */
-function displayFileType(type: string): React.ReactNode {
-  const mime = normalizeMimeType(type)
-  const label = mime ? supportedMediaTypeLabels.get(mime) : undefined
-  return label || (mime ? <Code>{mime}</Code> : 'Unknown')
+function displayFileType(type?: string | undefined): React.ReactNode {
+  const label = type ? supportedMediaTypeLabels.get(type) : undefined
+  return label || (type ? <Code>{type}</Code> : 'Unknown')
 }
 
 /**
@@ -268,9 +270,8 @@ function displayFileType(type: string): React.ReactNode {
  * @returns
  *   File name.
  */
-function displayFilename(cid: string, type: string): string {
-  const mime = normalizeMimeType(type)
-  const extension = mime ? mediaTypeExtensions.get(mime) : undefined
+function displayFilename(cid: string, type?: string | undefined): string {
+  const extension = type ? mediaTypeExtensions.get(type) : undefined
   // Shared prefix so that things are downloaded next to each other and that
   // there is *some* explanation where they came from.
   // `24` is a balance between colisions and readability; also note that the
@@ -319,18 +320,6 @@ async function downloadBlob(url: string, filename: string): Promise<undefined> {
 }
 
 /**
- * Normalize a `content-type` value to a lowercase MIME type.
- *
- * @param value
- *   Raw `content-type` header value.
- * @returns
- *   Normalized MIME type.
- */
-function normalizeMimeType(value: string): string | undefined {
-  return value.split(';')[0]?.trim().toLowerCase() ?? undefined
-}
-
-/**
  * Open a blob in a new tab; avoids server `content-disposition: attachment`
  * forcing download; this *should* work when used in a click handler.
  *
@@ -363,91 +352,3 @@ async function openBlob(url: string): Promise<undefined> {
     URL.revokeObjectURL(objectUrl)
   }, 60_000)
 }
-/**
- * Properties for a loaded blob state (abstract, reused by specific types).
- */
-interface BlobItemLoaded {
-  /**
-   * MIME type (example: `image/jpeg`).
-   */
-  contentType: string
-
-  /**
-   * Size in bytes (example: `1024`).
-   */
-  size: number
-}
-
-/**
- * Failed blob.
- */
-interface BlobItemStateError {
-  /**
-   * Reason.
-   */
-  reason: string
-
-  /**
-   * Kind.
-   */
-  type: 'error'
-}
-
-/**
- * Loaded blob with a known image type.
- */
-interface BlobItemStateImage extends BlobItemLoaded {
-  /**
-   * Kind.
-   */
-  type: 'image'
-
-  /**
-   * URL to render.
-   */
-  url: string
-}
-
-/**
- * Loaded blob with a known video type.
- */
-interface BlobItemStateVideo extends BlobItemLoaded {
-  /**
-   * Kind.
-   */
-  type: 'video'
-
-  /**
-   * URL to render.
-   */
-  url: string
-}
-
-/**
- * Loaded blob with an unknown type.
- */
-interface BlobItemStateUnknown extends BlobItemLoaded {
-  /**
-   * Preview of some first bytes (example: `ff d8 ff e0 00 10 4a`)
-   */
-  preview: string
-
-  /**
-   * Kind.
-   */
-  type: 'unknown'
-
-  /**
-   * URL to download.
-   */
-  url: string
-}
-
-/**
- * State of a blob item.
- */
-export type BlobItemState =
-  | BlobItemStateError
-  | BlobItemStateImage
-  | BlobItemStateUnknown
-  | BlobItemStateVideo

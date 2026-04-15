@@ -1,50 +1,71 @@
 import * as Headless from '@headlessui/react'
 import { Head } from '@inertiajs/react'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Badge } from '~/lib/badge'
 import { Button } from '~/lib/button'
 import Card from '~/lib/card'
 import { Heading, Subheading } from '~/lib/heading'
 import { Text } from '~/lib/text'
 import { InertiaProps } from '~/types'
-import { type BlobItemState, default as BlobItem } from './BlobItem'
 import { displayByteSize } from './bytes'
+import { type FileCategory, fileCategoryFromMimeType } from './category'
+import BlobItem from './BlobItem'
 
 /**
- * Metadata for a category.
+ * Blob metadata exposed by the storage page backend.
+ *
+ * Like `BlobRow` from `@eurosky/blob-api` but has to be a `type` for `Inertia`.
  */
-interface FileCategoryInfo {
+export type StorageBlob = {
   /**
-   * Category.
+   * Blob CID.
    */
-  category: FileCategory
+  cid: string
 
   /**
-   * Tailwind classes.
+   * Blob MIME type when known.
    */
-  color: string
+  mimeType?: string | undefined
 
   /**
-   * Label for humans.
+   * Size in bytes.
    */
-  label: string
+  size: number
 }
 
 /**
- * Categories.
+ * Blob metadata exposed by the storage page backend.
+ *
+ * Like `StorageBreakdownCategory` from `portal_sync.js`.
  */
-type FileCategory = 'image' | 'other' | 'video'
+type Breakdown = {
+  /**
+   * Size in bytes.
+   */
+  bytes: number
+
+  /**
+   * Category.
+   */
+  category: string
+}
 
 /**
- * Properties; `Inertia` needs this to be a `type`.
+ * Properties.
+ *
+ * Like `ListBlobDetailsOutputBody` from `portal_sync`.
+ * Has to be a `type` for `Inertia`.
  */
 type StoragePageProperties = {
   /**
-   * File CIDs available for the signed-in account.
-   *
-   * When omitted, the page treats this as an empty list.
+   * Blobs.
    */
-  blobs: Array<string>
+  blobs: Array<StorageBlob>
+
+  /**
+   * Storage breakdown by category.
+   */
+  breakdown: Array<Breakdown>
 
   /**
    * User DID.
@@ -53,29 +74,12 @@ type StoragePageProperties = {
 }
 
 /**
- * Allowed MIME types for inline images; when changing these make sure to update
- * `BlobItem.tsx` as well :)
- */
-const allowedImages = new Set([
-  'image/avif',
-  // Bluesky turns GIFs into videos, but maybe something else does not.
-  'image/gif',
-  'image/jpeg',
-  'image/png',
-  'image/webp',
-])
-
-/**
- * Allowed MIME types for inline videos; when changing these make sure to update
- * `BlobItem.tsx` as well :)
- */
-const allowedVideos = new Set(['video/mp4', 'video/ogg', 'video/webm'])
-
-/**
  * Blobs to show per page.
  * Multiple of `4` so they somewhat fit on a big screen.
  */
 const blobsPerPage = 48
+
+const categories = ['image', 'video', 'other'] as const
 
 /**
  * Formatter.
@@ -88,37 +92,6 @@ const countFormatter = new Intl.NumberFormat()
 const countPluralRules = new Intl.PluralRules()
 
 /**
- * Storage breakdown segments.
- */
-const fileCategoryInfo: Array<FileCategoryInfo> = [
-  {
-    category: 'image',
-    color: 'bg-yellow-400 dark:bg-yellow-300',
-    label: 'Photos',
-  },
-  {
-    category: 'video',
-    color: 'bg-blue-500 dark:bg-blue-400',
-    label: 'Videos',
-  },
-  {
-    category: 'other',
-    color: 'bg-zinc-400 dark:bg-zinc-500',
-    label: 'Other',
-  },
-]
-
-/**
- * Max concurrent file fetches.
- */
-const maxConcurrentFileFetches = 4
-
-/**
- * Video element for capability checks.
- */
-const videoElement = typeof document !== 'undefined' ? document.createElement('video') : undefined
-
-/**
  * Render the storage page.
  *
  * @param properties
@@ -127,7 +100,7 @@ const videoElement = typeof document !== 'undefined' ? document.createElement('v
  *   Element.
  */
 export default function StoragePage(properties: InertiaProps<StoragePageProperties>) {
-  const { authorizationServer, blobs, did } = properties
+  const { authorizationServer, blobs, breakdown, did } = properties
 
   // This page should only be used for signed in users.
   if (!authorizationServer || !did) {
@@ -145,7 +118,12 @@ export default function StoragePage(properties: InertiaProps<StoragePageProperti
             you.
           </Text>
         </div>
-        <BlobsSection authorizationServer={authorizationServer} blobs={blobs} did={did} />
+        <BlobsSection
+          authorizationServer={authorizationServer}
+          blobs={blobs}
+          breakdown={breakdown}
+          did={did}
+        />
         <CollectionsSection />
       </div>
     </>
@@ -162,151 +140,17 @@ export default function StoragePage(properties: InertiaProps<StoragePageProperti
  */
 function BlobsSection(properties: {
   authorizationServer: string
-  blobs: Array<string>
+  blobs: ReadonlyArray<StorageBlob>
+  breakdown: ReadonlyArray<Breakdown>
   did: string
 }): React.ReactNode {
-  const { authorizationServer, blobs = [], did } = properties
-  const [activeTabIndex, setActiveTabIndex] = useState<number>(0)
-  const [blobStateByCid, setBlobStateByCid] = useState<Record<string, BlobItemState>>({})
-  const [categoryByCid, setCategoryByCid] = useState<Record<string, FileCategory>>({})
-  const [visibleCountByCategory, setVisibleCountByCategory] = useState<
-    Record<FileCategory, number>
-  >({
-    image: blobsPerPage,
-    other: blobsPerPage,
-    video: blobsPerPage,
-  })
-
-  const inFlightCids = useRef(new Set<string>())
-  const requestControllerRef = useRef(new AbortController())
-
-  const blobBaseUrl = useMemo(
-    function () {
-      const url = new URL('/xrpc/com.atproto.sync.getBlob', authorizationServer)
-      url.searchParams.set('did', did)
-      return url
-    },
-    [authorizationServer, did]
-  )
-
-  const filesByCategory = useMemo(
-    function () {
-      return groupFilesByCategory(blobs, categoryByCid)
-    },
-    [blobs, categoryByCid]
-  )
-
-  const activeCategory = fileCategoryInfo[activeTabIndex].category ?? fileCategoryInfo[0].category
-  const activeFiles = filesByCategory[activeCategory]
-
-  const visibleFiles = useMemo(
-    function () {
-      const visibleLimit = visibleCountByCategory[activeCategory] ?? blobsPerPage
-      return activeFiles.slice(0, visibleLimit)
-    },
-    [activeCategory, activeFiles, visibleCountByCategory]
-  )
-
-  useEffect(
-    function () {
-      requestControllerRef.current.abort()
-      requestControllerRef.current = new AbortController()
-      setActiveTabIndex(0)
-      setCategoryByCid({})
-      setBlobStateByCid({})
-      setVisibleCountByCategory({
-        image: blobsPerPage,
-        other: blobsPerPage,
-        video: blobsPerPage,
-      })
-      inFlightCids.current.clear()
-    },
-    [authorizationServer, blobs.length, did]
-  )
-
-  useEffect(function () {
-    return function () {
-      requestControllerRef.current.abort()
-    }
-  }, [])
-
-  useEffect(
-    function () {
-      if (blobs.length === 0) {
-        return
-      }
-
-      const queue = blobs.filter(function (cid) {
-        return !blobStateByCid[cid] && !inFlightCids.current.has(cid)
-      })
-
-      if (queue.length === 0) {
-        return
-      }
-
-      for (const cid of queue) {
-        inFlightCids.current.add(cid)
-      }
-
-      const signal = requestControllerRef.current.signal
-
-      // Intentionally not awaited.
-      void (async function () {
-        const workers = Array.from(
-          { length: Math.min(maxConcurrentFileFetches, queue.length) },
-          async function (_, workerIndex) {
-            for (let index = workerIndex; index < queue.length; index += maxConcurrentFileFetches) {
-              if (signal.aborted) {
-                return
-              }
-
-              const cid = queue[index]
-              const url = new URL(blobBaseUrl)
-              url.searchParams.set('cid', cid)
-
-              try {
-                const state = await loadBlobItemState(url.toString(), signal)
-
-                if (signal.aborted) {
-                  return
-                }
-
-                setBlobStateByCid(function (current) {
-                  if (current[cid]) {
-                    return current
-                  }
-
-                  return { ...current, [cid]: state }
-                })
-
-                const category =
-                  state.type === 'image' || state.type === 'video' ? state.type : 'other'
-
-                updateFileCategory(cid, category, setCategoryByCid)
-              } finally {
-                inFlightCids.current.delete(cid)
-              }
-            }
-          }
-        )
-
-        await Promise.all(workers)
-      })()
-    },
-    [blobBaseUrl, blobStateByCid, blobs]
-  )
+  const { authorizationServer, blobs, breakdown, did } = properties
 
   return (
     <>
-      {blobs.length > 0 && (
-        <Card className="p-5 md:p-6">
-          <StorageBreakdown
-            blobs={blobs}
-            blobStateByCid={blobStateByCid}
-            filesByCategory={filesByCategory}
-          />
-        </Card>
-      )}
+      <Card className="p-5 md:p-6">
+        <StorageBreakdown breakdown={breakdown} />
+      </Card>
       <Card className="p-5 md:p-6">
         <div className="flex items-baseline justify-between gap-2">
           <Subheading level={2}>Files</Subheading>
@@ -320,26 +164,7 @@ function BlobsSection(properties: {
         {blobs.length === 0 ? (
           <Text className="mt-4">No stored files were found for this account.</Text>
         ) : (
-          <StorageBrowser
-            activeCategory={activeCategory}
-            activeFiles={activeFiles}
-            activeTabIndex={activeTabIndex}
-            blobStateByCid={blobStateByCid}
-            filesByCategory={filesByCategory}
-            onShowMore={function () {
-              setVisibleCountByCategory(function (current) {
-                const visible = (current[activeCategory] ?? blobsPerPage) + blobsPerPage
-                return { ...current, [activeCategory]: visible }
-              })
-            }}
-            onTabChange={function (index) {
-              setActiveTabIndex(index)
-            }}
-            showMoreDisabled={
-              (visibleCountByCategory[activeCategory] ?? blobsPerPage) >= activeFiles.length
-            }
-            visibleFiles={visibleFiles}
-          />
+          <StorageBrowser authorizationServer={authorizationServer} blobs={blobs} did={did} />
         )}
       </Card>
     </>
@@ -373,34 +198,47 @@ function CollectionsSection(): React.ReactNode {
  *   Element.
  */
 function StorageBrowser(properties: {
-  activeCategory: FileCategory
-  activeFiles: Array<string>
-  activeTabIndex: number
-  blobStateByCid: Record<string, BlobItemState>
-  filesByCategory: Record<FileCategory, Array<string>>
-  onShowMore: () => undefined
-  onTabChange: (index: number) => undefined
-  showMoreDisabled: boolean
-  visibleFiles: Array<string>
+  authorizationServer: string
+  blobs: ReadonlyArray<StorageBlob>
+  did: string
 }): React.ReactNode {
-  const {
-    activeCategory,
-    activeFiles,
-    activeTabIndex,
-    blobStateByCid,
-    filesByCategory,
-    onShowMore,
-    onTabChange,
-    showMoreDisabled,
-    visibleFiles,
-  } = properties
+  const { authorizationServer, blobs, did } = properties
+  const [activeTabIndex, setActiveTabIndex] = useState(0)
+  const [visibleCount, setVisibleCount] = useState(blobsPerPage)
+
+  const activeFiles = useMemo(
+    function () {
+      return filesByCategory(blobs, categories[activeTabIndex])
+    },
+    [activeTabIndex, blobs.length]
+  )
+
+  const visibleFiles = useMemo(
+    function () {
+      return activeFiles.slice(0, visibleCount)
+    },
+    [activeFiles, visibleCount]
+  )
+
+  useEffect(
+    function () {
+      setActiveTabIndex(0)
+      setVisibleCount(blobsPerPage)
+    },
+    [authorizationServer, blobs.length, did]
+  )
 
   return (
     <>
-      <Headless.TabGroup onChange={onTabChange} selectedIndex={activeTabIndex}>
+      <Headless.TabGroup
+        onChange={function (index) {
+          setActiveTabIndex(index)
+        }}
+        selectedIndex={activeTabIndex}
+      >
         <Headless.TabList className="mt-4 flex flex-wrap gap-2">
-          {fileCategoryInfo.map(function ({ category }) {
-            const count = filesByCategory[category].length
+          {categories.map(function (category) {
+            const count = filesByCategory(blobs, category).length
             return (
               <Headless.Tab
                 aria-label={displayCategory(category) + ', ' + formatCountLabel(count, 'file')}
@@ -417,18 +255,24 @@ function StorageBrowser(properties: {
         </Headless.TabList>
 
         <Headless.TabPanels>
-          {fileCategoryInfo.map(function ({ category }) {
-            const files = filesByCategory[category]
-            const visible = category === activeCategory ? visibleFiles : []
+          {categories.map(function (category) {
+            const visible = category === categories[activeTabIndex] ? visibleFiles : []
 
             return (
               <Headless.TabPanel className="focus:outline-none" key={category}>
-                {files.length === 0 ? (
+                {visible.length === 0 ? (
                   <Text className="mt-4">No files in this category.</Text>
                 ) : (
                   <ul className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-                    {visible.map(function (cid) {
-                      return <BlobItem cid={cid} key={cid} state={blobStateByCid[cid]} />
+                    {visible.map(function (blob) {
+                      return (
+                        <BlobItem
+                          authorizationServer={authorizationServer}
+                          blob={blob}
+                          did={did}
+                          key={blob.cid}
+                        />
+                      )
                     })}
                   </ul>
                 )}
@@ -445,19 +289,23 @@ function StorageBrowser(properties: {
             ' of ' +
             formatCountLabel(activeFiles.length, 'file') +
             ' in ' +
-            displayCategory(activeCategory) +
+            displayCategory(categories[activeTabIndex]) +
             '.'}
         </Text>
         <Button
           aria-label={
             'Show more ' +
-            displayCategory(activeCategory).toLowerCase() +
+            displayCategory(categories[activeTabIndex]).toLowerCase() +
             ' ' +
             pluralize(activeFiles.length, 'file')
           }
           className="disabled:cursor-not-allowed data-disabled:cursor-not-allowed"
-          disabled={showMoreDisabled}
-          onClick={onShowMore}
+          disabled={visibleCount >= activeFiles.length}
+          onClick={function () {
+            setVisibleCount(function (current) {
+              return Math.min(current + blobsPerPage, activeFiles.length)
+            })
+          }}
           outline
         >
           Show more
@@ -475,84 +323,57 @@ function StorageBrowser(properties: {
  * @returns
  *   Element.
  */
-function StorageBreakdown(properties: {
-  blobs: Array<string>
-  blobStateByCid: Record<string, BlobItemState>
-  filesByCategory: Record<FileCategory, Array<string>>
-}): React.ReactNode {
-  const { blobs, blobStateByCid, filesByCategory } = properties
+function StorageBreakdown(properties: { breakdown: ReadonlyArray<Breakdown> }): React.ReactNode {
+  const { breakdown } = properties
+  let totalSize = 0
 
-  const sizeByCategory = useMemo(
-    function () {
-      const sizes: Record<FileCategory, number> = { image: 0, other: 0, video: 0 }
-
-      for (const { category } of fileCategoryInfo) {
-        for (const cid of filesByCategory[category]) {
-          const state = blobStateByCid[cid]
-
-          if (state && state.type !== 'error') {
-            sizes[category] += state.size
-          }
-        }
-      }
-
-      return sizes
-    },
-    [blobStateByCid, filesByCategory]
-  )
-
-  const totalSize = sizeByCategory.image + sizeByCategory.video + sizeByCategory.other
-  const loadedCount = Object.keys(blobStateByCid).length
-  const loading = loadedCount < blobs.length
+  for (const { bytes } of breakdown) {
+    totalSize += bytes
+  }
 
   return (
     <div>
       <div className="mb-4 flex items-baseline justify-between gap-2">
         <Subheading level={2}>Breakdown</Subheading>
         <span
-          aria-live="polite"
-          aria-label={displayByteSize(totalSize) + (loading ? ', loading' : '')}
+          aria-label={displayByteSize(totalSize)}
           className="text-sm tabular-nums text-zinc-900 dark:text-zinc-100"
         >
           {displayByteSize(totalSize) + ' total'}
-          {loading && <span className="ml-1 text-zinc-400 dark:text-zinc-500"> (loading…)</span>}
         </span>
       </div>
 
-      {totalSize === 0 && loading ? (
-        <div className="h-2.5 w-full animate-pulse rounded-full bg-zinc-200 dark:bg-zinc-700" />
-      ) : (
-        <div
-          aria-label={fileCategoryInfo
-            .map((s) => `${s.label}: ${displayByteSize(sizeByCategory[s.category])}`)
-            .join(', ')}
-          className="flex h-2.5 w-full overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-700"
-          role="img"
-        >
-          {totalSize > 0 &&
-            fileCategoryInfo.map(function ({ category, color }) {
-              const percentage = (sizeByCategory[category] / totalSize) * 100
-              if (percentage === 0) return null
-              return (
-                <div
-                  className={`${color} transition-all duration-500`}
-                  key={category}
-                  style={{ width: `${percentage}%` }}
-                />
-              )
-            })}
-        </div>
-      )}
+      <div
+        aria-label={breakdown
+          .map(({ bytes, category }) => `${displayCategory(category)}: ${displayByteSize(bytes)}`)
+          .join(', ')}
+        className="flex h-2.5 w-full overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-700"
+        role="img"
+      >
+        {breakdown.map(function ({ bytes, category }) {
+          const percentage = (bytes / totalSize) * 100
+          if (percentage === 0) return null
+          return (
+            <div
+              className={`${categoryColor(category)} transition-all duration-500`}
+              key={category}
+              style={{ width: `${percentage}%` }}
+            />
+          )
+        })}
+      </div>
 
       <div className="mt-3 flex flex-wrap gap-x-6 gap-y-1.5">
-        {fileCategoryInfo.map(function ({ category, color, label }) {
+        {breakdown.map(function ({ bytes, category }) {
           return (
             <div className="flex items-center gap-2" key={category}>
-              <span className={`size-2 shrink-0 rounded-full ${color}`} />
+              <span className={`size-2 shrink-0 rounded-full ${categoryColor(category)}`} />
               <span className="text-sm text-zinc-600 dark:text-zinc-300">
-                <span className="font-medium text-zinc-900 dark:text-zinc-100">{label}</span>
+                <span className="font-medium text-zinc-900 dark:text-zinc-100">
+                  {displayCategory(category)}
+                </span>
                 {' — '}
-                <span className="tabular-nums">{displayByteSize(sizeByCategory[category])}</span>
+                <span className="tabular-nums">{displayByteSize(bytes)}</span>
               </span>
             </div>
           )
@@ -561,30 +382,25 @@ function StorageBreakdown(properties: {
     </div>
   )
 }
-/**
- * Display a byte.
- *
- * @param byte
- *   Byte.
- * @returns
- *   Byte for humans (example: 0a).
- */
-function displayByte(byte: number): string {
-  return byte.toString(16).padStart(2, '0')
-}
 
 /**
- * Display bytes as a hex string.
+ * Get a color for a category.
  *
- * @param bytes
- *   Byte array.
+ * @param category
+ *   Category.
  * @returns
- *   Bytes for humans (example: ff d8 ff e0 00 10 4a).
+ *   Color.
  */
-function displayBytes(bytes: Uint8Array): string {
-  const max = 128
-  const value = Array.from(bytes.slice(0, max)).map(displayByte).join(' ')
-  return bytes.length > max ? value + ' …' : value
+function categoryColor(category: string): string {
+  if (category === 'image') {
+    return 'bg-yellow-400 dark:bg-yellow-300'
+  }
+
+  if (category === 'video') {
+    return 'bg-blue-500 dark:bg-blue-400'
+  }
+
+  return 'bg-zinc-400 dark:bg-zinc-500'
 }
 
 /**
@@ -595,7 +411,7 @@ function displayBytes(bytes: Uint8Array): string {
  * @returns
  *   Category for humans (in plural).
  */
-function displayCategory(category: FileCategory): string {
+function displayCategory(category: string): string {
   if (category === 'image') {
     return 'Photos'
   }
@@ -605,6 +421,29 @@ function displayCategory(category: FileCategory): string {
   }
 
   return 'Other'
+}
+
+/**
+ * Get files by category.
+ *
+ * @param blobs
+ *   Blobs.
+ * @param category
+ *   Category.
+ * @returns
+ *   Files in the category.
+ */
+function filesByCategory(
+  blobs: ReadonlyArray<StorageBlob>,
+  activeCategory: FileCategory
+): Array<StorageBlob> {
+  const files: Array<StorageBlob> = []
+  for (const blob of blobs) {
+    if (fileCategoryFromMimeType(blob.mimeType) === activeCategory) {
+      files.push(blob)
+    }
+  }
+  return files
 }
 
 /**
@@ -624,118 +463,6 @@ function formatCountLabel(count: number, singular: string, plural?: string): str
 }
 
 /**
- * Group files by current resolved category.
- *
- * Files use `other` until an item is loaded and its type (if any) is known.
- *
- * @param blobs
- *   File CIDs.
- * @param categoryByCid
- *   Resolved categories by CID.
- * @returns
- *   Files grouped by category.
- */
-function groupFilesByCategory(
-  blobs: Array<string>,
-  categoryByCid: Record<string, FileCategory>
-): Record<FileCategory, Array<string>> {
-  const grouped: Record<FileCategory, Array<string>> = {
-    image: [],
-    other: [],
-    video: [],
-  }
-
-  for (const cid of blobs) {
-    const category = categoryByCid[cid] ?? 'other'
-    grouped[category].push(cid)
-  }
-
-  return grouped
-}
-
-/**
- * Resolve a blob once into renderable state.
- *
- * @param src
- *   Blob source URL.
- * @param signal
- *   Abort signal.
- * @returns
- *   Resolved state for rendering.
- */
-async function loadBlobItemState(src: string, signal: AbortSignal): Promise<BlobItemState> {
-  try {
-    let response = await fetch(src, { headers: { Range: `bytes=0-${256 - 1}` }, signal })
-
-    // Retry without Range if the server explicitly does not support range
-    // requests.
-    if (response.status === 416) {
-      response = await fetch(src, { signal })
-    }
-
-    if (!response.ok) {
-      return { reason: 'Cannot load blob: HTTP ' + response.status, type: 'error' }
-    }
-
-    const contentLength = response.headers.get('content-length')
-    const contentRange = response.headers.get('content-range')
-    const contentType = response.headers.get('content-type') ?? ''
-    const type = mediaType(contentType)
-    const totalFromContentRange = contentRange?.match(/\/(\d+)$/)?.[1]
-    const sizeFromHeaders = totalFromContentRange
-      ? Number(totalFromContentRange)
-      : contentLength
-        ? Number(contentLength)
-        : Number.NaN
-
-    // Use direct media URL for displayable types to avoid extra JS buffering.
-    if (type === 'image' || type === 'video') {
-      return { contentType, size: sizeFromHeaders, type, url: src }
-    }
-
-    const buffer = await response.arrayBuffer()
-    const bytes = new Uint8Array(buffer)
-    const preview = displayBytes(bytes)
-    const size = Number.isFinite(sizeFromHeaders) ? sizeFromHeaders : bytes.length
-
-    return { contentType, preview, size, type: 'unknown', url: src }
-  } catch (error) {
-    return { reason: String(error), type: 'error' }
-  }
-}
-/**
- * Check if something is displayable media.
- *
- * @param type
- *   Content type.
- * @returns
- *   Media type.
- */
-function mediaType(type: string): 'image' | 'video' | undefined {
-  const mime = normalizeMimeType(type)
-
-  if (allowedImages.has(mime)) {
-    return 'image'
-  }
-
-  if (allowedVideos.has(mime) && videoElement && videoElement.canPlayType(type)) {
-    return 'video'
-  }
-}
-
-/**
- * Normalize a `content-type` value to a lowercase MIME type.
- *
- * @param value
- *   Raw `content-type` header value.
- * @returns
- *   Normalized MIME type.
- */
-function normalizeMimeType(value: string): string {
-  return value.split(';')[0]?.trim().toLowerCase() ?? ''
-}
-
-/**
  * Select a singular or plural label for a count.
  *
  * @param count
@@ -749,30 +476,4 @@ function normalizeMimeType(value: string): string {
  */
 function pluralize(count: number, singular: string, plural?: string): string {
   return countPluralRules.select(count) === 'one' ? singular : (plural ?? singular + 's')
-}
-
-/**
- * Update category for a specific file CID only when changed.
- *
- * @param cid
- *   File CID.
- * @param nextCategory
- *   New resolved category.
- * @param setCategoryByCid
- *   State setter.
- * @returns
- *   Nothing.
- */
-function updateFileCategory(
-  cid: string,
-  nextCategory: FileCategory,
-  setCategoryByCid: React.Dispatch<React.SetStateAction<Record<string, FileCategory>>>
-): undefined {
-  setCategoryByCid(function (current) {
-    if (current[cid] === nextCategory) {
-      return current
-    }
-
-    return { ...current, [cid]: nextCategory }
-  })
 }

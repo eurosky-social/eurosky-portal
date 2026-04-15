@@ -19,8 +19,8 @@
   "private": true,
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "dev": "tsx watch src/index.ts",
-    "start": "node --enable-source-maps dist/service/blob-api/src/index.js",
+    "dev": "tsx watch --env-file-if-exists=.env src/app.ts",
+    "start": "node --env-file-if-exists=.env --enable-source-maps dist/service/blob-api/src/app.js",
     "test": "tsx --test src/**/*.test.ts"
   },
   "type": "module",
