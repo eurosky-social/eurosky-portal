@@ -1,5 +1,15 @@
 # eurosky-portal
 
+## 1.4.15
+
+### Patch Changes
+
+- [#130](https://github.com/eurosky-social/eurosky-portal/pull/130) [`1f28073`](https://github.com/eurosky-social/eurosky-portal/commit/1f280731e424ad830703c216ee19019bda9104c1) Thanks [@ThisIsMissEm](https://github.com/ThisIsMissEm)! - Prevent logging of requests to static and assets paths
+
+- [#130](https://github.com/eurosky-social/eurosky-portal/pull/130) [`e73d7a8`](https://github.com/eurosky-social/eurosky-portal/commit/e73d7a8ff0706e9bcd5938f9b123fda7e7d220f3) Thanks [@ThisIsMissEm](https://github.com/ThisIsMissEm)! - Prevent the data assets from being clobbered by the vite assets
+
+- [#129](https://github.com/eurosky-social/eurosky-portal/pull/129) [`f7fc5a7`](https://github.com/eurosky-social/eurosky-portal/commit/f7fc5a792a9c1a5345bae5fce9f3160bb1f51a4e) Thanks [@ThisIsMissEm](https://github.com/ThisIsMissEm)! - Fix allowed hosts for redirects
+
 ## 1.4.14
 
 ### Patch Changes
