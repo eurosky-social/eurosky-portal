@@ -60,7 +60,7 @@ jobs:
         run: |
           echo '${{steps.changesets.outputs.publishedPackages}}'
           release_version=$(jq -cr '.[] | select(.name | contains("eurosky-portal")) | .version' <<< '${{ steps.changesets.outputs.publishedPackages }}')
-          echo "tag_ref=${release_version%,}" >> "$GITHUB_OUTPUT"
+          echo "tag_ref='v${release_version%,}'" >> "$GITHUB_OUTPUT"
 
       - name: Print tag_ref
         if: ${{ steps.release.outputs.published == 'true' }}
