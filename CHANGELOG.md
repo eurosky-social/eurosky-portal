@@ -1,5 +1,11 @@
 # eurosky-portal
 
+## 1.4.14
+
+### Patch Changes
+
+- [#127](https://github.com/eurosky-social/eurosky-portal/pull/127) [`cd5d157`](https://github.com/eurosky-social/eurosky-portal/commit/cd5d1573743040b12c06bb7b61597839e2164e55) Thanks [@ThisIsMissEm](https://github.com/ThisIsMissEm)! - Fix tagging of published docker images for tags
+
 ## 1.4.13
 
 ### Patch Changes
