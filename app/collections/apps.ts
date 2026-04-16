@@ -50,7 +50,7 @@ const appSchema = vine.object({
       .string()
       .parse((value) => {
         if (typeof value === 'string') {
-          return path.join('assets', value)
+          return path.join('static', value)
         }
         return value
       })

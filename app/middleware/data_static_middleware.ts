@@ -3,7 +3,7 @@ import type { NextFn } from '@adonisjs/core/types/http'
 import app from '@adonisjs/core/services/app'
 import StaticMiddleware from '@adonisjs/static/static_middleware'
 
-export default class AssetsMiddleware {
+export default class DataStaticMiddleware {
   private middleware: StaticMiddleware
 
   constructor() {
@@ -19,8 +19,8 @@ export default class AssetsMiddleware {
   }
 
   async handle(ctx: HttpContext, next: NextFn) {
-    // Limit to the files inside the `data/assets/` directory:
-    if (ctx.request.url().startsWith('/assets')) {
+    // Limit to the files inside the `data/static/` directory:
+    if (ctx.request.url().startsWith('/static')) {
       return this.middleware.handle(ctx, () => {
         return ctx.response.notFound()
       })
