@@ -1,5 +1,11 @@
 # eurosky-portal
 
+## 1.4.12
+
+### Patch Changes
+
+- [#123](https://github.com/eurosky-social/eurosky-portal/pull/123) [`3c305e3`](https://github.com/eurosky-social/eurosky-portal/commit/3c305e3d9b7b180c77449d98cc1f47f5f154e7ce) Thanks [@ThisIsMissEm](https://github.com/ThisIsMissEm)! - Fix publishing of docker images
+
 ## 1.4.11
 
 ### Patch Changes
