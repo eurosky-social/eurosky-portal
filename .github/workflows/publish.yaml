@@ -52,10 +52,10 @@ jobs:
             ghcr.io/eurosky-social/eurosky-portal
           tags: |
             type=sha,enable=true,priority=100,format=long
-            type=match,pattern=v(\d+\.\d+\.\d+),group=1,enable=${{ startsWith(env.publish_ref, 'refs/tags/v') }}
-            type=match,pattern=v(\d+\.\d+),group=1,enable=${{ startsWith(env.publish_ref, 'refs/tags/v') }}
-            type=raw,value=latest,enable=${{ startsWith(env.publish_ref, 'refs/tags/v') }}
-            type=raw,value=dev,enable=${{ startsWith(env.publish_ref, 'refs/heads/main') }}
+            type=match,pattern=v(\d+\.\d+\.\d+),group=1,enable=${{ inputs.tag_ref != '' }}
+            type=match,pattern=v(\d+\.\d+),group=1,enable=${{ inputs.tag_ref != '' }}
+            type=raw,value=latest,enable=${{ inputs.tag_ref != '' }}
+            type=raw,value=dev,enable={{is_default_branch}}
 
       - name: Build and push Docker image
         id: build-and-push
