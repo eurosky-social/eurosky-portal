@@ -18,7 +18,6 @@ export const appKey = env.get('APP_KEY')
  * use absolute URLs.
  */
 export const appUrl = env.get('APP_URL')
-export const publicUrl = env.get('PUBLIC_URL', appUrl)
 
 /**
  * The configuration settings used by the HTTP server
@@ -92,6 +91,6 @@ export const http = defineConfig({
      *
      * Defaults to []
      */
-    allowedHosts: [new URL(publicUrl).host],
+    allowedHosts: [],
   },
 })
