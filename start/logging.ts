@@ -11,6 +11,10 @@ emitter.on('http:server_ready', () => {
 })
 
 const ignoredUrlPrefixes = [
+  // production:
+  '/assets/',
+  '/static/',
+  // development:
   '/resources',
   '/.adonisjs',
   '/inertia',
@@ -25,7 +29,7 @@ emitter.on('http:request_completed', ({ ctx, duration }) => {
   const requestUrl = request.url()
 
   // Don't log request for health checks:
-  if (requestUrl === '/health') {
+  if (requestUrl === '/_health' || requestUrl === '/_readiness') {
     return
   }
 
