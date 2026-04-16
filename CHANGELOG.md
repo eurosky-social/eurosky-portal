@@ -1,5 +1,11 @@
 # eurosky-portal
 
+## 1.4.11
+
+### Patch Changes
+
+- [#121](https://github.com/eurosky-social/eurosky-portal/pull/121) [`c892e45`](https://github.com/eurosky-social/eurosky-portal/commit/c892e45699ee608ee8e3aa4cb1c8cee85bc6da43) Thanks [@ThisIsMissEm](https://github.com/ThisIsMissEm)! - Fix publish workflow failing to checkout the right tag
+
 ## 1.4.10
 
 ### Patch Changes
