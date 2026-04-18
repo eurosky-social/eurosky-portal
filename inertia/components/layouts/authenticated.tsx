@@ -24,7 +24,6 @@ import {
   LockClosedIcon,
   FingerPrintIcon,
 } from '@heroicons/react/24/solid'
-import { UserAvatar } from '../UserAvatar'
 import { useAuth } from '~/utils/use_auth'
 import { Form } from '@adonisjs/inertia/react'
 import { Button } from '~/lib/button'
@@ -107,7 +106,6 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
               <SidebarFooter className="lg:hidden">
                 <SidebarSection>
                   <SidebarItem as={'div'} className="pointer-events-none">
-                    <UserAvatar user={user} />
                     <SidebarLabel>@{user.handle}</SidebarLabel>
                   </SidebarItem>
                   <SidebarItem as={'div'}>

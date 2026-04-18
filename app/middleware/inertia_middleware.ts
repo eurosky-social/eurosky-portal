@@ -1,10 +1,10 @@
+import '@inertiajs/core'
 import type { InferSharedProps } from '@adonisjs/inertia/types'
 import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
 import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
-import ProfileTransformer from '#transformers/profile_transformer'
-import type { Profile } from '#extensions/atprotouser'
-import '@inertiajs/core'
+import Account from '#models/account'
+import AccountTransformer from '#transformers/account_transformer'
 
 export default class InertiaMiddleware extends BaseInertiaMiddleware {
   async share(ctx: HttpContext) {
@@ -18,9 +18,9 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
      */
     const { session, auth } = ctx as Partial<HttpContext>
 
-    let profile: Profile | undefined
-    if (auth?.user) {
-      profile = await auth.user.fetchProfile(auth.user.did)
+    let account: Account | undefined
+    if (auth?.user?.did) {
+      account = await Account.findOrFail(auth.user.did)
     }
 
     /**
@@ -43,7 +43,7 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
       isAuthenticated: !!auth?.user,
       authorizationServer: ctx.inertia.always(auth?.user?.authorizationServer),
       user: ctx.inertia.always(
-        auth?.user && profile ? ProfileTransformer.transform(profile) : undefined
+        auth?.user && account ? AccountTransformer.transform(account) : undefined
       ),
     }
   }

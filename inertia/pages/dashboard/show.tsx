@@ -12,9 +12,11 @@ import { useRouter } from '@adonisjs/inertia/react'
 
 export default function Dashboard({
   showWelcomeMessage,
+  profile,
   apps,
 }: InertiaProps<{
   showWelcomeMessage: boolean
+  profile: Data.Profile | undefined
   apps: {
     gettingStarted: Data.App[]
     exploreMore: Data.App[]
@@ -63,27 +65,29 @@ export default function Dashboard({
           <div className="flex flex-row justify-between">
             <div className="flex flex-row gap-6">
               <div className="size-14 md:size-20 md:self-center">
-                <UserAvatar user={user} />
+                <UserAvatar avatar={profile?.avatar} handle={user.handle} />
               </div>
               <div className="flex flex-col">
                 <h2 className="text-lg/8 font-semibold text-zinc-950 sm:text-2xl/8 dark:text-white">
-                  {user.displayName ?? user.handle}
+                  {profile?.displayName ?? user.handle}
                 </h2>
                 <Text className="text-slate-400!">@{user.handle}</Text>
-                <div className="hidden md:grid grid-cols-1 sm:grid-cols-3">
-                  <div className="pr-4 py-2 sm:col-span-1 flex flex-col-reverse">
-                    <StatHeading>Posts</StatHeading>
-                    <StatValue>{user.postsCount ?? 0}</StatValue>
+                {profile?.stats && (
+                  <div className="hidden md:grid grid-cols-1 sm:grid-cols-3">
+                    <div className="pr-4 py-2 sm:col-span-1 flex flex-col-reverse">
+                      <StatHeading>Posts</StatHeading>
+                      <StatValue>{profile.stats.posts ?? 0}</StatValue>
+                    </div>
+                    <div className="px-4 py-2 sm:col-span-1 sm:px-4 flex flex-col-reverse">
+                      <StatHeading>Following</StatHeading>
+                      <StatValue>{profile.stats.follows ?? 0}</StatValue>
+                    </div>
+                    <div className="px-4 py-2 sm:col-span-1 sm:px-4 flex flex-col-reverse">
+                      <StatHeading>Followers</StatHeading>
+                      <StatValue>{profile.stats.followers ?? 0}</StatValue>
+                    </div>
                   </div>
-                  <div className="px-4 py-2 sm:col-span-1 sm:px-4 flex flex-col-reverse">
-                    <StatHeading>Following</StatHeading>
-                    <StatValue>{user.followsCount ?? 0}</StatValue>
-                  </div>
-                  <div className="px-4 py-2 sm:col-span-1 sm:px-4 flex flex-col-reverse">
-                    <StatHeading>Followers</StatHeading>
-                    <StatValue>{user.followersCount ?? 0}</StatValue>
-                  </div>
-                </div>
+                )}
               </div>
             </div>
             <div className="self-center hidden">

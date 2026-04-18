@@ -1,6 +1,5 @@
 import { AtprotoUser } from '@thisismissem/adonisjs-atproto-oauth'
 import logger from '@adonisjs/core/services/logger'
-import { type l, type AtIdentifierString } from '@atproto/lex'
 
 import * as lexicon from '#lexicons'
 import Account from '#models/account'
@@ -18,72 +17,33 @@ AtprotoUser.macro('getAccount', async function getAccount(this: AtprotoUser) {
 
 AtprotoUser.macro(
   'fetchProfile',
-  async function fetchProfile(this: AtprotoUser, actor: AtIdentifierString) {
-    const profile = await this.client
+  async function fetchProfile(this: AtprotoUser, options: { signal?: AbortSignal }) {
+    const response = await this.client
       .xrpc(lexicon.app.bsky.actor.getProfile, {
-        params: { actor: actor },
+        params: { actor: this.did },
+        signal: options.signal,
       })
       .catch(async (error) => {
         logger.error(error)
         Monocle.captureException(error, {
           tags: { component: 'atprotouser' },
-          extra: { actor },
+          extra: { actor: this.did },
         })
         return undefined
       })
 
-    if (profile?.success) {
-      // Bluesky AppView will return handle.invalid for accounts it doesn't know about:
-      if (profile.body.handle === 'handle.invalid') {
-        const miniDoc = await slingshotMiniProfile(actor)
-        return {
-          ...profile.body,
-          handle: miniDoc.handle,
-        }
-      }
-
-      return profile.body
-    } else {
-      const miniDoc = await slingshotMiniProfile(actor)
-      return {
-        did: miniDoc.did,
-        handle: miniDoc.handle,
-      }
+    if (!response || !response.success) {
+      return undefined
     }
+
+    return response.body
   }
 )
-
-async function slingshotMiniProfile(
-  actor: AtIdentifierString
-): Promise<{ did: l.DidString; handle: l.HandleString }> {
-  const url = new URL(
-    'https://slingshot.microcosm.blue/xrpc/blue.microcosm.identity.resolveMiniDoc'
-  )
-  url.searchParams.set('identifier', actor)
-
-  const res = await fetch(url)
-  const json = await res.json()
-
-  if (!res.ok) {
-    const error = new Error('Unable to resolve identity with slingshot')
-    Monocle.captureException(error, {
-      tags: { component: 'atprotouser' },
-      extra: { actor },
-    })
-    throw error
-  }
-
-  const result = json as { did: l.DidString; handle: l.HandleString }
-  return {
-    did: result.did,
-    handle: result.handle,
-  }
-}
 
 declare module '@thisismissem/adonisjs-atproto-oauth' {
   interface AtprotoUser {
     getAccount(): Promise<Account>
-    fetchProfile(actor: AtIdentifierString): Promise<undefined | Profile>
+    fetchProfile(options: { signal?: AbortSignal }): Promise<undefined | Profile>
     get authorizationServer(): string
   }
 }

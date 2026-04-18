@@ -9,3 +9,4 @@
 /// <reference path="../../config/hash.ts" />
 /// <reference path="../../config/logger.ts" />
 /// <reference path="../../config/monocle.ts" />
+/// <reference path="../../config/cache.ts" />
