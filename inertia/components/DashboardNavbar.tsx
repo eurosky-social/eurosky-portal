@@ -20,7 +20,6 @@ export default function DashboardNavbar({ className }: React.ComponentProps<'div
       <NavbarSpacer />
       <NavbarSection>
         <NavbarItem className="hidden md:flex pointer-events-none" as={'div'}>
-          <UserAvatar user={user} />
           <Text className="dark:text-slate-400!">@{user.handle}</Text>
         </NavbarItem>
 
