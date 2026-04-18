@@ -1,5 +1,19 @@
 # eurosky-portal
 
+## 1.4.16
+
+### Patch Changes
+
+- [#132](https://github.com/eurosky-social/eurosky-portal/pull/132) [`c9ed441`](https://github.com/eurosky-social/eurosky-portal/commit/c9ed44195f7b34468eeab58beceefb5941376124) Thanks [@ThisIsMissEm](https://github.com/ThisIsMissEm)! - Remove bluesky avatar from navbars
+
+  We can't reliably fetch this without going through bluesky's infrastructure.
+
+- [#132](https://github.com/eurosky-social/eurosky-portal/pull/132) [`1d621c3`](https://github.com/eurosky-social/eurosky-portal/commit/1d621c3d393b0d7e2f7b9ff16ef0efab71711ec7) Thanks [@ThisIsMissEm](https://github.com/ThisIsMissEm)! - Improve caching of data for better resiliency
+
+  During the Bluesky outage on 16th April 2026, we faced significant increases in P95 response times, up to 10 seconds, due to our reliance on fetching the profile data from Bluesky's API on every request.
+
+  This change makes the handle cached on the Account record, and it is refreshed each time the user logs in. We also separate the loading of the Bluesky profile and the fetching the handle, using the adonis.js cache to cache the profile response for 10 minutes, with a fetch timeout of 1 second. If the data fails to load, then we don't show their actual avatar and we omit the stats section.
+
 ## 1.4.15
 
 ### Patch Changes
