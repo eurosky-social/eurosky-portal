@@ -30,6 +30,7 @@ export default defineConfig({
     () => import('@adonisjs/lucid/commands'),
     () => import('@adonisjs/session/commands'),
     () => import('@adonisjs/inertia/commands'),
+    () => import('@adonisjs/cache/commands'),
   ],
 
   /*
@@ -63,6 +64,7 @@ export default defineConfig({
     () => import('@thisismissem/adonisjs-atproto-oauth/provider'),
     () => import('#extensions/atprotouser'),
     () => import('@adonisjs/content/content_provider'),
+    () => import('@adonisjs/cache/cache_provider'),
   ],
 
   /*

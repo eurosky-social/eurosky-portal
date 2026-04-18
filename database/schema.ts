@@ -6,20 +6,34 @@
 
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
+import type { l } from '@atproto/lex'
 
 export class AccountSchema extends BaseModel {
-  static $columns = ['createdAt', 'did', 'termsAcceptedAt', 'updatedAt', 'welcomeDismissed'] as const
+  static $columns = ['createdAt', 'did', 'handle', 'termsAcceptedAt', 'updatedAt', 'welcomeDismissed'] as const
   $columns = AccountSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime | null
   @column({ isPrimary: true })
-  declare did: string
+  declare did: l.DidString
+  @column()
+  declare handle: l.HandleString | null
   @column.dateTime()
   declare termsAcceptedAt: DateTime | null
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
   @column({ consume: (value) => !!value })
   declare welcomeDismissed: boolean | null
+}
+
+export class CacheSchema extends BaseModel {
+  static $columns = ['expiresAt', 'key', 'value'] as const
+  $columns = CacheSchema.$columns
+  @column.dateTime()
+  declare expiresAt: DateTime | null
+  @column({ isPrimary: true })
+  declare key: string
+  @column()
+  declare value: string | null
 }
 
 export class OauthSessionSchema extends BaseModel {

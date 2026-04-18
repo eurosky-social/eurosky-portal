@@ -11,6 +11,7 @@ import type AppsTransformer from '#transformers/apps_transformer'
 import type HealthTransformer from '#transformers/health_transformer'
 import type LegalDocumentsTransformer from '#transformers/legal_documents_transformer'
 import type ProfileTransformer from '#transformers/profile_transformer'
+import type AccountTransformer from '#transformers/account_transformer'
 import type InertiaMiddleware from '#middleware/inertia_middleware'
 
 export namespace Data {
@@ -33,6 +34,10 @@ export namespace Data {
   export type Profile = InferData<ProfileTransformer>
   export namespace Profile {
     export type Variants = InferVariants<ProfileTransformer>
+  }
+  export type Account = InferData<AccountTransformer>
+  export namespace Account {
+    export type Variants = InferVariants<AccountTransformer>
   }
   export type SharedProps = InferSharedProps<InertiaMiddleware>
 }

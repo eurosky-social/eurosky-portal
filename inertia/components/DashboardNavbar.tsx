@@ -3,10 +3,8 @@ import { Navbar, NavbarItem, NavbarSection, NavbarSpacer } from '~/lib/navbar'
 import { Logo } from './Logo'
 import { Form } from '@adonisjs/inertia/react'
 import { Button } from '~/lib/button'
-import { Text } from '~/lib/text'
 import { useAuth } from '~/utils/use_auth'
 import { ThemeToggle } from './ThemeToggle'
-import { UserAvatar } from './UserAvatar'
 import clsx from 'clsx'
 
 export default function DashboardNavbar({ className }: React.ComponentProps<'div'>) {
@@ -14,13 +12,15 @@ export default function DashboardNavbar({ className }: React.ComponentProps<'div
 
   return (
     <Navbar className={clsx(className, 'dark:bg-slate-800/70')}>
-      <Link route="home" aria-label="Home" className="rounded-sm md:ml-6 mt-1 mb-2">
+      <Link route="dashboard.show" aria-label="Home" className="rounded-sm md:ml-6 mt-1 mb-2">
         <Logo />
       </Link>
       <NavbarSpacer />
       <NavbarSection>
-        <NavbarItem className="hidden md:flex pointer-events-none" as={'div'}>
-          <Text className="dark:text-slate-400!">@{user.handle}</Text>
+        <NavbarItem route="dashboard.show" className="hidden md:flex">
+          <span className="text-base/6! text-zinc-500! sm:text-sm/6! dark:text-slate-400!">
+            @{user.handle}
+          </span>
         </NavbarItem>
 
         <Form route="oauth.logout" className="justify-stretch hidden lg:flex">

@@ -1,12 +1,13 @@
 import type { HttpContext } from '@adonisjs/core/http'
+import { Monocle } from '@monocle.sh/adonisjs-agent'
 import { OAuthResolverError } from '@atproto/oauth-client-node'
 import { isUriString, asAtIdentifierString, type AtIdentifierString } from '@atproto/lex'
 import { DateTime } from 'luxon'
 import env from '#start/env'
 import Account from '#models/account'
+import { SlingshotService } from '#services/slingshot_service'
 import { loginRequestValidator, signupRequestValidator } from '#validators/oauth'
 import { createFieldError } from '#utils/errors'
-import { Monocle } from '@monocle.sh/adonisjs-agent'
 
 const oauthServerUrl = env.get('OAUTH_SERVICE')
 const allowExternalLogins = env.get('ALLOW_EXTERNAL_LOGINS', false)
@@ -33,6 +34,12 @@ function isIdentifier(input: string): input is AtIdentifierString {
 }
 
 export default class OAuthController {
+  protected slingshot: SlingshotService
+
+  constructor() {
+    this.slingshot = new SlingshotService()
+  }
+
   async login({ request, inertia, oauth, session, logger }: HttpContext) {
     const data = await request.validateUsing(loginRequestValidator)
     let input = data.input
@@ -134,11 +141,9 @@ export default class OAuthController {
   }
 
   async callback({ response, oauth, auth, session, logger }: HttpContext) {
-    const intendedUrl = session.pullIntendedUrl()
     const termsAccepted = session.pull('terms_accepted', 'invalid')
     const source = session.pull('source', 'login')
 
-    session.clear()
     session.regenerate()
 
     // If we're from signup, but don't have a valid termsAccepted date, we want
@@ -157,28 +162,30 @@ export default class OAuthController {
 
     try {
       const result = await oauth.handleCallback()
+      const did = result.user.did
 
-      await result.user.fetchProfile(result.user.did)
+      const resolved = await this.slingshot.resolveMiniDoc(did, AbortSignal.timeout(1000))
+      const existingAccount = await Account.findBy({ did })
+
+      if (!resolved) {
+        await oauth.logout(did)
+        return response.redirect().toRoute(source === 'signup' ? 'account.create' : 'auth.login')
+      }
 
       // If we're coming from signup, then store that they accepted terms:
-      if (source === 'signup') {
-        await Account.firstOrCreate(
-          { did: result.user.did },
-          { did: result.user.did, termsAcceptedAt: termsAcceptedOn }
-        )
+      if (source === 'signup' && !existingAccount) {
+        await Account.create({
+          did: result.user.did,
+          handle: resolved.handle,
+          termsAcceptedAt: termsAcceptedOn,
+        })
       } else {
-        // Otherwise, just create the account without terms accepted:
-        await Account.firstOrCreate({ did: result.user.did }, { did: result.user.did })
+        await Account.updateOrCreate({ did }, { did, handle: resolved.handle })
       }
 
       await auth.use('web').login(result.user)
 
-      // We can't use .toIntendedRoute here because of the session.clear()
-      if (intendedUrl) {
-        return response.redirect().toPath(intendedUrl)
-      }
-
-      return response.redirect().toRoute('dashboard.show')
+      return response.redirect().toIntendedRoute('dashboard.show')
     } catch (err) {
       // Handle OAuth failing
       logger.error(err, 'Error completing AT Protocol OAuth flow')
@@ -192,7 +199,7 @@ export default class OAuthController {
         return response.redirect().toRoute('account.create')
       }
 
-      return response.redirect().toRoute('home')
+      return response.redirect().toRoute('auth.login')
     }
   }
 }
