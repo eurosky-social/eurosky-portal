@@ -98,7 +98,7 @@
     "name": "Popfeed",
     "summary": "Discover films, TV, games, books and music",
     "url": "https://popfeed.social/find",
-    "platforms": ["web"],
+    "platforms": ["web", "ios", "android"],
     "category": "explore-more",
     "icon": {
       "path": "icons/popfeed.png",
