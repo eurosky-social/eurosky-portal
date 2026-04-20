@@ -1,5 +1,6 @@
 import { BaseCommand } from '@adonisjs/core/ace'
 import type { CommandOptions } from '@adonisjs/core/types/ace'
+import { INVALID_HANDLE } from '@atproto/syntax'
 
 async function sleep(duration: number) {
   const { promise, resolve } = Promise.withResolvers()
@@ -49,13 +50,11 @@ export default class PortalBackfillHandles extends BaseCommand {
 
           if (!resolved) {
             this.logger.info(`Unable to resolve handle for ${account.did}`)
-            return
           }
 
-          await Account.updateOrCreate(
-            { did: account.did },
-            { did: account.did, handle: resolved.handle }
-          )
+          let handle = resolved?.handle ?? INVALID_HANDLE
+
+          await Account.updateOrCreate({ did: account.did }, { did: account.did, handle: handle })
         })
       )
 
