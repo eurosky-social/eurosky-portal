@@ -9,6 +9,8 @@ import { Data } from '@generated/data'
 import { Apps } from '~/components/Apps'
 import { client } from '~/client'
 import { useRouter } from '@adonisjs/inertia/react'
+import { INVALID_HANDLE } from '@atproto/syntax'
+import { ExclamationTriangleIcon } from '@heroicons/react/20/solid'
 
 export default function Dashboard({
   showWelcomeMessage,
@@ -25,6 +27,7 @@ export default function Dashboard({
 }>) {
   const user = useAuth()
   const router = useRouter()
+  const isHandleInvalid = user.handle === INVALID_HANDLE
 
   const dismissWelcome = useCallback(async () => {
     await client.api.account.dismissWelcome({})
@@ -33,6 +36,24 @@ export default function Dashboard({
 
   return (
     <div className="flex flex-col gap-y-8">
+      {isHandleInvalid && (
+        <Card className="p-4 bg-amber-500! dark:bg-amber-600/80! flex flex-row gap-2">
+          <div className="h-12 w-12">
+            <ExclamationTriangleIcon color="white" className="drop-shadow-sm" />
+          </div>
+          <div>
+            <Text className="font-semibold text-white! text-shadow-sm text-shadow-amber-600/80">
+              Your handle is currently invalid
+            </Text>
+            <Text className="text-white! text-shadow-sm text-shadow-amber-600/80">
+              It looks like you've attempted to change your handle, and we can't verify it.{' '}
+              <a href="#" target="_blank" className="font-semibold hover:underline">
+                Learn more
+              </a>
+            </Text>
+          </div>
+        </Card>
+      )}
       {showWelcomeMessage && (
         <Card className="py-3 px-4 flex flex-col grow md:flex-row items-center justify-between gap-x-6 gap-y-4">
           <div className="flex-1">
@@ -43,13 +64,15 @@ export default function Dashboard({
               Eurosky is your European home on the Atmosphere &ndash; a global network of social
               apps and services.
             </p>
-            <p className="mt-0.5 text-xs/6 text-gray-500 dark:text-gray-300">
-              Your handle is{' '}
-              <strong className="text-brand-border font-semibold whitespace-pre">
-                {user.handle}
-              </strong>
-              , you&apos;ll use this to login across the Atmosphere.
-            </p>
+            {!isHandleInvalid && (
+              <p className="mt-0.5 text-xs/6 text-gray-500 dark:text-gray-300">
+                Your handle is{' '}
+                <strong className="text-brand-border font-semibold whitespace-pre">
+                  {user.handle}
+                </strong>
+                , you&apos;ll use this to login across the Atmosphere.
+              </p>
+            )}
           </div>
           <Button
             onClick={dismissWelcome}
@@ -71,7 +94,14 @@ export default function Dashboard({
                 <h2 className="text-lg/8 font-semibold text-zinc-950 sm:text-2xl/8 dark:text-white">
                   {profile?.displayName ?? user.handle}
                 </h2>
-                <Text className="text-slate-400!">@{user.handle}</Text>
+                {isHandleInvalid ? (
+                  <Text className="text-amber-500!">
+                    <ExclamationTriangleIcon color="amber" className="h-6 w-6 inline-block" />{' '}
+                    {user.handle}
+                  </Text>
+                ) : (
+                  <Text className="text-slate-400!">@{user.handle}</Text>
+                )}
                 {profile?.stats && (
                   <div className="hidden md:grid grid-cols-1 sm:grid-cols-3">
                     <div className="pr-4 py-2 sm:col-span-1 flex flex-col-reverse">

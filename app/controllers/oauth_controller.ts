@@ -2,6 +2,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import { Monocle } from '@monocle.sh/adonisjs-agent'
 import { OAuthResolverError } from '@atproto/oauth-client-node'
 import { isUriString, asAtIdentifierString, type AtIdentifierString } from '@atproto/lex'
+import { INVALID_HANDLE } from '@atproto/syntax'
 import { DateTime } from 'luxon'
 import env from '#start/env'
 import Account from '#models/account'
@@ -168,19 +169,21 @@ export default class OAuthController {
       const existingAccount = await Account.findBy({ did })
 
       if (!resolved) {
-        await oauth.logout(did)
-        return response.redirect().toRoute(source === 'signup' ? 'account.create' : 'auth.login')
+        logger.info({ did }, 'Failed to resolve handle')
       }
 
-      // If we're coming from signup, then store that they accepted terms:
+      const handle = resolved?.handle ?? INVALID_HANDLE
+
+      // If we're coming from signup and haven't already logged in, then store
+      // that they accepted terms:
       if (source === 'signup' && !existingAccount) {
         await Account.create({
           did: result.user.did,
-          handle: resolved.handle,
+          handle: handle,
           termsAcceptedAt: termsAcceptedOn,
         })
       } else {
-        await Account.updateOrCreate({ did }, { did, handle: resolved.handle })
+        await Account.updateOrCreate({ did }, { did, handle: handle })
       }
 
       await auth.use('web').login(result.user)
