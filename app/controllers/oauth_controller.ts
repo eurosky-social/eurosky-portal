@@ -27,6 +27,17 @@ const KNOWN_OAUTH_ERRORS = [
   'invalid_grant',
 ]
 
+const WELL_KNOWN_HANDLE_DOMAINS = [
+  '.bsky.social',
+  '.eurosky.social',
+  '.selfhosted.social',
+  '.pds.rip',
+  // blacksky:
+  '.myatproto.social',
+  '.blacksky.app',
+  '.cryptoanarchy.network',
+].filter((domain) => domain !== handleDomain)
+
 function isIdentifier(input: string): input is AtIdentifierString {
   try {
     asAtIdentifierString(input)
@@ -68,26 +79,42 @@ export default class OAuthController {
       input += handleDomain
     }
 
-    if (allowExternalLogins !== true && handleDomain && !input.endsWith(handleDomain)) {
-      // the validation is accepting handles, dids, and services, so we need to
-      // assert we only have a handle or did string here:
-      if (!isIdentifier(input)) {
-        throw createFieldError('input', input, 'Please enter a valid Atmosphere account')
-      }
+    // Apparently this is a common typo:
+    if (input.endsWith('.bluesky.social')) {
+      input = input.replace('.bluesky.social', '.bsky.social')
+    }
 
-      const resolved = await oauth
-        .resolveIdentity(input, AbortSignal.timeout(1000))
-        .catch((err) => {
-          logger.error(err, 'Failed to resolveIdentity for handle: %s', input)
-          return undefined
-        })
-
-      if (!resolved || resolved.authorizationServer.toString() !== oauthServerUrl) {
+    if (allowExternalLogins !== true) {
+      // We don't need to resolve these authorization servers, since we know they're not us:
+      if (WELL_KNOWN_HANDLE_DOMAINS.some((serviceDomain) => input.endsWith(serviceDomain))) {
         throw createFieldError(
           'input',
           input,
           'Currently the Eurosky portal is only available for Eurosky accounts.'
         )
+      }
+
+      if (handleDomain && !input.endsWith(handleDomain)) {
+        // the validation is accepting handles, dids, and services, so we need to
+        // assert we only have a handle or did string here:
+        if (!isIdentifier(input)) {
+          throw createFieldError('input', input, 'Please enter a valid Atmosphere account')
+        }
+
+        const resolved = await oauth
+          .resolveIdentity(input, AbortSignal.timeout(1000))
+          .catch((err) => {
+            logger.error(err, 'Failed to resolveIdentity for handle: %s', input)
+            return undefined
+          })
+
+        if (!resolved || resolved.authorizationServer.toString() !== oauthServerUrl) {
+          throw createFieldError(
+            'input',
+            input,
+            'Currently the Eurosky portal is only available for Eurosky accounts.'
+          )
+        }
       }
     }
 
@@ -170,6 +197,9 @@ export default class OAuthController {
     const initiatingHandle = session.pull('handle')
 
     session.regenerate()
+
+    // Force logout first:
+    await auth.use('web').logout()
 
     // If we're from signup, but don't have a valid termsAccepted date, we want
     // to cancel the flow:
