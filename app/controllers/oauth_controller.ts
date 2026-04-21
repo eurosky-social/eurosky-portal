@@ -9,17 +9,7 @@ import Account from '#models/account'
 import { SlingshotService } from '#services/slingshot_service'
 import { loginRequestValidator, signupRequestValidator } from '#validators/oauth'
 import { createFieldError } from '#utils/errors'
-
-function getHandleDomain(): string | undefined {
-  let value = env.get('ATPROTO_HANDLE_DOMAIN')
-  if (!value) {
-    return undefined
-  }
-  if (value.startsWith('.')) {
-    return value
-  }
-  return '.' + value
-}
+import { getHandleDomain } from '#utils/oauth'
 
 const oauthServerUrl = env.get('OAUTH_SERVICE')
 const allowExternalLogins = env.get('ALLOW_EXTERNAL_LOGINS', false)
@@ -57,13 +47,22 @@ export default class OAuthController {
       meta: {
         handleDomain,
       },
+      messagesProvider: {
+        getMessage(defaultMessage, rule, field) {
+          if (rule === 'at-handle' || rule === 'at-handle-username') {
+            return `Please enter a valid Atmosphere account, e.g., username${handleDomain ?? '.bsky.social'}`
+          }
+
+          return defaultMessage.replace(/\{\{\s*field\s*\}\}/, field.getFieldPath())
+        },
+      },
     })
 
     let input = data.input
 
     if (!isIdentifier(input) && !isUriString(input)) {
       if (!handleDomain) {
-        throw createFieldError('input', input, 'Please enter a handle')
+        throw createFieldError('input', input, 'Please enter a valid Atmosphere account')
       }
       input += handleDomain
     }
@@ -72,7 +71,7 @@ export default class OAuthController {
       // the validation is accepting handles, dids, and services, so we need to
       // assert we only have a handle or did string here:
       if (!isIdentifier(input)) {
-        throw createFieldError('input', input, 'Please enter a handle')
+        throw createFieldError('input', input, 'Please enter a valid Atmosphere account')
       }
 
       const resolved = await oauth
@@ -101,7 +100,8 @@ export default class OAuthController {
     } catch (err) {
       // We expect this error, which is when the handle doesn't exist:
       if (err instanceof OAuthResolverError) {
-        throw createFieldError('input', input, err.message)
+        logger.error(err, 'Failed to resolve handle')
+        throw createFieldError('input', input, `We couldn't find your Atmosphere account: ${input}`)
       }
 
       Monocle.captureException(err, {
