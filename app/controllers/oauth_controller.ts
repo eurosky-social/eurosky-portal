@@ -222,11 +222,25 @@ export default class OAuthController {
         // If the user denied the authorization request, or it timed out, this
         // doesn't need an explicit capture:
         if (error === 'access_denied') {
+          session.flash('errorsBag', {
+            access_denied:
+              source === 'signup'
+                ? 'You cancelled creating your account'
+                : 'You denied the sign in attempt',
+          })
+
           return response.redirect().toRoute(source === 'signup' ? 'account.create' : 'auth.login')
         }
 
         // We do want to capture information about the OAuth server failing:
         if (error === 'server_error') {
+          session.flash('errorsBag', {
+            server_error:
+              source === 'signup'
+                ? "We couldn't create your account at this time, please try again later."
+                : "We couldn't sign you in at this time, please try again later.",
+          })
+
           Monocle.captureException(err, {
             tags: { component: 'oauth', type: 'server_error' },
             extra: {
@@ -263,6 +277,10 @@ export default class OAuthController {
           },
         })
       }
+
+      session.flash('errorsBag', {
+        error: 'An unknown error occurred, please try again later.',
+      })
 
       return response.redirect().toRoute(source === 'signup' ? 'account.create' : 'auth.login')
     }
