@@ -20,7 +20,7 @@ export default function Login({ migrationUrl }: InertiaProps<{ migrationUrl?: st
           </h1>
           <Text className="text-center">Enter your handle below to login to your account</Text>
           <Form className="my-6" route="oauth.login">
-            {({ errors, valid, isDirty }) => (
+            {({ errors, valid, isDirty, processing }) => (
               <FieldGroup>
                 <Field>
                   <Label htmlFor="input">Your Atmosphere handle</Label>
@@ -42,9 +42,9 @@ export default function Login({ migrationUrl }: InertiaProps<{ migrationUrl?: st
                 <Field className="mt-2 flex justify-end justify-items-stretch">
                   <Button
                     type="submit"
-                    color={!valid || !isDirty ? 'zinc' : 'brand'}
+                    color={!valid || !isDirty || processing ? 'zinc' : 'brand'}
                     className="w-full py-3! disabled:cursor-default"
-                    disabled={!valid || !isDirty}
+                    disabled={!valid || !isDirty || processing}
                   >
                     Continue &rarr;
                   </Button>
