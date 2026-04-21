@@ -24,6 +24,7 @@ const KNOWN_OAUTH_ERRORS = [
   'server_error',
   'account_selection_required',
   'access_denied',
+  'invalid_grant',
 ]
 
 function isIdentifier(input: string): input is AtIdentifierString {
