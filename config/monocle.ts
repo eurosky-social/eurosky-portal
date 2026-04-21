@@ -11,10 +11,24 @@ export default defineConfig({
   serviceVersion: pkg.version,
   environment: env.get('APP_ENV'),
 
+  http: {
+    sanitizeUrls: {
+      enabled: true,
+      queryParams: ['code', 'state', 'iss'],
+    },
+  },
+
   instrumentations: {
     '@opentelemetry/instrumentation-http': {
       // Add URLs to ignore (merged with defaults by default)
-      ignoredUrls: ['/_health', '/_readiness', '/assets/*', '/static/*', '/oauth/callback'],
+      ignoredUrls: [
+        '/_health',
+        '/_readiness',
+        '/assets/*',
+        '/static/*',
+        '/icons/*',
+        '/favicon.ico',
+      ],
 
       // Set to false to replace default ignored URLs instead of merging
       mergeIgnoredUrls: true,
