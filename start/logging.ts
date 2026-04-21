@@ -13,6 +13,7 @@ emitter.on('http:server_ready', () => {
 const ignoredUrlPrefixes = [
   // production:
   '/assets/',
+  '/icons/',
   '/static/',
   // development:
   '/resources',
