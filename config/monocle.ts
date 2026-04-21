@@ -36,5 +36,8 @@ export default defineConfig({
       // Ignore static files like css, js, images (default: true)
       ignoreStaticFiles: true,
     },
+    '@opentelemetry/instrumentation-dns': {
+      enabled: false,
+    },
   },
 })
