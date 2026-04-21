@@ -1,4 +1,5 @@
 import { Exception } from '@adonisjs/core/exceptions'
+import logger from '@adonisjs/core/services/logger'
 import type { l } from '@atproto/lex'
 import vine from '@vinejs/vine'
 
@@ -38,7 +39,7 @@ export class SlingshotService {
 
       const [error, result] = await resolveMiniDocValidator.tryValidate(json)
       if (error) {
-        console.log(error)
+        logger.error(error, 'Invalid response from slingshot')
         throw new SlingshotResolveError()
       }
 
@@ -47,15 +48,18 @@ export class SlingshotService {
         handle: result.handle,
       }
     } catch (error) {
+      // We don't care about aborts:
       if (error instanceof DOMException && error.name === 'AbortError') {
-        throw error
+        return undefined
       }
 
       if (error instanceof SlingshotResolveError) {
         throw error
       }
 
-      throw new SlingshotResolveError(SlingshotResolveError.message, { cause: error })
+      throw new SlingshotResolveError(`${SlingshotResolveError.message}: ${actor}`, {
+        cause: error,
+      })
     }
   }
 }
