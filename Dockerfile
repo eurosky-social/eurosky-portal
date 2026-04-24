@@ -32,7 +32,7 @@ RUN node ace build
 # Stage 3: Production runtime
 # ----------------------------
 FROM base AS production
-RUN apt-get update && apt-get install -y tini
+RUN apt-get update -y && apt-get install -y tini
 
 WORKDIR /app
 # Copy the build app:
