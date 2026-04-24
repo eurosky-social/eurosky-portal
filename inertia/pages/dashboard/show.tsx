@@ -47,7 +47,11 @@ export default function Dashboard({
             </Text>
             <Text className="text-white! text-shadow-sm text-shadow-amber-600/80">
               It looks like you've attempted to change your handle, and we can't verify it.{' '}
-              <a href="#" target="_blank" className="font-semibold hover:underline">
+              <a
+                href="https://eurosky.tech/help/#handle-invalid"
+                target="_blank"
+                className="font-semibold hover:underline"
+              >
                 Learn more
               </a>
             </Text>
