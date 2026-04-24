@@ -1,5 +1,23 @@
 # eurosky-portal
 
+## 1.4.17
+
+### Patch Changes
+
+- [#137](https://github.com/eurosky-social/eurosky-portal/pull/137) [`cfc0f70`](https://github.com/eurosky-social/eurosky-portal/commit/cfc0f706753f93745c15cea952b38acbb5dd1fb4) Thanks [@ThisIsMissEm](https://github.com/ThisIsMissEm)! - Fix extraneous logging of /icons/\* directory
+
+- [#135](https://github.com/eurosky-social/eurosky-portal/pull/135) [`54f871b`](https://github.com/eurosky-social/eurosky-portal/commit/54f871baf7bcc615772d62649d225b46b2a0ac80) Thanks [@ThisIsMissEm](https://github.com/ThisIsMissEm)! - Prevent double submission of the sign in form
+
+- [#137](https://github.com/eurosky-social/eurosky-portal/pull/137) [`357c441`](https://github.com/eurosky-social/eurosky-portal/commit/357c4417e3018d9f55501722c698df58c891094c) Thanks [@ThisIsMissEm](https://github.com/ThisIsMissEm)! - Upgrade Monocle SDK and fix missing traces for oauth callbacks
+
+- [#134](https://github.com/eurosky-social/eurosky-portal/pull/134) [`3152e97`](https://github.com/eurosky-social/eurosky-portal/commit/3152e977476d7ed145418eab3729a843c14012fa) Thanks [@ThisIsMissEm](https://github.com/ThisIsMissEm)! - Fix handle backfill to persist handle.invalid values
+
+- [#134](https://github.com/eurosky-social/eurosky-portal/pull/134) [`52b15bc`](https://github.com/eurosky-social/eurosky-portal/commit/52b15bc2084a0f2fdd67fe87e57b1c55066b4284) Thanks [@ThisIsMissEm](https://github.com/ThisIsMissEm)! - Prevent identity resolution for bsky.social and other well-known handle domains
+
+- [#134](https://github.com/eurosky-social/eurosky-portal/pull/134) [`46f4b47`](https://github.com/eurosky-social/eurosky-portal/commit/46f4b4724dbb5a7bcfd33525238456edeb370729) Thanks [@ThisIsMissEm](https://github.com/ThisIsMissEm)! - Improve OAuth error handling
+
+  We now display a flash message above the form an OAuth error occurs after redirecting to the OAuth provider (assuming they redirect back to us). The other error messages have also been improved.
+
 ## 1.4.16
 
 ### Patch Changes
