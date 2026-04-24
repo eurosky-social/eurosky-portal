@@ -67,5 +67,8 @@ declare module '@adonisjs/inertia/types' {
 declare module '@inertiajs/core' {
   export interface InertiaConfig {
     sharedPageProps: MiddlewareSharedProps
+    flashDataType: {
+      error: string
+    }
   }
 }
