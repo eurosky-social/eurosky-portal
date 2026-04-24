@@ -1,5 +1,20 @@
 # eurosky-portal
 
+## 1.4.18
+
+### Patch Changes
+
+- [#142](https://github.com/eurosky-social/eurosky-portal/pull/142) [`c5116e7`](https://github.com/eurosky-social/eurosky-portal/commit/c5116e770074555c19dd62951ac7fa449e2597bb) Thanks [@ThisIsMissEm](https://github.com/ThisIsMissEm)! - Add goat to the docker image for debugging
+
+- [#141](https://github.com/eurosky-social/eurosky-portal/pull/141) [`710b590`](https://github.com/eurosky-social/eurosky-portal/commit/710b590a1fe9e5d86631a9d762e158e8df6b864b) Thanks [@ThisIsMissEm](https://github.com/ThisIsMissEm)! - Improve error messaging for handle resolution
+
+- [#140](https://github.com/eurosky-social/eurosky-portal/pull/140) [`f925db8`](https://github.com/eurosky-social/eurosky-portal/commit/f925db8b4cd47aee451114c306fbc469f6201967) Thanks [@ThisIsMissEm](https://github.com/ThisIsMissEm)! - Improve dockerfile
+  - Drops user permissions
+  - Uses pnpm fetch to improve install performance
+  - Runs dist-upgrade to catch any security updates to the image
+  - Installs tini with --no-install-recommends
+  - Uses apt caching
+
 ## 1.4.17
 
 ### Patch Changes
