@@ -7,6 +7,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-o", "errexit", "-c"]
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 ENV NODE_ENV=production
+ENV DEBIAN_FRONTEND="noninteractive"
 
 RUN \
   # Remove automatic apt cache Docker cleanup scripts
