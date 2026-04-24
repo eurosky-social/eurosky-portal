@@ -19,7 +19,7 @@ import { type OAuthResolvedIdentity } from '@thisismissem/adonisjs-atproto-oauth
 import { type HandleString, INVALID_HANDLE } from '@atproto/syntax'
 
 const oauthServerUrl = env.get('OAUTH_SERVICE')
-const normalizedOAuthServerUrl = oauthServerUrl.replace(/\/$/, '')
+const normalizedOAuthServerUrl = oauthServerUrl.replace(/\/$/, '').toLowerCase()
 const allowExternalLogins = env.get('ALLOW_EXTERNAL_LOGINS', false)
 const handleDomain = getHandleDomain()
 
@@ -86,7 +86,7 @@ export default class OAuthController {
       if (
         allowExternalLogins !== true &&
         // We need to remove any trailing slashes to normalize:
-        input.replace(/\/$/, '') !== normalizedOAuthServerUrl
+        input.toLowerCase().replace(/\/$/, '') !== normalizedOAuthServerUrl
       ) {
         throw createFieldError(
           'input',
