@@ -2,7 +2,6 @@ import type { HttpContext } from '@adonisjs/core/http'
 import { Monocle } from '@monocle.sh/adonisjs-agent'
 import { OAuthCallbackError, OAuthResolverError } from '@atproto/oauth-client-node'
 import { isUriString, asAtIdentifierString, type AtIdentifierString } from '@atproto/lex'
-import { INVALID_HANDLE } from '@atproto/syntax'
 import { DateTime } from 'luxon'
 import env from '#start/env'
 import Account from '#models/account'
@@ -219,25 +218,44 @@ export default class OAuthController {
       const result = await oauth.handleCallback()
       const did = result.user.did
 
-      const resolved = await this.slingshot.resolveMiniDoc(did, AbortSignal.timeout(1000))
+      const resolved = await oauth
+        .resolveIdentity(did, AbortSignal.timeout(1000))
+        .catch((error) => {
+          if (error instanceof DOMException && error.name === 'AbortError') {
+            return undefined
+          }
+          throw error
+        })
+
       const existingAccount = await Account.findBy({ did })
 
       if (!resolved) {
         logger.info({ did }, 'Failed to resolve handle')
       }
 
-      const handle = resolved?.handle ?? INVALID_HANDLE
+      // If we don't have an existing account and weren't able to resolve, abort:
+      if (!existingAccount && !resolved) {
+        await oauth.logout(did)
+
+        session.flash('errorsBag', {
+          login_failed: 'We could not log you in at this time, please try again later.',
+        })
+
+        return response.redirect().toRoute('auth.login')
+      }
 
       // If we're coming from signup and haven't already logged in, then store
       // that they accepted terms:
-      if (source === 'signup' && !existingAccount) {
+      if (source === 'signup' && !existingAccount && resolved) {
         await Account.create({
           did: result.user.did,
-          handle: handle,
+          handle: resolved.handle,
           termsAcceptedAt: termsAcceptedOn,
         })
-      } else {
-        await Account.updateOrCreate({ did }, { did, handle: handle })
+      } else if (resolved) {
+        await Account.updateOrCreate({ did }, { did, handle: resolved.handle })
+      } else if (!existingAccount) {
+        await Account.create({ did })
       }
 
       await auth.use('web').login(result.user)
