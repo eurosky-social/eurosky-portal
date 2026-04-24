@@ -103,28 +103,27 @@ export default class OAuthController {
       return input
     }
 
-    // We don't need to resolve the authorization servers for these handle
-    // domains, since we know they're not us:
-    if (
-      isHandleString(input) &&
-      WELL_KNOWN_HANDLE_DOMAINS.some((serviceDomain) => input.endsWith(serviceDomain))
-    ) {
-      throw createFieldError(
-        'input',
-        input,
-        'Currently the Eurosky portal is only available for Eurosky accounts.'
-      )
-    }
-
     // the validation is accepting handles, dids, and services, so we need to
     // assert we only have a handle or did string here:
     if (!isIdentifier(input)) {
       throw createFieldError('input', input, 'Please enter a valid Atmosphere account')
     }
 
-    // If there's a handle domain set, and the input ends with the handle domain, don't resolve:
-    if (handleDomain && isHandleString(input) && input.endsWith(handleDomain)) {
-      return input
+    if (handleDomain && isHandleString(input)) {
+      // We don't need to resolve the authorization servers for these handle
+      // domains, since we know they're not us:
+      if (WELL_KNOWN_HANDLE_DOMAINS.some((serviceDomain) => input.endsWith(serviceDomain))) {
+        throw createFieldError(
+          'input',
+          input,
+          'Currently the Eurosky portal is only available for Eurosky accounts.'
+        )
+      }
+
+      // If there's a handle domain set, and the input ends with the handle domain, don't resolve:
+      if (input.endsWith(handleDomain)) {
+        return input
+      }
     }
 
     // Finally, attempt resolution:
@@ -134,7 +133,7 @@ export default class OAuthController {
       throw createFieldError(
         'input',
         input,
-        `We couldn't find your Atmosphere account: ${input}, please try again later.`
+        `We couldn't find your Atmosphere account: ${input}, please try again later, or try logging in with: ${oauthServerUrl}`
       )
     }
 
