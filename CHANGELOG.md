@@ -1,5 +1,13 @@
 # eurosky-portal
 
+## 1.4.19
+
+### Patch Changes
+
+- [#148](https://github.com/eurosky-social/eurosky-portal/pull/148) [`642d715`](https://github.com/eurosky-social/eurosky-portal/commit/642d715d5d5206e7139e6c61ae0f9a8c6eba6947) Thanks [@ThisIsMissEm](https://github.com/ThisIsMissEm)! - Fix docker image UID/GID
+
+  Just by chance UID/GID of 991 conflicts on debian with systemd-timesync
+
 ## 1.4.18
 
 ### Patch Changes
