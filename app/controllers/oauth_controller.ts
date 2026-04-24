@@ -1,7 +1,13 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import { Monocle } from '@monocle.sh/adonisjs-agent'
 import { OAuthCallbackError, OAuthResolverError } from '@atproto/oauth-client-node'
-import { isUriString, asAtIdentifierString, type AtIdentifierString } from '@atproto/lex'
+import {
+  isUriString,
+  asAtIdentifierString,
+  type AtIdentifierString,
+  type UriString,
+  isHandleString,
+} from '@atproto/lex'
 import { DateTime } from 'luxon'
 import env from '#start/env'
 import Account from '#models/account'
@@ -9,8 +15,11 @@ import { SlingshotService } from '#services/slingshot_service'
 import { loginRequestValidator, signupRequestValidator } from '#validators/oauth'
 import { createFieldError } from '#utils/errors'
 import { getHandleDomain } from '#utils/oauth'
+import { type OAuthResolvedIdentity } from '@thisismissem/adonisjs-atproto-oauth/types'
+import { type HandleString, INVALID_HANDLE } from '@atproto/syntax'
 
 const oauthServerUrl = env.get('OAUTH_SERVICE')
+const normalizedOAuthServerUrl = oauthServerUrl.replace(/\/$/, '').toLowerCase()
 const allowExternalLogins = env.get('ALLOW_EXTERNAL_LOGINS', false)
 const handleDomain = getHandleDomain()
 
@@ -53,6 +62,92 @@ export default class OAuthController {
     this.slingshot = new SlingshotService()
   }
 
+  private async validateAuthInput(
+    input: string,
+    resolver: (input: AtIdentifierString) => Promise<OAuthResolvedIdentity | undefined | null>
+  ): Promise<AtIdentifierString | UriString> {
+    // Convert username to identifier:
+    if (!isIdentifier(input) && !isUriString(input)) {
+      if (!handleDomain) {
+        throw createFieldError('input', input, 'Please enter a valid Atmosphere account')
+      }
+      input += handleDomain
+    }
+
+    // Apparently this is a common typo:
+    if (input.endsWith('.bluesky.social')) {
+      input = input.replace('.bluesky.social', '.bsky.social')
+    }
+
+    // Bypass if the input is a URI
+    if (isUriString(input)) {
+      // If we don't allow external logins, and the input isn't the oauth server
+      // URL, prevent login with service URL:
+      if (
+        allowExternalLogins !== true &&
+        // We need to remove any trailing slashes to normalize:
+        input.toLowerCase().replace(/\/$/, '') !== normalizedOAuthServerUrl
+      ) {
+        throw createFieldError(
+          'input',
+          input,
+          'Currently the Eurosky portal is only available for Eurosky accounts.'
+        )
+      }
+
+      return input
+    }
+
+    // If we allow external logins, and have a valid identity, don't continue to validation:
+    if (allowExternalLogins === true && isIdentifier(input)) {
+      return input
+    }
+
+    // the validation is accepting handles, dids, and services, so we need to
+    // assert we only have a handle or did string here:
+    if (!isIdentifier(input)) {
+      throw createFieldError('input', input, 'Please enter a valid Atmosphere account')
+    }
+
+    if (handleDomain && isHandleString(input)) {
+      // We don't need to resolve the authorization servers for these handle
+      // domains, since we know they're not us:
+      if (WELL_KNOWN_HANDLE_DOMAINS.some((serviceDomain) => input.endsWith(serviceDomain))) {
+        throw createFieldError(
+          'input',
+          input,
+          'Currently the Eurosky portal is only available for Eurosky accounts.'
+        )
+      }
+
+      // If there's a handle domain set, and the input ends with the handle domain, don't resolve:
+      if (input.endsWith(handleDomain)) {
+        return input
+      }
+    }
+
+    // Finally, attempt resolution:
+    const resolved = await resolver(input)
+
+    if (!resolved) {
+      throw createFieldError(
+        'input',
+        input,
+        `We couldn't find your Atmosphere account: ${input}, please try again later, or try logging in with: ${oauthServerUrl}`
+      )
+    }
+
+    if (resolved.authorizationServer.toString() !== oauthServerUrl) {
+      throw createFieldError(
+        'input',
+        input,
+        'Currently the Eurosky portal is only available for Eurosky accounts.'
+      )
+    }
+
+    return input
+  }
+
   async login({ request, inertia, oauth, session, logger }: HttpContext) {
     const data = await request.validateUsing(loginRequestValidator, {
       meta: {
@@ -69,61 +164,15 @@ export default class OAuthController {
       },
     })
 
-    let input = data.input
-
-    if (!isIdentifier(input) && !isUriString(input)) {
-      if (!handleDomain) {
-        throw createFieldError('input', input, 'Please enter a valid Atmosphere account')
-      }
-      input += handleDomain
-    }
-
-    // Apparently this is a common typo:
-    if (input.endsWith('.bluesky.social')) {
-      input = input.replace('.bluesky.social', '.bsky.social')
-    }
-
-    if (allowExternalLogins !== true) {
-      // We don't need to resolve these authorization servers, since we know they're not us:
-      if (WELL_KNOWN_HANDLE_DOMAINS.some((serviceDomain) => input.endsWith(serviceDomain))) {
-        throw createFieldError(
-          'input',
-          input,
-          'Currently the Eurosky portal is only available for Eurosky accounts.'
-        )
-      }
-
-      if (handleDomain && !input.endsWith(handleDomain)) {
-        // the validation is accepting handles, dids, and services, so we need to
-        // assert we only have a handle or did string here:
-        if (!isIdentifier(input)) {
-          throw createFieldError('input', input, 'Please enter a valid Atmosphere account')
-        }
-
-        const resolved = await oauth
-          .resolveIdentity(input, AbortSignal.timeout(1000))
-          .catch((err) => {
-            logger.error(err, 'Failed to resolveIdentity for handle: %s', input)
-            return undefined
-          })
-
-        if (!resolved) {
-          throw createFieldError(
-            'input',
-            input,
-            `We couldn't find your Atmosphere account: ${input}, please try again later.`
-          )
-        }
-
-        if (!resolved || resolved.authorizationServer.toString() !== oauthServerUrl) {
-          throw createFieldError(
-            'input',
-            input,
-            'Currently the Eurosky portal is only available for Eurosky accounts.'
-          )
-        }
-      }
-    }
+    let input = await this.validateAuthInput(data.input, (identity) => {
+      return oauth.resolveIdentity(identity, AbortSignal.timeout(1000)).catch((err) => {
+        logger.error(err, 'Failed to resolveIdentity for handle: %s', identity)
+        return undefined
+      })
+    }).catch((err) => {
+      logger.error(err)
+      throw err
+    })
 
     session.put('source', 'login')
     session.put('handle', input)
@@ -229,17 +278,26 @@ export default class OAuthController {
       const resolved = await oauth
         .resolveIdentity(did, AbortSignal.timeout(1000))
         .catch((error) => {
+          // AbortSignal timed out, return nothing:
           if (error instanceof DOMException && error.name === 'AbortError') {
             return undefined
           }
+
+          logger.error(error, 'Failed to resolve handle: %s', did)
+
+          // Assume this is due to an invalid handle, because they did manage to
+          // complete an oauth flow:
+          if (error instanceof OAuthResolverError) {
+            return {
+              did: did,
+              handle: INVALID_HANDLE as HandleString,
+            }
+          }
+
           throw error
         })
 
       const existingAccount = await Account.findBy({ did })
-
-      if (!resolved) {
-        logger.info({ did }, 'Failed to resolve handle')
-      }
 
       // If we don't have an existing account and weren't able to resolve, abort:
       if (!existingAccount && !resolved) {
