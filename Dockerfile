@@ -27,13 +27,17 @@ RUN \
   # Install tini:
   apt-get install -y --no-install-recommends tini;
 
+FROM base AS goat
+WORKDIR /tmp
+RUN apt-get install -y --no-install-recommends git go
+RUN git clone https://github.com/bluesky-social/goat.git && cd goat && git checkout v0.2.1 && go build -o /tmp/goat-build .
+
 FROM base AS base-deps
 WORKDIR /app
 COPY package.json pnpm-*.yaml ./
 
 # Configure Corepack
 RUN corepack enable
-
 RUN --mount=type=cache,target=/pnpm/store pnpm fetch
 
 FROM base-deps AS production-deps
@@ -55,6 +59,9 @@ FROM base AS production
 WORKDIR /app
 
 ENV NODE_ENV=production
+
+# Copy goat:
+COPY --from=goat /tmp/goat-build /usr/local/bin/goat
 
 # Copy the build app:
 COPY --from=build /app/build ./
