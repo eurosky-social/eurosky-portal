@@ -26,7 +26,7 @@ RUN \
   apt-get update; \
   apt-get dist-upgrade -yq; \
   # Install tini:
-  apt-get install -y --no-install-recommends tini;
+  apt-get install -y --no-install-recommends tini tzdata curl wget ca-certificates openssl;
 
 FROM base AS goat
 WORKDIR /tmp
