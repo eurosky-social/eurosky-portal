@@ -107,6 +107,14 @@ export default class OAuthController {
             return undefined
           })
 
+        if (!resolved) {
+          throw createFieldError(
+            'input',
+            input,
+            `We couldn't find your Atmosphere account: ${input}, please try again later.`
+          )
+        }
+
         if (!resolved || resolved.authorizationServer.toString() !== oauthServerUrl) {
           throw createFieldError(
             'input',
