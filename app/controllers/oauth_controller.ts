@@ -5,7 +5,7 @@ import {
   isUriString,
   asAtIdentifierString,
   type AtIdentifierString,
-  UriString,
+  type UriString,
   isHandleString,
 } from '@atproto/lex'
 import { DateTime } from 'luxon'
@@ -15,10 +15,11 @@ import { SlingshotService } from '#services/slingshot_service'
 import { loginRequestValidator, signupRequestValidator } from '#validators/oauth'
 import { createFieldError } from '#utils/errors'
 import { getHandleDomain } from '#utils/oauth'
-import { OAuthResolvedIdentity } from '@thisismissem/adonisjs-atproto-oauth/types'
-import { HandleString, INVALID_HANDLE } from '@atproto/syntax'
+import { type OAuthResolvedIdentity } from '@thisismissem/adonisjs-atproto-oauth/types'
+import { type HandleString, INVALID_HANDLE } from '@atproto/syntax'
 
 const oauthServerUrl = env.get('OAUTH_SERVICE')
+const normalizedOAuthServerUrl = oauthServerUrl.replace(/\/$/, '')
 const allowExternalLogins = env.get('ALLOW_EXTERNAL_LOGINS', false)
 const handleDomain = getHandleDomain()
 
@@ -82,7 +83,11 @@ export default class OAuthController {
     if (isUriString(input)) {
       // If we don't allow external logins, and the input isn't the oauth server
       // URL, prevent login with service URL:
-      if (allowExternalLogins !== true && input !== oauthServerUrl) {
+      if (
+        allowExternalLogins !== true &&
+        // We need to remove any trailing slashes to normalize:
+        input.replace(/\/$/, '') !== normalizedOAuthServerUrl
+      ) {
         throw createFieldError(
           'input',
           input,
@@ -165,6 +170,9 @@ export default class OAuthController {
         logger.error(err, 'Failed to resolveIdentity for handle: %s', identity)
         return undefined
       })
+    }).catch((err) => {
+      logger.error(err)
+      throw err
     })
 
     session.put('source', 'login')
