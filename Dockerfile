@@ -34,7 +34,7 @@ RUN \
   --mount=type=cache,id=apt-cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,id=apt-lib,target=/var/lib/apt,sharing=locked \
   # Install go & git:
-  apt-get install -y --no-install-recommends git go
+  apt-get install -y --no-install-recommends git golang-go
 
 RUN git clone https://github.com/bluesky-social/goat.git && cd goat && git checkout v0.2.3 && go build -o /tmp/goat-build .
 
