@@ -29,8 +29,14 @@ RUN \
 
 FROM base AS goat
 WORKDIR /tmp
-RUN apt-get install -y --no-install-recommends git go
-RUN git clone https://github.com/bluesky-social/goat.git && cd goat && git checkout v0.2.1 && go build -o /tmp/goat-build .
+RUN \
+  # Mount Apt cache and lib directories from Docker buildx caches
+  --mount=type=cache,id=apt-cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,id=apt-lib,target=/var/lib/apt,sharing=locked \
+  # Install go & git:
+  apt-get install -y --no-install-recommends git go
+
+RUN git clone https://github.com/bluesky-social/goat.git && cd goat && git checkout v0.2.3 && go build -o /tmp/goat-build .
 
 FROM base AS base-deps
 WORKDIR /app
