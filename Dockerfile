@@ -15,8 +15,8 @@ RUN \
   # Sets timezone
   echo "Etc/UTC" > /etc/localtime; \
   # Creates app user/group and sets home directory
-  groupadd -g "991" app; \
-  useradd -l -u "991" -g "991" -m -d /app app;
+  groupadd -g "1002" app; \
+  useradd -l -u "1002" -g "1002" -m -d /app app;
 
 RUN \
   # Mount Apt cache and lib directories from Docker buildx caches
