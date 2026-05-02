@@ -90,7 +90,7 @@
     "@adonisjs/vite": "^5.1.0",
     "@atproto-labs/simple-store": "^0.3.0",
     "@atproto/jwk-jose": "^0.1.11",
-    "@atproto/lex": "^0.0.24",
+    "@atproto/lex": "^0.0.25",
     "@atproto/oauth-client-node": "^0.3.17",
     "@atproto/syntax": "^0.5.4",
     "@headlessui/react": "^2.2.10",
