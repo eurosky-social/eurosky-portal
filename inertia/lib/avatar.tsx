@@ -1,6 +1,6 @@
 import * as Headless from '@headlessui/react'
 import clsx from 'clsx'
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useEffect, useState } from 'react'
 import { ButtonType, TouchTarget } from './button'
 import { Link } from './link'
 import { LinkProps } from '@adonisjs/inertia/react'
@@ -13,6 +13,11 @@ type AvatarProps = {
   className?: string
 }
 
+/**
+ * State of an image.
+ */
+type ImageLoadState = 'error' | 'loaded' | 'loading'
+
 export function Avatar({
   src = null,
   square = false,
@@ -21,6 +26,12 @@ export function Avatar({
   className,
   ...props
 }: AvatarProps & React.ComponentPropsWithoutRef<'span'>) {
+  const [imageLoadState, setImageLoadState] = useState<ImageLoadState>('loading')
+
+  useEffect(() => {
+    setImageLoadState('loading')
+  }, [src])
+
   return (
     <span
       data-slot="avatar"
@@ -36,26 +47,36 @@ export function Avatar({
           : 'rounded-full *:rounded-full'
       )}
     >
-      {initials && (
-        <svg
-          className="size-full fill-current p-[5%] text-[48px] font-medium uppercase select-none"
-          viewBox="0 0 100 100"
-          aria-hidden={alt ? undefined : 'true'}
+      <svg
+        className="size-full fill-current p-[5%] text-[48px] font-medium uppercase select-none"
+        viewBox="0 0 100 100"
+        aria-hidden={alt ? undefined : 'true'}
+        // For transparent images, hide initials when the image is loaded.
+        style={{ display: imageLoadState === 'loaded' ? 'none' : 'block' }}
+      >
+        {alt && <title>{alt}</title>}
+        <text
+          x="50%"
+          y="50%"
+          alignmentBaseline="middle"
+          dominantBaseline="middle"
+          textAnchor="middle"
+          dy={initials ? '.125em' : undefined}
         >
-          {alt && <title>{alt}</title>}
-          <text
-            x="50%"
-            y="50%"
-            alignmentBaseline="middle"
-            dominantBaseline="middle"
-            textAnchor="middle"
-            dy=".125em"
-          >
-            {initials}
-          </text>
-        </svg>
+          {initials || '@'}
+        </text>
+      </svg>
+      {src && (
+        <img
+          className="size-full"
+          onError={() => setImageLoadState('error')}
+          onLoad={() => setImageLoadState('loaded')}
+          // Fall back to initials instead of broken image icon.
+          style={{ display: imageLoadState === 'error' ? 'none' : 'block' }}
+          src={src}
+          alt={alt}
+        />
       )}
-      {src && <img className="size-full" src={src} alt={alt} />}
     </span>
   )
 }

@@ -92,11 +92,11 @@ export default function Dashboard({
           <div className="flex flex-row justify-between">
             <div className="flex flex-row gap-6">
               <div className="size-14 md:size-20 md:self-center">
-                <UserAvatar avatar={profile?.avatar} handle={user.handle} />
+                <UserAvatar avatar={profile?.avatar} />
               </div>
               <div className="flex flex-col">
                 <h2 className="text-lg/8 font-semibold text-zinc-950 sm:text-2xl/8 dark:text-white">
-                  {profile?.displayName ?? user.handle}
+                  Welcome back{profile?.displayName ? ', ' + profile.displayName : ''}!
                 </h2>
                 {isHandleInvalid ? (
                   <Text className="text-amber-500!">
