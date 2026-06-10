@@ -1,219 +1,75 @@
 [
   {
-    "id": "bsky",
-    "name": "Bluesky",
-    "summary": "A healthier, thriving alternative to X",
-    "url": "https://bsky.app",
-    "platforms": ["ios", "android", "web"],
+    "#": "Bluesky; note: for more info see `services/atstore_service.ts`",
+    "atUri": "at://did:plc:dvy6bdnofdfc4php4s5b457d/fyi.atstore.listing.detail/3mj667g65ct2x",
+    "category": "getting-started"
+  },
+  {
+    "#": "Leaflet; to do: add `mu` above",
+    "atUri": "at://did:plc:btxrwcaeyodrap5mnjw2fvmz/fyi.atstore.listing.detail/3mkijfr6sts5l",
+    "category": "getting-started"
+  },
+  {
+    "#": "Popfeed",
+    "atUri": "at://did:plc:dvy6bdnofdfc4php4s5b457d/fyi.atstore.listing.detail/3mj66fhgmnh2x",
+    "category": "getting-started"
+  },
+  {
+    "#": "Sifa ID",
+    "atUri": "at://did:plc:2f2ahswozqy4v5lvu676375y/fyi.atstore.listing.detail/3mkduyazhqc6y",
     "category": "getting-started",
-    "icon": {
-      "path": "icons/bluesky.png",
-      "fallback": {
-        "color": "blue",
-        "initials": "bs"
-      }
-    }
+    "madeInEU": true
   },
   {
-    "id": "mu",
-    "name": "mu",
-    "summary": "Eurosky's take on the Bluesky social experience",
-    "url": "https://mu.social",
-    "platforms": ["web"],
-    "category": "getting-started",
-    "madeInEU": true,
-    "icon": {
-      "fallback": {
-        "color": "pink",
-        "initials": "mu"
-      }
-    }
+    "#": "Stream.place",
+    "atUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/fyi.atstore.listing.detail/3mkijapfmwcvs",
+    "category": "getting-started"
   },
   {
-    "id": "leaflet",
-    "name": "Leaflet",
-    "summary": "Easy blogging with social integration",
-    "url": "https://leaflet.pub",
-    "platforms": ["web"],
-    "category": "getting-started",
-    "icon": {
-      "path": "icons/leaflet.png",
-      "fallback": {
-        "color": "green",
-        "initials": "lf"
-      }
-    }
-  },
-  {
-    "id": "popfeed",
-    "name": "Popfeed",
-    "summary": "Discover films, TV, games, books and music",
-    "url": "https://popfeed.social/find",
-    "platforms": ["web"],
-    "category": "getting-started",
-    "icon": {
-      "path": "icons/popfeed.png",
-      "fallback": {
-        "color": "purple",
-        "initials": "pf"
-      }
-    }
-  },
-  {
-    "id": "sifa",
-    "name": "Sifa ID",
-    "summary": "Professional profile and networking",
-    "url": "https://sifa.id/",
-    "platforms": ["web"],
-    "category": "getting-started",
-    "madeInEU": true,
-    "icon": {
-      "path": "icons/sifa.png",
-      "fallback": {
-        "color": "gray",
-        "initials": "id"
-      }
-    }
-  },
-  {
-    "id": "streamplace",
-    "name": "Streamplace",
-    "summary": "Easy video streaming from anywhere",
-    "url": "https://stream.place/",
-    "platforms": ["web", "ios", "android"],
-    "category": "getting-started",
-    "icon": {
-      "path": "icons/streamplace.png",
-      "fallback": {
-        "color": "pink",
-        "initials": "sp"
-      }
-    }
-  },
-  {
-    "id": "blento",
-    "name": "Blento",
-    "summary": "Create your own website, the fun way",
-    "url": "https://blento.app/",
-    "platforms": ["web"],
+    "#": "Blento",
+    "atUri": "at://did:plc:4fdwezqvlw4mu2qwn7wqsmej/fyi.atstore.listing.detail/3mkk4kacxbk3a",
     "category": "explore-more",
-    "madeInEU": true,
-    "icon": {
-      "path": "icons/blento.png",
-      "fallback": {
-        "color": "purple",
-        "initials": "b"
-      }
-    }
+    "madeInEU": true
   },
   {
-    "id": "flashes",
-    "name": "Flashes",
-    "summary": "Photo and video social sharing",
-    "url": "https://www.flashes.blue",
-    "platforms": ["ios"],
+    "#": "Flashes",
+    "atUri": "at://did:plc:24kqkpfy6z7avtgu3qg57vvl/fyi.atstore.listing.detail/3mkizzu7lp2a3",
     "category": "explore-more",
-    "madeInEU": true,
-    "icon": {
-      "path": "icons/flashes.png",
-      "fallback": {
-        "color": "blue",
-        "initials": "fl"
-      }
-    }
+    "madeInEU": true
   },
   {
-    "id": "skywalker",
-    "name": "Skywalker",
-    "summary": "Bluesky client for Android",
-    "url": "https://play.google.com/store/apps/details?id=com.gmail.mfnboer.skywalker&hl=en_GB",
-    "platforms": ["android"],
+    "#": "Skywalker",
+    "atUri": "at://did:plc:zzmeflm2wzrrgcaam6bw3kaf/fyi.atstore.listing.detail/3mkpls2aa62c3",
     "category": "explore-more",
-    "madeInEU": true,
-    "icon": {
-      "path": "icons/skywalker.png",
-      "fallback": {
-        "color": "blue",
-        "initials": "sw"
-      }
-    }
+    "madeInEU": true
   },
   {
-    "id": "skeets",
-    "name": "Skeets",
-    "summary": "Bluesky client for iOS",
-    "url": "https://www.skeetsapp.com/",
-    "platforms": ["ios"],
+    "#": "Skeets",
+    "atUri": "at://did:plc:dvy6bdnofdfc4php4s5b457d/fyi.atstore.listing.detail/3mj66gqhdkq2f",
     "category": "explore-more",
-    "madeInEU": true,
-    "icon": {
-      "path": "icons/skeets.png",
-      "fallback": {
-        "color": "blue",
-        "initials": "sk"
-      }
-    }
+    "madeInEU": true
   },
   {
-    "id": "sill",
-    "name": "Sill",
-    "summary": "Discover the latest news with your social connections",
-    "url": "https://sill.social/",
-    "platforms": ["web"],
+    "#": "Sill",
+    "atUri": "at://did:plc:ryed5tnzwmpwbidrsuwrlwwb/fyi.atstore.listing.detail/3mkkdlphhxkgj",
     "category": "explore-more",
-    "madeInEU": true,
-    "icon": {
-      "path": "icons/sill.png",
-      "fallback": {
-        "color": "yellow",
-        "initials": "s"
-      }
-    }
+    "madeInEU": true
   },
   {
-    "id": "atmo",
-    "name": "atmo.rsvp",
-    "summary": "Find and create event for fun and for work",
-    "url": "https://atmo.rsvp/",
-    "platforms": ["web"],
+    "#": "atmo.rsvp",
+    "atUri": "at://did:plc:b63bmauox6z5rbibwrhxrdnw/fyi.atstore.listing.detail/3moebodfjt2oq",
     "category": "explore-more",
-    "madeInEU": true,
-    "icon": {
-      "fallback": {
-        "color": "violet",
-        "initials": "at"
-      }
-    }
+    "madeInEU": true
   },
   {
-    "id": "semble",
-    "name": "Semble",
-    "summary": "Social knowledge network for researchers",
-    "url": "https://semble.so/",
-    "platforms": ["web"],
+    "#": "Semble",
+    "atUri": "at://did:plc:k7wclckeajmuibxbamtbejjg/fyi.atstore.listing.detail/3mkiitkc44spk",
+    "category": "for-work"
+  },
+  {
+    "#": "Tangled",
+    "atUri": "at://did:plc:dvy6bdnofdfc4php4s5b457d/fyi.atstore.listing.detail/3mj66idq2fp2t",
     "category": "for-work",
-    "icon": {
-      "path": "icons/semble.png",
-      "fallback": {
-        "color": "orange",
-        "initials": "se"
-      }
-    }
-  },
-  {
-    "id": "tangled",
-    "name": "Tangled",
-    "summary": "Social code platform for GitHub-style collaboration",
-    "url": "https://tangled.org/",
-    "platforms": ["web"],
-    "category": "for-work",
-    "madeInEU": true,
-    "icon": {
-      "path": "icons/tangled.png",
-      "fallback": {
-        "color": "gray",
-        "initials": "t"
-      }
-    }
+    "madeInEU": true
   }
 ]

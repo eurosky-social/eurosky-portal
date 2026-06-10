@@ -1,16 +1,17 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import Apps from '#collections/apps'
+import { AtStoreService } from '#services/atstore_service'
 import AppsTransformer from '#transformers/apps_transformer'
 
 export default class HomeController {
   async show({ inertia }: HttpContext) {
-    const query = await Apps.load()
+    const atstore = new AtStoreService()
+    const apps = await atstore.getApps()
 
     return inertia.render('home', {
       apps: AppsTransformer.transform({
-        gettingStarted: query.findByCategory('getting-started'),
-        exploreMore: query.findByCategory('explore-more'),
-        forWork: query.findByCategory('for-work'),
+        gettingStarted: atstore.findByCategory(apps, 'getting-started'),
+        exploreMore: atstore.findByCategory(apps, 'explore-more'),
+        forWork: atstore.findByCategory(apps, 'for-work'),
       }),
     })
   }

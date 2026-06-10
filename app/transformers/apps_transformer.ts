@@ -1,5 +1,5 @@
 import { BaseTransformer } from '@adonisjs/core/transformers'
-import type { App } from '#collections/apps'
+import type { App } from '#services/atstore_service'
 import AppTransformer from '#transformers/app_transformer'
 
 export default class AppsTransformer extends BaseTransformer<{

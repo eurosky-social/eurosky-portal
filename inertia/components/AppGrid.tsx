@@ -8,7 +8,7 @@ export function AppGrid({ apps }: { apps: Data.App[] }) {
       className="mt-4 mb-8 grid grid-cols-1 gap-5 sm:gap-6 sm:grid-cols-2 md:grid-cols-3"
     >
       {apps.map((app) => (
-        <App key={app.id} app={app} />
+        <App key={app.atUri} app={app} />
       ))}
     </ul>
   )

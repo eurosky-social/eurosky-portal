@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lexicons": ["app.bsky.actor.getProfile"],
+  "lexicons": ["app.bsky.actor.getProfile", "fyi.atstore.directory.getListing"],
   "resolutions": {
     "app.bsky.actor.defs": {
       "uri": "at://did:plc:4v4y5r3lwsbtmsxhile2ljac/com.atproto.lexicon.schema/app.bsky.actor.defs",
@@ -77,6 +77,10 @@
     "com.atproto.repo.strongRef": {
       "uri": "at://did:plc:6msi3pj7krzih5qxqtryxlzw/com.atproto.lexicon.schema/com.atproto.repo.strongRef",
       "cid": "bafyreifrkdbnkvfjujntdaeigolnrjj3srrs53tfixjhmacclps72qlov4"
+    },
+    "fyi.atstore.directory.getListing": {
+      "uri": "at://did:plc:dvy6bdnofdfc4php4s5b457d/com.atproto.lexicon.schema/fyi.atstore.directory.getListing",
+      "cid": "bafyreieuzjx4sgvsgdm7ymntn7nbgbdiw2xndvazdcx7cnvng2e7hd4zxy"
     },
     "tools.ozone.report.defs": {
       "uri": "at://did:plc:33dt5kftu3jq2h5h4jjlqezt/com.atproto.lexicon.schema/tools.ozone.report.defs",

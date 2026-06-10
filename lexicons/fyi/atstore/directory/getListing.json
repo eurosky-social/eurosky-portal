@@ -1,0 +1,226 @@
+{
+  "id": "fyi.atstore.directory.getListing",
+  "defs": {
+    "main": {
+      "type": "query",
+      "errors": [
+        {
+          "name": "ListingNotFound"
+        },
+        {
+          "name": "InvalidParams"
+        },
+        {
+          "name": "AmbiguousResolution"
+        }
+      ],
+      "output": {
+        "schema": {
+          "ref": "#listingDetailResponse",
+          "type": "ref"
+        },
+        "encoding": "application/json"
+      },
+      "parameters": {
+        "type": "params",
+        "properties": {
+          "uri": {
+            "type": "string",
+            "format": "at-uri",
+            "maxLength": 2560,
+            "description": "AT URI of the fyi.atstore.listing.detail record."
+          },
+          "externalUrl": {
+            "type": "string",
+            "maxLength": 2048,
+            "description": "Listing external_url / product URL as stored on the record; must match at most one public listing."
+          }
+        }
+      },
+      "description": "Fetch one public verified listing. Provide exactly one of `uri` (fyi.atstore.listing.detail AT URI) or `externalUrl` (unique storefront URL); `externalUrl` uses the same matching rules as the former resolve endpoint."
+    },
+    "listingCardGet": {
+      "type": "object",
+      "required": [
+        "uri",
+        "name",
+        "tagline",
+        "description",
+        "category",
+        "accent",
+        "reviewCount",
+        "priceLabel",
+        "appTags",
+        "categorySlugs"
+      ],
+      "properties": {
+        "uri": {
+          "type": "string",
+          "format": "at-uri",
+          "maxLength": 2560,
+          "description": "AT URI of the fyi.atstore.listing.detail record."
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 640
+        },
+        "accent": {
+          "type": "string",
+          "maxLength": 16,
+          "knownValues": [
+            "blue",
+            "pink",
+            "purple",
+            "green"
+          ]
+        },
+        "rating": {
+          "type": "string",
+          "nullable": true,
+          "maxLength": 16
+        },
+        "appTags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 256
+          }
+        },
+        "iconUrl": {
+          "type": "string",
+          "nullable": true,
+          "maxLength": 8192
+        },
+        "tagline": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "category": {
+          "type": "string",
+          "maxLength": 640
+        },
+        "priceLabel": {
+          "type": "string",
+          "maxLength": 32
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 20000
+        },
+        "reviewCount": {
+          "type": "integer"
+        },
+        "categorySlug": {
+          "type": "string",
+          "nullable": true,
+          "maxLength": 512
+        },
+        "heroImageUrl": {
+          "type": "string",
+          "nullable": true,
+          "maxLength": 8192
+        },
+        "categorySlugs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 512
+          }
+        },
+        "productAccountHandle": {
+          "type": "string",
+          "nullable": true,
+          "maxLength": 512
+        }
+      }
+    },
+    "listingLinkRow": {
+      "type": "object",
+      "required": [
+        "uri"
+      ],
+      "properties": {
+        "uri": {
+          "type": "string",
+          "maxLength": 2048
+        },
+        "label": {
+          "type": "string",
+          "maxLength": 640
+        }
+      }
+    },
+    "listingDetailResponse": {
+      "type": "object",
+      "required": [
+        "listing",
+        "isStoreManaged"
+      ],
+      "properties": {
+        "links": {
+          "type": "array",
+          "items": {
+            "ref": "#listingLinkRow",
+            "type": "ref"
+          }
+        },
+        "listing": {
+          "ref": "#listingCardGet",
+          "type": "ref"
+        },
+        "repoDid": {
+          "type": "string",
+          "nullable": true,
+          "maxLength": 2048
+        },
+        "createdAt": {
+          "type": "string",
+          "nullable": true,
+          "maxLength": 64
+        },
+        "sourceUrl": {
+          "type": "string",
+          "nullable": true,
+          "maxLength": 8192
+        },
+        "updatedAt": {
+          "type": "string",
+          "nullable": true,
+          "maxLength": 64
+        },
+        "externalUrl": {
+          "type": "string",
+          "nullable": true,
+          "maxLength": 2048
+        },
+        "screenshots": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 4096
+          }
+        },
+        "sourceTagline": {
+          "type": "string",
+          "nullable": true,
+          "maxLength": 20000
+        },
+        "isStoreManaged": {
+          "type": "boolean"
+        },
+        "productAccountDid": {
+          "type": "string",
+          "nullable": true,
+          "maxLength": 2048
+        },
+        "sourceFullDescription": {
+          "type": "string",
+          "nullable": true,
+          "maxLength": 20000
+        }
+      }
+    }
+  },
+  "$type": "com.atproto.lexicon.schema",
+  "lexicon": 1
+}

@@ -4,66 +4,84 @@ import { Badge } from '~/lib/badge'
 import { ClickableCard } from '~/lib/card'
 import { Heading } from '~/lib/heading'
 import { Text } from '~/lib/text'
-import { siAndroid, siIos, SimpleIcon } from 'simple-icons'
-import { GlobeAltIcon } from '@heroicons/react/24/solid'
-
-function SvgIcon({ icon, alt }: { icon: SimpleIcon; alt: string }) {
-  return (
-    <svg data-slot="icon" className="fill-current" viewBox="0 0 40 20" aria-hidden="true">
-      {alt && <title>{alt}</title>}
-      <path d={icon.path} />
-    </svg>
-  )
-}
+import { StarIcon } from '@heroicons/react/24/solid'
 
 export function App({ app }: { app: Data.App }) {
   return (
     <li className="col-span-1 flex rounded-md shadow-xs dark:shadow-none">
       <ClickableCard
-        href={app.url}
+        href={app.externalUrl}
         target="_blank"
         className="w-full focus:outline-hidden p-4 flex flex-col space-between gap-4"
       >
         <div className="flex flex-row grow flex-1 gap-4">
-          <Avatar
-            square
-            src={app.icon.path}
-            className={`size-12 mb-2 bg-${app.icon.fallback.color}-400 text-white outline-none!`}
-            initials={app.icon.fallback.initials}
-          />
           <div className="flex flex-col">
             <Heading level={4} className="text-base!">
-              {app.name}
+              {app.listing.name}
             </Heading>
-            <Text className="mb-2 dark:text-slate-400!">{app.summary}</Text>
+            <Text
+              className="overflow-hidden dark:text-slate-400!"
+              style={{ WebkitBoxOrient: 'vertical', WebkitLineClamp: 3, display: '-webkit-box' }}
+            >
+              {app.listing.tagline}
+            </Text>
           </div>
+          <Avatar
+            square
+            src={app.listing.iconUrl}
+            className="size-12 mb-2 bg-gray-100 ml-auto dark:bg-gray-800 outline-none!"
+          />
         </div>
-        <div className="self-end w-full mt-3">
-          <div className="flex flex-row space-between gap-2">
-            <div className="flex grow">
-              {app.madeInEU ? <Badge color="blue">Made in EU</Badge> : null}
-            </div>
-
-            <div className="flex flex-row self-center items-center align-middle text-gray-500">
-              {app.platforms.includes('web') && (
-                <div className="w-8 h-6 flex">
-                  <GlobeAltIcon title="Web" />
-                </div>
-              )}
-              {app.platforms.includes('android') && (
-                <div className="w-10 h-8 flex">
-                  <SvgIcon icon={siAndroid} alt="Android" />
-                </div>
-              )}
-              {app.platforms.includes('ios') && (
-                <div className="w-10 h-8 flex">
-                  <SvgIcon icon={siIos} alt="iOS" />
-                </div>
-              )}
-            </div>
+        {typeof app.listing.rating === 'string' ? (
+          <div className="flex flex-row space-between gap-0.5">
+            <span className="flex items-center gap-0.5 text-sm text-amber-500">
+              <Rating value={parseFloat(app.listing.rating)} />
+              <span className="text-gray-400 dark:text-slate-500 ml-0.5">
+                ({app.listing.reviewCount})
+              </span>
+            </span>
           </div>
+        ) : undefined}
+        <div className="flex w-full items-center gap-2">
+          {app.madeInEU ? (
+            <Badge color="blue" className="ml-auto">
+              Made in the EU
+            </Badge>
+          ) : undefined}
         </div>
       </ClickableCard>
     </li>
+  )
+}
+
+/**
+ * @param properties
+ *   Properties.
+ * @param properties.value
+ *   Value between `0` and `5` (both including).
+ * @returns {Element}
+ *   Result.
+ */
+function Rating(properties: { value: number }): React.JSX.Element {
+  const { value } = properties
+  const rounded = Math.round(value * 2) / 2
+  const stars = Math.floor(rounded)
+
+  return (
+    <span
+      aria-label={value + ' out of 5'}
+      className="flex items-center"
+      role="img"
+      title={value + ' out of 5'}
+    >
+      {Array.from({ length: stars }, (_, index) => (
+        <StarIcon className="size-3.5" key={index} />
+      ))}
+      {rounded - stars === 0.5 && (
+        <span className="size-3.5" style={{ marginLeft: '2px', marginTop: '-4px' }}>
+          ½
+        </span>
+      )}
+    </span>
   )
 }
