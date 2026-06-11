@@ -15,34 +15,17 @@
     }
   },
   {
-    "id": "blento",
-    "name": "Blento",
-    "summary": "Create your own website, the fun way",
-    "url": "https://blento.app/",
+    "id": "mu",
+    "name": "mu",
+    "summary": "Eurosky's take on the Bluesky social experience",
+    "url": "https://mu.social",
     "platforms": ["web"],
     "category": "getting-started",
     "madeInEU": true,
     "icon": {
-      "path": "icons/blento.png",
       "fallback": {
-        "color": "purple",
-        "initials": "b"
-      }
-    }
-  },
-  {
-    "id": "flashes",
-    "name": "Flashes",
-    "summary": "Photo and video social sharing",
-    "url": "https://www.flashes.blue",
-    "platforms": ["ios"],
-    "category": "getting-started",
-    "madeInEU": true,
-    "icon": {
-      "path": "icons/flashes.png",
-      "fallback": {
-        "color": "blue",
-        "initials": "fl"
+        "color": "pink",
+        "initials": "mu"
       }
     }
   },
@@ -62,12 +45,90 @@
     }
   },
   {
+    "id": "popfeed",
+    "name": "Popfeed",
+    "summary": "Discover films, TV, games, books and music",
+    "url": "https://popfeed.social/find",
+    "platforms": ["web"],
+    "category": "getting-started",
+    "icon": {
+      "path": "icons/popfeed.png",
+      "fallback": {
+        "color": "purple",
+        "initials": "pf"
+      }
+    }
+  },
+  {
+    "id": "sifa",
+    "name": "Sifa ID",
+    "summary": "Professional profile and networking",
+    "url": "https://sifa.id/",
+    "platforms": ["web"],
+    "category": "getting-started",
+    "madeInEU": true,
+    "icon": {
+      "path": "icons/sifa.png",
+      "fallback": {
+        "color": "gray",
+        "initials": "id"
+      }
+    }
+  },
+  {
+    "id": "streamplace",
+    "name": "Streamplace",
+    "summary": "Easy video streaming from anywhere",
+    "url": "https://stream.place/",
+    "platforms": ["web", "ios", "android"],
+    "category": "getting-started",
+    "icon": {
+      "path": "icons/streamplace.png",
+      "fallback": {
+        "color": "pink",
+        "initials": "sp"
+      }
+    }
+  },
+  {
+    "id": "blento",
+    "name": "Blento",
+    "summary": "Create your own website, the fun way",
+    "url": "https://blento.app/",
+    "platforms": ["web"],
+    "category": "explore-more",
+    "madeInEU": true,
+    "icon": {
+      "path": "icons/blento.png",
+      "fallback": {
+        "color": "purple",
+        "initials": "b"
+      }
+    }
+  },
+  {
+    "id": "flashes",
+    "name": "Flashes",
+    "summary": "Photo and video social sharing",
+    "url": "https://www.flashes.blue",
+    "platforms": ["ios"],
+    "category": "explore-more",
+    "madeInEU": true,
+    "icon": {
+      "path": "icons/flashes.png",
+      "fallback": {
+        "color": "blue",
+        "initials": "fl"
+      }
+    }
+  },
+  {
     "id": "skywalker",
     "name": "Skywalker",
     "summary": "Bluesky client for Android",
     "url": "https://play.google.com/store/apps/details?id=com.gmail.mfnboer.skywalker&hl=en_GB",
     "platforms": ["android"],
-    "category": "getting-started",
+    "category": "explore-more",
     "madeInEU": true,
     "icon": {
       "path": "icons/skywalker.png",
@@ -83,28 +144,13 @@
     "summary": "Bluesky client for iOS",
     "url": "https://www.skeetsapp.com/",
     "platforms": ["ios"],
-    "category": "getting-started",
+    "category": "explore-more",
     "madeInEU": true,
     "icon": {
       "path": "icons/skeets.png",
       "fallback": {
         "color": "blue",
         "initials": "sk"
-      }
-    }
-  },
-  {
-    "id": "popfeed",
-    "name": "Popfeed",
-    "summary": "Discover films, TV, games, books and music",
-    "url": "https://popfeed.social/find",
-    "platforms": ["web"],
-    "category": "explore-more",
-    "icon": {
-      "path": "icons/popfeed.png",
-      "fallback": {
-        "color": "purple",
-        "initials": "pf"
       }
     }
   },
@@ -140,21 +186,6 @@
     }
   },
   {
-    "id": "streamplace",
-    "name": "Streamplace",
-    "summary": "Easy video streaming from anywhere",
-    "url": "https://stream.place/",
-    "platforms": ["web", "ios", "android"],
-    "category": "explore-more",
-    "icon": {
-      "path": "icons/streamplace.png",
-      "fallback": {
-        "color": "pink",
-        "initials": "sp"
-      }
-    }
-  },
-  {
     "id": "semble",
     "name": "Semble",
     "summary": "Social knowledge network for researchers",
@@ -182,22 +213,6 @@
       "fallback": {
         "color": "gray",
         "initials": "t"
-      }
-    }
-  },
-  {
-    "id": "sifa",
-    "name": "Sifa ID",
-    "summary": "Professional profile and networking",
-    "url": "https://sifa.id/",
-    "platforms": ["web"],
-    "category": "for-work",
-    "madeInEU": true,
-    "icon": {
-      "path": "icons/sifa.png",
-      "fallback": {
-        "color": "gray",
-        "initials": "id"
       }
     }
   }

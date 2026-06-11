@@ -19,6 +19,7 @@ import {
   ChatBubbleOvalLeftEllipsisIcon,
   DocumentTextIcon,
   Cog6ToothIcon,
+  GlobeAltIcon,
   ArrowTopRightOnSquareIcon,
   LifebuoyIcon,
   LockClosedIcon,
@@ -77,6 +78,13 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
                       Change Password{' '}
                       <ArrowTopRightOnSquareIcon className="size-4 inline-block self-center" />
                     </SidebarLabel>
+                  </SidebarItem>
+                </SidebarSection>
+                <SidebarHeading className="mt-10 font-bold">Discover</SidebarHeading>
+                <SidebarSection>
+                  <SidebarItem href="/apps" current={url == '/apps'}>
+                    <GlobeAltIcon />
+                    <SidebarLabel>Applications</SidebarLabel>
                   </SidebarItem>
                 </SidebarSection>
                 <SidebarHeading className="mt-10 font-bold">Support</SidebarHeading>

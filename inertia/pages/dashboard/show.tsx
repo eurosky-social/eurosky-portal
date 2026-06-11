@@ -6,7 +6,7 @@ import { Text } from '~/lib/text'
 import { InertiaProps } from '~/types'
 import { useAuth } from '~/utils/use_auth'
 import { Data } from '@generated/data'
-import { Apps } from '~/components/Apps'
+import { AppGrid } from '~/components/AppGrid'
 import { client } from '~/client'
 import { useRouter } from '@adonisjs/inertia/react'
 import { INVALID_HANDLE } from '@atproto/syntax'
@@ -19,11 +19,7 @@ export default function Dashboard({
 }: InertiaProps<{
   showWelcomeMessage: boolean
   profile: Data.Profile | undefined
-  apps: {
-    gettingStarted: Data.App[]
-    exploreMore: Data.App[]
-    forWork: Data.App[]
-  }
+  apps: Data.App[]
 }>) {
   const user = useAuth()
   const router = useRouter()
@@ -150,14 +146,20 @@ export default function Dashboard({
         </Card>
       </div>
       <div className="pt-4">
-        <h2 className="text-xl text-center font-medium text-neutral-500 dark:text-slate-200">
+        <h2 className="text-xl font-medium text-neutral-500 dark:text-slate-200">
           Featured applications
         </h2>
-        <p className="text-center text-base md:textlg text-neutral-400 dark:text-slate-400 mb-6">
+        <p className="text-base text-neutral-400 dark:text-slate-400 mb-6">
           Your Eurosky account works with all of these.
         </p>
 
-        <Apps apps={apps} />
+        <AppGrid apps={apps} />
+
+        <div className="mt-1 flex justify-center">
+          <Button route="discover.apps" className="w-full sm:w-auto dark:bg-slate-700!">
+            Browse more apps
+          </Button>
+        </div>
       </div>
     </div>
   )

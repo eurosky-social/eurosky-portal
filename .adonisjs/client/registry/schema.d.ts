@@ -151,6 +151,18 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/account_controller').default['dismissWelcome']>>>
     }
   }
+  'discover.apps': {
+    methods: ["GET","HEAD"]
+    pattern: '/apps'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/discover_controller').default['apps']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/discover_controller').default['apps']>>>
+    }
+  }
   'legal.show': {
     methods: ["GET","HEAD"]
     pattern: '/legal/:document'

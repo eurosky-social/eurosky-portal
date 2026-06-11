@@ -7,6 +7,7 @@ export const controllers = {
   Account: () => import('#controllers/account_controller'),
   Auth: () => import('#controllers/auth_controller'),
   Dashboard: () => import('#controllers/dashboard_controller'),
+  Discover: () => import('#controllers/discover_controller'),
   Explore: () => import('#controllers/explore_controller'),
   Faq: () => import('#controllers/faq_controller'),
   HealthChecks: () => import('#controllers/health_checks_controller'),

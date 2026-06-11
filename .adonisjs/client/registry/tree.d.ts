@@ -24,6 +24,9 @@ export interface ApiDefinition {
   explore: {
     learnMore: typeof routes['explore.learn_more']
   }
+  discover: {
+    apps: typeof routes['discover.apps']
+  }
   legal: {
     show: typeof routes['legal.show']
   }

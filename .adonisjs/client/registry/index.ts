@@ -78,6 +78,12 @@ const routes = {
     tokens: [{"old":"/account/dismiss-welcome","type":0,"val":"account","end":""},{"old":"/account/dismiss-welcome","type":0,"val":"dismiss-welcome","end":""}],
     types: placeholder as Registry['account.dismiss_welcome']['types'],
   },
+  'discover.apps': {
+    methods: ["GET","HEAD"],
+    pattern: '/apps',
+    tokens: [{"old":"/apps","type":0,"val":"apps","end":""}],
+    types: placeholder as Registry['discover.apps']['types'],
+  },
   'legal.show': {
     methods: ["GET","HEAD"],
     pattern: '/legal/:document',

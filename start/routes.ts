@@ -31,6 +31,7 @@ router
   })
   .use([middleware.auth(), middleware.legalRoadblock()])
 
+router.get('/apps', [controllers.Discover, 'apps'])
 router.get('/legal/:document', [controllers.Legal, 'show'])
 router.get('/faq', [controllers.Faq, 'show'])
 
