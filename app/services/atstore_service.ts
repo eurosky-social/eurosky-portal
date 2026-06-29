@@ -105,6 +105,7 @@ export class AtStoreService {
   async #fetchListing(atUri: string): Promise<AtStoreListingDetail | undefined> {
     const result = await xrpcSafe(this.baseUrl, lexicon.fyi.atstore.directory.getListing.main, {
       params: { uri: asAtUriString(atUri) },
+      signal: AbortSignal.timeout(5000),
     })
 
     if (!result.success) {
