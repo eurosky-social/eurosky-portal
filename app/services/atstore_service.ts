@@ -67,24 +67,22 @@ export class AtStoreService {
    * Get apps from local `data/apps.json` and augment with remote info.
    */
   async getApps(): Promise<ReadonlyArray<App>> {
-    return cache.getOrSet({
-      factory: async () => {
-        const filePath = app.makePath('data', 'apps.json')
-        const local = await localAppsValidator.validate(
-          JSON.parse(await readFile(filePath, 'utf8'))
-        )
-        const list = await Promise.all(
-          local.map(async (localApp) => {
+    const filePath = app.makePath('data', 'apps.json')
+    const local = await localAppsValidator.validate(JSON.parse(await readFile(filePath, 'utf8')))
+    const list = await Promise.all(
+      local.map((localApp) =>
+        cache.getOrSet({
+          factory: async () => {
             const listing = await this.#fetchListing(localApp.atUri)
-            return listing ? { ...listing, ...localApp } : undefined
-          })
-        )
-        return list.filter((a): a is App => a !== undefined)
-      },
-      grace: '24h',
-      key: 'atstore:apps',
-      ttl: '4h',
-    })
+            return listing ? { ...listing, ...localApp } : null
+          },
+          grace: '24h',
+          key: `atstore:app:${localApp.atUri}`,
+          ttl: '4h',
+        })
+      )
+    )
+    return list.filter((a): a is App => a !== null)
   }
 
   /**
