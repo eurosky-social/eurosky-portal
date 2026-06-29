@@ -112,7 +112,6 @@
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "reflect-metadata": "^0.2.2",
-    "simple-icons": "^16.16.0",
     "sonner": "^2.0.7",
     "tailwindcss": "^4.2.2"
   },
