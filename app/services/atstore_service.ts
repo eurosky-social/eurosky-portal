@@ -1,6 +1,7 @@
 import { readFile } from 'node:fs/promises'
 import app from '@adonisjs/core/services/app'
 import cache from '@adonisjs/cache/services/main'
+import logger from '@adonisjs/core/services/logger'
 import { xrpcSafe } from '@atproto/lex'
 import { asAtUriString } from '@atproto/syntax'
 import type { Infer } from '@vinejs/vine/types'
@@ -107,7 +108,7 @@ export class AtStoreService {
     })
 
     if (!result.success) {
-      console.warn(`[atstore] lookup failed for ${atUri}:`, result.error)
+      logger.warn({ error: result.error, uri: atUri }, 'atstore: lookup failed')
       return
     }
 
