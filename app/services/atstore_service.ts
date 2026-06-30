@@ -69,20 +69,30 @@ export class AtStoreService {
   async getApps(): Promise<ReadonlyArray<App>> {
     const filePath = app.makePath('data', 'apps.json')
     const local = await localAppsValidator.validate(JSON.parse(await readFile(filePath, 'utf8')))
-    const list = await Promise.all(
+    const list = await Promise.allSettled(
       local.map((localApp) =>
         cache.getOrSet({
           factory: async () => {
             const listing = await this.#fetchListing(localApp.atUri)
-            return listing ? { ...listing, ...localApp } : null
+            return { ...listing, ...localApp }
           },
+          graceBackoff: '15m',
           grace: '24h',
-          key: `atstore:app:${localApp.atUri}`,
+          key: `atstore:listing:${localApp.atUri}`,
           ttl: '4h',
         })
       )
     )
-    return list.filter((a): a is App => a !== null)
+
+    return list
+      .map((result) => {
+        if (result.status === 'fulfilled') {
+          return result.value
+        } else {
+          logger.warn('Failed to fetch app listing', { error: result.reason })
+        }
+      })
+      .filter((a): a is App => a !== undefined)
   }
 
   /**
@@ -98,17 +108,16 @@ export class AtStoreService {
    * @param atUri
    *   URL of the listing (example: `at://did:plc:…/fyi.atstore.listing.detail/…c6y`).
    * @returns
-   *   Details, or `undefined` on failure.
+   *   Details.
    */
-  async #fetchListing(atUri: string): Promise<AtStoreListingDetail | undefined> {
+  async #fetchListing(atUri: string): Promise<AtStoreListingDetail> {
     const result = await xrpcSafe(this.baseUrl, lexicon.fyi.atstore.directory.getListing.main, {
       params: { uri: asAtUriString(atUri) },
       signal: AbortSignal.timeout(5000),
     })
 
     if (!result.success) {
-      logger.warn({ error: result.error, uri: atUri }, 'atstore: lookup failed')
-      return
+      throw new Error(`Failed to fetch listing ${atUri}`, { cause: result.error })
     }
 
     // Only pick what’s wanted.
