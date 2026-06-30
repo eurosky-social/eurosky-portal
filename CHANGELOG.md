@@ -1,5 +1,17 @@
 # eurosky-portal
 
+## 1.5.0
+
+### Minor Changes
+
+- [#162](https://github.com/eurosky-social/eurosky-portal/pull/162) [`e729a1e`](https://github.com/eurosky-social/eurosky-portal/commit/e729a1e0825f97149686d5be288f04305a3302e3) Thanks [@wooorm](https://github.com/wooorm)! - Add apps page
+
+### Patch Changes
+
+- [#160](https://github.com/eurosky-social/eurosky-portal/pull/160) [`0a62f35`](https://github.com/eurosky-social/eurosky-portal/commit/0a62f358a7069f6b26df5869a7c0c5c737091714) Thanks [@wooorm](https://github.com/wooorm)! - Update user card on dashboard
+
+- [#161](https://github.com/eurosky-social/eurosky-portal/pull/161) [`8841fbf`](https://github.com/eurosky-social/eurosky-portal/commit/8841fbf9feb2721fe752893a5101e93b9f623c19) Thanks [@wooorm](https://github.com/wooorm)! - Update app cards
+
 ## 1.4.19
 
 ### Patch Changes
