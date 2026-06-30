@@ -22,6 +22,7 @@ concurrency:
 jobs:
   release:
     name: Publish docker image
+    if: github.repository == 'eurosky-social/eurosky-portal'
     runs-on: ubuntu-latest
     permissions:
       contents: read
