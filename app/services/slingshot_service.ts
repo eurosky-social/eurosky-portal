@@ -1,6 +1,7 @@
 import { Exception } from '@adonisjs/core/exceptions'
 import logger from '@adonisjs/core/services/logger'
 import type { l } from '@atproto/lex'
+import type { WebUri } from '@atproto/oauth-client-node'
 import vine from '@vinejs/vine'
 
 export class SlingshotResolveError extends Exception {
@@ -12,6 +13,7 @@ export class SlingshotResolveError extends Exception {
 const resolveMiniDocValidator = vine.create({
   did: vine.atproto.did(),
   handle: vine.atproto.handle(),
+  pds: vine.atproto.service(),
 })
 
 export class SlingshotService {
@@ -25,7 +27,7 @@ export class SlingshotService {
   async resolveMiniDoc(
     actor: l.AtIdentifierString,
     abortSignal?: AbortSignal
-  ): Promise<{ did: l.DidString; handle: l.HandleString } | undefined> {
+  ): Promise<{ did: l.DidString; handle: l.HandleString; pds: WebUri } | undefined> {
     const url = new URL('/xrpc/blue.microcosm.identity.resolveMiniDoc', this.baseUrl)
     url.searchParams.set('identifier', actor)
 
@@ -46,6 +48,7 @@ export class SlingshotService {
       return {
         did: result.did,
         handle: result.handle,
+        pds: result.pds,
       }
     } catch (error) {
       // We don't care about aborts:

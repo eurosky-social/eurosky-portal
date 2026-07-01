@@ -5,6 +5,8 @@ import { isUriString, asAtIdentifierString, type AtIdentifierString } from '@atp
 import { DateTime } from 'luxon'
 import env from '#start/env'
 import Account from '#models/account'
+import activityService from '#services/activity_service'
+import jetstreamService from '#services/jetstream_service'
 import { SlingshotService } from '#services/slingshot_service'
 import { loginRequestValidator, signupRequestValidator } from '#validators/oauth'
 import { createFieldError } from '#utils/errors'
@@ -260,11 +262,18 @@ export default class OAuthController {
           handle: resolved.handle,
           termsAcceptedAt: termsAcceptedOn,
         })
+        activityService.backfill(result.user.did)
       } else if (resolved) {
-        await Account.updateOrCreate({ did }, { did, handle: resolved.handle })
+        const account = await Account.updateOrCreate({ did }, { did, handle: resolved.handle })
+        if (!account.lastActivitySyncAt) {
+          activityService.backfill(result.user.did)
+        }
       } else if (!existingAccount) {
         await Account.create({ did })
       }
+
+      // Every account must be watched (this is a no-op if already watched):
+      jetstreamService.addDid(did)
 
       await auth.use('web').login(result.user)
 

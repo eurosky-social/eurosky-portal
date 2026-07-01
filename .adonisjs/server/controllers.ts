@@ -5,6 +5,7 @@
 
 export const controllers = {
   Account: () => import('#controllers/account_controller'),
+  Activity: () => import('#controllers/activity_controller'),
   Auth: () => import('#controllers/auth_controller'),
   Dashboard: () => import('#controllers/dashboard_controller'),
   Discover: () => import('#controllers/discover_controller'),

@@ -40,5 +40,21 @@ export default {
         },
       },
     },
+    activity_records: {
+      columns: {
+        created_at: {
+          decorator: `@column.dateTime()`,
+          tsType: `DateTime`,
+        },
+        did: {
+          imports: [{ source: '@atproto/lex', typeImports: ['l'] }],
+          tsType: `l.DidString`,
+        },
+        uri: {
+          decorator: `@column({ isPrimary: true })`,
+          tsType: `string`,
+        },
+      },
+    },
   },
 } satisfies SchemaRules

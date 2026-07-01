@@ -60,6 +60,12 @@ const routes = {
     tokens: [{"old":"/explore/learn-more","type":0,"val":"explore","end":""},{"old":"/explore/learn-more","type":0,"val":"learn-more","end":""}],
     types: placeholder as Registry['explore.learn_more']['types'],
   },
+  'activity.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/activity',
+    tokens: [{"old":"/activity","type":0,"val":"activity","end":""}],
+    types: placeholder as Registry['activity.show']['types'],
+  },
   'account.onboarding': {
     methods: ["GET","HEAD"],
     pattern: '/onboarding',

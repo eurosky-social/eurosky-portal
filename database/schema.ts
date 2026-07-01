@@ -9,7 +9,7 @@ import { DateTime } from 'luxon'
 import type { l } from '@atproto/lex'
 
 export class AccountSchema extends BaseModel {
-  static $columns = ['createdAt', 'did', 'handle', 'termsAcceptedAt', 'updatedAt', 'welcomeDismissed'] as const
+  static $columns = ['createdAt', 'did', 'handle', 'lastActivitySyncAt', 'termsAcceptedAt', 'updatedAt', 'welcomeDismissed'] as const
   $columns = AccountSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime | null
@@ -18,11 +18,34 @@ export class AccountSchema extends BaseModel {
   @column()
   declare handle: l.HandleString | null
   @column.dateTime()
+  declare lastActivitySyncAt: DateTime | null
+  @column.dateTime()
   declare termsAcceptedAt: DateTime | null
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
   @column({ consume: (value) => !!value })
   declare welcomeDismissed: boolean | null
+}
+
+export class ActivityRecordSchema extends BaseModel {
+  static $columns = ['cid', 'collection', 'createdAt', 'did', 'indexedAt', 'rkey', 'text', 'uri'] as const
+  $columns = ActivityRecordSchema.$columns
+  @column()
+  declare cid: string
+  @column()
+  declare collection: string
+  @column.dateTime()
+  declare createdAt: DateTime | null
+  @column()
+  declare did: l.DidString
+  @column.dateTime()
+  declare indexedAt: DateTime
+  @column()
+  declare rkey: string
+  @column()
+  declare text: string | null
+  @column({ isPrimary: true })
+  declare uri: string
 }
 
 export class CacheSchema extends BaseModel {

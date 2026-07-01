@@ -1,6 +1,10 @@
 {
   "version": 1,
-  "lexicons": ["app.bsky.actor.getProfile", "fyi.atstore.directory.getListing"],
+  "lexicons": [
+    "app.bsky.actor.getProfile",
+    "com.atproto.repo.describeRepo",
+    "fyi.atstore.directory.getListing"
+  ],
   "resolutions": {
     "app.bsky.actor.defs": {
       "uri": "at://did:plc:4v4y5r3lwsbtmsxhile2ljac/com.atproto.lexicon.schema/app.bsky.actor.defs",
@@ -73,6 +77,10 @@
     "com.atproto.moderation.defs": {
       "uri": "at://did:plc:6msi3pj7krzih5qxqtryxlzw/com.atproto.lexicon.schema/com.atproto.moderation.defs",
       "cid": "bafyreideawy4rlpgces2oebk5q4kpurbonhb5qtl4pes7dvxsc5osaiksy"
+    },
+    "com.atproto.repo.describeRepo": {
+      "uri": "at://did:plc:6msi3pj7krzih5qxqtryxlzw/com.atproto.lexicon.schema/com.atproto.repo.describeRepo",
+      "cid": "bafyreif5ho6rtknjmiqjclrfogiqyzxnix2fzpwxyftfebplkj4q23pnrm"
     },
     "com.atproto.repo.strongRef": {
       "uri": "at://did:plc:6msi3pj7krzih5qxqtryxlzw/com.atproto.lexicon.schema/com.atproto.repo.strongRef",

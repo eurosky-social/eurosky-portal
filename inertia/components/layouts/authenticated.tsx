@@ -14,6 +14,7 @@ import {
 } from '~/lib/sidebar'
 import { SidebarLayout } from '~/lib/sidebar-layout'
 import {
+  ClockIcon,
   HomeIcon,
   QuestionMarkCircleIcon,
   ChatBubbleOvalLeftEllipsisIcon,
@@ -64,6 +65,10 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
                   <SidebarItem route="dashboard.show" current={url == '/dashboard'}>
                     <HomeIcon />
                     <SidebarLabel>Dashboard</SidebarLabel>
+                  </SidebarItem>
+                  <SidebarItem route="activity.show" current={url.startsWith('/activity')}>
+                    <ClockIcon />
+                    <SidebarLabel>Your Activity</SidebarLabel>
                   </SidebarItem>
                   <SidebarItem href={manageUrl} target="_blank" as={'a'}>
                     <Cog6ToothIcon />

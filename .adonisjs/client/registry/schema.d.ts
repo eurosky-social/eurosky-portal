@@ -115,6 +115,18 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/explore_controller').default['learnMore']>>>
     }
   }
+  'activity.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/activity'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: ExtractQueryForGet<InferInput<(typeof import('#validators/activity').activityQueryValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/activity_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/activity_controller').default['show']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
   'account.onboarding': {
     methods: ["GET","HEAD"]
     pattern: '/onboarding'
