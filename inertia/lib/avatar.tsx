@@ -1,6 +1,6 @@
 import * as Headless from '@headlessui/react'
 import clsx from 'clsx'
-import React, { forwardRef, useEffect, useState } from 'react'
+import React, { forwardRef, useState } from 'react'
 import { ButtonType, TouchTarget } from './button'
 import { Link } from './link'
 import { LinkProps } from '@adonisjs/inertia/react'
@@ -26,11 +26,15 @@ export function Avatar({
   className,
   ...props
 }: AvatarProps & React.ComponentPropsWithoutRef<'span'>) {
+  // Reset during render when `src` changes so this does not race with `load`
+  // on `<img>` and gets stuck showing both the image and the fallback.
+  const [prevSrc, setPrevSrc] = useState(src)
   const [imageLoadState, setImageLoadState] = useState<ImageLoadState>('loading')
 
-  useEffect(() => {
+  if (src !== prevSrc) {
+    setPrevSrc(src)
     setImageLoadState('loading')
-  }, [src])
+  }
 
   return (
     <span

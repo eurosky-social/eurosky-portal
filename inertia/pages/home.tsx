@@ -4,15 +4,7 @@ import { Data } from '@generated/data'
 import { Container } from '~/lib/container'
 import { Apps } from '~/components/Apps'
 
-export default function Home({
-  apps,
-}: InertiaProps<{
-  apps: {
-    gettingStarted: Data.App[]
-    exploreMore: Data.App[]
-    forWork: Data.App[]
-  }
-}>) {
+export default function Home({ sections }: InertiaProps<Data.Apps>) {
   return (
     <>
       <Hero />
@@ -24,15 +16,7 @@ export default function Home({
           There's always new apps being created!
         </p>
 
-        <Apps apps={apps} />
-
-        {/* <Card className="w-full focus:outline-hidden p-4 items-center flex flex-col outline-offset-0! outline-2! outline-dashed outline-gray-300 dark:outline-white/20 shadow-none!">
-          <PlusIcon className="size-12 p-2 mb-2 text-slate-400" />
-          <Heading level={4} className="text-base!">
-            More coming
-          </Heading>
-          <Text className="text-center">There's always new apps being created!</Text>
-        </Card> */}
+        <Apps sections={sections} />
       </Container>
     </>
   )

@@ -8,9 +8,6 @@ import type { Infer } from '@vinejs/vine/types'
 import vine from '@vinejs/vine'
 import * as lexicon from '#lexicons'
 
-const categories = ['getting-started', 'explore-more', 'for-work'] as const
-export type Category = (typeof categories)[number]
-
 type ListingCardGet = lexicon.fyi.atstore.directory.getListing.ListingCardGet
 
 /**
@@ -47,9 +44,36 @@ type AtStoreListing = Pick<
  * Use the `at://…` url you see there as the `atUri` in `data/apps.json`.
  */
 const localAppSchema = vine.object({
-  atUri: vine.string().startsWith('at://'),
-  category: vine.enum(categories),
-  madeInEU: vine.boolean().optional(),
+  /**
+   * Human-readable label for the entry; not used other than to make logs more
+   * readable.
+   */
+  '#': vine.string().optional(),
+
+  /**
+   * URI to atstore.
+   */
+  'atUri': vine.string().startsWith('at://'),
+
+  /**
+   * Category slug (example: `getting-started`).
+   */
+  'category': vine.string().trim().minLength(1),
+
+  /**
+   * Apps to show “outside” of the `apps` page.
+   */
+  'featured': vine.boolean().optional(),
+
+  /**
+   * Stamp of approval.
+   */
+  'madeInEurope': vine.boolean().optional(),
+
+  /**
+   * Custom category: apps recommended by eurosky.
+   */
+  'recommended': vine.boolean().optional(),
 })
 
 const localAppsValidator = vine.create(vine.array(localAppSchema))
@@ -64,42 +88,18 @@ export class AtStoreService {
   private baseUrl = 'https://atstore.fyi'
 
   /**
-   * Get apps from local `data/apps.json` and augment with remote info.
+   * Get all local apps and augment with remote info.
    */
   async getApps(): Promise<ReadonlyArray<App>> {
-    const filePath = app.makePath('data', 'apps.json')
-    const local = await localAppsValidator.validate(JSON.parse(await readFile(filePath, 'utf8')))
-    const list = await Promise.allSettled(
-      local.map((localApp) =>
-        cache.getOrSet({
-          factory: async () => {
-            const listing = await this.#fetchListing(localApp.atUri)
-            return { ...listing, ...localApp }
-          },
-          graceBackoff: '15m',
-          grace: '24h',
-          key: `atstore:listing:${localApp.atUri}`,
-          ttl: '4h',
-        })
-      )
-    )
-
-    return list
-      .map((result) => {
-        if (result.status === 'fulfilled') {
-          return result.value
-        } else {
-          logger.warn('Failed to fetch app listing', { error: result.reason })
-        }
-      })
-      .filter((a): a is App => a !== undefined)
+    return this.#hydrateAll(await this.#getLocalApps())
   }
 
   /**
-   * Find apps by category.
+   * Get local apps flagged as `featured` and augmented with remote info.
    */
-  findByCategory(apps: ReadonlyArray<App>, category: Category): Array<App> {
-    return apps.filter((a) => a.category === category)
+  async getFeaturedApps(): Promise<ReadonlyArray<App>> {
+    const local = await this.#getLocalApps()
+    return this.#hydrateAll(local.filter((a) => a.featured))
   }
 
   /**
@@ -124,5 +124,50 @@ export class AtStoreService {
     const { externalUrl, listing } = result.body
     const { iconUrl, name, rating, reviewCount, tagline } = listing
     return { externalUrl, listing: { iconUrl, name, rating, reviewCount, tagline } }
+  }
+
+  /**
+   * Read and validate local apps from `data/apps.json`.
+   */
+  async #getLocalApps(): Promise<ReadonlyArray<LocalApp>> {
+    const filePath = app.makePath('data', 'apps.json')
+    return localAppsValidator.validate(JSON.parse(await readFile(filePath, 'utf8')))
+  }
+
+  /**
+   * Augment apps with remote info.
+   *
+   * Skips and logs any that fail.
+   */
+  async #hydrateAll(local: ReadonlyArray<LocalApp>): Promise<ReadonlyArray<App>> {
+    const list = await Promise.allSettled(local.map((localApp) => this.#hydrate(localApp)))
+
+    return list
+      .map((result, index) => {
+        if (result.status === 'fulfilled') {
+          return result.value
+        } else {
+          const localApp = local[index]
+          const label = localApp['#'] ?? localApp.atUri
+          logger.warn({ error: result.reason }, `Failed to fetch listing \`${label}\``)
+        }
+      })
+      .filter((a): a is App => a !== undefined)
+  }
+
+  /**
+   * Augment an app with remote info.
+   */
+  async #hydrate(localApp: LocalApp): Promise<App> {
+    return cache.getOrSet({
+      factory: async () => {
+        const listing = await this.#fetchListing(localApp.atUri)
+        return { ...listing, ...localApp }
+      },
+      graceBackoff: '15m',
+      grace: '24h',
+      key: `atstore:listing:${localApp.atUri}`,
+      ttl: '4h',
+    })
   }
 }

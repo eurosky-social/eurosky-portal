@@ -7,12 +7,6 @@ export default class DiscoverController {
     const atstore = new AtStoreService()
     const apps = await atstore.getApps()
 
-    return inertia.render('apps/show', {
-      apps: AppsTransformer.transform({
-        gettingStarted: atstore.findByCategory(apps, 'getting-started'),
-        exploreMore: atstore.findByCategory(apps, 'explore-more'),
-        forWork: atstore.findByCategory(apps, 'for-work'),
-      }),
-    })
+    return inertia.render('apps/show', new AppsTransformer({ apps }).toObject())
   }
 }

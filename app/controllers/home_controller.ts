@@ -7,12 +7,6 @@ export default class HomeController {
     const atstore = new AtStoreService()
     const apps = await atstore.getApps()
 
-    return inertia.render('home', {
-      apps: AppsTransformer.transform({
-        gettingStarted: atstore.findByCategory(apps, 'getting-started'),
-        exploreMore: atstore.findByCategory(apps, 'explore-more'),
-        forWork: atstore.findByCategory(apps, 'for-work'),
-      }),
-    })
+    return inertia.render('home', new AppsTransformer({ apps }).toObject())
   }
 }

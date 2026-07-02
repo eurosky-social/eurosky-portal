@@ -6,7 +6,7 @@ import ProfileTransformer from '#transformers/profile_transformer'
 export default class DashboardController {
   async show({ auth, inertia }: HttpContext) {
     const atstore = new AtStoreService()
-    const apps = await atstore.getApps()
+    const apps = await atstore.getFeaturedApps()
     const user = await auth.getUserOrFail()
     const account = await user.getAccount()
     const profile = await cache.getOrSet({
@@ -25,6 +25,7 @@ export default class DashboardController {
     return inertia.render('dashboard/show', {
       showWelcomeMessage: !account.welcomeDismissed,
       profile: profile ? ProfileTransformer.transform(profile) : undefined,
+      // Hard cap at 3.
       apps: apps.slice(0, 3),
     })
   }

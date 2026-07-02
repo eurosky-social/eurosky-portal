@@ -43,9 +43,9 @@ export function App({ app }: { app: Data.App }) {
           </div>
         ) : undefined}
         <div className="flex w-full items-center gap-2">
-          {app.madeInEU ? (
+          {app.madeInEurope ? (
             <Badge color="blue" className="ml-auto">
-              Made in the EU
+              Made in Europe
             </Badge>
           ) : undefined}
         </div>

@@ -1,75 +1,175 @@
 [
   {
-    "#": "Bluesky; note: for more info see `services/atstore_service.ts`",
-    "atUri": "at://did:plc:dvy6bdnofdfc4php4s5b457d/fyi.atstore.listing.detail/3mj667g65ct2x",
-    "category": "getting-started"
+    "#": "atmo.rsvp",
+    "atUri": "at://did:plc:b63bmauox6z5rbibwrhxrdnw/fyi.atstore.listing.detail/3moebodfjt2oq",
+    "category": "events",
+    "madeInEurope": true,
+    "recommended": true
   },
   {
-    "#": "Leaflet; to do: add `mu` above",
-    "atUri": "at://did:plc:btxrwcaeyodrap5mnjw2fvmz/fyi.atstore.listing.detail/3mkijfr6sts5l",
-    "category": "getting-started"
-  },
-  {
-    "#": "Popfeed",
-    "atUri": "at://did:plc:dvy6bdnofdfc4php4s5b457d/fyi.atstore.listing.detail/3mj66fhgmnh2x",
-    "category": "getting-started"
-  },
-  {
-    "#": "Sifa ID",
-    "atUri": "at://did:plc:2f2ahswozqy4v5lvu676375y/fyi.atstore.listing.detail/3mkduyazhqc6y",
-    "category": "getting-started",
-    "madeInEU": true
-  },
-  {
-    "#": "Stream.place",
-    "atUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/fyi.atstore.listing.detail/3mkijapfmwcvs",
-    "category": "getting-started"
+    "#": "Atstore",
+    "atUri": "at://did:plc:dvy6bdnofdfc4php4s5b457d/fyi.atstore.listing.detail/3mkjss6n7vuza",
+    "category": "reviews"
   },
   {
     "#": "Blento",
     "atUri": "at://did:plc:4fdwezqvlw4mu2qwn7wqsmej/fyi.atstore.listing.detail/3mkk4kacxbk3a",
-    "category": "explore-more",
-    "madeInEU": true
+    "category": "personal-page",
+    "featured": true,
+    "madeInEurope": true
+  },
+  {
+    "#": "Bookhive",
+    "atUri": "at://did:plc:enu2j5xjlqsjaylv3du4myh4/fyi.atstore.listing.detail/3mkigtshwosb3",
+    "category": "reviews"
+  },
+  {
+    "#": "Chive",
+    "atUri": "at://did:plc:7natp5xae72bddaqlkef2t4e/fyi.atstore.listing.detail/3mkkxgeomikmf",
+    "category": "read-and-write"
+  },
+  {
+    "#": "Colibri",
+    "atUri": "at://did:plc:mprdjqjluoswa7awzggaggj3/fyi.atstore.listing.detail/3mkiem5w5k2l6",
+    "category": "social"
+  },
+  {
+    "#": "Currents",
+    "atUri": "at://did:plc:jaur46k6ijyfvl4lojza7eic/fyi.atstore.listing.detail/3mkl2pbqle2p6",
+    "category": "photo-and-video"
   },
   {
     "#": "Flashes",
     "atUri": "at://did:plc:24kqkpfy6z7avtgu3qg57vvl/fyi.atstore.listing.detail/3mkizzu7lp2a3",
-    "category": "explore-more",
-    "madeInEU": true
+    "category": "photo-and-video",
+    "madeInEurope": true,
+    "recommended": true
   },
   {
-    "#": "Skywalker",
-    "atUri": "at://did:plc:zzmeflm2wzrrgcaam6bw3kaf/fyi.atstore.listing.detail/3mkpls2aa62c3",
-    "category": "explore-more",
-    "madeInEU": true
+    "#": "Germ",
+    "atUri": "at://did:plc:4yvwfwxfz5sney4twepuzdu7/fyi.atstore.listing.detail/3ml2bxdff2kv7",
+    "category": "social"
   },
   {
-    "#": "Skeets",
-    "atUri": "at://did:plc:dvy6bdnofdfc4php4s5b457d/fyi.atstore.listing.detail/3mj66gqhdkq2f",
-    "category": "explore-more",
-    "madeInEU": true
+    "#": "Glean",
+    "atUri": "at://did:plc:7fx3svzgnlvzighbczz3mmsd/fyi.atstore.listing.detail/3mklb6venl2dg",
+    "category": "read-and-write"
   },
   {
-    "#": "Sill",
-    "atUri": "at://did:plc:ryed5tnzwmpwbidrsuwrlwwb/fyi.atstore.listing.detail/3mkkdlphhxkgj",
-    "category": "explore-more",
-    "madeInEU": true
+    "#": "Grain",
+    "atUri": "at://did:plc:e7rftrdyz5e2rw4y6ocszew2/fyi.atstore.listing.detail/3mkinhlyjfk55",
+    "category": "photo-and-video",
+    "recommended": true
   },
   {
-    "#": "atmo.rsvp",
-    "atUri": "at://did:plc:b63bmauox6z5rbibwrhxrdnw/fyi.atstore.listing.detail/3moebodfjt2oq",
-    "category": "explore-more",
-    "madeInEU": true
+    "#": "kipclip",
+    "atUri": "at://did:plc:3zzkrrjtsmo7nnwnvhex3auj/fyi.atstore.listing.detail/3mkip5bumt2p5",
+    "category": "bookmark"
+  },
+  {
+    "#": "Leaflet",
+    "atUri": "at://did:plc:btxrwcaeyodrap5mnjw2fvmz/fyi.atstore.listing.detail/3mkijfr6sts5l",
+    "category": "read-and-write"
+  },
+  {
+    "#": "Margin",
+    "atUri": "at://did:plc:rjqn3agdb74cszhqcpii4sne/fyi.atstore.listing.detail/3mkid4nadskrz",
+    "category": "bookmark"
+  },
+  {
+    "#": "Marque; TODO: add `mu` below (`social`, `recommended`, `featured`, `madeInEurope`)",
+    "atUri": "at://did:plc:nckosudltxrtrjkt4zz4jy5y/fyi.atstore.listing.detail/3mlweswilzk3p",
+    "category": "development"
+  },
+  {
+    "#": "npmx",
+    "atUri": "at://did:plc:u5zp7npt5kpueado77kuihyz/fyi.atstore.listing.detail/3mknyydlui2jc",
+    "category": "development",
+    "madeInEurope": true
+  },
+  {
+    "#": "Offprint",
+    "atUri": "at://did:plc:pgjkomf37an4czloay5zeth6/fyi.atstore.listing.detail/3mkni5k5q5kxx",
+    "category": "read-and-write"
+  },
+  {
+    "#": "pckt",
+    "atUri": "at://did:plc:revjuqmkvrw6fnkxppqtszpv/fyi.atstore.listing.detail/3mkkyjyup6kdv",
+    "category": "read-and-write",
+    "featured": true,
+    "recommended": true
+  },
+  {
+    "#": "Popfeed",
+    "atUri": "at://did:plc:dvy6bdnofdfc4php4s5b457d/fyi.atstore.listing.detail/3mj66fhgmnh2x",
+    "category": "reviews",
+    "recommended": true
   },
   {
     "#": "Semble",
     "atUri": "at://did:plc:k7wclckeajmuibxbamtbejjg/fyi.atstore.listing.detail/3mkiitkc44spk",
-    "category": "for-work"
+    "category": "bookmark"
+  },
+  {
+    "#": "Sifa ID",
+    "atUri": "at://did:plc:2f2ahswozqy4v5lvu676375y/fyi.atstore.listing.detail/3mkduyazhqc6y",
+    "category": "personal-page",
+    "madeInEurope": true,
+    "recommended": true
+  },
+  {
+    "#": "Sill",
+    "atUri": "at://did:plc:ryed5tnzwmpwbidrsuwrlwwb/fyi.atstore.listing.detail/3mkkdlphhxkgj",
+    "category": "read-and-write",
+    "recommended": true
+  },
+  {
+    "#": "Skeets",
+    "atUri": "at://did:plc:dvy6bdnofdfc4php4s5b457d/fyi.atstore.listing.detail/3mj66gqhdkq2f",
+    "category": "social",
+    "madeInEurope": true
+  },
+  {
+    "#": "Skylights",
+    "atUri": "at://did:plc:4adlzwqtkv4dirxjwq4c3tlm/fyi.atstore.listing.detail/3mknw3yzlz2bp",
+    "category": "photo-and-video"
+  },
+  {
+    "#": "Skywalker",
+    "atUri": "at://did:plc:zzmeflm2wzrrgcaam6bw3kaf/fyi.atstore.listing.detail/3mkpls2aa62c3",
+    "category": "social",
+    "madeInEurope": true
+  },
+  {
+    "#": "Smoke signal",
+    "atUri": "at://did:plc:dvy6bdnofdfc4php4s5b457d/fyi.atstore.listing.detail/3mj66hobtig2d",
+    "category": "events"
+  },
+  {
+    "#": "Spark",
+    "atUri": "at://did:plc:cveom2iroj3mt747sd4qqnr2/fyi.atstore.listing.detail/3mkqg5sf3gsde",
+    "category": "photo-and-video"
+  },
+  {
+    "#": "Standard reader",
+    "atUri": "at://did:plc:f4os2wz5fjl56xpwcvtnqu7m/fyi.atstore.listing.detail/3mpjb3fty62nt",
+    "category": "read-and-write",
+    "recommended": true
+  },
+  {
+    "#": "Stream.place",
+    "atUri": "at://did:plc:rbvrr34edl5ddpuwcubjiost/fyi.atstore.listing.detail/3mkijapfmwcvs",
+    "category": "photo-and-video"
   },
   {
     "#": "Tangled",
     "atUri": "at://did:plc:dvy6bdnofdfc4php4s5b457d/fyi.atstore.listing.detail/3mj66idq2fp2t",
-    "category": "for-work",
-    "madeInEU": true
+    "category": "development",
+    "madeInEurope": true
+  },
+  {
+    "#": "Wisp",
+    "atUri": "at://did:plc:7puq73yz2hkvbcpdhnsze2qw/fyi.atstore.listing.detail/3mkqaxwdkz2mp",
+    "category": "development"
   }
 ]
