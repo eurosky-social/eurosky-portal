@@ -17,6 +17,7 @@ export type ScannedRoutes = {
     'account.store_acceptance': { paramsTuple?: []; params?: {} }
     'account.dismiss_welcome': { paramsTuple?: []; params?: {} }
     'discover.apps': { paramsTuple?: []; params?: {} }
+    'discover.app': { paramsTuple: [ParamValue]; params: {'rkey': ParamValue} }
     'legal.show': { paramsTuple: [ParamValue]; params: {'document': ParamValue} }
     'faq.show': { paramsTuple?: []; params?: {} }
     'health_checks.live': { paramsTuple?: []; params?: {} }
@@ -31,6 +32,7 @@ export type ScannedRoutes = {
     'explore.learn_more': { paramsTuple?: []; params?: {} }
     'account.onboarding': { paramsTuple?: []; params?: {} }
     'discover.apps': { paramsTuple?: []; params?: {} }
+    'discover.app': { paramsTuple: [ParamValue]; params: {'rkey': ParamValue} }
     'legal.show': { paramsTuple: [ParamValue]; params: {'document': ParamValue} }
     'faq.show': { paramsTuple?: []; params?: {} }
     'health_checks.live': { paramsTuple?: []; params?: {} }
@@ -45,6 +47,7 @@ export type ScannedRoutes = {
     'explore.learn_more': { paramsTuple?: []; params?: {} }
     'account.onboarding': { paramsTuple?: []; params?: {} }
     'discover.apps': { paramsTuple?: []; params?: {} }
+    'discover.app': { paramsTuple: [ParamValue]; params: {'rkey': ParamValue} }
     'legal.show': { paramsTuple: [ParamValue]; params: {'document': ParamValue} }
     'faq.show': { paramsTuple?: []; params?: {} }
     'health_checks.live': { paramsTuple?: []; params?: {} }

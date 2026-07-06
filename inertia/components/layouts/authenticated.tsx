@@ -82,7 +82,7 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
                 </SidebarSection>
                 <SidebarHeading className="mt-10 font-bold">Discover</SidebarHeading>
                 <SidebarSection>
-                  <SidebarItem href="/apps" current={url == '/apps'}>
+                  <SidebarItem href="/apps" current={url.startsWith('/apps')}>
                     <GlobeAltIcon />
                     <SidebarLabel>Applications</SidebarLabel>
                   </SidebarItem>

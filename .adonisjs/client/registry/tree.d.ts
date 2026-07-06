@@ -26,6 +26,7 @@ export interface ApiDefinition {
   }
   discover: {
     apps: typeof routes['discover.apps']
+    app: typeof routes['discover.app']
   }
   legal: {
     show: typeof routes['legal.show']

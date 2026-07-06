@@ -163,6 +163,18 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/discover_controller').default['apps']>>>
     }
   }
+  'discover.app': {
+    methods: ["GET","HEAD"]
+    pattern: '/apps/:rkey'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { rkey: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/discover_controller').default['app']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/discover_controller').default['app']>>>
+    }
+  }
   'legal.show': {
     methods: ["GET","HEAD"]
     pattern: '/legal/:document'

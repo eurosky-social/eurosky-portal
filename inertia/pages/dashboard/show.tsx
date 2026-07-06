@@ -19,7 +19,7 @@ export default function Dashboard({
 }: InertiaProps<{
   showWelcomeMessage: boolean
   profile: Data.Profile | undefined
-  apps: Data.App[]
+  apps: Data.AppSummary[]
 }>) {
   const user = useAuth()
   const router = useRouter()

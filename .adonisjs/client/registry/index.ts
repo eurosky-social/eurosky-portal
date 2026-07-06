@@ -84,6 +84,12 @@ const routes = {
     tokens: [{"old":"/apps","type":0,"val":"apps","end":""}],
     types: placeholder as Registry['discover.apps']['types'],
   },
+  'discover.app': {
+    methods: ["GET","HEAD"],
+    pattern: '/apps/:rkey',
+    tokens: [{"old":"/apps/:rkey","type":0,"val":"apps","end":""},{"old":"/apps/:rkey","type":1,"val":"rkey","end":""}],
+    types: placeholder as Registry['discover.app']['types'],
+  },
   'legal.show': {
     methods: ["GET","HEAD"],
     pattern: '/legal/:document',

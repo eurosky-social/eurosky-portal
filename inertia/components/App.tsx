@@ -3,16 +3,18 @@ import { Avatar } from '~/lib/avatar'
 import { Badge } from '~/lib/badge'
 import { ClickableCard } from '~/lib/card'
 import { Heading } from '~/lib/heading'
+import { Link } from '~/lib/link'
 import { Text } from '~/lib/text'
-import { StarIcon } from '@heroicons/react/24/solid'
+import { Rating } from './Rating'
 
-export function App({ app }: { app: Data.App }) {
+export function App({ app }: { app: Data.AppSummary }) {
   return (
     <li className="col-span-1 flex rounded-md shadow-xs dark:shadow-none">
       <ClickableCard
-        href={app.externalUrl}
-        target="_blank"
-        className="w-full focus:outline-hidden p-4 flex flex-col space-between gap-4"
+        as={Link}
+        className="w-full text-left focus:outline-hidden p-4 flex flex-col space-between gap-4"
+        route="discover.app"
+        routeParams={{ rkey: app.rkey }}
       >
         <div className="flex flex-row grow flex-1 gap-4">
           <div className="flex flex-col">
@@ -51,37 +53,5 @@ export function App({ app }: { app: Data.App }) {
         </div>
       </ClickableCard>
     </li>
-  )
-}
-
-/**
- * @param properties
- *   Properties.
- * @param properties.value
- *   Value between `0` and `5` (both including).
- * @returns {Element}
- *   Result.
- */
-function Rating(properties: { value: number }): React.JSX.Element {
-  const { value } = properties
-  const rounded = Math.round(value * 2) / 2
-  const stars = Math.floor(rounded)
-
-  return (
-    <span
-      aria-label={value + ' out of 5'}
-      className="flex items-center"
-      role="img"
-      title={value + ' out of 5'}
-    >
-      {Array.from({ length: stars }, (_, index) => (
-        <StarIcon className="size-3.5" key={index} />
-      ))}
-      {rounded - stars === 0.5 && (
-        <span className="size-3.5" style={{ marginLeft: '2px', marginTop: '-4px' }}>
-          ½
-        </span>
-      )}
-    </span>
   )
 }

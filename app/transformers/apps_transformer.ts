@@ -1,6 +1,6 @@
 import { BaseTransformer } from '@adonisjs/core/transformers'
 import type { App } from '#services/atstore_service'
-import AppTransformer from '#transformers/app_transformer'
+import AppSummaryTransformer from '#transformers/app_summary_transformer'
 
 export default class AppsTransformer extends BaseTransformer<{
   apps: ReadonlyArray<App>
@@ -28,7 +28,7 @@ export default class AppsTransformer extends BaseTransformer<{
       sections: sections.map(({ category, apps }) => ({
         apps: [...apps]
           .sort((a, b) => a.listing.name.localeCompare(b.listing.name))
-          .map((app) => new AppTransformer(app).toObject()),
+          .map((app) => new AppSummaryTransformer(app).toObject()),
         category,
       })),
     }

@@ -3,7 +3,7 @@ import app from '@adonisjs/core/services/app'
 import cache from '@adonisjs/cache/services/main'
 import logger from '@adonisjs/core/services/logger'
 import { xrpcSafe } from '@atproto/lex'
-import { asAtUriString } from '@atproto/syntax'
+import { AtUri, asAtUriString } from '@atproto/syntax'
 import type { Infer } from '@vinejs/vine/types'
 import vine from '@vinejs/vine'
 import * as lexicon from '#lexicons'
@@ -30,7 +30,15 @@ interface AtStoreListingDetail {
  */
 type AtStoreListing = Pick<
   ListingCardGet,
-  'iconUrl' | 'name' | 'rating' | 'reviewCount' | 'tagline'
+  | 'appTags'
+  | 'categorySlug'
+  | 'description'
+  | 'heroImageUrl'
+  | 'iconUrl'
+  | 'name'
+  | 'rating'
+  | 'reviewCount'
+  | 'tagline'
 >
 
 /**
@@ -103,6 +111,16 @@ export class AtStoreService {
   }
 
   /**
+   * Get an app by record key.
+   */
+  async getApp(rkey: string): Promise<App | undefined> {
+    const local = await this.#getLocalApps()
+    const localApp = local.find((a) => new AtUri(a.atUri).rkey === rkey)
+    if (!localApp) return
+    return this.#hydrate(localApp)
+  }
+
+  /**
    * Fetch details from `atstore.fyi`.
    *
    * @param atUri
@@ -122,8 +140,31 @@ export class AtStoreService {
 
     // Only pick what’s wanted.
     const { externalUrl, listing } = result.body
-    const { iconUrl, name, rating, reviewCount, tagline } = listing
-    return { externalUrl, listing: { iconUrl, name, rating, reviewCount, tagline } }
+    const {
+      appTags,
+      categorySlug,
+      description,
+      heroImageUrl,
+      iconUrl,
+      name,
+      rating,
+      reviewCount,
+      tagline,
+    } = listing
+    return {
+      externalUrl,
+      listing: {
+        appTags,
+        categorySlug,
+        description,
+        heroImageUrl,
+        iconUrl,
+        name,
+        rating,
+        reviewCount,
+        tagline,
+      },
+    }
   }
 
   /**

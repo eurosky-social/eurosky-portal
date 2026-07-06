@@ -102,6 +102,9 @@ importers:
       luxon:
         specifier: ^3.7.2
         version: 3.7.2
+      micromark:
+        specifier: ^4.0.2
+        version: 4.0.2
       motion:
         specifier: ^12.38.0
         version: 12.38.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)

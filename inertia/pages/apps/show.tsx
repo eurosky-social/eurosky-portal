@@ -6,7 +6,7 @@ import { InertiaProps } from '~/types'
 
 export default function ApplicationsPage({ sections }: InertiaProps<Data.Apps>) {
   return (
-    <Card className="py-3 px-4">
+    <Card className="p-6 sm:p-8">
       <Head title="Applications" />
       <h2 className="mt-2 mb-4 text-lg/8 sm:text-3xl/8 font-semibold text-gray-900 dark:text-gray-200">
         Applications

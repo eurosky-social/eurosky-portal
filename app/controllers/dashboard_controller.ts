@@ -1,6 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import cache from '@adonisjs/cache/services/main'
 import { AtStoreService } from '#services/atstore_service'
+import AppSummaryTransformer from '#transformers/app_summary_transformer'
 import ProfileTransformer from '#transformers/profile_transformer'
 
 export default class DashboardController {
@@ -26,7 +27,7 @@ export default class DashboardController {
       showWelcomeMessage: !account.welcomeDismissed,
       profile: profile ? ProfileTransformer.transform(profile) : undefined,
       // Hard cap at 3.
-      apps: apps.slice(0, 3),
+      apps: AppSummaryTransformer.transform(apps.slice(0, 3)),
     })
   }
 }

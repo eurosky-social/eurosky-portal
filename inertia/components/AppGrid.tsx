@@ -1,7 +1,7 @@
 import { Data } from '@generated/data'
 import { App } from '~/components/App'
 
-export function AppGrid({ apps }: { apps: Data.App[] }) {
+export function AppGrid({ apps }: { apps: Data.AppSummary[] }) {
   return (
     <ul
       role="list"
