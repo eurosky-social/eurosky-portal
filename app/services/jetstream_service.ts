@@ -4,6 +4,7 @@ import logger from '@adonisjs/core/services/logger'
 import { type DidString, isDidString, isNsidString } from '@atproto/lex'
 import Account from '#models/account'
 import ActivityRecord from '#models/activity_record'
+import activityService from '#services/activity_service'
 import { normalizeActivityRecord } from '#utils/activity_record'
 
 const cursorCacheKey = 'jetstream:cursor'
@@ -213,6 +214,7 @@ export class JetstreamService {
       { uri },
       { cid, collection, createdAt, did, indexedAt, rkey, text, uri }
     )
+    await activityService.prune(did)
   }
 
   /**

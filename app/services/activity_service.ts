@@ -150,6 +150,31 @@ export class ActivityService {
   }
 
   /**
+   * Get rid of a user’s old stuff.
+   *
+   * @param did
+   *   DID.
+   * @returns
+   *   Promise that resolves when done.
+   */
+  async prune(did: DidString): Promise<undefined> {
+    const max = 1000
+
+    await ActivityRecord.query()
+      .where('did', did)
+      .whereNotIn(
+        'uri',
+        ActivityRecord.query()
+          .where('did', did)
+          .orderByRaw('created_at DESC NULLS LAST')
+          .orderBy('uri', 'desc')
+          .limit(max)
+          .select('uri')
+      )
+      .delete()
+  }
+
+  /**
    * Return atproto records.
    *
    * Newest-first and anchored to a snapshot to prevent new arrivals.
@@ -306,6 +331,7 @@ export class ActivityService {
           return { cid, collection, createdAt, did, indexedAt, rkey, text, uri }
         })
       )
+      await this.prune(did)
 
       cursor = result.body.cursor
     } while (cursor)
