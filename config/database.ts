@@ -29,6 +29,16 @@ const dbConfig = defineConfig({
        */
       useNullAsDefault: true,
 
+      pool: {
+        /**
+         * Enable WAL so readers aren’t blocked by writers (and vice versa).
+         */
+        afterCreate: (connection: { pragma: (statement: string) => unknown }, done: () => void) => {
+          connection.pragma('journal_mode = WAL')
+          done()
+        },
+      },
+
       migrations: {
         /**
          * Sort migration files naturally by filename.
