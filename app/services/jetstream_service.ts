@@ -4,13 +4,20 @@ import logger from '@adonisjs/core/services/logger'
 import { type DidString, isDidString, isNsidString } from '@atproto/lex'
 import Account from '#models/account'
 import ActivityRecord from '#models/activity_record'
-import activityService from '#services/activity_service'
 import { normalizeActivityRecord } from '#utils/activity_record'
 
 const cursorCacheKey = 'jetstream:cursor'
 const cursorSaveInterval = 500
 const jetstreamUrl = 'wss://jetstream1.eurosky.network/subscribe'
 const reconnectDelay = 5_000
+
+interface JetstreamAccount {
+  active: boolean
+  did: string
+  seq: number
+  status?: 'deactivated' | 'deleted' | 'desynchronized' | 'suspended' | 'takendown' | 'throttled'
+  time: string
+}
 
 interface JetstreamCommit {
   cid?: string
@@ -22,6 +29,7 @@ interface JetstreamCommit {
 }
 
 interface JetstreamMessage {
+  account?: JetstreamAccount
   commit?: JetstreamCommit
   did: string
   kind: 'account' | 'commit' | 'identity'
@@ -106,6 +114,29 @@ export class JetstreamService {
   }
 
   /**
+   * Stop watching a DID.
+   *
+   * @param did
+   *   DID to stop watching.
+   * @returns
+   *   Nothing.
+   */
+  removeDid(did: DidString) {
+    if (!this.#dids.delete(did)) return
+
+    const socket = this.#socket
+
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      socket.send(
+        JSON.stringify({
+          payload: { wantedDids: [...this.#dids] },
+          type: 'options_update',
+        })
+      )
+    }
+  }
+
+  /**
    * Open a socket connection.
    *
    * @returns
@@ -154,6 +185,10 @@ export class JetstreamService {
       if (message.kind === 'commit' && message.commit) {
         this.#handleCommit(message.did, message.commit).catch((error) => {
           logger.warn({ error }, 'jetstream: cannot handle commit')
+        })
+      } else if (message.kind === 'account' && message.account) {
+        this.#handleAccount(message.did, message.account).catch((error) => {
+          logger.warn({ error }, 'jetstream: cannot handle account')
         })
       }
     }
@@ -214,7 +249,35 @@ export class JetstreamService {
       { uri },
       { cid, collection, createdAt, did, indexedAt, rkey, text, uri }
     )
+
+    const { default: activityService } = await import('#services/activity_service')
     await activityService.prune(did)
+  }
+
+  /**
+   * Stop watching an account once it’s no longer active, deleting its data
+   * if it was deleted outright.
+   *
+   * @param did
+   *   DID.
+   * @param account
+   *   Account status.
+   * @returns
+   *   Promise that resolves when handled.
+   */
+  async #handleAccount(did: string, account: JetstreamAccount) {
+    if (!isDidString(did)) {
+      logger.warn({ did }, 'jetstream: invalid account `did`')
+      return
+    }
+
+    const { active, status } = account
+    if (active || !this.#dids.has(did)) return
+
+    logger.info({ did, status }, 'jetstream: account no longer active')
+    this.removeDid(did)
+
+    if (status === 'deleted') await Account.query().where('did', did).delete()
   }
 
   /**
