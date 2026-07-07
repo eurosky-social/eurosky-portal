@@ -260,16 +260,22 @@ export default class OAuthController {
         await Account.create({
           did: result.user.did,
           handle: resolved.handle,
+          lastLoginAt: DateTime.now(),
           termsAcceptedAt: termsAcceptedOn,
         })
         activityService.backfill(result.user.did)
       } else if (resolved) {
-        const account = await Account.updateOrCreate({ did }, { did, handle: resolved.handle })
+        const account = await Account.updateOrCreate(
+          { did },
+          { did, handle: resolved.handle, lastLoginAt: DateTime.now() }
+        )
         if (!account.lastActivitySyncAt) {
           activityService.backfill(result.user.did)
         }
-      } else if (!existingAccount) {
-        await Account.create({ did })
+      } else if (existingAccount) {
+        await existingAccount.merge({ lastLoginAt: DateTime.now() }).save()
+      } else {
+        await Account.create({ did, lastLoginAt: DateTime.now() })
       }
 
       // Every account must be watched (this is a no-op if already watched):

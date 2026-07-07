@@ -46,39 +46,7 @@ export class JetstreamService {
   #eventsSinceLastSave = 0
   #reconnectTimeout: ReturnType<typeof setTimeout> | undefined
   #socket: WebSocket | undefined
-
-  /**
-   * Load known DIDs and the last saved cursor, then connect if there’s
-   * anyone to watch.
-   *
-   * @returns
-   *   Promise that resolves when loaded.
-   */
-  async start() {
-    const accounts = await Account.query().select('did')
-    for (const account of accounts) this.#dids.add(account.did)
-
-    const cachedCursor: unknown = await cache.get({ key: cursorCacheKey })
-    if (typeof cachedCursor === 'number') this.#cursor = cachedCursor
-
-    if (this.#dids.size > 0) this.#connect()
-  }
-
-  /**
-   * Cancel any pending reconnect and close the socket.
-   *
-   * @returns
-   *   Nothing.
-   */
-  stop() {
-    clearTimeout(this.#reconnectTimeout)
-
-    if (this.#socket) {
-      this.#socket.onclose = null
-      this.#socket.close()
-      this.#socket = undefined
-    }
-  }
+  #sweepInterval: ReturnType<typeof setInterval> | undefined
 
   /**
    * Start watching a DID.
@@ -88,7 +56,7 @@ export class JetstreamService {
    * @returns
    *   Nothing.
    */
-  addDid(did: DidString) {
+  addDid(did: DidString): undefined {
     if (this.#dids.has(did)) return
 
     this.#dids.add(did)
@@ -121,7 +89,7 @@ export class JetstreamService {
    * @returns
    *   Nothing.
    */
-  removeDid(did: DidString) {
+  removeDid(did: DidString): undefined {
     if (!this.#dids.delete(did)) return
 
     const socket = this.#socket
@@ -137,12 +105,56 @@ export class JetstreamService {
   }
 
   /**
+   * Load known DIDs and the last saved cursor, connect if there’s anyone to
+   * watch, and schedule sweep tasks.
+   *
+   * @returns
+   *   Promise that resolves when loaded.
+   */
+  async start(): Promise<undefined> {
+    const accounts = await Account.query().select('did')
+    for (const account of accounts) this.#dids.add(account.did)
+
+    const cachedCursor: unknown = await cache.get({ key: cursorCacheKey })
+    if (typeof cachedCursor === 'number') this.#cursor = cachedCursor
+
+    if (this.#dids.size > 0) this.#connect()
+
+    // Sweep now and every 6 hours.
+    const task = (): undefined => {
+      this.#sweep().catch((error: unknown): undefined => {
+        logger.warn({ error }, 'jetstream: cannot sweep dormant accounts')
+      })
+    }
+
+    task()
+    this.#sweepInterval = setInterval(task, 6 * 60 * 60 * 1000)
+  }
+
+  /**
+   * Cancel tasks and close the socket.
+   *
+   * @returns
+   *   Nothing.
+   */
+  stop(): undefined {
+    clearInterval(this.#sweepInterval)
+    clearTimeout(this.#reconnectTimeout)
+
+    if (this.#socket) {
+      this.#socket.onclose = null
+      this.#socket.close()
+      this.#socket = undefined
+    }
+  }
+
+  /**
    * Open a socket connection.
    *
    * @returns
    *   Nothing.
    */
-  #connect() {
+  #connect(): undefined {
     clearTimeout(this.#reconnectTimeout)
 
     const url = new URL(jetstreamUrl)
@@ -206,7 +218,7 @@ export class JetstreamService {
   }
 
   /**
-   * Apply a commit, ignoring untracked DIDs.
+   * Handle commits.
    *
    * @param did
    *   DID.
@@ -215,7 +227,7 @@ export class JetstreamService {
    * @returns
    *   Promise that resolves when handled.
    */
-  async #handleCommit(did: string, commit: JetstreamCommit) {
+  async #handleCommit(did: string, commit: JetstreamCommit): Promise<undefined> {
     const { cid, collection, operation, record, rkey } = commit
 
     if (!isNsidString(collection)) {
@@ -255,8 +267,7 @@ export class JetstreamService {
   }
 
   /**
-   * Stop watching an account once it’s no longer active, deleting its data
-   * if it was deleted outright.
+   * Handle account changes.
    *
    * @param did
    *   DID.
@@ -265,7 +276,7 @@ export class JetstreamService {
    * @returns
    *   Promise that resolves when handled.
    */
-  async #handleAccount(did: string, account: JetstreamAccount) {
+  async #handleAccount(did: string, account: JetstreamAccount): Promise<undefined> {
     if (!isDidString(did)) {
       logger.warn({ did }, 'jetstream: invalid account `did`')
       return
@@ -289,6 +300,35 @@ export class JetstreamService {
   async #saveCursor() {
     if (this.#cursor === undefined) return
     await cache.set({ key: cursorCacheKey, value: this.#cursor })
+  }
+
+  /**
+   * Stop watching dormant accounts.
+   *
+   * Marks dormant accounts as `lastActivitySyncAt: null` and removes their now
+   * unreachable activities.
+   *
+   * @returns
+   *   Promise that resolves when done.
+   */
+  async #sweep() {
+    const cutoff = DateTime.now().minus({ months: 1 }).toISO()
+    const accounts = await Account.query()
+      .where('lastLoginAt', '<', cutoff)
+      .whereNotNull('lastActivitySyncAt')
+      .select('did')
+
+    const dids = accounts
+      .filter((account) => this.#dids.has(account.did))
+      .map((account) => account.did)
+    if (dids.length === 0) return
+
+    for (const did of dids) this.removeDid(did)
+
+    await Account.query().whereIn('did', dids).update({ lastActivitySyncAt: null })
+    await ActivityRecord.query().whereIn('did', dids).delete()
+
+    logger.info({ count: dids.length }, 'jetstream: stopped watching dormant accounts')
   }
 }
 
