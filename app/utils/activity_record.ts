@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon'
 import type { NsidString } from '@atproto/lex'
+import * as lexicon from '#lexicons'
 
 export interface Result {
   /**
@@ -13,27 +14,12 @@ export interface Result {
   text: string | undefined
 }
 
+const dateFields = ['createdAt', 'publishedAt']
+const textFields = ['text', 'title']
+
 /**
  * Normalize fields.
  *
- * @param collection
- *   NSID.
- * @param value
- *   Raw record value.
- * @returns
- *   Normalized fields.
- */
-export function normalizeActivityRecord(
-  collection: NsidString,
-  value: Record<string, unknown> | null | undefined
-): Result {
-  const createdAtRaw = value?.createdAt
-  const createdAt = typeof createdAtRaw === 'string' ? DateTime.fromISO(createdAtRaw) : undefined
-  const text = value ? toText(collection, value) : undefined
-  return { createdAt: createdAt?.isValid ? createdAt : undefined, text }
-}
-
-/**
  * Note: when you update this function (and push the changes),
  * it is important to run the `portal:resync-collection` commands
  * so that already-indexed rows pick up the changes.
@@ -48,18 +34,70 @@ export function normalizeActivityRecord(
  * @param value
  *   Raw record value.
  * @returns
- *   Preview text.
+ *   Normalized fields, for known and unknown collections.
+ *   Returns `undefined` for known but invalid records.
  */
-function toText(collection: NsidString, value: Record<string, unknown>): string | undefined {
+export function normalizeActivityRecord(
+  collection: NsidString,
+  value: unknown
+): Result | undefined {
+  // Again, when changing these, run `node ace portal:resync-collection`!
   switch (collection) {
-    // Again, when changing these, run `node ace portal:resync-collection`!
-    case 'app.bsky.feed.post':
-      const text = value.text
-      return typeof text === 'string' ? text : undefined
-    case 'id.sifa.profile.language':
-      const name = value.name
-      return typeof name === 'string' ? name : undefined
-    default:
-      return
+    case 'app.bsky.feed.like': {
+      if (!lexicon.app.bsky.feed.like.$matches(value)) return
+      return { createdAt: toDate(value.createdAt), text: undefined }
+    }
+    case 'app.bsky.feed.post': {
+      if (!lexicon.app.bsky.feed.post.$matches(value)) return
+      return { createdAt: toDate(value.createdAt), text: value.text }
+    }
+    case 'app.bsky.graph.follow': {
+      if (!lexicon.app.bsky.graph.follow.$matches(value)) return
+      return { createdAt: toDate(value.createdAt), text: undefined }
+    }
+    case 'id.sifa.profile.language': {
+      if (!lexicon.id.sifa.profile.language.$matches(value)) return
+      return { createdAt: toDate(value.createdAt), text: value.name }
+    }
+    case 'site.standard.document': {
+      if (!lexicon.site.standard.document.$matches(value)) return
+      return { createdAt: toDate(value.publishedAt), text: value.title }
+    }
+    default: {
+      if (typeof value !== 'object' || value === null) return
+      const fields = value as Record<string, unknown>
+
+      let createdAt: DateTime<true> | undefined
+      for (const field of dateFields) {
+        if (field in fields) {
+          const raw = fields[field]
+          const date = typeof raw === 'string' ? toDate(raw) : undefined
+          createdAt = date
+          break
+        }
+      }
+
+      let text: string | undefined
+      for (const field of textFields) {
+        if (field in fields) {
+          const raw = fields[field]
+          text = typeof raw === 'string' ? raw : undefined
+          break
+        }
+      }
+
+      return { createdAt, text }
+    }
   }
+}
+
+/**
+ * @param value
+ *   Value.
+ * @returns
+ *   Date if valid.
+ */
+function toDate(value: string): DateTime<true> | undefined {
+  const date = DateTime.fromISO(value)
+  return date.isValid ? date : undefined
 }

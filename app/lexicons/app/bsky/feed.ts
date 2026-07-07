@@ -3,5 +3,7 @@
  */
 
 export * as defs from './feed/defs.js'
+export * as like from './feed/like.js'
+export * as post from './feed/post.js'
 export * as postgate from './feed/postgate.js'
 export * as threadgate from './feed/threadgate.js'

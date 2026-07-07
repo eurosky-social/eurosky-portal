@@ -258,7 +258,7 @@ export class JetstreamService {
       return
     }
 
-    const { createdAt, text } = normalizeActivityRecord(collection, record)
+    const { createdAt, text } = normalizeActivityRecord(collection, record) ?? {}
     const indexedAt = DateTime.now()
 
     await ActivityRecord.updateOrCreate(

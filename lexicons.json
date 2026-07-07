@@ -2,8 +2,13 @@
   "version": 1,
   "lexicons": [
     "app.bsky.actor.getProfile",
+    "app.bsky.feed.like",
+    "app.bsky.feed.post",
+    "app.bsky.graph.follow",
     "com.atproto.repo.describeRepo",
-    "fyi.atstore.directory.getListing"
+    "fyi.atstore.directory.getListing",
+    "id.sifa.profile.language",
+    "site.standard.document"
   ],
   "resolutions": {
     "app.bsky.actor.defs": {
@@ -46,6 +51,14 @@
       "uri": "at://did:plc:4v4y5r3lwsbtmsxhile2ljac/com.atproto.lexicon.schema/app.bsky.feed.defs",
       "cid": "bafyreiadwvxawxifsnm7ae6l56aq23qs7ndih7npgs6pxmkoin7gi3k6pu"
     },
+    "app.bsky.feed.like": {
+      "uri": "at://did:plc:4v4y5r3lwsbtmsxhile2ljac/com.atproto.lexicon.schema/app.bsky.feed.like",
+      "cid": "bafyreiasvjidnd3sazbx46rzgipfkpejq4mgfuzwv2xrdaesp64t4dl2ry"
+    },
+    "app.bsky.feed.post": {
+      "uri": "at://did:plc:4v4y5r3lwsbtmsxhile2ljac/com.atproto.lexicon.schema/app.bsky.feed.post",
+      "cid": "bafyreidgbehqwweghrrddfu6jgj7lyr6fwhzgazhirnszdb5lvr7iynkiy"
+    },
     "app.bsky.feed.postgate": {
       "uri": "at://did:plc:4v4y5r3lwsbtmsxhile2ljac/com.atproto.lexicon.schema/app.bsky.feed.postgate",
       "cid": "bafyreiai5efexyluyptv5tbl6kqbqlnneczqzexcqnxmitmulyjfaftgva"
@@ -57,6 +70,10 @@
     "app.bsky.graph.defs": {
       "uri": "at://did:plc:4v4y5r3lwsbtmsxhile2ljac/com.atproto.lexicon.schema/app.bsky.graph.defs",
       "cid": "bafyreifcipomli7yggtl46xufgxlnrw7se6xmsdxmzgfcz2tiu76ljatxm"
+    },
+    "app.bsky.graph.follow": {
+      "uri": "at://did:plc:4v4y5r3lwsbtmsxhile2ljac/com.atproto.lexicon.schema/app.bsky.graph.follow",
+      "cid": "bafyreiav7u7jchqtsxr2yy3gsazfqqziw5tcrfniuprrmoariruj3cft5u"
     },
     "app.bsky.labeler.defs": {
       "uri": "at://did:plc:4v4y5r3lwsbtmsxhile2ljac/com.atproto.lexicon.schema/app.bsky.labeler.defs",
@@ -89,6 +106,18 @@
     "fyi.atstore.directory.getListing": {
       "uri": "at://did:plc:dvy6bdnofdfc4php4s5b457d/com.atproto.lexicon.schema/fyi.atstore.directory.getListing",
       "cid": "bafyreieo5iovtit3jsjlgfquicpra3jmbggngey65bo3rbu6bf54ztfgwu"
+    },
+    "id.sifa.defs": {
+      "uri": "at://did:plc:2f2ahswozqy4v5lvu676375y/com.atproto.lexicon.schema/id.sifa.defs",
+      "cid": "bafyreiassk3z42jiruhegdi2tww4nxwgbyzme4nno4fa7i4ftbu66ufa5e"
+    },
+    "id.sifa.profile.language": {
+      "uri": "at://did:plc:2f2ahswozqy4v5lvu676375y/com.atproto.lexicon.schema/id.sifa.profile.language",
+      "cid": "bafyreif7ekvxcfijv2n4kh4ytgyoihitnutaj6vixukvinwqsj52mrdlbq"
+    },
+    "site.standard.document": {
+      "uri": "at://did:plc:re3ebnp5v7ffagz6rb6xfei4/com.atproto.lexicon.schema/site.standard.document",
+      "cid": "bafyreifylc5lfr4vqfzrwdtqm4pnfg7cbra7z4acbgikylqandzefwdeaq"
     },
     "tools.ozone.report.defs": {
       "uri": "at://did:plc:33dt5kftu3jq2h5h4jjlqezt/com.atproto.lexicon.schema/tools.ozone.report.defs",

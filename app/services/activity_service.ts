@@ -328,7 +328,7 @@ export class ActivityService {
         'uri',
         records.map((record) => {
           const { cid, uri, value } = record
-          const { createdAt, text } = normalizeActivityRecord(collection, value)
+          const { createdAt, text } = normalizeActivityRecord(collection, value) ?? {}
           const rkey = uri.split('/').pop()!
           return { cid, collection, createdAt, did, indexedAt, rkey, text, uri }
         })

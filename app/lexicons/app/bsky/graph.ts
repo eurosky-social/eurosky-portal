@@ -3,3 +3,4 @@
  */
 
 export * as defs from './graph/defs.js'
+export * as follow from './graph/follow.js'
