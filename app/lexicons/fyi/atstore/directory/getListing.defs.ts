@@ -43,18 +43,18 @@ type ListingCardGet = {
   uri: l.AtUriString
   name: string
   accent: 'blue' | 'pink' | 'purple' | 'green' | l.UnknownString
-  rating?: string
+  rating: string | null
   appTags: string[]
-  iconUrl?: string
+  iconUrl: string | null
   tagline: string
   category: string
   priceLabel: string
   description: string
   reviewCount: number
-  categorySlug?: string
-  heroImageUrl?: string
+  categorySlug: string | null
+  heroImageUrl: string | null
   categorySlugs: string[]
-  productAccountHandle?: string
+  productAccountHandle: string | null
 }
 
 export type { ListingCardGet }
@@ -69,18 +69,18 @@ const listingCardGet = l.typedObject<ListingCardGet>(
       maxLength: 16
       knownValues: ['blue', 'pink', 'purple', 'green']
     }>({ maxLength: 16 }),
-    rating: l.optional(l.string({ maxLength: 16 })),
+    rating: l.nullable(l.string({ maxLength: 16 })),
     appTags: l.array(l.string({ maxLength: 256 })),
-    iconUrl: l.optional(l.string({ maxLength: 8192 })),
+    iconUrl: l.nullable(l.string({ maxLength: 8192 })),
     tagline: l.string({ maxLength: 2000 }),
     category: l.string({ maxLength: 640 }),
     priceLabel: l.string({ maxLength: 32 }),
     description: l.string({ maxLength: 20000 }),
     reviewCount: l.integer(),
-    categorySlug: l.optional(l.string({ maxLength: 512 })),
-    heroImageUrl: l.optional(l.string({ maxLength: 8192 })),
+    categorySlug: l.nullable(l.string({ maxLength: 512 })),
+    heroImageUrl: l.nullable(l.string({ maxLength: 8192 })),
     categorySlugs: l.array(l.string({ maxLength: 512 })),
-    productAccountHandle: l.optional(l.string({ maxLength: 512 })),
+    productAccountHandle: l.nullable(l.string({ maxLength: 512 })),
   }),
 )
 
@@ -109,16 +109,16 @@ type ListingDetailResponse = {
   $type?: 'fyi.atstore.directory.getListing#listingDetailResponse'
   links?: ListingLinkRow[]
   listing: ListingCardGet
-  repoDid?: string
-  createdAt?: string
-  sourceUrl?: string
-  updatedAt?: string
-  externalUrl?: string
+  repoDid: string | null
+  createdAt: string | null
+  sourceUrl: string | null
+  updatedAt: string | null
+  externalUrl: string | null
   screenshots?: string[]
-  sourceTagline?: string
+  sourceTagline: string | null
   isStoreManaged: boolean
-  productAccountDid?: string
-  sourceFullDescription?: string
+  productAccountDid: string | null
+  sourceFullDescription: string | null
 }
 
 export type { ListingDetailResponse }
@@ -131,16 +131,16 @@ const listingDetailResponse = l.typedObject<ListingDetailResponse>(
       l.array(l.ref<ListingLinkRow>((() => listingLinkRow) as any)),
     ),
     listing: l.ref<ListingCardGet>((() => listingCardGet) as any),
-    repoDid: l.optional(l.string({ maxLength: 2048 })),
-    createdAt: l.optional(l.string({ maxLength: 64 })),
-    sourceUrl: l.optional(l.string({ maxLength: 8192 })),
-    updatedAt: l.optional(l.string({ maxLength: 64 })),
-    externalUrl: l.optional(l.string({ maxLength: 2048 })),
+    repoDid: l.nullable(l.string({ maxLength: 2048 })),
+    createdAt: l.nullable(l.string({ maxLength: 64 })),
+    sourceUrl: l.nullable(l.string({ maxLength: 8192 })),
+    updatedAt: l.nullable(l.string({ maxLength: 64 })),
+    externalUrl: l.nullable(l.string({ maxLength: 2048 })),
     screenshots: l.optional(l.array(l.string({ maxLength: 4096 }))),
-    sourceTagline: l.optional(l.string({ maxLength: 20000 })),
+    sourceTagline: l.nullable(l.string({ maxLength: 20000 })),
     isStoreManaged: l.boolean(),
-    productAccountDid: l.optional(l.string({ maxLength: 2048 })),
-    sourceFullDescription: l.optional(l.string({ maxLength: 20000 })),
+    productAccountDid: l.nullable(l.string({ maxLength: 2048 })),
+    sourceFullDescription: l.nullable(l.string({ maxLength: 20000 })),
   }),
 )
 

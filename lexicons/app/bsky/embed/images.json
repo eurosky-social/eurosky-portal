@@ -49,7 +49,8 @@
           "accept": [
             "image/*"
           ],
-          "maxSize": 1000000
+          "maxSize": 2000000,
+          "description": "The raw image file. May be up to 2 MB, formerly limited to 1 MB."
         },
         "aspectRatio": {
           "ref": "app.bsky.embed.defs#aspectRatio",

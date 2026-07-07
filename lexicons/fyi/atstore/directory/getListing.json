@@ -41,6 +41,13 @@
     },
     "listingCardGet": {
       "type": "object",
+      "nullable": [
+        "iconUrl",
+        "heroImageUrl",
+        "categorySlug",
+        "rating",
+        "productAccountHandle"
+      ],
       "required": [
         "uri",
         "name",
@@ -51,7 +58,12 @@
         "reviewCount",
         "priceLabel",
         "appTags",
-        "categorySlugs"
+        "categorySlugs",
+        "iconUrl",
+        "heroImageUrl",
+        "categorySlug",
+        "rating",
+        "productAccountHandle"
       ],
       "properties": {
         "uri": {
@@ -76,7 +88,6 @@
         },
         "rating": {
           "type": "string",
-          "nullable": true,
           "maxLength": 16
         },
         "appTags": {
@@ -88,7 +99,6 @@
         },
         "iconUrl": {
           "type": "string",
-          "nullable": true,
           "maxLength": 8192
         },
         "tagline": {
@@ -112,12 +122,10 @@
         },
         "categorySlug": {
           "type": "string",
-          "nullable": true,
           "maxLength": 512
         },
         "heroImageUrl": {
           "type": "string",
-          "nullable": true,
           "maxLength": 8192
         },
         "categorySlugs": {
@@ -129,7 +137,6 @@
         },
         "productAccountHandle": {
           "type": "string",
-          "nullable": true,
           "maxLength": 512
         }
       }
@@ -152,9 +159,27 @@
     },
     "listingDetailResponse": {
       "type": "object",
+      "nullable": [
+        "repoDid",
+        "productAccountDid",
+        "sourceTagline",
+        "sourceFullDescription",
+        "externalUrl",
+        "sourceUrl",
+        "createdAt",
+        "updatedAt"
+      ],
       "required": [
         "listing",
-        "isStoreManaged"
+        "isStoreManaged",
+        "repoDid",
+        "productAccountDid",
+        "sourceTagline",
+        "sourceFullDescription",
+        "externalUrl",
+        "sourceUrl",
+        "createdAt",
+        "updatedAt"
       ],
       "properties": {
         "links": {
@@ -170,27 +195,22 @@
         },
         "repoDid": {
           "type": "string",
-          "nullable": true,
           "maxLength": 2048
         },
         "createdAt": {
           "type": "string",
-          "nullable": true,
           "maxLength": 64
         },
         "sourceUrl": {
           "type": "string",
-          "nullable": true,
           "maxLength": 8192
         },
         "updatedAt": {
           "type": "string",
-          "nullable": true,
           "maxLength": 64
         },
         "externalUrl": {
           "type": "string",
-          "nullable": true,
           "maxLength": 2048
         },
         "screenshots": {
@@ -202,7 +222,6 @@
         },
         "sourceTagline": {
           "type": "string",
-          "nullable": true,
           "maxLength": 20000
         },
         "isStoreManaged": {
@@ -210,12 +229,10 @@
         },
         "productAccountDid": {
           "type": "string",
-          "nullable": true,
           "maxLength": 2048
         },
         "sourceFullDescription": {
           "type": "string",
-          "nullable": true,
           "maxLength": 20000
         }
       }

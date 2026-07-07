@@ -152,7 +152,7 @@ export class AtStoreService {
       tagline,
     } = listing
     return {
-      externalUrl,
+      externalUrl: externalUrl ?? undefined,
       listing: {
         appTags,
         categorySlug,

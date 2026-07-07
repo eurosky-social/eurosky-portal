@@ -3,8 +3,8 @@
  */
 
 import { l } from '@atproto/lex'
-import * as EmbedExternal from '../embed/external.defs.js'
 import * as LabelDefs from '../../../com/atproto/label/defs.defs.js'
+import * as EmbedExternal from '../embed/external.defs.js'
 import * as GraphDefs from '../graph/defs.defs.js'
 import * as NotificationDefs from '../notification/defs.defs.js'
 import * as RepoStrongRef from '../../../com/atproto/repo/strongRef.defs.js'
@@ -128,6 +128,7 @@ type StatusView = {
    * An optional embed associated with the status.
    */
   embed?: l.$Typed<EmbedExternal.View> | l.Unknown$TypedObject
+  labels?: LabelDefs.Label[]
   record: l.LexMap
 
   /**
@@ -164,6 +165,9 @@ const statusView = l.typedObject<StatusView>(
         [l.typedRef<EmbedExternal.View>((() => EmbedExternal.view) as any)],
         false,
       ),
+    ),
+    labels: l.optional(
+      l.array(l.ref<LabelDefs.Label>((() => LabelDefs.label) as any)),
     ),
     record: l.lexMap(),
     status: l.string<{ knownValues: ['app.bsky.actor.status#live'] }>(),

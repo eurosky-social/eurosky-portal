@@ -59,6 +59,10 @@ type Image = {
    * Alt text description of the image, for accessibility.
    */
   alt: string
+
+  /**
+   * The raw image file. May be up to 2 MB, formerly limited to 1 MB.
+   */
   image: l.BlobRef
   aspectRatio?: EmbedDefs.AspectRatio
 }
@@ -70,7 +74,7 @@ const image = l.typedObject<Image>(
   'image',
   l.object({
     alt: l.string(),
-    image: l.blob({ accept: ['image/*'], maxSize: 1000000 }),
+    image: l.blob({ accept: ['image/*'], maxSize: 2000000 }),
     aspectRatio: l.optional(
       l.ref<EmbedDefs.AspectRatio>((() => EmbedDefs.aspectRatio) as any),
     ),

@@ -102,16 +102,13 @@ export { selfLabel }
 
 type LabelValue =
   | '!hide'
-  | '!no-promote'
   | '!warn'
   | '!no-unauthenticated'
-  | 'dmca-violation'
-  | 'doxxing'
   | 'porn'
   | 'sexual'
   | 'nudity'
-  | 'nsfl'
-  | 'gore'
+  | 'graphic-media'
+  | 'bot'
   | l.UnknownString
 
 export type { LabelValue }
@@ -119,16 +116,13 @@ export type { LabelValue }
 const labelValue = l.string<{
   knownValues: [
     '!hide',
-    '!no-promote',
     '!warn',
     '!no-unauthenticated',
-    'dmca-violation',
-    'doxxing',
     'porn',
     'sexual',
     'nudity',
-    'nsfl',
-    'gore',
+    'graphic-media',
+    'bot',
   ]
 }>()
 
