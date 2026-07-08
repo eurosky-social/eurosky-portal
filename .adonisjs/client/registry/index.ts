@@ -66,6 +66,12 @@ const routes = {
     tokens: [{"old":"/activity","type":0,"val":"activity","end":""}],
     types: placeholder as Registry['activity.show']['types'],
   },
+  'activity.detail': {
+    methods: ["GET","HEAD"],
+    pattern: '/activity/:collection/:rkey',
+    tokens: [{"old":"/activity/:collection/:rkey","type":0,"val":"activity","end":""},{"old":"/activity/:collection/:rkey","type":1,"val":"collection","end":""},{"old":"/activity/:collection/:rkey","type":1,"val":"rkey","end":""}],
+    types: placeholder as Registry['activity.detail']['types'],
+  },
   'account.onboarding': {
     methods: ["GET","HEAD"],
     pattern: '/onboarding',

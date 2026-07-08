@@ -4,7 +4,7 @@ import logger from '@adonisjs/core/services/logger'
 import { type DidString, isDidString, isNsidString } from '@atproto/lex'
 import Account from '#models/account'
 import ActivityRecord from '#models/activity_record'
-import { normalizeActivityRecord } from '#utils/activity_record'
+import { supportedCollections, toPreview, toValue } from '#utils/activity'
 import { toSqlDateTime } from '#utils/database'
 import { dormancyCutoff } from '#utils/dormancy'
 
@@ -12,6 +12,7 @@ const cursorCacheKey = 'jetstream:cursor'
 const cursorSaveInterval = 500
 const jetstreamUrl = 'wss://jetstream1.eurosky.network/subscribe'
 const reconnectDelay = 5_000
+const wantedCollections = [...supportedCollections]
 
 interface JetstreamAccount {
   active: boolean
@@ -68,7 +69,7 @@ export class JetstreamService {
     if (socket && socket.readyState === WebSocket.OPEN) {
       socket.send(
         JSON.stringify({
-          payload: { wantedDids: [...this.#dids] },
+          payload: { wantedCollections, wantedDids: [...this.#dids] },
           type: 'options_update',
         })
       )
@@ -99,7 +100,7 @@ export class JetstreamService {
     if (socket && socket.readyState === WebSocket.OPEN) {
       socket.send(
         JSON.stringify({
-          payload: { wantedDids: [...this.#dids] },
+          payload: { wantedCollections, wantedDids: [...this.#dids] },
           type: 'options_update',
         })
       )
@@ -171,7 +172,7 @@ export class JetstreamService {
       logger.info('jetstream: connected to `%s`', jetstreamUrl)
       socket.send(
         JSON.stringify({
-          payload: { wantedDids: [...this.#dids] },
+          payload: { wantedCollections, wantedDids: [...this.#dids] },
           type: 'options_update',
         })
       )
@@ -258,7 +259,15 @@ export class JetstreamService {
       return
     }
 
-    const { createdAt, text } = normalizeActivityRecord(collection, record) ?? {}
+    const activity = toValue(collection, record)
+
+    // Unknown collection / invalid record.
+    if (!activity) {
+      await ActivityRecord.query().where('uri', uri).delete()
+      return
+    }
+
+    const { createdAt, text } = toPreview(activity)
     const indexedAt = DateTime.now()
 
     await ActivityRecord.updateOrCreate(

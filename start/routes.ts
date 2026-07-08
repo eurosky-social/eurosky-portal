@@ -26,6 +26,7 @@ router
     router.on('/dashboard/explore').redirectToPath('/explore/learn-more')
     router.get('/explore/learn-more', [controllers.Explore, 'learnMore'])
     router.get('/activity', [controllers.Activity, 'show'])
+    router.get('/activity/:collection/:rkey', [controllers.Activity, 'detail'])
     router.get('/onboarding', [controllers.Account, 'onboarding'])
     router.post('/onboarding', [controllers.Account, 'storeAcceptance'])
     router.post('/account/dismiss-welcome', [controllers.Account, 'dismissWelcome'])

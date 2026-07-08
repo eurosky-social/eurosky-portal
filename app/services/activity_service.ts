@@ -1,11 +1,18 @@
 import { DateTime } from 'luxon'
 import logger from '@adonisjs/core/services/logger'
-import { Client, type DidString, type NsidString, isNsidString } from '@atproto/lex'
+import { Client, type DidString, XrpcResponseError } from '@atproto/lex'
 import * as lexicon from '#lexicons'
 import Account from '#models/account'
 import ActivityRecord from '#models/activity_record'
 import { SlingshotService } from '#services/slingshot_service'
-import { normalizeActivityRecord } from '#utils/activity_record'
+import {
+  type Activity,
+  type SupportedCollection,
+  isSupportedCollection,
+  toPreview,
+  toValue,
+} from '#utils/activity'
+import type { ActivityRecordSchema } from '#database/schema'
 
 /**
  * Pagination cursor.
@@ -19,7 +26,7 @@ interface SnapshotCursor {
 /**
  * Activity.
  */
-export type Activity = {
+export type ActivityRow = {
   /**
    * Content identifier.
    */
@@ -28,7 +35,7 @@ export type Activity = {
   /**
    * Collection.
    */
-  collection: NsidString
+  collection: SupportedCollection
 
   /**
    * Date.
@@ -50,7 +57,7 @@ export type Activity = {
  * Ready.
  */
 export type GetRecordsReadyResult = {
-  activities: Array<Activity>
+  activities: Array<ActivityRow>
   state: 'ready'
   snapshot: string | undefined
   total: number
@@ -107,7 +114,7 @@ export class ActivityService {
    * Backfill a collection in a user.
    *
    * Used for syncing existing stuff again after changes to
-   * {@linkcode normalizeActivityRecord}.
+   * {@linkcode toPreview}.
    *
    * @param did
    *   DID.
@@ -116,7 +123,7 @@ export class ActivityService {
    * @returns
    *   Promise that resolves when done.
    */
-  async backfillCollection(did: DidString, collection: NsidString): Promise<undefined> {
+  async backfillCollection(did: DidString, collection: SupportedCollection): Promise<undefined> {
     const client = await this.#clientFor(did)
     await this.#syncCollection(client, did, collection, DateTime.now())
   }
@@ -223,7 +230,9 @@ export class ActivityService {
 
     return {
       activities: rows.map((row) => {
-        if (!isNsidString(row.collection)) throw new Error(`Invalid NSID: ${row.collection}`)
+        if (!isSupportedCollection(row.collection)) {
+          throw new Error(`Unknown collection \`${row.collection}\``)
+        }
         return {
           cid: row.cid,
           collection: row.collection,
@@ -240,6 +249,58 @@ export class ActivityService {
       state: 'ready',
       total: Number(count.$extras.count),
     }
+  }
+
+  /**
+   * Get a record.
+   *
+   * Records *have* to be locally indexed but data is fetched from the live PDS
+   * and not stored.
+   * Records that no longer parse, or no longer exist upstream, are removed
+   * from the index.
+   *
+   * @param did
+   *   DID.
+   * @param collection
+   *   NSID.
+   * @param rkey
+   *   Record key.
+   * @returns
+   *   Promise that resolves to the record value.
+   */
+  async getRecord(
+    did: DidString,
+    collection: SupportedCollection,
+    rkey: string
+  ): Promise<Activity | undefined> {
+    const uri = `at://${did}/${collection}/${rkey}`
+    const row = await ActivityRecord.query().where('uri', uri).first()
+    if (!row) return
+
+    const client = await this.#clientFor(did)
+    let value: Activity | undefined
+
+    try {
+      const response = await client.getRecord(collection, rkey, {
+        repo: did,
+        signal: AbortSignal.timeout(10_000),
+      })
+      value = toValue(collection, response.body.value)
+    } catch (error) {
+      // Actually gone upstream: don’t keep stale activity around.
+      if (error instanceof XrpcResponseError && error.error === 'RecordNotFound') {
+        await ActivityRecord.query().where('uri', uri).delete()
+      } else {
+        logger.warn({ collection, did, error, rkey }, 'activity: cannot fetch record')
+      }
+
+      return
+    }
+
+    // No longer parses: don’t keep stale activity around.
+    if (!value) await ActivityRecord.query().where('uri', uri).delete()
+
+    return value
   }
 
   /**
@@ -269,7 +330,7 @@ export class ActivityService {
       signal: AbortSignal.timeout(5000),
     })
 
-    const collections = describeResponse.body.collections
+    const collections = describeResponse.body.collections.filter(isSupportedCollection)
     const indexedAt = DateTime.now()
     const concurrency = 5
 
@@ -308,9 +369,9 @@ export class ActivityService {
   async #syncCollection(
     client: Client,
     did: DidString,
-    collection: NsidString,
+    collection: SupportedCollection,
     indexedAt: DateTime
-  ) {
+  ): Promise<undefined> {
     let cursor: string | undefined
 
     do {
@@ -324,15 +385,24 @@ export class ActivityService {
       const records = result.body?.records ?? []
       if (records.length === 0) break
 
-      await ActivityRecord.updateOrCreateMany(
-        'uri',
-        records.map((record) => {
-          const { cid, uri, value } = record
-          const { createdAt, text } = normalizeActivityRecord(collection, value) ?? {}
+      const update: Array<Partial<ActivityRecordSchema>> = []
+      const remove: Array<string> = []
+
+      for (const record of records) {
+        const { cid, uri, value } = record
+        const activity = toValue(collection, value)
+        if (activity) {
+          const { createdAt, text } = toPreview(activity)
           const rkey = uri.split('/').pop()!
-          return { cid, collection, createdAt, did, indexedAt, rkey, text, uri }
-        })
-      )
+          update.push({ cid, collection, createdAt, did, indexedAt, rkey, text, uri })
+        } else {
+          remove.push(uri)
+        }
+      }
+
+      if (update.length > 0) await ActivityRecord.updateOrCreateMany('uri', update)
+      if (remove.length > 0) await ActivityRecord.query().whereIn('uri', remove).delete()
+      await this.prune(did)
 
       cursor = result.body.cursor
     } while (cursor)

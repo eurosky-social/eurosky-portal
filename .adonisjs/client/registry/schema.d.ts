@@ -127,6 +127,18 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/activity_controller').default['show']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
+  'activity.detail': {
+    methods: ["GET","HEAD"]
+    pattern: '/activity/:collection/:rkey'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { collection: ParamValue; rkey: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/activity_controller').default['detail']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/activity_controller').default['detail']>>>
+    }
+  }
   'account.onboarding': {
     methods: ["GET","HEAD"]
     pattern: '/onboarding'

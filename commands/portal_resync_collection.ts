@@ -1,6 +1,6 @@
 import { BaseCommand, args } from '@adonisjs/core/ace'
 import type { CommandOptions } from '@adonisjs/core/types/ace'
-import { isNsidString } from '@atproto/lex'
+import { isSupportedCollection, supportedCollections } from '#utils/activity'
 
 async function sleep(duration: number) {
   const { promise, resolve } = Promise.withResolvers()
@@ -12,7 +12,7 @@ async function sleep(duration: number) {
 
 /**
  * Backfills a collection again for every known account.
- * Use this when changing `normalizeActivityRecord` (in `app/utils/activity_records.ts`).
+ * Use this when changing `toPreview` (in `app/utils/activity.ts`).
  */
 export default class PortalResyncCollection extends BaseCommand {
   static commandName = 'portal:resync-collection'
@@ -32,8 +32,10 @@ export default class PortalResyncCollection extends BaseCommand {
     const { dormancyCutoff } = await import('#utils/dormancy')
     const { collection } = this
 
-    if (!isNsidString(collection)) {
-      this.logger.error(`Not a valid NSID: \`${collection}\``)
+    if (!isSupportedCollection(collection)) {
+      this.logger.error(
+        `Cannot resync unknown collection \`${collection}\`, expected: \`${supportedCollections.join('`, `')}\``
+      )
       this.exitCode = 1
       return
     }

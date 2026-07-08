@@ -14,6 +14,7 @@ export type ScannedRoutes = {
     'dashboard.show': { paramsTuple?: []; params?: {} }
     'explore.learn_more': { paramsTuple?: []; params?: {} }
     'activity.show': { paramsTuple?: []; params?: {} }
+    'activity.detail': { paramsTuple: [ParamValue,ParamValue]; params: {'collection': ParamValue,'rkey': ParamValue} }
     'account.onboarding': { paramsTuple?: []; params?: {} }
     'account.store_acceptance': { paramsTuple?: []; params?: {} }
     'account.dismiss_welcome': { paramsTuple?: []; params?: {} }
@@ -32,6 +33,7 @@ export type ScannedRoutes = {
     'dashboard.show': { paramsTuple?: []; params?: {} }
     'explore.learn_more': { paramsTuple?: []; params?: {} }
     'activity.show': { paramsTuple?: []; params?: {} }
+    'activity.detail': { paramsTuple: [ParamValue,ParamValue]; params: {'collection': ParamValue,'rkey': ParamValue} }
     'account.onboarding': { paramsTuple?: []; params?: {} }
     'discover.apps': { paramsTuple?: []; params?: {} }
     'discover.app': { paramsTuple: [ParamValue]; params: {'rkey': ParamValue} }
@@ -48,6 +50,7 @@ export type ScannedRoutes = {
     'dashboard.show': { paramsTuple?: []; params?: {} }
     'explore.learn_more': { paramsTuple?: []; params?: {} }
     'activity.show': { paramsTuple?: []; params?: {} }
+    'activity.detail': { paramsTuple: [ParamValue,ParamValue]; params: {'collection': ParamValue,'rkey': ParamValue} }
     'account.onboarding': { paramsTuple?: []; params?: {} }
     'discover.apps': { paramsTuple?: []; params?: {} }
     'discover.app': { paramsTuple: [ParamValue]; params: {'rkey': ParamValue} }
