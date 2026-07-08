@@ -1,5 +1,19 @@
 # eurosky-portal
 
+## 1.6.0
+
+### Minor Changes
+
+- [#171](https://github.com/eurosky-social/eurosky-portal/pull/171) [`a6bd9f1`](https://github.com/eurosky-social/eurosky-portal/commit/a6bd9f1c950f4cdab35f17957254bc944a5b577a) Thanks [@wooorm](https://github.com/wooorm)! - Add app detail page
+
+### Patch Changes
+
+- [#167](https://github.com/eurosky-social/eurosky-portal/pull/167) [`6ea2449`](https://github.com/eurosky-social/eurosky-portal/commit/6ea24498ecc386a7707087b21ddc746083660568) Thanks [@wooorm](https://github.com/wooorm)! - Update list of apps
+
+- [#172](https://github.com/eurosky-social/eurosky-portal/pull/172) [`401e450`](https://github.com/eurosky-social/eurosky-portal/commit/401e4506bc3ddd142cfdff48ece6dd1fb9d52b05) Thanks [@wooorm](https://github.com/wooorm)! - Update lexicons
+
+- [#173](https://github.com/eurosky-social/eurosky-portal/pull/173) [`7147a95`](https://github.com/eurosky-social/eurosky-portal/commit/7147a9569f7f013ca2bdcaaabf302964ec5c9368) Thanks [@wooorm](https://github.com/wooorm)! - Fix urls to static images
+
 ## 1.5.1
 
 ### Patch Changes
