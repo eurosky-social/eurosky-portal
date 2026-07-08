@@ -1,6 +1,7 @@
 import { BaseTransformer } from '@adonisjs/core/transformers'
 import type * as lexicon from '#lexicons'
 import type { Activity } from '#utils/activity'
+import { annotate } from '#utils/richtext'
 
 export type ActivityDetail = ReturnType<ActivityTransformer['toObject']>
 export type AppBskyFeedLikeDetail = ReturnType<AppBskyFeedLike['toObject']>
@@ -40,7 +41,8 @@ class AppBskyFeedLike extends BaseTransformer<lexicon.app.bsky.feed.like.Main> {
 
 class AppBskyFeedPost extends BaseTransformer<lexicon.app.bsky.feed.post.Main> {
   toObject() {
-    return this.pick(this.resource, ['$type', 'text'])
+    const text = annotate(this.resource.text, this.resource.facets)
+    return { ...this.pick(this.resource, ['$type']), text }
   }
 }
 

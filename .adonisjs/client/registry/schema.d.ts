@@ -134,9 +134,9 @@ export interface Registry {
       body: {}
       paramsTuple: [ParamValue, ParamValue]
       params: { collection: ParamValue; rkey: ParamValue }
-      query: {}
+      query: ExtractQueryForGet<InferInput<(typeof import('#validators/activity').activityDetailValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/activity_controller').default['detail']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/activity_controller').default['detail']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/activity_controller').default['detail']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'account.onboarding': {

@@ -1,6 +1,7 @@
 import { ChevronLeftIcon } from '@heroicons/react/20/solid'
 import { Head } from '@inertiajs/react'
 import type { ActivityDetail } from '#transformers/activity_transformer'
+import { RichText } from '~/components/RichText'
 import Card from '~/lib/card'
 import { Link } from '~/lib/link'
 import { Text } from '~/lib/text'
@@ -26,11 +27,7 @@ export default function ActivityDetailPage({
       title = 'Like'
       break
     case 'app.bsky.feed.post':
-      detail = (
-        <p className="whitespace-pre-wrap text-base text-zinc-900 dark:text-white">
-          {activity.text}
-        </p>
-      )
+      detail = <RichText text={activity.text} />
       title = 'Post'
       break
     case 'app.bsky.graph.follow':
