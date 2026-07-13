@@ -271,10 +271,10 @@ export class ActivityService {
 
     const collections = describeResponse.body.collections
     const indexedAt = DateTime.now()
-    const threads = 5
+    const concurrency = 5
 
     while (collections.length > 0) {
-      const batch = collections.splice(0, threads)
+      const batch = collections.splice(0, concurrency)
       await Promise.all(
         batch.map(async (collection) => {
           try {
