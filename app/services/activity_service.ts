@@ -140,8 +140,8 @@ export class ActivityService {
 
     // Run.
     const task = this.#sync(did)
-      .catch((error: unknown) => {
-        logger.warn({ did, error }, 'activity: cannot backfill user')
+      .catch((err: unknown) => {
+        logger.warn({ did, err }, 'activity: cannot backfill user')
         this.#backfillAfter.set(did, DateTime.now().plus({ minutes: 1 }))
       })
       .finally(() => this.#backfills.delete(did))
@@ -279,8 +279,8 @@ export class ActivityService {
         batch.map(async (collection) => {
           try {
             await this.#syncCollection(client, did, collection, indexedAt)
-          } catch (error) {
-            logger.warn({ collection, did, error }, 'activity: cannot backfill collection')
+          } catch (err) {
+            logger.warn({ collection, did, err }, 'activity: cannot backfill collection')
           }
         })
       )

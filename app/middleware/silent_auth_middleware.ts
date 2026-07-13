@@ -25,9 +25,9 @@ export default class SilentAuthMiddleware {
       jetstreamService.addDid(did)
       Account.query()
         .where('did', did)
-        .update({ lastActiveAt: DateTime.now() })
-        .catch((error: unknown) => {
-          logger.warn({ did, error }, 'auth: cannot mark account active')
+        .update({ lastActiveAt: DateTime.now().toSQL() })
+        .catch((err: unknown) => {
+          logger.warn({ did, err }, 'auth: cannot mark account active')
         })
     }
 

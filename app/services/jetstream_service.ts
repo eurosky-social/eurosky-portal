@@ -126,8 +126,8 @@ export class JetstreamService {
 
     // Sweep now and every 6 hours.
     const task = (): undefined => {
-      this.#sweep().catch((error: unknown): undefined => {
-        logger.warn({ error }, 'jetstream: cannot sweep dormant accounts')
+      this.#sweep().catch((err: unknown): undefined => {
+        logger.warn({ err }, 'jetstream: cannot sweep dormant accounts')
       })
     }
 
@@ -182,8 +182,8 @@ export class JetstreamService {
 
       try {
         message = JSON.parse(event.data)
-      } catch (error) {
-        logger.warn({ error }, 'jetstream: cannot handle message')
+      } catch (err) {
+        logger.warn({ err }, 'jetstream: cannot handle message')
         return
       }
 
@@ -195,16 +195,16 @@ export class JetstreamService {
 
       if (this.#eventsSinceLastSave >= cursorSaveInterval) {
         this.#eventsSinceLastSave = 0
-        this.#saveCursor().catch((error) => logger.warn({ error }, 'jetstream: cannot save cursor'))
+        this.#saveCursor().catch((err) => logger.warn({ err }, 'jetstream: cannot save cursor'))
       }
 
       if (message.kind === 'commit' && message.commit) {
-        this.#handleCommit(message.did, message.commit).catch((error) => {
-          logger.warn({ error }, 'jetstream: cannot handle commit')
+        this.#handleCommit(message.did, message.commit).catch((err) => {
+          logger.warn({ err }, 'jetstream: cannot handle commit')
         })
       } else if (message.kind === 'account' && message.account) {
-        this.#handleAccount(message.did, message.account).catch((error) => {
-          logger.warn({ error }, 'jetstream: cannot handle account')
+        this.#handleAccount(message.did, message.account).catch((err) => {
+          logger.warn({ err }, 'jetstream: cannot handle account')
         })
       }
     }
@@ -215,7 +215,7 @@ export class JetstreamService {
 
     socket.onclose = () => {
       this.#socket = undefined
-      this.#saveCursor().catch((error) => logger.warn({ error }, 'jetstream: cannot save cursor'))
+      this.#saveCursor().catch((err) => logger.warn({ err }, 'jetstream: cannot save cursor'))
       logger.info('jetstream: reconnecting to `%s` (%dms)', jetstreamUrl, reconnectDelay)
       this.#reconnectTimeout = setTimeout(() => this.#connect(), reconnectDelay)
     }

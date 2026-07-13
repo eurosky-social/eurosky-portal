@@ -190,7 +190,7 @@ export class AtStoreService {
         } else {
           const localApp = local[index]
           const label = localApp['#'] ?? localApp.atUri
-          logger.warn({ error: result.reason }, `Failed to fetch listing \`${label}\``)
+          logger.warn({ err: result.reason }, `Failed to fetch listing \`${label}\``)
         }
       })
       .filter((a): a is App => a !== undefined)
