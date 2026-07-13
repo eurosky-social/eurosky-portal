@@ -4,8 +4,8 @@ import { DateTime } from 'luxon'
  * Cutoff before which an account is dormant.
  *
  * @returns
- *   ISO 8601-compliant string.
+ *   Cutoff.
  */
-export function dormancyCutoff(): string {
-  return DateTime.now().minus({ months: 1 }).toISO()
+export function dormancyCutoff(): DateTime<true> {
+  return DateTime.now().minus({ months: 1 })
 }
