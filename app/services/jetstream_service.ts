@@ -5,6 +5,7 @@ import { type DidString, isDidString, isNsidString } from '@atproto/lex'
 import Account from '#models/account'
 import ActivityRecord from '#models/activity_record'
 import { normalizeActivityRecord } from '#utils/activity_record'
+import { dormancyCutoff } from '#utils/dormancy'
 
 const cursorCacheKey = 'jetstream:cursor'
 const cursorSaveInterval = 500
@@ -112,7 +113,9 @@ export class JetstreamService {
    *   Promise that resolves when loaded.
    */
   async start(): Promise<undefined> {
-    const accounts = await Account.query().select('did')
+    const accounts = await Account.query()
+      .where('lastLoginAt', '>=', dormancyCutoff())
+      .select('did')
     for (const account of accounts) this.#dids.add(account.did)
 
     const cachedCursor: unknown = await cache.get({ key: cursorCacheKey })
@@ -312,9 +315,8 @@ export class JetstreamService {
    *   Promise that resolves when done.
    */
   async #sweep() {
-    const cutoff = DateTime.now().minus({ months: 1 }).toISO()
     const accounts = await Account.query()
-      .where('lastLoginAt', '<', cutoff)
+      .where('lastLoginAt', '<', dormancyCutoff())
       .whereNotNull('lastActivitySyncAt')
       .select('did')
 

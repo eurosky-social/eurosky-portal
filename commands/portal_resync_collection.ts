@@ -28,6 +28,7 @@ export default class PortalResyncCollection extends BaseCommand {
   async run() {
     const { default: Account } = await import('#models/account')
     const { default: activityService } = await import('#services/activity_service')
+    const { dormancyCutoff } = await import('#utils/dormancy')
     const { collection } = this
 
     if (!isNsidString(collection)) {
@@ -42,6 +43,7 @@ export default class PortalResyncCollection extends BaseCommand {
 
     while (more) {
       const result = await Account.query()
+        .where('lastLoginAt', '>=', dormancyCutoff())
         .orderBy('did')
         .paginate(page + 1, 50)
 
