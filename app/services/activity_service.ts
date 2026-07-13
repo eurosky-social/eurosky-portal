@@ -286,6 +286,8 @@ export class ActivityService {
       )
     }
 
+    await this.prune(did)
+
     const account = await Account.findOrFail(did)
     account.lastActivitySyncAt = indexedAt
     await account.save()
@@ -331,7 +333,6 @@ export class ActivityService {
           return { cid, collection, createdAt, did, indexedAt, rkey, text, uri }
         })
       )
-      await this.prune(did)
 
       cursor = result.body.cursor
     } while (cursor)
