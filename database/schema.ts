@@ -9,7 +9,7 @@ import { DateTime } from 'luxon'
 import type { l } from '@atproto/lex'
 
 export class AccountSchema extends BaseModel {
-  static $columns = ['createdAt', 'did', 'handle', 'lastActivitySyncAt', 'lastLoginAt', 'termsAcceptedAt', 'updatedAt', 'welcomeDismissed'] as const
+  static $columns = ['createdAt', 'did', 'handle', 'lastActiveAt', 'lastActivitySyncAt', 'termsAcceptedAt', 'updatedAt', 'welcomeDismissed'] as const
   $columns = AccountSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime | null
@@ -18,9 +18,9 @@ export class AccountSchema extends BaseModel {
   @column()
   declare handle: l.HandleString | null
   @column.dateTime()
-  declare lastActivitySyncAt: DateTime | null
+  declare lastActiveAt: DateTime | null
   @column.dateTime()
-  declare lastLoginAt: DateTime | null
+  declare lastActivitySyncAt: DateTime | null
   @column.dateTime()
   declare termsAcceptedAt: DateTime | null
   @column.dateTime({ autoCreate: true, autoUpdate: true })

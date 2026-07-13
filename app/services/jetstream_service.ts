@@ -114,7 +114,7 @@ export class JetstreamService {
    */
   async start(): Promise<undefined> {
     const accounts = await Account.query()
-      .where('lastLoginAt', '>=', dormancyCutoff())
+      .where('lastActiveAt', '>=', dormancyCutoff())
       .select('did')
     for (const account of accounts) this.#dids.add(account.did)
 
@@ -316,7 +316,7 @@ export class JetstreamService {
    */
   async #sweep() {
     const accounts = await Account.query()
-      .where('lastLoginAt', '<', dormancyCutoff())
+      .where('lastActiveAt', '<', dormancyCutoff())
       .whereNotNull('lastActivitySyncAt')
       .select('did')
 
