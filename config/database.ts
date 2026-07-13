@@ -31,10 +31,12 @@ const dbConfig = defineConfig({
 
       pool: {
         /**
-         * Enable WAL so readers aren’t blocked by writers (and vice versa).
+         * Enable WAL so readers aren’t blocked by writers (and vice versa)
+         * and enforce foreign keys (off by default per-connection in SQLite).
          */
         afterCreate: (connection: { pragma: (statement: string) => unknown }, done: () => void) => {
           connection.pragma('journal_mode = WAL')
+          connection.pragma('foreign_keys = ON')
           done()
         },
       },
