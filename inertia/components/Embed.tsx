@@ -11,11 +11,7 @@ export function Embed({ embed }: { embed: Embed }) {
     case 'images':
       return <EmbedImages embed={embed} />
     case 'record':
-      return (
-        <EmbedRecord embed={embed}>
-          {embed.media ? <Embed embed={embed.media} /> : undefined}
-        </EmbedRecord>
-      )
+      return <EmbedRecord embed={embed} />
     default:
       return (
         <div className="flex items-center gap-3 rounded-lg border border-dashed border-zinc-300 p-4 text-zinc-500 dark:border-zinc-600 dark:text-zinc-400">

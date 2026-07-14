@@ -4,7 +4,7 @@ import React, { forwardRef } from 'react'
 import { Link } from './link'
 import type { LinkProps } from '@adonisjs/inertia/react'
 
-const styles = {
+export const styles = {
   base: [
     // Base
     'relative isolate inline-flex items-baseline justify-center gap-x-2 rounded-lg border text-base/6 font-semibold',

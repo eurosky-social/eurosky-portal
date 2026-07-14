@@ -1,4 +1,5 @@
 import { BaseTransformer } from '@adonisjs/core/transformers'
+import type { AtUriString } from '@atproto/lex'
 import type * as lexicon from '#lexicons'
 import type { Activity } from '#utils/activity'
 import { type Context, toEmbed } from '#utils/embed'
@@ -11,10 +12,17 @@ export type AppBskyGraphFollowDetail = ReturnType<AppBskyGraphFollow['toObject']
 export type IdSifaProfileLanguageDetail = ReturnType<IdSifaProfileLanguage['toObject']>
 export type SiteStandardDocumentDetail = ReturnType<SiteStandardDocument['toObject']>
 
-export default class ActivityTransformer extends BaseTransformer<Activity> {
-  #context: Context
+export interface RecordContext extends Context {
+  /**
+   * `at://` URI of the record itself.
+   */
+  uri: AtUriString
+}
 
-  constructor(resource: Activity, context: Context) {
+export default class ActivityTransformer extends BaseTransformer<Activity> {
+  #context: RecordContext
+
+  constructor(resource: Activity, context: RecordContext) {
     super(resource)
     this.#context = context
   }
@@ -33,7 +41,7 @@ export default class ActivityTransformer extends BaseTransformer<Activity> {
       case 'id.sifa.profile.language':
         return new IdSifaProfileLanguage(resource).toObject()
       case 'site.standard.document':
-        return new SiteStandardDocument(resource).toObject()
+        return new SiteStandardDocument(resource, this.#context).toObject()
       default:
         throw new Error(`Unsupported activity type: ${$type}`)
     }
@@ -42,29 +50,31 @@ export default class ActivityTransformer extends BaseTransformer<Activity> {
 
 class AppBskyFeedLike extends BaseTransformer<lexicon.app.bsky.feed.like.Main> {
   toObject() {
-    const subject = this.pick(this.resource.subject, ['$type', 'uri'])
-    return { ...this.pick(this.resource, ['$type']), subject }
+    return { ...this.pick(this.resource, ['$type']), openUri: this.resource.subject.uri }
   }
 }
 
 class AppBskyFeedPost extends BaseTransformer<lexicon.app.bsky.feed.post.Main> {
-  #context: Context
+  #context: RecordContext
 
-  constructor(resource: lexicon.app.bsky.feed.post.Main, context: Context) {
+  constructor(resource: lexicon.app.bsky.feed.post.Main, context: RecordContext) {
     super(resource)
     this.#context = context
   }
 
   toObject() {
     const embed = this.resource.embed ? toEmbed(this.resource.embed, this.#context) : undefined
+    const openUri = this.#context.uri
+    const replyUri = this.resource.reply ? this.resource.reply.parent.uri : undefined
     const text = annotate(this.resource.text, this.resource.facets)
-    return { ...this.pick(this.resource, ['$type']), embed, text }
+    return { ...this.pick(this.resource, ['$type']), embed, openUri, replyUri, text }
   }
 }
 
 class AppBskyGraphFollow extends BaseTransformer<lexicon.app.bsky.graph.follow.Main> {
   toObject() {
-    return this.pick(this.resource, ['$type', 'subject'])
+    const openUri: AtUriString = `at://${this.resource.subject}`
+    return { ...this.pick(this.resource, ['$type']), openUri }
   }
 }
 
@@ -75,7 +85,17 @@ class IdSifaProfileLanguage extends BaseTransformer<lexicon.id.sifa.profile.lang
 }
 
 class SiteStandardDocument extends BaseTransformer<lexicon.site.standard.document.Main> {
+  #context: RecordContext
+
+  constructor(resource: lexicon.site.standard.document.Main, context: RecordContext) {
+    super(resource)
+    this.#context = context
+  }
+
   toObject() {
-    return this.pick(this.resource, ['$type', 'description', 'site', 'tags', 'title'])
+    return {
+      ...this.pick(this.resource, ['$type', 'description', 'site', 'tags', 'title']),
+      openUri: this.#context.uri,
+    }
   }
 }

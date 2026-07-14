@@ -3,12 +3,12 @@ import type { Segment } from '#utils/richtext'
 
 export function RichText({ text }: { text: Array<Segment> }) {
   return (
-    <div className="whitespace-pre-wrap text-base text-zinc-900 dark:text-white">
+    <div className="p-4 whitespace-pre-wrap text-base text-zinc-900 dark:text-white">
       {text.map(({ feature, text }, key) => {
         return feature ? (
-          <a className="text-blue-600 dark:text-blue-400" key={key}>
+          <span className="text-blue-600 dark:text-blue-400" key={key}>
             {text}
-          </a>
+          </span>
         ) : (
           <Fragment key={key}>{text}</Fragment>
         )

@@ -32,7 +32,8 @@ export default class ActivityController {
 
     const record = await activityService.getRecord(did, collection, rkey)
     if (!record) return response.notFound()
-    const activity = new ActivityTransformer(record.value, { did, pds: record.pds }).toObject()
+    const { pds, uri, value } = record
+    const activity = new ActivityTransformer(value, { did, pds, uri }).toObject()
     return inertia.render('activity/detail', { activity })
   }
 }

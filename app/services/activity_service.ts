@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
 import logger from '@adonisjs/core/services/logger'
-import { Client, type DidString, XrpcResponseError } from '@atproto/lex'
+import { type AtUriString, Client, type DidString, XrpcResponseError } from '@atproto/lex'
 import * as lexicon from '#lexicons'
 import Account from '#models/account'
 import ActivityRecord from '#models/activity_record'
@@ -273,8 +273,8 @@ export class ActivityService {
     did: DidString,
     collection: SupportedCollection,
     rkey: string
-  ): Promise<{ pds: string; value: Activity } | undefined> {
-    const uri = `at://${did}/${collection}/${rkey}`
+  ): Promise<{ pds: string; uri: AtUriString; value: Activity } | undefined> {
+    const uri: AtUriString = `at://${did}/${collection}/${rkey}`
     const row = await ActivityRecord.query().where('uri', uri).first()
     if (!row) return
 
@@ -287,12 +287,12 @@ export class ActivityService {
         signal: AbortSignal.timeout(10_000),
       })
       value = toValue(collection, response.body.value)
-    } catch (error) {
+    } catch (err) {
       // Actually gone upstream: don’t keep stale activity around.
-      if (error instanceof XrpcResponseError && error.error === 'RecordNotFound') {
+      if (err instanceof XrpcResponseError && err.error === 'RecordNotFound') {
         await ActivityRecord.query().where('uri', uri).delete()
       } else {
-        logger.warn({ collection, did, error, rkey }, 'activity: cannot fetch record')
+        logger.warn({ collection, did, err, rkey }, 'activity: cannot fetch record')
       }
 
       return
@@ -304,7 +304,7 @@ export class ActivityService {
       return
     }
 
-    return { pds, value }
+    return { pds, uri, value }
   }
 
   /**
