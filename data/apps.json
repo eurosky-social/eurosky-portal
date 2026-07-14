@@ -31,12 +31,14 @@
   {
     "#": "Colibri",
     "atUri": "at://did:plc:mprdjqjluoswa7awzggaggj3/fyi.atstore.listing.detail/3mkiem5w5k2l6",
-    "category": "social"
+    "category": "social",
+    "madeInEurope": true
   },
   {
     "#": "Currents",
     "atUri": "at://did:plc:jaur46k6ijyfvl4lojza7eic/fyi.atstore.listing.detail/3mkl2pbqle2p6",
-    "category": "photo-and-video"
+    "category": "photo-and-video",
+    "madeInEurope": true
   },
   {
     "#": "Flashes",
