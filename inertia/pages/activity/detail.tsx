@@ -1,6 +1,7 @@
 import { ChevronLeftIcon } from '@heroicons/react/20/solid'
 import { Head } from '@inertiajs/react'
 import type { ActivityDetail } from '#transformers/activity_transformer'
+import { Embed } from '~/components/Embed'
 import { RichText } from '~/components/RichText'
 import Card from '~/lib/card'
 import { Link } from '~/lib/link'
@@ -27,7 +28,12 @@ export default function ActivityDetailPage({
       title = 'Like'
       break
     case 'app.bsky.feed.post':
-      detail = <RichText text={activity.text} />
+      detail = (
+        <>
+          <RichText text={activity.text} />
+          {activity.embed ? <Embed embed={activity.embed} /> : undefined}
+        </>
+      )
       title = 'Post'
       break
     case 'app.bsky.graph.follow':

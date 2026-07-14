@@ -1,6 +1,7 @@
 import { BaseTransformer } from '@adonisjs/core/transformers'
 import type * as lexicon from '#lexicons'
 import type { Activity } from '#utils/activity'
+import { type Context, toEmbed } from '#utils/embed'
 import { annotate } from '#utils/richtext'
 
 export type ActivityDetail = ReturnType<ActivityTransformer['toObject']>
@@ -11,6 +12,13 @@ export type IdSifaProfileLanguageDetail = ReturnType<IdSifaProfileLanguage['toOb
 export type SiteStandardDocumentDetail = ReturnType<SiteStandardDocument['toObject']>
 
 export default class ActivityTransformer extends BaseTransformer<Activity> {
+  #context: Context
+
+  constructor(resource: Activity, context: Context) {
+    super(resource)
+    this.#context = context
+  }
+
   toObject() {
     const { resource } = this
     const { $type } = resource
@@ -19,7 +27,7 @@ export default class ActivityTransformer extends BaseTransformer<Activity> {
       case 'app.bsky.feed.like':
         return new AppBskyFeedLike(resource).toObject()
       case 'app.bsky.feed.post':
-        return new AppBskyFeedPost(resource).toObject()
+        return new AppBskyFeedPost(resource, this.#context).toObject()
       case 'app.bsky.graph.follow':
         return new AppBskyGraphFollow(resource).toObject()
       case 'id.sifa.profile.language':
@@ -40,9 +48,17 @@ class AppBskyFeedLike extends BaseTransformer<lexicon.app.bsky.feed.like.Main> {
 }
 
 class AppBskyFeedPost extends BaseTransformer<lexicon.app.bsky.feed.post.Main> {
+  #context: Context
+
+  constructor(resource: lexicon.app.bsky.feed.post.Main, context: Context) {
+    super(resource)
+    this.#context = context
+  }
+
   toObject() {
+    const embed = this.resource.embed ? toEmbed(this.resource.embed, this.#context) : undefined
     const text = annotate(this.resource.text, this.resource.facets)
-    return { ...this.pick(this.resource, ['$type']), text }
+    return { ...this.pick(this.resource, ['$type']), embed, text }
   }
 }
 

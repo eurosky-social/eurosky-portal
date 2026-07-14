@@ -124,7 +124,7 @@ export class ActivityService {
    *   Promise that resolves when done.
    */
   async backfillCollection(did: DidString, collection: SupportedCollection): Promise<undefined> {
-    const client = await this.#clientFor(did)
+    const { client } = await this.#clientFor(did)
     await this.#syncCollection(client, did, collection, DateTime.now())
   }
 
@@ -266,18 +266,19 @@ export class ActivityService {
    * @param rkey
    *   Record key.
    * @returns
-   *   Promise that resolves to the record value.
+   *   Promise that resolves to the record value and the PDS it was fetched
+   *   from.
    */
   async getRecord(
     did: DidString,
     collection: SupportedCollection,
     rkey: string
-  ): Promise<Activity | undefined> {
+  ): Promise<{ pds: string; value: Activity } | undefined> {
     const uri = `at://${did}/${collection}/${rkey}`
     const row = await ActivityRecord.query().where('uri', uri).first()
     if (!row) return
 
-    const client = await this.#clientFor(did)
+    const { client, pds } = await this.#clientFor(did)
     let value: Activity | undefined
 
     try {
@@ -298,9 +299,12 @@ export class ActivityService {
     }
 
     // No longer parses: don’t keep stale activity around.
-    if (!value) await ActivityRecord.query().where('uri', uri).delete()
+    if (!value) {
+      await ActivityRecord.query().where('uri', uri).delete()
+      return
+    }
 
-    return value
+    return { pds, value }
   }
 
   /**
@@ -309,12 +313,12 @@ export class ActivityService {
    * @param did
    *   DID.
    * @returns
-   *   Promise that resolves to a client.
+   *   Promise that resolves to a client and the PDS it talks to.
    */
-  async #clientFor(did: DidString): Promise<Client> {
+  async #clientFor(did: DidString): Promise<{ client: Client; pds: string }> {
     const resolved = await this.#slingshot.resolveMiniDoc(did)
     if (!resolved) throw new Error(`Could not resolve PDS for \`${did}\``)
-    return new Client(resolved.pds)
+    return { client: new Client(resolved.pds), pds: resolved.pds }
   }
 
   /**
@@ -324,7 +328,7 @@ export class ActivityService {
    *   Promise that resolves when done.
    */
   async #sync(did: DidString) {
-    const client = await this.#clientFor(did)
+    const { client } = await this.#clientFor(did)
     const describeResponse = await client.xrpc(lexicon.com.atproto.repo.describeRepo.main, {
       params: { repo: did },
       signal: AbortSignal.timeout(5000),

@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon'
 import cache from '@adonisjs/cache/services/main'
 import logger from '@adonisjs/core/services/logger'
-import { type DidString, isDidString, isNsidString } from '@atproto/lex'
+import { type DidString, type LexValue, isDidString, isNsidString, lexParse } from '@atproto/lex'
 import Account from '#models/account'
 import ActivityRecord from '#models/activity_record'
 import { supportedCollections, toPreview, toValue } from '#utils/activity'
@@ -26,7 +26,7 @@ interface JetstreamCommit {
   cid?: string
   collection: string
   operation: 'create' | 'delete' | 'update'
-  record?: Record<string, unknown>
+  record?: LexValue
   rev: string
   rkey: string
 }
@@ -182,7 +182,7 @@ export class JetstreamService {
       let message: JetstreamMessage
 
       try {
-        message = JSON.parse(event.data)
+        message = lexParse(event.data) as unknown as JetstreamMessage
       } catch (err) {
         logger.warn({ err }, 'jetstream: cannot handle message')
         return
@@ -259,10 +259,16 @@ export class JetstreamService {
       return
     }
 
+    if (!record) {
+      logger.warn({ operation, uri }, 'jetstream: missing commit `record` in create/update')
+      return
+    }
+
     const activity = toValue(collection, record)
 
     // Unknown collection / invalid record.
     if (!activity) {
+      logger.warn({ collection, uri }, 'jetstream: record does not match its lexicon, dropping')
       await ActivityRecord.query().where('uri', uri).delete()
       return
     }
