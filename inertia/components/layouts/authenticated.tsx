@@ -24,7 +24,6 @@ import {
   ArrowTopRightOnSquareIcon,
   LifebuoyIcon,
   LockClosedIcon,
-  FingerPrintIcon,
 } from '@heroicons/react/24/solid'
 import { useAuth } from '~/utils/use_auth'
 import { Form } from '@adonisjs/inertia/react'
@@ -40,12 +39,6 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
 
   const manageUrl = useMemo(() => {
     return new URL('/account', authorizationServer).toString()
-  }, [authorizationServer])
-
-  // FIXME: We're not using `/.well-known/change-password` due to
-  // https://github.com/bluesky-social/atproto/issues/4858
-  const changePasswordUrl = useMemo(() => {
-    return new URL('/account/manage', authorizationServer).toString()
   }, [authorizationServer])
 
   return (
@@ -74,13 +67,6 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
                     <Cog6ToothIcon />
                     <SidebarLabel className="flex gap-1">
                       Manage Account{' '}
-                      <ArrowTopRightOnSquareIcon className="size-4 inline-block self-center" />
-                    </SidebarLabel>
-                  </SidebarItem>
-                  <SidebarItem href={changePasswordUrl} target="_blank" as={'a'}>
-                    <FingerPrintIcon />
-                    <SidebarLabel className="flex gap-1">
-                      Change Password{' '}
                       <ArrowTopRightOnSquareIcon className="size-4 inline-block self-center" />
                     </SidebarLabel>
                   </SidebarItem>
