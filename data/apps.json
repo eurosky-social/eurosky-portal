@@ -79,9 +79,17 @@
     "category": "bookmark"
   },
   {
-    "#": "Marque; TODO: add `mu` below (`social`, `recommended`, `featured`, `madeInEurope`)",
+    "#": "Marque",
     "atUri": "at://did:plc:nckosudltxrtrjkt4zz4jy5y/fyi.atstore.listing.detail/3mlweswilzk3p",
     "category": "development"
+  },
+  {
+    "#": "Mu",
+    "atUri": "at://did:plc:izttpdp3l6vss5crelt5kcux/fyi.atstore.listing.detail/3mqmb7emiusy5",
+    "category": "social",
+    "featured": true,
+    "madeInEurope": true,
+    "recommended": true
   },
   {
     "#": "npmx",
