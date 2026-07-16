@@ -1,50 +1,64 @@
-import {
-  ChatBubbleLeftIcon,
-  DocumentTextIcon,
-  HeartIcon,
-  LanguageIcon,
-  UserPlusIcon,
-} from '@heroicons/react/24/outline'
+import clsx from 'clsx'
+import { Heart, LucideIcon, MessageSquareText, Newspaper, UserPlus, Languages } from 'lucide-react'
 import type { ActivityRow } from '#services/activity_service'
 import type { SupportedCollection } from '#utils/activity'
+import { ClickableCard } from '~/lib/card'
 import { Link } from '~/lib/link'
 
-type Component = typeof HeartIcon
-
 const icons = {
-  'app.bsky.feed.like': HeartIcon,
-  'app.bsky.feed.post': ChatBubbleLeftIcon,
-  'app.bsky.graph.follow': UserPlusIcon,
-  'id.sifa.profile.language': LanguageIcon,
-  'site.standard.document': DocumentTextIcon,
-} satisfies Record<SupportedCollection, Component>
+  'app.bsky.feed.like': Heart,
+  'app.bsky.feed.post': MessageSquareText,
+  'app.bsky.graph.follow': UserPlus,
+  'id.sifa.profile.language': Languages,
+  'site.standard.document': Newspaper,
+} satisfies Record<SupportedCollection, LucideIcon>
+
+const labels = {
+  'app.bsky.feed.like': 'Like',
+  'app.bsky.feed.post': 'Post',
+  'app.bsky.graph.follow': 'Follow',
+  'id.sifa.profile.language': 'Language',
+  'site.standard.document': 'Article',
+} satisfies Record<SupportedCollection, string>
 
 export function ActivityItem({ activity }: { activity: ActivityRow }) {
   const { collection, createdAt, text, uri } = activity
   const Icon = icons[collection]
+  const label = labels[collection]
   const createdAtDisplay = formatDate(createdAt)
   const rkey = uri.split('/').pop() ?? ''
 
   return (
     <li>
-      <Link
-        className="flex items-center gap-4 px-4 py-4 hover:bg-gray-50 dark:hover:bg-gray-800/50"
+      <ClickableCard
+        as={Link}
+        className="block w-full p-4"
         route="activity.detail"
         routeParams={{ collection, rkey }}
       >
-        <Icon aria-hidden="true" className="h-5 w-5 shrink-0 text-gray-400 dark:text-gray-500" />
-        <span className="flex-1 min-w-0 truncate text-sm text-gray-900 dark:text-white">
-          {text}
-        </span>
-        <span className="shrink-0 whitespace-nowrap break-all text-xs text-gray-600 dark:text-gray-400 font-mono">
-          {collection}
-        </span>
-        {createdAtDisplay && (
-          <span className="shrink-0 whitespace-nowrap break-all text-sm text-gray-600 dark:text-gray-400">
-            {createdAtDisplay}
+        <div className="flex items-center gap-2">
+          <span className="inline-flex items-center gap-1.5 rounded-md border border-zinc-300 px-2 py-1 text-sm font-medium dark:border-zinc-600">
+            <Icon aria-hidden="true" className="h-4 w-4" />
+            {label}
           </span>
+          {createdAtDisplay ? (
+            <>
+              <span className="text-sm">Created on {createdAtDisplay}</span>
+            </>
+          ) : undefined}
+        </div>
+        {text && (
+          <p
+            className={clsx('mt-2', {
+              'font-bold': collection === 'site.standard.document',
+              'text-sm': collection !== 'site.standard.document',
+              'text-xl': collection === 'site.standard.document',
+            })}
+          >
+            {text}
+          </p>
         )}
-      </Link>
+      </ClickableCard>
     </li>
   )
 }
