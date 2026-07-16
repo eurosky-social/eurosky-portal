@@ -58,7 +58,7 @@ export default class HttpExceptionHandler extends ExceptionHandler {
        * Add the authenticated user's ID if available
        * to identify which user encountered the error
        */
-      user: ctx.auth.user?.did,
+      user: ctx.auth?.user?.did,
 
       /**
        * Include the IP address for security monitoring

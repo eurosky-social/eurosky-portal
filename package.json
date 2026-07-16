@@ -119,7 +119,8 @@
   "pnpm": {
     "overrides": {
       "axios": "^1.15.0",
-      "lodash-es": ">=4.18.0"
+      "lodash-es": "^4.18.0",
+      "uuid": "^14.0.0"
     }
   },
   "hotHook": {
