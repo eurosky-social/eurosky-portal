@@ -94,7 +94,7 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
                 </SidebarSection>
                 <SidebarHeading className="mt-10 font-bold">Support</SidebarHeading>
                 <SidebarSection>
-                  <SidebarItem href="https://help.eurosky.tech" target="_blank" as={'a'}>
+                  <SidebarItem href="https://eurosky.tech/help/" target="_blank" as={'a'}>
                     <LifebuoyIcon />
                     <SidebarLabel>Help</SidebarLabel>
                   </SidebarItem>
