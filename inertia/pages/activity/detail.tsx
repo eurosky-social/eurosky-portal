@@ -6,10 +6,10 @@ import type { ActivityDetail } from '#transformers/activity_transformer'
 import { Embed } from '~/components/Embed'
 import { OpenWith } from '~/components/OpenWith'
 import { RichText } from '~/components/RichText'
+import { SiteStandardDocument } from '~/components/SiteStandardDocument'
 import { Avatar } from '~/lib/avatar'
 import Card from '~/lib/card'
 import { BackLink } from '~/lib/link'
-import { Text } from '~/lib/text'
 import type { InertiaProps } from '~/types'
 
 export default function ActivityDetailPage({
@@ -93,18 +93,8 @@ export default function ActivityDetailPage({
       break
     case 'site.standard.document':
       actions = <OpenWith uri={activity.openUri} />
-      detail = (
-        <>
-          {activity.description ? (
-            <p className="text-base text-zinc-700 dark:text-zinc-300">{activity.description}</p>
-          ) : undefined}
-          {activity.tags && activity.tags.length > 0 ? (
-            <Text>Tags: {activity.tags.join(', ')}</Text>
-          ) : undefined}
-          <Text className="font-mono text-xs break-all">{activity.site}</Text>
-        </>
-      )
-      title = activity.title
+      detail = <SiteStandardDocument activity={activity} />
+      title = 'Article'
       break
     default:
       throw new Error(`Unsupported activity type: ${$type}`)

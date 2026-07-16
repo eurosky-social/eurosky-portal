@@ -1,9 +1,13 @@
 import { BaseTransformer } from '@adonisjs/core/transformers'
+import type { JSONDataTypes } from '@adonisjs/core/types/transformers'
 import type { AtUriString } from '@atproto/lex'
-import type * as lexicon from '#lexicons'
+import { truncate } from 'hast-util-truncate'
+import * as lexicon from '#lexicons'
 import type { Activity } from '#utils/activity'
-import { type Context, toEmbed } from '#utils/embed'
-import { annotate } from '#utils/richtext'
+import { type Context, toBlobLocator } from '#utils/blob'
+import { toEmbed } from '#utils/embed'
+import { toHast as bskyRichtextToHast } from '#utils/bsky_richtext'
+import { toHast as leafletToHast } from '#utils/leaflet'
 
 export type ActivityDetail = ReturnType<ActivityTransformer['toObject']>
 export type AppBskyFeedLikeDetail = ReturnType<AppBskyFeedLike['toObject']>
@@ -66,7 +70,11 @@ class AppBskyFeedPost extends BaseTransformer<lexicon.app.bsky.feed.post.Main> {
     const embed = this.resource.embed ? toEmbed(this.resource.embed, this.#context) : undefined
     const openUri = this.#context.uri
     const replyUri = this.resource.reply ? this.resource.reply.parent.uri : undefined
-    const text = annotate(this.resource.text, this.resource.facets)
+    // Cast because Inertia fails on hast TS interfaces.
+    const text = bskyRichtextToHast(
+      this.resource.text,
+      this.resource.facets
+    ) as unknown as JSONDataTypes
     return { ...this.pick(this.resource, ['$type']), embed, openUri, replyUri, text }
   }
 }
@@ -94,8 +102,33 @@ class SiteStandardDocument extends BaseTransformer<lexicon.site.standard.documen
   }
 
   toObject() {
+    const { content: rawContent } = this.resource
+    // Only leaflet supported for now.
+    let root =
+      rawContent && lexicon.pub.leaflet.content.main.isTypeOf(rawContent)
+        ? leafletToHast(rawContent, this.#context)
+        : undefined
+    // Don’t accidentally send giant trees.
+    if (root) root = truncate(root, { ellipsis: '…', size: 4096 })
+
+    const content = root as unknown as JSONDataTypes | undefined
+    const coverImage = this.resource.coverImage
+      ? toBlobLocator(this.resource.coverImage, this.#context)
+      : undefined
+
     return {
-      ...this.pick(this.resource, ['$type', 'description', 'site', 'tags', 'title']),
+      ...this.pick(this.resource, [
+        '$type',
+        'contributors',
+        'description',
+        'publishedAt',
+        'tags',
+        'textContent',
+        'title',
+        'updatedAt',
+      ]),
+      content,
+      coverImage,
       openUri: this.#context.uri,
     }
   }

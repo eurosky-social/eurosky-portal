@@ -4,6 +4,7 @@ import type { ActivityRow } from '#services/activity_service'
 import type { SupportedCollection } from '#utils/activity'
 import { ClickableCard } from '~/lib/card'
 import { Link } from '~/lib/link'
+import { formatDate } from '~/utils/date'
 
 const icons = {
   'app.bsky.feed.like': Heart,
@@ -61,23 +62,4 @@ export function ActivityItem({ activity }: { activity: ActivityRow }) {
       </ClickableCard>
     </li>
   )
-}
-
-/**
- * @param value
- *   ISO 8601 date string.
- * @returns
- *   Human-readable date.
- */
-function formatDate(value: string | null | undefined): string | undefined {
-  if (!value) return
-  const date = new Date(value)
-  if (Number.isNaN(date.getTime())) return
-  return date.toLocaleString(undefined, {
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    month: 'short',
-    year: 'numeric',
-  })
 }

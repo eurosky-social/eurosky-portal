@@ -1,0 +1,59 @@
+{
+  "id": "pub.leaflet.blocks.orderedList",
+  "defs": {
+    "main": {
+      "type": "object",
+      "required": [
+        "children"
+      ],
+      "properties": {
+        "children": {
+          "type": "array",
+          "items": {
+            "ref": "#listItem",
+            "type": "ref"
+          }
+        },
+        "startIndex": {
+          "type": "integer",
+          "description": "The starting number for this ordered list. Defaults to 1 if not specified."
+        }
+      }
+    },
+    "listItem": {
+      "type": "object",
+      "required": [
+        "content"
+      ],
+      "properties": {
+        "checked": {
+          "type": "boolean",
+          "description": "If present, this item is a checklist item. true = checked, false = unchecked. If absent, this is a normal list item."
+        },
+        "content": {
+          "refs": [
+            "pub.leaflet.blocks.text",
+            "pub.leaflet.blocks.header",
+            "pub.leaflet.blocks.image"
+          ],
+          "type": "union"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "ref": "#listItem",
+            "type": "ref"
+          },
+          "description": "Nested ordered list items. Mutually exclusive with unorderedListChildren; if both are present, children takes precedence."
+        },
+        "unorderedListChildren": {
+          "ref": "pub.leaflet.blocks.unorderedList",
+          "type": "ref",
+          "description": "A nested unordered list. Mutually exclusive with children; if both are present, children takes precedence."
+        }
+      }
+    }
+  },
+  "$type": "com.atproto.lexicon.schema",
+  "lexicon": 1
+}

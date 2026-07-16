@@ -1,5 +1,6 @@
-import { type BlobRef, type DidString, getBlobCidString, isBlobRef } from '@atproto/lex'
+import { type BlobRef, isBlobRef } from '@atproto/lex'
 import * as lexicon from '#lexicons'
+import { type BlobLocator, type Context, toBlobLocator } from '#utils/blob'
 
 type LexiconEmbed = NonNullable<lexicon.app.bsky.feed.post.Main['embed']>
 type LexiconExternal = lexicon.app.bsky.embed.external.Main
@@ -11,17 +12,6 @@ type LexiconRecordWithMedia = lexicon.app.bsky.embed.recordWithMedia.Main
 export type AspectRatio = {
   height: number
   width: number
-}
-
-export interface Context {
-  did: DidString
-  pds: string
-}
-
-export type BlobLocator = {
-  cid: string
-  did: DidString
-  pds: string
 }
 
 export type Embed = Media | EmbedRecord
@@ -158,10 +148,6 @@ function recordToEmbed(value: LexiconRecord): EmbedRecord {
 function recordWithMediaToEmbed(value: LexiconRecordWithMedia, context: Context): EmbedRecord {
   const media = mediaToEmbed(value.media, context)
   return { media, type: 'record', uri: value.record.record.uri }
-}
-
-function toBlobLocator(blob: BlobRef, context: Context): BlobLocator {
-  return { cid: getBlobCidString(blob), did: context.did, pds: context.pds }
 }
 
 function toImage(

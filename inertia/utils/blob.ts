@@ -1,4 +1,4 @@
-import type { BlobLocator } from '#utils/embed'
+import type { BlobLocator } from '#utils/blob'
 
 /**
  * URL to blob on Bluesky CDN.

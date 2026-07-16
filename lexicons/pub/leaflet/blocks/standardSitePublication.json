@@ -1,0 +1,25 @@
+{
+  "id": "pub.leaflet.blocks.standardSitePublication",
+  "defs": {
+    "main": {
+      "type": "object",
+      "required": [
+        "uri"
+      ],
+      "properties": {
+        "cid": {
+          "type": "string"
+        },
+        "uri": {
+          "type": "string",
+          "format": "at-uri"
+        },
+        "showPublicationTheme": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "$type": "com.atproto.lexicon.schema",
+  "lexicon": 1
+}

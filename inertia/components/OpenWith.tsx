@@ -1,24 +1,24 @@
 import type { AtUriString } from '@atproto/lex'
 import { CheckIcon, ChevronDownIcon } from '@heroicons/react/16/solid'
 import clsx from 'clsx'
-import { useState } from 'react'
+import { useSyncExternalStore } from 'react'
 import { TouchTarget, styles as buttonStyles } from '~/lib/button'
 import { Dropdown, DropdownButton, DropdownItem, DropdownMenu } from '~/lib/dropdown'
-import { find, prefer, sort } from '~/utils/apps'
+import { find, preferred, prefer, snapshot, subscribe } from '~/utils/apps'
 
 interface Properties {
   uri: AtUriString
 }
 
 export function OpenWith({ uri }: Properties) {
-  // Only used to force a render and sort again after marking an app as
-  // preferred.
-  const [, update] = useState(0)
-  const apps = sort(find(uri))
+  const choices = find(uri)
+  const choice = preferred(choices)
 
-  if (!apps.length) return
+  useSyncExternalStore(subscribe, snapshot)
 
-  const [preferredName, preferredUrl] = apps[0]
+  if (!choice) return
+
+  const [preferredName, preferredUrl] = choice
 
   return (
     <span className="inline-flex">
@@ -40,12 +40,11 @@ export function OpenWith({ uri }: Properties) {
           <span className="sr-only">Choose an app to open this with</span>
         </DropdownButton>
         <DropdownMenu anchor="bottom end">
-          {apps.map(([name]) => (
+          {choices.map(([name]) => (
             <DropdownItem
               key={name}
               onClick={() => {
                 prefer(name)
-                update((value) => value + 1)
               }}
             >
               <span className="col-span-full flex w-full items-center justify-between gap-2">

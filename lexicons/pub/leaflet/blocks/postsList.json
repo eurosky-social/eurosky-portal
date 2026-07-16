@@ -1,0 +1,34 @@
+{
+  "id": "pub.leaflet.blocks.postsList",
+  "defs": {
+    "main": {
+      "type": "object",
+      "required": [],
+      "properties": {
+        "view": {
+          "type": "string",
+          "knownValues": [
+            "small",
+            "medium"
+          ]
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Show at most this many posts."
+        },
+        "filterByTags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "highlightFirstPost": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "$type": "com.atproto.lexicon.schema",
+  "lexicon": 1
+}

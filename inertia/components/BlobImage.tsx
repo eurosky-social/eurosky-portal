@@ -1,19 +1,15 @@
 import { PhotoIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import { useState } from 'react'
-import type { BlobLocator } from '#utils/embed'
+import type { BlobLocator } from '#utils/blob'
 import { toBlobCdnUrl, toBlobPdsUrl } from '~/utils/blob'
 import { useImageLoadState } from '~/utils/use_image_load_state'
 
-export function BlobImage({
-  alt,
-  blob,
-  className,
-}: {
-  alt: string
+interface BlobImageProperties extends Omit<React.JSX.IntrinsicElements['img'], 'onError' | 'src'> {
   blob: BlobLocator
-  className?: string
-}) {
+}
+
+export function BlobImage({ alt, blob, className, ...rest }: BlobImageProperties) {
   const cdnUrl = toBlobCdnUrl(blob)
   const [src, setSrc] = useState(cdnUrl)
   const { imageLoadState, onLoad, onError } = useImageLoadState(src)
@@ -33,6 +29,7 @@ export function BlobImage({
 
   return (
     <img
+      {...rest}
       alt={alt}
       className={clsx(
         className,
