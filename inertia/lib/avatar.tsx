@@ -1,9 +1,10 @@
+import { LinkProps } from '@adonisjs/inertia/react'
 import * as Headless from '@headlessui/react'
 import clsx from 'clsx'
-import React, { forwardRef, useState } from 'react'
+import React, { forwardRef } from 'react'
 import { ButtonType, TouchTarget } from './button'
 import { Link } from './link'
-import { LinkProps } from '@adonisjs/inertia/react'
+import { useImageLoadState } from '~/utils/use_image_load_state'
 
 type AvatarProps = {
   src?: string | null
@@ -13,11 +14,6 @@ type AvatarProps = {
   className?: string
 }
 
-/**
- * State of an image.
- */
-type ImageLoadState = 'error' | 'loaded' | 'loading'
-
 export function Avatar({
   src = null,
   square = false,
@@ -26,15 +22,7 @@ export function Avatar({
   className,
   ...props
 }: AvatarProps & React.ComponentPropsWithoutRef<'span'>) {
-  // Reset during render when `src` changes so this does not race with `load`
-  // on `<img>` and gets stuck showing both the image and the fallback.
-  const [prevSrc, setPrevSrc] = useState(src)
-  const [imageLoadState, setImageLoadState] = useState<ImageLoadState>('loading')
-
-  if (src !== prevSrc) {
-    setPrevSrc(src)
-    setImageLoadState('loading')
-  }
+  const { imageLoadState, onError, onLoad } = useImageLoadState(src)
 
   return (
     <span
@@ -73,8 +61,8 @@ export function Avatar({
       {src && (
         <img
           className="size-full"
-          onError={() => setImageLoadState('error')}
-          onLoad={() => setImageLoadState('loaded')}
+          onError={onError}
+          onLoad={onLoad}
           // Fall back to initials instead of broken image icon.
           style={{ display: imageLoadState === 'error' ? 'none' : 'block' }}
           src={src}
