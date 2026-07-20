@@ -1,9 +1,12 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import activityService from '#services/activity_service'
+import { type BskyAppProfile, BskyAppService } from '#services/bsky_app_service'
 import ActivityTransformer from '#transformers/activity_transformer'
 import { activityDetailValidator, activityQueryValidator } from '#validators/activity'
 
 export default class ActivityController {
+  #bskyApp = new BskyAppService()
+
   async show({ auth, inertia, request }: HttpContext) {
     const { did } = await auth.getUserOrFail()
     const { limit, snapshot } = await request.validateUsing(activityQueryValidator)
@@ -34,6 +37,13 @@ export default class ActivityController {
     if (!record) return response.notFound()
     const { pds, uri, value } = record
     const activity = new ActivityTransformer(value, { did, pds, uri }).toObject()
-    return inertia.render('activity/detail', { activity })
+    let profile: BskyAppProfile | undefined
+
+    // Fetch who was followed on detail pages.
+    if (activity.$type === 'app.bsky.graph.follow') {
+      profile = await this.#bskyApp.getProfile(activity.subject)
+    }
+
+    return inertia.render('activity/detail', { activity, profile })
   }
 }

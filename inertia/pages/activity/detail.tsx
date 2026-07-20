@@ -3,14 +3,15 @@ import {
   ChevronLeftIcon,
   HeartIcon,
   LanguageIcon,
-  UserPlusIcon,
 } from '@heroicons/react/20/solid'
 import { Head } from '@inertiajs/react'
 import type { ReactNode } from 'react'
+import type { BskyAppProfile } from '#services/bsky_app_service'
 import type { ActivityDetail } from '#transformers/activity_transformer'
 import { Embed } from '~/components/Embed'
 import { OpenWith } from '~/components/OpenWith'
 import { RichText } from '~/components/RichText'
+import { Avatar } from '~/lib/avatar'
 import Card from '~/lib/card'
 import { Link } from '~/lib/link'
 import { Text } from '~/lib/text'
@@ -18,8 +19,10 @@ import type { InertiaProps } from '~/types'
 
 export default function ActivityDetailPage({
   activity,
+  profile,
 }: InertiaProps<{
   activity: ActivityDetail
+  profile?: BskyAppProfile | undefined
 }>) {
   let actions: ReactNode
   let detail: ReactNode
@@ -54,16 +57,24 @@ export default function ActivityDetailPage({
       )
       title = 'Post'
       break
-    case 'app.bsky.graph.follow':
+    case 'app.bsky.graph.follow': {
+      const name = profile
+        ? profile.displayName || (profile.handle ? '@' + profile.handle : undefined)
+        : undefined
       actions = <OpenWith uri={activity.openUri} />
       detail = (
-        <div className="flex items-center gap-3 rounded-lg border border-dashed border-zinc-300 p-4 text-zinc-500 dark:border-zinc-600 dark:text-zinc-400">
-          <UserPlusIcon aria-hidden="true" className="size-3.5 shrink-0" />
-          <p className="text-sm">Followed something</p>
+        <div className="flex items-center gap-3">
+          {profile ? (
+            <Avatar className="size-10 shrink-0 bg-amber-100 text-amber-700" src={profile.avatar} />
+          ) : undefined}
+          <p className="text-sm text-zinc-900 dark:text-white">
+            You followed <span className={name ? 'font-bold' : undefined}>{name || 'someone'}</span>
+          </p>
         </div>
       )
       title = 'Follow'
       break
+    }
     case 'id.sifa.profile.language':
       detail = (
         <div className="flex items-center gap-3 rounded-lg border border-dashed border-zinc-300 p-4 text-zinc-500 dark:border-zinc-600 dark:text-zinc-400">

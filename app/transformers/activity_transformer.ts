@@ -73,8 +73,9 @@ class AppBskyFeedPost extends BaseTransformer<lexicon.app.bsky.feed.post.Main> {
 
 class AppBskyGraphFollow extends BaseTransformer<lexicon.app.bsky.graph.follow.Main> {
   toObject() {
-    const openUri: AtUriString = `at://${this.resource.subject}`
-    return { ...this.pick(this.resource, ['$type']), openUri }
+    const { subject } = this.resource
+    const openUri: AtUriString = `at://${subject}`
+    return { ...this.pick(this.resource, ['$type']), openUri, subject }
   }
 }
 
