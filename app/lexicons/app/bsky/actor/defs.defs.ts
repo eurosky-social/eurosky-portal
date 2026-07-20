@@ -3,8 +3,8 @@
  */
 
 import { l } from '@atproto/lex'
-import * as EmbedExternal from '../embed/external.defs.js'
 import * as LabelDefs from '../../../com/atproto/label/defs.defs.js'
+import * as EmbedExternal from '../embed/external.defs.js'
 import * as GraphDefs from '../graph/defs.defs.js'
 import * as NotificationDefs from '../notification/defs.defs.js'
 import * as RepoStrongRef from '../../../com/atproto/repo/strongRef.defs.js'

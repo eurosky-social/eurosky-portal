@@ -1,12 +1,7 @@
-import {
-  ArrowUturnLeftIcon,
-  ChevronLeftIcon,
-  HeartIcon,
-  LanguageIcon,
-} from '@heroicons/react/20/solid'
+import { ArrowUturnLeftIcon, ChevronLeftIcon, LanguageIcon } from '@heroicons/react/20/solid'
 import { Head } from '@inertiajs/react'
 import type { ReactNode } from 'react'
-import type { BskyAppProfile } from '#services/bsky_app_service'
+import type { BskyAppPost, BskyAppProfile } from '#services/bsky_app_service'
 import type { ActivityDetail } from '#transformers/activity_transformer'
 import { Embed } from '~/components/Embed'
 import { OpenWith } from '~/components/OpenWith'
@@ -19,9 +14,11 @@ import type { InertiaProps } from '~/types'
 
 export default function ActivityDetailPage({
   activity,
+  post,
   profile,
 }: InertiaProps<{
   activity: ActivityDetail
+  post?: BskyAppPost | undefined
   profile?: BskyAppProfile | undefined
 }>) {
   let actions: ReactNode
@@ -34,9 +31,23 @@ export default function ActivityDetailPage({
     case 'app.bsky.feed.like':
       actions = <OpenWith uri={activity.openUri} />
       detail = (
-        <div className="flex items-center gap-3 rounded-lg border border-dashed border-zinc-300 p-4 text-zinc-500 dark:border-zinc-600 dark:text-zinc-400">
-          <HeartIcon aria-hidden="true" className="size-3.5 shrink-0" />
-          <p className="text-sm">Liked something</p>
+        <div className="flex items-start gap-3">
+          {post?.author ? (
+            <Avatar
+              className="size-10 shrink-0 bg-amber-100 text-amber-700"
+              src={post.author.avatar}
+            />
+          ) : undefined}
+          <div>
+            <p className="text-sm text-zinc-900 dark:text-white">
+              You liked a post by <UserName user={post?.author} />
+            </p>
+            {post?.text ? (
+              <p className="mt-1 text-sm whitespace-pre-wrap text-zinc-500 dark:text-zinc-400">
+                {post.text}
+              </p>
+            ) : undefined}
+          </div>
         </div>
       )
       title = 'Like'
@@ -57,10 +68,7 @@ export default function ActivityDetailPage({
       )
       title = 'Post'
       break
-    case 'app.bsky.graph.follow': {
-      const name = profile
-        ? profile.displayName || (profile.handle ? '@' + profile.handle : undefined)
-        : undefined
+    case 'app.bsky.graph.follow':
       actions = <OpenWith uri={activity.openUri} />
       detail = (
         <div className="flex items-center gap-3">
@@ -68,13 +76,12 @@ export default function ActivityDetailPage({
             <Avatar className="size-10 shrink-0 bg-amber-100 text-amber-700" src={profile.avatar} />
           ) : undefined}
           <p className="text-sm text-zinc-900 dark:text-white">
-            You followed <span className={name ? 'font-bold' : undefined}>{name || 'someone'}</span>
+            You followed <UserName user={profile} />
           </p>
         </div>
       )
       title = 'Follow'
       break
-    }
     case 'id.sifa.profile.language':
       detail = (
         <div className="flex items-center gap-3 rounded-lg border border-dashed border-zinc-300 p-4 text-zinc-500 dark:border-zinc-600 dark:text-zinc-400">
@@ -122,4 +129,9 @@ export default function ActivityDetailPage({
       <div className="mt-6 space-y-3">{detail}</div>
     </Card>
   )
+}
+
+function UserName({ user }: { user: BskyAppProfile | undefined }): ReactNode {
+  const value = user?.displayName || (user?.handle ? '@' + user.handle : undefined) || undefined
+  return <span className={value ? 'font-bold' : undefined}>{value || 'someone'}</span>
 }
