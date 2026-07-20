@@ -19,7 +19,6 @@ export function ThemeToggle({ className }: React.ComponentPropsWithoutRef<'div'>
   }, [theme])
 
   const toggleTheme = useCallback(() => {
-    console.log(theme)
     const newTheme = theme === 'dark' ? 'light' : 'dark'
 
     ThemeUtils.setTheme(theme)
