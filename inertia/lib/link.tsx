@@ -10,6 +10,27 @@ import * as Headless from '@headlessui/react'
 import { Link as InertiaLink, type LinkProps } from '@adonisjs/inertia/react'
 import React, { forwardRef } from 'react'
 
+/**
+ * `Link` that uses `history.back()` when possible, meaning scroll position and
+ * pagination are restored, and falls back to a normal link otherwise.
+ */
+export const BackLink = forwardRef(function BackLink(
+  props: LinkProps,
+  ref: React.ForwardedRef<HTMLAnchorElement>
+) {
+  return (
+    <Link
+      {...props}
+      onClick={(event) => {
+        if (window.history.length <= 1) return
+        event.preventDefault()
+        window.history.back()
+      }}
+      ref={ref}
+    />
+  )
+})
+
 export const Link = forwardRef(function Link(
   props: LinkProps,
   ref: React.ForwardedRef<HTMLAnchorElement>

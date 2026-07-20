@@ -12,7 +12,7 @@ import { Embed } from '~/components/Embed'
 import { OpenWith } from '~/components/OpenWith'
 import { RichText } from '~/components/RichText'
 import Card from '~/lib/card'
-import { Link } from '~/lib/link'
+import { BackLink } from '~/lib/link'
 import { Text } from '~/lib/text'
 import type { InertiaProps } from '~/types'
 
@@ -98,10 +98,10 @@ export default function ActivityDetailPage({
 
       <div className="mb-8 flex items-start justify-between gap-4">
         <nav aria-label="Breadcrumb" className="text-sm text-zinc-500 dark:text-zinc-400">
-          <Link className="hover:text-zinc-700 dark:hover:text-zinc-300" route="activity.show">
+          <BackLink className="hover:text-zinc-700 dark:hover:text-zinc-300" route="activity.show">
             <ChevronLeftIcon aria-hidden="true" className="size-4 inline-block" />
             Your Activity
-          </Link>
+          </BackLink>
           {' / '}
           <span aria-current="page">{title}</span>
         </nav>

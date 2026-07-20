@@ -9,7 +9,7 @@ import { Avatar } from '~/lib/avatar'
 import { Badge } from '~/lib/badge'
 import Card from '~/lib/card'
 import { Heading } from '~/lib/heading'
-import { Link } from '~/lib/link'
+import { BackLink } from '~/lib/link'
 import { Text } from '~/lib/text'
 import { InertiaProps } from '~/types'
 
@@ -44,10 +44,10 @@ export default function AppDetailPage({ app }: InertiaProps<{ app: Data.App }>) 
       <Head title={name} />
 
       <nav aria-label="Breadcrumb" className="text-sm text-zinc-500 dark:text-zinc-400 mb-8">
-        <Link className="hover:text-zinc-700 dark:hover:text-zinc-300" route="discover.apps">
+        <BackLink className="hover:text-zinc-700 dark:hover:text-zinc-300" route="discover.apps">
           <ChevronLeftIcon aria-hidden="true" className="size-4 inline-block" />
           Applications
-        </Link>
+        </BackLink>
         {' / '}
         <span aria-current="page">{name}</span>
       </nav>
