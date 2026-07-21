@@ -32,7 +32,7 @@ export default function Activity(result: InertiaProps<GetRecordsResult>) {
       </div>
 
       <Card className="p-4 bg-amber-50! dark:bg-amber-400/10! flex flex-row gap-3">
-        <TriangleAlert className="mt-1 h-5 w-5 shrink-0 text-amber-400" />
+        <TriangleAlert aria-hidden="true" className="mt-1 h-5 w-5 shrink-0 text-amber-400" />
         <div>
           <Text className="font-semibold text-amber-800! dark:text-amber-200!">
             Under construction
