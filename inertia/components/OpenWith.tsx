@@ -4,17 +4,16 @@ import clsx from 'clsx'
 import { useSyncExternalStore } from 'react'
 import { TouchTarget, styles as buttonStyles } from '~/lib/button'
 import { Dropdown, DropdownButton, DropdownItem, DropdownMenu } from '~/lib/dropdown'
-import { find, preferred, prefer, snapshot, subscribe } from '~/utils/apps'
+import { find, preferred, prefer, serverSnapshot, snapshot, subscribe } from '~/utils/apps'
 
 interface Properties {
   uri: AtUriString
 }
 
 export function OpenWith({ uri }: Properties) {
+  const value = useSyncExternalStore(subscribe, snapshot, serverSnapshot)
   const choices = find(uri)
-  const choice = preferred(choices)
-
-  useSyncExternalStore(subscribe, snapshot)
+  const choice = preferred(choices, value)
 
   if (!choice) return
 
@@ -44,7 +43,7 @@ export function OpenWith({ uri }: Properties) {
             <DropdownItem
               key={name}
               onClick={() => {
-                prefer(name)
+                prefer(name, value)
               }}
             >
               <span className="col-span-full flex w-full items-center justify-between gap-2">

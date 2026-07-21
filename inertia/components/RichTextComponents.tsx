@@ -1,19 +1,19 @@
 import type { ExtraProps } from 'hast-util-to-jsx-runtime'
 import { useSyncExternalStore } from 'react'
 import { BlobImage } from '~/components/BlobImage'
-import { find, preferred, snapshot, subscribe, toUri } from '~/utils/apps'
+import { find, preferred, serverSnapshot, snapshot, subscribe, toUri } from '~/utils/apps'
 
 type ImageProperties = React.JSX.IntrinsicElements['img'] & ExtraProps
 
 export function a(properties: React.JSX.IntrinsicElements['a'] & ExtraProps) {
   const { node, ...rest } = properties
 
-  useSyncExternalStore(subscribe, snapshot)
+  const value = useSyncExternalStore(subscribe, snapshot, serverSnapshot)
 
   // Normalize URLS into `at://` uris, and then use the preferred app to launch those.
   let href = rest.href
   const atUri = href ? toUri(href) : undefined
-  const choice = atUri ? preferred(find(atUri)) : undefined
+  const choice = atUri ? preferred(find(atUri), value) : undefined
   if (choice) href = choice[1]
 
   return (

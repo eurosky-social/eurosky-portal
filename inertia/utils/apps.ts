@@ -180,13 +180,17 @@ export function find(atUri: AtTagUriString | AtUriString): Array<Choice> {
 }
 
 /**
- * Read preferred apps.
+ * Parse a `useSyncExternalStore` snapshot value.
  *
+ * Pure function of its input, so server and client render the same result
+ * for the same snapshot value.
+ *
+ * @param value
+ *   Snapshot value.
  * @returns
  *   List of preferred apps.
  */
-function get(): ReadonlyArray<unknown> {
-  const value = snapshot()
+function parse(value: string | null): ReadonlyArray<unknown> {
   if (value) {
     try {
       const result: unknown = JSON.parse(value)
@@ -203,11 +207,16 @@ function get(): ReadonlyArray<unknown> {
  *
  * @param choices
  *   List of choices.
+ * @param value
+ *   Snapshot value (from `useSyncExternalStore`).
  * @returns
  *   Preferred choice.
  */
-export function preferred(choices: ReadonlyArray<Choice>): Choice | undefined {
-  const preferredApps = get()
+export function preferred(
+  choices: ReadonlyArray<Choice>,
+  value: string | null
+): Choice | undefined {
+  const preferredApps = parse(value)
 
   for (const app of preferredApps) {
     const choice = choices.find(([name]) => name === app)
@@ -225,24 +234,49 @@ export function preferred(choices: ReadonlyArray<Choice>): Choice | undefined {
  *
  * @param name
  *   Name of app.
+ * @param value
+ *   Current snapshot value (from `useSyncExternalStore`).
  * @returns
  *   Nothing.
  */
-export function prefer(name: string): undefined {
-  const preferredApps = [...new Set([name, ...get()])]
+export function prefer(name: string, value: string | null): undefined {
+  if (typeof localStorage === 'undefined') return
+
+  const preferredApps = [...new Set([name, ...parse(value)])]
   if (preferredApps.length > 20) preferredApps.length = 20
-  localStorage.setItem(localStorageKey, JSON.stringify(preferredApps))
+
+  try {
+    localStorage.setItem(localStorageKey, JSON.stringify(preferredApps))
+  } catch {
+    return
+  }
+
   for (const listener of listeners) listener()
 }
 
 /**
- * Get a snapshot to use with `useSyncExternalStore`.
+ * Get a server snapshot for `useSyncExternalStore`.
+ *
+ * @returns
+ *   Snapshot.
+ */
+export function serverSnapshot(): string | null {
+  return null
+}
+
+/**
+ * Get a client snapshot for `useSyncExternalStore`.
  *
  * @returns
  *   Snapshot.
  */
 export function snapshot(): string | null {
-  return localStorage.getItem(localStorageKey)
+  if (typeof localStorage === 'undefined') return null
+  try {
+    return localStorage.getItem(localStorageKey)
+  } catch {
+    return null
+  }
 }
 
 /**
