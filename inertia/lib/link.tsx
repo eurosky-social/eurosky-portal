@@ -8,6 +8,7 @@
 
 import * as Headless from '@headlessui/react'
 import { Link as InertiaLink, type LinkProps } from '@adonisjs/inertia/react'
+import { shouldIntercept } from '@inertiajs/core'
 import React, { forwardRef } from 'react'
 
 /**
@@ -22,7 +23,7 @@ export const BackLink = forwardRef(function BackLink(
     <Link
       {...props}
       onClick={(event) => {
-        if (window.history.length <= 1) return
+        if (window.history.length <= 1 || !shouldIntercept(event.nativeEvent)) return
         event.preventDefault()
         window.history.back()
       }}
