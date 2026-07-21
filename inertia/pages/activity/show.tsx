@@ -45,6 +45,7 @@ export default function Activity(result: InertiaProps<GetRecordsResult>) {
             <a
               className="font-semibold underline hover:text-amber-900 dark:hover:text-amber-100"
               href={feedbackUrl}
+              rel="noopener noreferrer"
               target="_blank"
             >
               Give feedback

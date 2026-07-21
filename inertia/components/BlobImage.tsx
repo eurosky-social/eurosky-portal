@@ -5,7 +5,10 @@ import type { BlobLocator } from '#utils/blob'
 import { toBlobCdnUrl, toBlobPdsUrl } from '~/utils/blob'
 import { useImageLoadState } from '~/utils/use_image_load_state'
 
-interface BlobImageProperties extends Omit<React.JSX.IntrinsicElements['img'], 'onError' | 'src'> {
+interface BlobImageProperties extends Omit<
+  React.JSX.IntrinsicElements['img'],
+  'onError' | 'onLoad' | 'src'
+> {
   blob: BlobLocator
 }
 

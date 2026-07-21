@@ -76,8 +76,8 @@ function image(value: lexicon.pub.leaflet.blocks.image.Main, context: Context): 
   // But: skip implausibly small values (say, `16/9`, as that’s likely a reduced
   // ratio, not real dimensions), which would otherwise render a tiny image.
   if (value.aspectRatio.height >= 30 && value.aspectRatio.width >= 30) {
-    properties.height = value.aspectRatio.height / 2
-    properties.width = value.aspectRatio.width / 2
+    properties.height = Math.floor(value.aspectRatio.height / 2)
+    properties.width = Math.floor(value.aspectRatio.width / 2)
   }
 
   return {
