@@ -9,6 +9,8 @@ import Card from '~/lib/card'
 import { Text } from '~/lib/text'
 import type { InertiaProps } from '~/types'
 
+const feedbackUrl = 'https://userinput.app/#/s/did:plc:ooensn4mr5mhznzypvxelfa3/3mr5gmbhteg2p';
+
 const pageSize = 20
 
 export default function Activity(result: InertiaProps<GetRecordsResult>) {
@@ -42,8 +44,7 @@ export default function Activity(result: InertiaProps<GetRecordsResult>) {
           <Text className="text-amber-700! dark:text-amber-200/80!">
             <a
               className="font-semibold underline hover:text-amber-900 dark:hover:text-amber-100"
-              // TODO: use a real link when Sherif makes it!
-              href="#"
+              href={feedbackUrl}
             >
               Give feedback
             </a>
