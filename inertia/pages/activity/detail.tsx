@@ -68,10 +68,7 @@ export default function ActivityDetailPage({
       )
       title = 'Post'
       break
-    case 'app.bsky.graph.follow': {
-      const name = profile
-        ? profile.displayName || (profile.handle ? '@' + profile.handle : undefined)
-        : undefined
+    case 'app.bsky.graph.follow':
       actions = <OpenWith uri={activity.openUri} />
       detail = (
         <div className="flex items-center gap-3">
@@ -85,7 +82,6 @@ export default function ActivityDetailPage({
       )
       title = 'Follow'
       break
-    }
     case 'id.sifa.profile.language':
       detail = (
         <div className="flex items-center gap-3 rounded-lg border border-dashed border-zinc-300 p-4 text-zinc-500 dark:border-zinc-600 dark:text-zinc-400">
