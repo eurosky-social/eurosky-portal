@@ -1,4 +1,4 @@
-import { ArrowUturnLeftIcon, ChevronLeftIcon, LanguageIcon } from '@heroicons/react/20/solid'
+import { ArrowTurnDownRightIcon, ChevronLeftIcon, LanguageIcon } from '@heroicons/react/20/solid'
 import { Head } from '@inertiajs/react'
 import type { ReactNode } from 'react'
 import type { BskyAppPost, BskyAppProfile } from '#services/bsky_app_service'
@@ -7,6 +7,7 @@ import { Embed } from '~/components/Embed'
 import { OpenWith } from '~/components/OpenWith'
 import { RichText } from '~/components/RichText'
 import { SiteStandardDocument } from '~/components/SiteStandardDocument'
+import { UserName } from '~/components/UserName'
 import { Avatar } from '~/lib/avatar'
 import Card from '~/lib/card'
 import { BackLink } from '~/lib/link'
@@ -16,10 +17,12 @@ export default function ActivityDetailPage({
   activity,
   post,
   profile,
+  quotedPost,
 }: InertiaProps<{
   activity: ActivityDetail
   post?: BskyAppPost | undefined
   profile?: BskyAppProfile | undefined
+  quotedPost?: BskyAppPost | undefined
 }>) {
   let actions: ReactNode
   let detail: ReactNode
@@ -43,7 +46,7 @@ export default function ActivityDetailPage({
               You liked a post by <UserName user={post?.author} />
             </p>
             {post?.text ? (
-              <p className="mt-1 text-sm whitespace-pre-wrap text-zinc-500 dark:text-zinc-400">
+              <p className="my-1 line-clamp-1 text-sm text-zinc-500 dark:text-zinc-400">
                 {post.text}
               </p>
             ) : undefined}
@@ -57,13 +60,16 @@ export default function ActivityDetailPage({
       detail = (
         <>
           {activity.replyUri ? (
-            <div className="flex items-center gap-3 rounded-lg border border-dashed border-zinc-300 p-4 text-sm text-zinc-500 dark:border-zinc-600 dark:text-zinc-400">
-              <ArrowUturnLeftIcon aria-hidden="true" className="size-3.5 shrink-0" />
-              Replying to a post
-            </div>
+            <p className="text-sm text-zinc-500 dark:text-zinc-400">
+              <ArrowTurnDownRightIcon
+                aria-hidden="true"
+                className="size-2.5 shrink-0 inline-block"
+              />{' '}
+              In reply to <UserName user={post?.author} />
+            </p>
           ) : undefined}
           <RichText text={activity.text} />
-          {activity.embed ? <Embed embed={activity.embed} /> : undefined}
+          {activity.embed ? <Embed embed={activity.embed} quotedPost={quotedPost} /> : undefined}
         </>
       )
       title = 'Post'
@@ -116,12 +122,7 @@ export default function ActivityDetailPage({
         {actions}
       </div>
 
-      <div className="mt-6 space-y-3">{detail}</div>
+      <div className="mt-6 space-y-4">{detail}</div>
     </Card>
   )
-}
-
-function UserName({ user }: { user: BskyAppProfile | undefined }): ReactNode {
-  const value = user?.displayName || (user?.handle ? '@' + user.handle : undefined) || undefined
-  return <span className={value ? 'font-bold' : undefined}>{value || 'someone'}</span>
 }

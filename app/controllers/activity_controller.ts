@@ -1,8 +1,17 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import activityService from '#services/activity_service'
 import { type BskyAppPost, type BskyAppProfile, BskyAppService } from '#services/bsky_app_service'
-import ActivityTransformer from '#transformers/activity_transformer'
+import {
+  type ActivityDetail,
+  default as ActivityTransformer,
+} from '#transformers/activity_transformer'
 import { activityDetailValidator, activityQueryValidator } from '#validators/activity'
+
+type Related = {
+  post?: BskyAppPost | undefined
+  profile?: BskyAppProfile | undefined
+  quotedPost?: BskyAppPost | undefined
+}
 
 export default class ActivityController {
   #bskyApp = new BskyAppService()
@@ -37,16 +46,30 @@ export default class ActivityController {
     if (!record) return response.notFound()
     const { pds, uri, value } = record
     const activity = new ActivityTransformer(value, { did, pds, uri }).toObject()
-    let post: BskyAppPost | undefined
-    let profile: BskyAppProfile | undefined
+    const related = await this.#fetchRelated(activity)
+    return inertia.render('activity/detail', { activity, ...related })
+  }
 
-    // Fetch what was liked and followed on detail pages.
-    if (activity.$type === 'app.bsky.feed.like') {
-      post = await this.#bskyApp.getPost(activity.openUri)
-    } else if (activity.$type === 'app.bsky.graph.follow') {
-      profile = await this.#bskyApp.getProfile(activity.subject)
+  // Fetch what is interacted with.
+  async #fetchRelated(activity: ActivityDetail): Promise<Related> {
+    switch (activity.$type) {
+      case 'app.bsky.feed.like': {
+        const post = await this.#bskyApp.getPost(activity.openUri)
+        return { post }
+      }
+      case 'app.bsky.feed.post': {
+        const [post, quotedPost] = await Promise.all([
+          activity.replyUri ? this.#bskyApp.getPost(activity.replyUri) : undefined,
+          activity.embed?.type === 'record' ? this.#bskyApp.getPost(activity.embed.uri) : undefined,
+        ])
+        return { post, quotedPost }
+      }
+      case 'app.bsky.graph.follow': {
+        const profile = await this.#bskyApp.getProfile(activity.subject)
+        return { profile }
+      }
+      default:
+        return {}
     }
-
-    return inertia.render('activity/detail', { activity, post, profile })
   }
 }

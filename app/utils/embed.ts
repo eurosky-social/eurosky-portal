@@ -1,4 +1,4 @@
-import { type BlobRef, isBlobRef } from '@atproto/lex'
+import { type AtUriString, type BlobRef, isBlobRef } from '@atproto/lex'
 import * as lexicon from '#lexicons'
 import { type BlobLocator, type Context, toBlobLocator } from '#utils/blob'
 
@@ -40,7 +40,7 @@ export type Media = External | Images | Unknown | Video
 export type EmbedRecord = {
   media: Media | undefined
   type: 'record'
-  uri: string
+  uri: AtUriString
 }
 
 export type Unknown = {
