@@ -5,7 +5,7 @@ import type { AppBskyFeedPostDetail } from '#transformers/activity_transformer'
 import * as components from './RichTextComponents'
 
 export function RichText({ text }: { text: AppBskyFeedPostDetail['text'] }) {
-  // Cast because Intertia fails on TS `interface`s.
+  // Cast because inertia fails on TS `interface`s.
   const root: Root = { type: 'root', children: text as unknown as Array<ElementContent> }
 
   return (

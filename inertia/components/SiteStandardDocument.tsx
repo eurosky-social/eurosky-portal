@@ -10,7 +10,7 @@ import { formatDate } from '~/utils/date'
 import * as components from './RichTextComponents'
 
 export function SiteStandardDocument({ activity }: { activity: SiteStandardDocumentDetail }) {
-  // Cast because Intertia fails on TS `interface`s.
+  // Cast because inertia fails on TS `interface`s.
   const content = activity.content as Root | undefined
   const publishedAtDisplay = formatDate(activity.publishedAt)
   const updatedAtDisplay = formatDate(activity.updatedAt)

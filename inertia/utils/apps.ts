@@ -47,7 +47,13 @@ const apps: ReadonlyArray<[name: string, fromAtUri: FromAtUri, toAtUri: ToAtUri]
       if (url.hostname !== 'bsky.app') return
 
       const hashtagMatch = /^\/hashtag\/([^/]+)\/?$/.exec(url.pathname)
-      if (hashtagMatch) return { tag: decodeURIComponent(hashtagMatch[1]) }
+      if (hashtagMatch) {
+        try {
+          return { tag: decodeURIComponent(hashtagMatch[1]) }
+        } catch {
+          return
+        }
+      }
 
       const profileMatch = /^\/profile\/([^/]+)(?:\/post\/([^/]+))?\/?$/.exec(url.pathname)
       if (!profileMatch) return
@@ -92,7 +98,13 @@ const apps: ReadonlyArray<[name: string, fromAtUri: FromAtUri, toAtUri: ToAtUri]
       if (url.hostname !== 'mu.social') return
 
       const hashtagMatch = /^\/hashtag\/([^/]+)\/?$/.exec(url.pathname)
-      if (hashtagMatch) return { tag: decodeURIComponent(hashtagMatch[1]) }
+      if (hashtagMatch) {
+        try {
+          return { tag: decodeURIComponent(hashtagMatch[1]) }
+        } catch {
+          return
+        }
+      }
 
       const profileMatch = /^\/profile\/([^/]+)(?:\/post\/([^/]+))?\/?$/.exec(url.pathname)
       if (!profileMatch) return
@@ -147,7 +159,11 @@ export function find(atUri: AtTagUriString | AtUriString): Array<Choice> {
 
   if (atUri.startsWith(atTag)) {
     const tag = atUri.slice(atTag.length)
-    if (tag) parts = { tag: decodeURIComponent(tag) }
+    if (tag) {
+      try {
+        parts = { tag: decodeURIComponent(tag) }
+      } catch {}
+    }
   } else {
     const parsed = parseAtUriString(atUri, { strict: false })
     if (parsed.success) parts = parsed.value
