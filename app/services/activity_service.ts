@@ -229,10 +229,8 @@ export class ActivityService {
     const first = rows.at(0)
 
     return {
-      activities: rows.map((row) => {
-        if (!isSupportedCollection(row.collection)) {
-          throw new Error(`Unknown collection \`${row.collection}\``)
-        }
+      activities: rows.flatMap((row) => {
+        if (!isSupportedCollection(row.collection)) return []
         return {
           cid: row.cid,
           collection: row.collection,

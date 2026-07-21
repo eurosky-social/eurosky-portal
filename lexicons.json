@@ -8,7 +8,6 @@
     "app.bsky.graph.follow",
     "com.atproto.repo.describeRepo",
     "fyi.atstore.directory.getListing",
-    "id.sifa.profile.language",
     "pub.leaflet.content",
     "site.standard.document"
   ],
@@ -112,14 +111,6 @@
     "fyi.atstore.directory.getListing": {
       "uri": "at://did:plc:dvy6bdnofdfc4php4s5b457d/com.atproto.lexicon.schema/fyi.atstore.directory.getListing",
       "cid": "bafyreieo5iovtit3jsjlgfquicpra3jmbggngey65bo3rbu6bf54ztfgwu"
-    },
-    "id.sifa.defs": {
-      "uri": "at://did:plc:2f2ahswozqy4v5lvu676375y/com.atproto.lexicon.schema/id.sifa.defs",
-      "cid": "bafyreiassk3z42jiruhegdi2tww4nxwgbyzme4nno4fa7i4ftbu66ufa5e"
-    },
-    "id.sifa.profile.language": {
-      "uri": "at://did:plc:2f2ahswozqy4v5lvu676375y/com.atproto.lexicon.schema/id.sifa.profile.language",
-      "cid": "bafyreif7ekvxcfijv2n4kh4ytgyoihitnutaj6vixukvinwqsj52mrdlbq"
     },
     "pub.leaflet.blocks.blockquote": {
       "uri": "at://did:plc:btxrwcaeyodrap5mnjw2fvmz/com.atproto.lexicon.schema/pub.leaflet.blocks.blockquote",

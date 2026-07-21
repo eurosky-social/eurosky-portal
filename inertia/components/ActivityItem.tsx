@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { Heart, LucideIcon, MessageSquareText, Newspaper, UserPlus, Languages } from 'lucide-react'
+import { Heart, LucideIcon, MessageSquareText, Newspaper, UserPlus } from 'lucide-react'
 import type { ActivityRow } from '#services/activity_service'
 import type { SupportedCollection } from '#utils/activity'
 import { ClickableCard } from '~/lib/card'
@@ -10,7 +10,6 @@ const icons = {
   'app.bsky.feed.like': Heart,
   'app.bsky.feed.post': MessageSquareText,
   'app.bsky.graph.follow': UserPlus,
-  'id.sifa.profile.language': Languages,
   'site.standard.document': Newspaper,
 } satisfies Record<SupportedCollection, LucideIcon>
 
@@ -18,7 +17,6 @@ const labels = {
   'app.bsky.feed.like': 'Like',
   'app.bsky.feed.post': 'Post',
   'app.bsky.graph.follow': 'Follow',
-  'id.sifa.profile.language': 'Language',
   'site.standard.document': 'Article',
 } satisfies Record<SupportedCollection, string>
 

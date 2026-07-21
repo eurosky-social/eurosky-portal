@@ -9,7 +9,6 @@ export type Activity =
   | lexicon.app.bsky.feed.like.Main
   | lexicon.app.bsky.feed.post.Main
   | lexicon.app.bsky.graph.follow.Main
-  | lexicon.id.sifa.profile.language.Main
   | lexicon.site.standard.document.Main
 
 /**
@@ -50,7 +49,6 @@ export const supportedCollections = [
   'app.bsky.feed.like',
   'app.bsky.feed.post',
   'app.bsky.graph.follow',
-  'id.sifa.profile.language',
   'site.standard.document',
 ] as const satisfies ReadonlyArray<NsidString>
 
@@ -74,7 +72,7 @@ function toDate(value: string): DateTime<true> | undefined {
  * Something like:
  *
  * ```sh
- * node ace portal:resync-collection id.sifa.profile.language
+ * node ace portal:resync-collection app.bsky.feed.post
  * ```
  *
  * @param value
@@ -94,8 +92,6 @@ export function toPreview(value: Activity): Preview {
       return { createdAt: toDate(value.createdAt), text: value.text }
     case 'app.bsky.graph.follow':
       return { createdAt: toDate(value.createdAt), text: undefined }
-    case 'id.sifa.profile.language':
-      return { createdAt: toDate(value.createdAt), text: value.name }
     case 'site.standard.document':
       return { createdAt: toDate(value.publishedAt), text: value.title }
     default:
@@ -121,8 +117,6 @@ export function toValue(collection: NsidString, value: unknown): Activity | unde
       return lexicon.app.bsky.feed.post.$ifMatches(value)
     case 'app.bsky.graph.follow':
       return lexicon.app.bsky.graph.follow.$ifMatches(value)
-    case 'id.sifa.profile.language':
-      return lexicon.id.sifa.profile.language.$ifMatches(value)
     case 'site.standard.document':
       return lexicon.site.standard.document.$ifMatches(value)
     default:

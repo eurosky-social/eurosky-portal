@@ -1,4 +1,4 @@
-import { ArrowTurnDownRightIcon, ChevronLeftIcon, LanguageIcon } from '@heroicons/react/20/solid'
+import { ArrowTurnDownRightIcon, ChevronLeftIcon } from '@heroicons/react/20/solid'
 import { Head } from '@inertiajs/react'
 import type { ReactNode } from 'react'
 import type { BskyAppPost, BskyAppProfile } from '#services/bsky_app_service'
@@ -87,15 +87,6 @@ export default function ActivityDetailPage({
         </div>
       )
       title = 'Follow'
-      break
-    case 'id.sifa.profile.language':
-      detail = (
-        <div className="flex items-center gap-3 rounded-lg border border-dashed border-zinc-300 p-4 text-zinc-500 dark:border-zinc-600 dark:text-zinc-400">
-          <LanguageIcon aria-hidden="true" className="size-3.5 shrink-0" />
-          <p className="text-sm">Added {activity.name}</p>
-        </div>
-      )
-      title = 'Language'
       break
     case 'site.standard.document':
       actions = <OpenWith uri={activity.openUri} />

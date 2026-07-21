@@ -13,7 +13,6 @@ export type ActivityDetail = ReturnType<ActivityTransformer['toObject']>
 export type AppBskyFeedLikeDetail = ReturnType<AppBskyFeedLike['toObject']>
 export type AppBskyFeedPostDetail = ReturnType<AppBskyFeedPost['toObject']>
 export type AppBskyGraphFollowDetail = ReturnType<AppBskyGraphFollow['toObject']>
-export type IdSifaProfileLanguageDetail = ReturnType<IdSifaProfileLanguage['toObject']>
 export type SiteStandardDocumentDetail = ReturnType<SiteStandardDocument['toObject']>
 
 export interface RecordContext extends Context {
@@ -42,8 +41,6 @@ export default class ActivityTransformer extends BaseTransformer<Activity> {
         return new AppBskyFeedPost(resource, this.#context).toObject()
       case 'app.bsky.graph.follow':
         return new AppBskyGraphFollow(resource).toObject()
-      case 'id.sifa.profile.language':
-        return new IdSifaProfileLanguage(resource).toObject()
       case 'site.standard.document':
         return new SiteStandardDocument(resource, this.#context).toObject()
       default:
@@ -84,12 +81,6 @@ class AppBskyGraphFollow extends BaseTransformer<lexicon.app.bsky.graph.follow.M
     const { subject } = this.resource
     const openUri: AtUriString = `at://${subject}`
     return { ...this.pick(this.resource, ['$type']), openUri, subject }
-  }
-}
-
-class IdSifaProfileLanguage extends BaseTransformer<lexicon.id.sifa.profile.language.Main> {
-  toObject() {
-    return this.pick(this.resource, ['$type', 'name'])
   }
 }
 
