@@ -10,7 +10,7 @@ export function a(properties: React.JSX.IntrinsicElements['a'] & ExtraProps) {
 
   const value = useSyncExternalStore(subscribe, snapshot, serverSnapshot)
 
-  // Normalize URLS into `at://` uris, and then use the preferred app to launch those.
+  // Normalize URLs into `at://` URIs, and then use the preferred app to launch those.
   let href = rest.href
   const atUri = href ? toUri(href) : undefined
   const choice = atUri ? preferred(find(atUri), value) : undefined

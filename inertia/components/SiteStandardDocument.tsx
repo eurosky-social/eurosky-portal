@@ -14,7 +14,7 @@ export function SiteStandardDocument({ activity }: { activity: SiteStandardDocum
   const content = activity.content as Root | undefined
   const publishedAtDisplay = formatDate(activity.publishedAt)
   const updatedAtDisplay = formatDate(activity.updatedAt)
-  // Assume fallback text is markdown, seems to work good with Offprint.
+  // Assume fallback text is markdown, seems to work well with Offprint.
   const textContentHtml = useMemo(
     () => (!activity.content && activity.textContent ? micromark(activity.textContent) : undefined),
     [activity.content, activity.textContent]
