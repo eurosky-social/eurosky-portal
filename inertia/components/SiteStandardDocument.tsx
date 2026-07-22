@@ -1,24 +1,19 @@
 import { toJsxRuntime } from 'hast-util-to-jsx-runtime'
-import type { Root } from 'hast'
-import { micromark } from 'micromark'
 import { Fragment, jsx, jsxs } from 'react/jsx-runtime'
-import { useMemo } from 'react'
+import type { Nodes } from 'hast'
 import type { SiteStandardDocumentDetail } from '#transformers/activity_transformer'
 import { BlobImage } from '~/components/BlobImage'
+import { MarkdownContent } from '~/components/MarkdownContent'
 import { Text } from '~/lib/text'
 import { formatDate } from '~/utils/date'
 import * as components from './RichTextComponents'
 
 export function SiteStandardDocument({ activity }: { activity: SiteStandardDocumentDetail }) {
   // Cast because inertia fails on TS `interface`s.
-  const content = activity.content as Root | undefined
+  const structuredContent = activity.content as Nodes | undefined
   const publishedAtDisplay = formatDate(activity.publishedAt)
   const updatedAtDisplay = formatDate(activity.updatedAt)
-  // Assume fallback text is markdown, seems to work well with Offprint.
-  const textContentHtml = useMemo(
-    () => (!activity.content && activity.textContent ? micromark(activity.textContent) : undefined),
-    [activity.content, activity.textContent]
-  )
+
   return (
     <>
       {activity.coverImage ? (
@@ -36,22 +31,19 @@ export function SiteStandardDocument({ activity }: { activity: SiteStandardDocum
           {activity.description}
         </p>
       ) : undefined}
-      {content ? (
-        <div className="article-body markdown-document text-zinc-900 dark:text-white">
-          {toJsxRuntime(content, {
+      <div className="article-body markdown-document text-zinc-900 dark:text-white">
+        {structuredContent ? (
+          toJsxRuntime(structuredContent, {
             Fragment,
             components,
             jsxs,
             jsx,
             passNode: true,
-          })}
-        </div>
-      ) : textContentHtml ? (
-        <div
-          className="article-body markdown-document text-zinc-900 dark:text-white"
-          dangerouslySetInnerHTML={{ __html: textContentHtml }}
-        />
-      ) : undefined}
+          })
+        ) : (
+          <MarkdownContent value={activity.textContent} />
+        )}
+      </div>
       {activity.tags && activity.tags.length > 0 ? (
         <Text>Tags: {activity.tags.join(', ')}</Text>
       ) : undefined}

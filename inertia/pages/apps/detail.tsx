@@ -1,9 +1,8 @@
-import { useMemo } from 'react'
 import { Data } from '@generated/data'
 import { ChevronLeftIcon } from '@heroicons/react/20/solid'
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid'
 import { Head } from '@inertiajs/react'
-import { micromark } from 'micromark'
+import { MarkdownContent } from '~/components/MarkdownContent'
 import { Rating } from '~/components/Rating'
 import { Avatar } from '~/lib/avatar'
 import { Badge } from '~/lib/badge'
@@ -26,10 +25,6 @@ export default function AppDetailPage({ app }: InertiaProps<{ app: Data.App }>) 
     reviewCount,
     tagline,
   } = listing
-  const descriptionHtml = useMemo(
-    () => (description ? micromark(description) : undefined),
-    [description]
-  )
   const tags = appTags.map((tag) => tag.charAt(0).toUpperCase() + tag.slice(1))
   const categoryPrefix = 'apps/'
   const slug = categorySlug?.startsWith(categoryPrefix)
@@ -94,12 +89,9 @@ export default function AppDetailPage({ app }: InertiaProps<{ app: Data.App }>) 
             </span>
           ) : undefined}
 
-          {descriptionHtml ? (
-            <div
-              className="markdown-document text-base/6 text-zinc-500 sm:text-sm/6 dark:text-zinc-400"
-              dangerouslySetInnerHTML={{ __html: descriptionHtml }}
-            />
-          ) : undefined}
+          <div className="article-body markdown-document text-base/6 text-zinc-500 sm:text-sm/6 dark:text-zinc-400">
+            <MarkdownContent value={description} />
+          </div>
 
           <div className="flex flex-wrap items-center gap-3">
             {externalUrl ? (

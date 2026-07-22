@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defaultClientConditions, defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import adonisjs from '@adonisjs/vite/client'
 import inertia from '@adonisjs/inertia/vite'
@@ -26,6 +26,8 @@ export default defineConfig({
       '~/': `${import.meta.dirname}/inertia/`,
       '@generated': `${import.meta.dirname}/.adonisjs/client/`,
     },
+    // Make sure the `markdown_worker` does not get browser dependencies.
+    conditions: ['worker', ...defaultClientConditions],
   },
 
   server: {
