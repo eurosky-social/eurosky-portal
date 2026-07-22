@@ -1,4 +1,5 @@
 import { DateTime } from 'luxon'
+import cache from '@adonisjs/cache/services/main'
 import logger from '@adonisjs/core/services/logger'
 import { type AtUriString, Client, type DidString, XrpcResponseError } from '@atproto/lex'
 import * as lexicon from '#lexicons'
@@ -318,7 +319,13 @@ export class ActivityService {
    *   Promise that resolves to a client and the PDS it talks to.
    */
   async #clientFor(did: DidString): Promise<{ client: Client; pds: string }> {
-    const resolved = await this.#slingshot.resolveMiniDoc(did)
+    const resolved = await cache.getOrSet({
+      factory: (ctx) =>
+        this.#slingshot.resolveMiniDoc(did, AbortSignal.timeout(5000)).then((r) => r ?? ctx.skip()),
+      grace: '10m',
+      key: `pds-resolve:${did}`,
+      ttl: '10m',
+    })
     if (!resolved) throw new Error(`Could not resolve PDS for \`${did}\``)
     return { client: new Client(resolved.pds), pds: resolved.pds }
   }
