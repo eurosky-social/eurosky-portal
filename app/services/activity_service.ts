@@ -127,6 +127,7 @@ export class ActivityService {
   async backfillCollection(did: DidString, collection: SupportedCollection): Promise<undefined> {
     const { client } = await this.#clientFor(did)
     await this.#syncCollection(client, did, collection, DateTime.now())
+    await this.prune(did)
   }
 
   /**
@@ -408,7 +409,6 @@ export class ActivityService {
 
       if (update.length > 0) await ActivityRecord.updateOrCreateMany('uri', update)
       if (remove.length > 0) await ActivityRecord.query().whereIn('uri', remove).delete()
-      await this.prune(did)
 
       cursor = result.body.cursor
     } while (cursor)
