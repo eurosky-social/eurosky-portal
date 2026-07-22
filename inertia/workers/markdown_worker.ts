@@ -5,7 +5,7 @@ import type { Nodes } from 'hast'
 import { fromMarkdown } from 'mdast-util-from-markdown'
 import { toHast } from 'mdast-util-to-hast'
 
-// Maximum size of *input* document; prevents against people posting dangerous
+// Maximum size of *input* document; protects against people posting dangerous
 // payloads.
 const maxDocumentSize = 8192
 // Maximum size of *output* document; related to the above but for a nice visual display.
