@@ -7,7 +7,7 @@ const cacheConfig = defineConfig({
     memoryOnly: store().useL1Layer(drivers.memory({ maxSize: '400mb' })),
 
     default: store()
-      .useL1Layer(drivers.memory())
+      .useL1Layer(drivers.memory({ maxSize: '400mb' }))
       .useL2Layer(
         drivers.database({
           connectionName: 'sqlite',
