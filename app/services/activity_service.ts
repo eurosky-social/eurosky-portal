@@ -96,9 +96,28 @@ interface GetRecordsOptions {
 
 export class ActivityService {
   /**
+   * Backfills running.
+   */
+  #backfillActive = 0
+
+  /**
    * Map of DIDs to the earliest time a new backfill can be tried.
    */
   #backfillAfter = new Map<string, DateTime>()
+
+  /**
+   * Max allowed at once; prevents problems on bursts at launch / wild
+   * pathological cases.
+   *
+   * The current choice, `200`, is a plausible value to start with.
+   * Should be revisited later.
+   */
+  #backfillMax = 200
+
+  /**
+   * Backfills waiting for a free slot.
+   */
+  #backfillQueue: Array<() => undefined> = []
 
   /**
    * Map of DIDs to tasks.
@@ -147,7 +166,7 @@ export class ActivityService {
     this.#backfillAfter.delete(did)
 
     // Run.
-    const task = this.#sync(did)
+    const task = this.#syncPolitely(did)
       .catch((err: unknown) => {
         logger.warn({ did, err }, 'activity: cannot backfill user')
         this.#backfillAfter.set(did, DateTime.now().plus({ minutes: 1 }))
@@ -321,6 +340,32 @@ export class ActivityService {
     const resolved = await this.#slingshot.resolveMiniDoc(did)
     if (!resolved) throw new Error(`Could not resolve PDS for \`${did}\``)
     return { client: new Client(resolved.pds), pds: resolved.pds }
+  }
+
+  /**
+   * @param did
+   *   DID.
+   * @returns
+   *   Promise that resolves when done.
+   */
+  async #syncPolitely(did: DidString): Promise<undefined> {
+    if (this.#backfillActive >= this.#backfillMax) {
+      await new Promise((resolve) => {
+        this.#backfillQueue.push(function () {
+          resolve(undefined)
+        })
+      })
+    }
+
+    this.#backfillActive++
+
+    try {
+      await this.#sync(did)
+    } finally {
+      this.#backfillActive--
+      const resolve = this.#backfillQueue.shift()
+      if (resolve) resolve()
+    }
   }
 
   /**
