@@ -1,4 +1,5 @@
 import { useCallback, useEffect } from 'react'
+import { router as inertiaRouter } from '@inertiajs/react'
 import type { ActivityRow, GetRecordsResult } from '#services/activity_service'
 import { ActivityList } from '~/components/ActivityList'
 import { UserAvatar } from '~/components/UserAvatar'
@@ -39,10 +40,7 @@ export default function Dashboard({
   useEffect(() => {
     if (activityState !== 'syncing') return
     const timeout = setTimeout(() => {
-      router.visit(
-        { route: 'dashboard.show' },
-        { only: ['activities', 'activityState'], preserveScroll: true, preserveState: true }
-      )
+      inertiaRouter.reload({ only: ['activities', 'activityState'] })
     }, 5_000)
     return () => clearTimeout(timeout)
   }, [activityState])
@@ -163,7 +161,9 @@ export default function Dashboard({
         </Card>
       </div>
       <div>
-        <h2 className="text-xl font-medium text-neutral-500 dark:text-slate-200">Recent activity</h2>
+        <h2 className="text-xl font-medium text-neutral-500 dark:text-slate-200">
+          Recent activity
+        </h2>
         <p className="text-base text-neutral-400 dark:text-slate-400 mb-6">Your latest activity.</p>
 
         {activityState === 'syncing' ? (
