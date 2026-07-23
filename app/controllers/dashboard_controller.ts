@@ -1,5 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import cache from '@adonisjs/cache/services/main'
+import activityService from '#services/activity_service'
 import { AtStoreService } from '#services/atstore_service'
 import AppSummaryTransformer from '#transformers/app_summary_transformer'
 import ProfileTransformer from '#transformers/profile_transformer'
@@ -10,6 +11,7 @@ export default class DashboardController {
     const apps = await atstore.getFeaturedApps()
     const user = await auth.getUserOrFail()
     const account = await user.getAccount()
+    const activityResult = await activityService.getRecords({ did: user.did, limit: 3 })
     const profile = await cache.getOrSet({
       key: `profile:${user.did}`,
       ttl: '10m',
@@ -24,10 +26,12 @@ export default class DashboardController {
     })
 
     return inertia.render('dashboard/show', {
-      showWelcomeMessage: !account.welcomeDismissed,
-      profile: profile ? ProfileTransformer.transform(profile) : undefined,
       // Hard cap at 3.
       apps: AppSummaryTransformer.transform(apps.slice(0, 3)),
+      activities: activityResult.state === 'ready' ? activityResult.activities : [],
+      activityState: activityResult.state,
+      profile: profile ? ProfileTransformer.transform(profile) : undefined,
+      showWelcomeMessage: !account.welcomeDismissed,
     })
   }
 }
