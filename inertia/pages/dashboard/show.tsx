@@ -1,4 +1,7 @@
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
+import { router as inertiaRouter } from '@inertiajs/react'
+import type { ActivityRow, GetRecordsResult } from '#services/activity_service'
+import { ActivityList } from '~/components/ActivityList'
 import { UserAvatar } from '~/components/UserAvatar'
 import { Button } from '~/lib/button'
 import Card from '~/lib/card'
@@ -13,13 +16,17 @@ import { INVALID_HANDLE } from '@atproto/syntax'
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid'
 
 export default function Dashboard({
-  showWelcomeMessage,
-  profile,
+  activities,
+  activityState,
   apps,
+  profile,
+  showWelcomeMessage,
 }: InertiaProps<{
-  showWelcomeMessage: boolean
-  profile: Data.Profile | undefined
+  activities: ActivityRow[]
+  activityState: GetRecordsResult['state']
   apps: Data.AppSummary[]
+  profile: Data.Profile | undefined
+  showWelcomeMessage: boolean
 }>) {
   const user = useAuth()
   const router = useRouter()
@@ -29,6 +36,14 @@ export default function Dashboard({
     await client.api.account.dismissWelcome({})
     router.visit({ route: 'dashboard.show' }, { only: ['showWelcomeMessage'] })
   }, [])
+
+  useEffect(() => {
+    if (activityState !== 'syncing') return
+    const timeout = setTimeout(() => {
+      inertiaRouter.reload({ only: ['activities', 'activityState'] })
+    }, 5_000)
+    return () => clearTimeout(timeout)
+  }, [activityState])
 
   return (
     <div className="flex flex-col gap-y-8">
@@ -145,6 +160,33 @@ export default function Dashboard({
           </Button>
         </Card>
       </div>
+      <div>
+        <h2 className="text-xl font-medium text-neutral-500 dark:text-slate-200">
+          Recent activity
+        </h2>
+        <p className="text-base text-neutral-400 dark:text-slate-400 mb-6">Your latest activity.</p>
+
+        {activityState === 'syncing' ? (
+          <Card className="p-4">
+            <Text aria-live="polite" role="status">
+              Syncing your activity, this may take a moment…
+            </Text>
+          </Card>
+        ) : activities.length === 0 ? (
+          <Card className="p-4">
+            <Text>Nothing here yet; maybe make a post on Mu?</Text>
+          </Card>
+        ) : (
+          <ActivityList activities={activities} />
+        )}
+
+        <div className="mt-4 flex justify-center">
+          <Button route="activity.show" className="w-full sm:w-auto dark:bg-slate-700!">
+            View all activity
+          </Button>
+        </div>
+      </div>
+
       <div className="pt-4">
         <h2 className="text-xl font-medium text-neutral-500 dark:text-slate-200">
           Featured applications
