@@ -83,6 +83,10 @@ export class PlausibleService {
         signal: AbortSignal.timeout(5000),
       })
 
+      if (!response.ok) {
+        logger.warn({ name, status: response.status }, 'plausible: non-2xx response')
+      }
+
       if (response.headers.get('x-plausible-dropped') === '1') {
         logger.debug({ name }, 'plausible: event dropped')
       }
