@@ -37,7 +37,7 @@ export default class BackfillJob extends Job<Options> {
       outcome: 'success',
       userAgent,
     }).catch((err: unknown) => {
-      logger.warn({ err }, 'plausible: cannot track backfill compelted success event')
+      logger.warn({ err }, 'plausible: cannot track backfill completed success event')
     })
   }
 
