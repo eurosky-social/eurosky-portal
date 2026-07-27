@@ -6,9 +6,9 @@ import { appUrl as rawAppUrl } from '#config/app'
 export const appUrl = new URL('/', rawAppUrl).toString()
 
 /**
- * App host (without protocol), as used by third parties such as Plausible.
+ * App host (without protocol or port), as used by third parties such as Plausible.
  */
-export const appHost = new URL(appUrl).host
+export const appHost = new URL(appUrl).hostname
 
 /**
  * Resolve `path` to an absolute URL under {@linkcode appUrl}.
