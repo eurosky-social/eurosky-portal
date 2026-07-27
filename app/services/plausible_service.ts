@@ -1,6 +1,6 @@
 import logger from '@adonisjs/core/services/logger'
 import env from '#start/env'
-import { appHost, toAbsoluteUrl } from '#start/view'
+import { appHost, toAbsoluteUrl } from '#services/url_service'
 
 const href = 'https://plausible.io/api/event'
 
