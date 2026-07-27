@@ -263,14 +263,14 @@ export default class OAuthController {
           lastActiveAt: DateTime.now(),
           termsAcceptedAt: termsAcceptedOn,
         })
-        activityService.backfill(result.user.did)
+        activityService.dispatchBackfill(result.user.did)
       } else if (resolved) {
         const account = await Account.updateOrCreate(
           { did },
           { did, handle: resolved.handle, lastActiveAt: DateTime.now() }
         )
         if (!account.lastActivitySyncAt) {
-          activityService.backfill(result.user.did)
+          activityService.dispatchBackfill(result.user.did)
         }
       } else if (existingAccount) {
         await existingAccount.merge({ lastActiveAt: DateTime.now() }).save()

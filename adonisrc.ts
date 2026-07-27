@@ -31,6 +31,7 @@ export default defineConfig({
     () => import('@adonisjs/session/commands'),
     () => import('@adonisjs/inertia/commands'),
     () => import('@adonisjs/cache/commands'),
+    () => import('@adonisjs/queue/commands'),
   ],
 
   /*
@@ -57,11 +58,13 @@ export default defineConfig({
     () => import('@adonisjs/shield/shield_provider'),
     () => import('@adonisjs/static/static_provider'),
     () => import('@adonisjs/lucid/database_provider'),
+    () => import('@adonisjs/queue/queue_provider'),
     () => import('@adonisjs/cors/cors_provider'),
     () => import('@adonisjs/inertia/inertia_provider'),
     () => import('@adonisjs/auth/auth_provider'),
     () => import('#providers/api_provider'),
     () => import('#providers/jetstream_provider'),
+    () => import('#providers/queue_worker_provider'),
     () => import('@thisismissem/adonisjs-atproto-oauth/provider'),
     () => import('#extensions/atprotouser'),
     () => import('@adonisjs/content/content_provider'),
