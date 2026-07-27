@@ -8,6 +8,8 @@ const MS_PER_SEC = 1e6
 
 emitter.on('http:server_ready', () => {
   logger.info(`Server available at: ${env.get('APP_URL')}`)
+  logger.info(`Plausible analytics: ${env.get('PLAUSIBLE_ENABLED') ? 'enabled' : 'disabled'}`)
+  logger.info(`Monocle observability: ${env.get('MONOCLE_API_KEY') ? 'enabled' : 'disabled'}`)
 })
 
 const ignoredUrlPrefixes = [

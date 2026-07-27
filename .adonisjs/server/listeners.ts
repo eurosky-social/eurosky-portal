@@ -3,4 +3,9 @@
  * DO NOT EDIT manually
  */
 
-export const listeners = {}
+export const listeners = {
+  TrackActivityBackfillCompleted: () => import('#listeners/track_activity_backfill_completed'),
+  TrackActivityBackfillStarted: () => import('#listeners/track_activity_backfill_started'),
+  TrackActivityFeedViewed: () => import('#listeners/track_activity_feed_viewed'),
+  TrackPageViewed: () => import('#listeners/track_page_viewed'),
+}

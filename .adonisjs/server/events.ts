@@ -3,4 +3,14 @@
  * DO NOT EDIT manually
  */
 
-export const events = {}
+import ActivityBackfillCompleted from '#events/activity_backfill_completed'
+import ActivityBackfillStarted from '#events/activity_backfill_started'
+import ActivityFeedViewed from '#events/activity_feed_viewed'
+import PageViewed from '#events/page_viewed'
+
+export const events = {
+  ActivityBackfillCompleted: ActivityBackfillCompleted,
+  ActivityBackfillStarted: ActivityBackfillStarted,
+  ActivityFeedViewed: ActivityFeedViewed,
+  PageViewed: PageViewed,
+}
