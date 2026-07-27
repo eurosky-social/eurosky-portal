@@ -41,6 +41,9 @@ export default await Env.create(new URL('../', import.meta.url), {
   ATPROTO_OAUTH_CLIENT_ID: Env.schema.string.optional({ format: 'url', tld: true, protocol: true }),
   ATPROTO_OAUTH_JWT_PRIVATE_KEY: Env.schema.secret.optional(),
 
+  // Plausible for analytics
+  PLAUSIBLE_ENABLED: Env.schema.boolean.optional(),
+
   // Monocle.sh for observerability
   MONOCLE_API_KEY: Env.schema.string.optional(),
 })

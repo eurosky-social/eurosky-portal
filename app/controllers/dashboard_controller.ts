@@ -6,12 +6,19 @@ import AppSummaryTransformer from '#transformers/app_summary_transformer'
 import ProfileTransformer from '#transformers/profile_transformer'
 
 export default class DashboardController {
-  async show({ auth, inertia }: HttpContext) {
+  async show({ auth, inertia, request }: HttpContext) {
     const atstore = new AtStoreService()
     const apps = await atstore.getFeaturedApps()
     const user = await auth.getUserOrFail()
     const account = await user.getAccount()
-    const activityResult = await activityService.getRecords({ did: user.did, limit: 3 })
+    const ip = request.ip()
+    const userAgent = request.header('user-agent')
+    const activityResult = await activityService.getRecords({
+      did: user.did,
+      ip,
+      limit: 3,
+      userAgent,
+    })
     const profile = await cache.getOrSet({
       key: `profile:${user.did}`,
       ttl: '10m',

@@ -81,6 +81,7 @@ export default defineConfig({
   */
   preloads: [
     () => import('#start/dates'),
+    () => import('#start/events'),
     () => import('#start/automigrate'),
     () => import('#start/routes'),
     () => import('#start/kernel'),

@@ -93,6 +93,11 @@ interface GetRecordsOptions {
   did: DidString
 
   /**
+   * Client IP.
+   */
+  ip: string
+
+  /**
    * Total records to return.
    */
   limit: number | undefined
@@ -101,6 +106,11 @@ interface GetRecordsOptions {
    * Cursor.
    */
   snapshot?: string | undefined
+
+  /**
+   * Client user agent.
+   */
+  userAgent?: string | undefined
 }
 
 export class ActivityService {
@@ -173,11 +183,15 @@ export class ActivityService {
    *
    * @param did
    *   DID.
+   * @param ip
+   *   Client IP of the request that triggered the backfill.
+   * @param userAgent
+   *   Client user agent of the request that triggered the backfill.
    * @returns
    *   Nothing.
    */
-  dispatchBackfill(did: DidString): undefined {
-    BackfillJob.dispatch({ did })
+  dispatchBackfill(did: DidString, ip: string, userAgent?: string | undefined): undefined {
+    BackfillJob.dispatch({ did, ip, userAgent })
       .dedup({ id: did })
       .run()
       .catch((err: unknown) => {
@@ -219,13 +233,13 @@ export class ActivityService {
    *   Promise that resolves to records.
    */
   async getRecords(options: GetRecordsOptions): Promise<GetRecordsResult> {
-    const { did, limit = 20, snapshot } = options
+    const { did, ip, limit = 20, snapshot, userAgent } = options
 
     const account = await Account.findOrFail(did)
 
     // Not done yet.
     if (!account.lastActivitySyncAt) {
-      this.dispatchBackfill(did)
+      this.dispatchBackfill(did, ip, userAgent)
       return { state: 'syncing' }
     }
 

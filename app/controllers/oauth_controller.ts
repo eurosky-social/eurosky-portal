@@ -200,10 +200,12 @@ export default class OAuthController {
     return response.redirect().toRoute('home')
   }
 
-  async callback({ response, oauth, auth, session, logger }: HttpContext) {
+  async callback({ response, oauth, auth, request, session, logger }: HttpContext) {
     const termsAccepted = session.pull('terms_accepted', 'invalid')
     const source = session.pull('source', 'login')
     const initiatingHandle = session.pull('handle')
+    const ip = request.ip()
+    const userAgent = request.header('user-agent')
 
     session.regenerate()
 
@@ -263,14 +265,14 @@ export default class OAuthController {
           lastActiveAt: DateTime.now(),
           termsAcceptedAt: termsAcceptedOn,
         })
-        activityService.dispatchBackfill(result.user.did)
+        activityService.dispatchBackfill(result.user.did, ip, userAgent)
       } else if (resolved) {
         const account = await Account.updateOrCreate(
           { did },
           { did, handle: resolved.handle, lastActiveAt: DateTime.now() }
         )
         if (!account.lastActivitySyncAt) {
-          activityService.dispatchBackfill(result.user.did)
+          activityService.dispatchBackfill(result.user.did, ip, userAgent)
         }
       } else if (existingAccount) {
         await existingAccount.merge({ lastActiveAt: DateTime.now() }).save()

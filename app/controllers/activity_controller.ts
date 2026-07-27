@@ -1,4 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
+import logger from '@adonisjs/core/services/logger'
+import ActivityFeedViewed from '#events/activity_feed_viewed'
 import activityService from '#services/activity_service'
 import { type BskyAppPost, type BskyAppProfile, BskyAppService } from '#services/bsky_app_service'
 import {
@@ -19,7 +21,17 @@ export default class ActivityController {
   async show({ auth, inertia, request }: HttpContext) {
     const { did } = await auth.getUserOrFail()
     const { limit, snapshot } = await request.validateUsing(activityQueryValidator)
-    const result = await activityService.getRecords({ did, limit, snapshot })
+    const ip = request.ip()
+    const userAgent = request.header('user-agent')
+    const result = await activityService.getRecords({ did, ip, limit, snapshot, userAgent })
+
+    // Ignore partial reloads (frontend polls for backfill progress).
+    if (!inertia.requestInfo().isPartialRequest) {
+      // Not awaited: this should not add latency.
+      ActivityFeedViewed.dispatch({ ip, state: result.state, userAgent }).catch((err: unknown) => {
+        logger.warn({ err }, 'plausible: cannot track activity feed viewed')
+      })
+    }
 
     if (result.state === 'syncing') {
       return inertia.render('activity/show', { state: inertia.always(result.state) })
