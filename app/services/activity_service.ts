@@ -18,6 +18,13 @@ import {
 import type { ActivityRecordSchema } from '#database/schema'
 
 /**
+ * Max activities per user across all collections;
+ * See {@linkcode ActivityService.prune}.
+ * Very low for now.
+ */
+const maxActivitiesPerUser = 1000
+
+/**
  * Pagination cursor.
  * Encodes the ordering key so pagination survives rows being deleted.
  */
@@ -187,8 +194,6 @@ export class ActivityService {
    *   Promise that resolves when done.
    */
   async prune(did: DidString): Promise<undefined> {
-    const max = 1000
-
     await ActivityRecord.query()
       .where('did', did)
       .whereNotIn(
@@ -197,7 +202,7 @@ export class ActivityService {
           .where('did', did)
           .orderByRaw('created_at DESC NULLS LAST')
           .orderBy('uri', 'desc')
-          .limit(max)
+          .limit(maxActivitiesPerUser)
           .select('uri')
       )
       .delete()
@@ -369,17 +374,20 @@ export class ActivityService {
     indexedAt: DateTime
   ): Promise<undefined> {
     let cursor: string | undefined
+    let seen = 0
 
     do {
       const result = await client.listRecords(collection, {
         cursor,
         limit: 100,
         repo: did,
+        reverse: true,
         signal: AbortSignal.timeout(10_000),
       })
 
       const records = result.body?.records ?? []
       if (records.length === 0) break
+      seen += records.length
 
       const update: Array<Partial<ActivityRecordSchema>> = []
       const remove: Array<string> = []
@@ -400,7 +408,7 @@ export class ActivityService {
       if (remove.length > 0) await ActivityRecord.query().whereIn('uri', remove).delete()
 
       cursor = result.body.cursor
-    } while (cursor)
+    } while (cursor && seen < maxActivitiesPerUser)
   }
 }
 

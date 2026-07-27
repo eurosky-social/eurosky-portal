@@ -1,5 +1,5 @@
 import logger from '@adonisjs/core/services/logger'
-import { Job } from '@adonisjs/queue'
+import { exponentialBackoff, Job } from '@adonisjs/queue'
 import type { DidString } from '@atproto/lex'
 import activityService from '#services/activity_service'
 
@@ -8,6 +8,10 @@ interface Options {
 }
 
 export default class BackfillJob extends Job<Options> {
+  static options = {
+    retry: { backoff: exponentialBackoff(), maxRetries: 2 },
+  }
+
   async execute(): Promise<undefined> {
     await activityService.backfill(this.payload.did)
   }

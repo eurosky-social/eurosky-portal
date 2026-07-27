@@ -15,5 +15,10 @@ export default defineConfig({
      * At that point moving it to another process may be a good idea.
      */
     concurrency: 200,
+
+    /**
+     * Backfills are network-bound and can run for a while.
+     */
+    stalledThreshold: '10m',
   },
 })
