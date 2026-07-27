@@ -1,5 +1,59 @@
 # eurosky-portal
 
+## 1.7.0
+
+### Minor Changes
+
+- [#181](https://github.com/eurosky-social/eurosky-portal/pull/181) [`2e86df6`](https://github.com/eurosky-social/eurosky-portal/commit/2e86df60a8022579c6d46cb682eb6a1a355d28df) Thanks [@wooorm](https://github.com/wooorm)! - Add article activity detail pages
+
+- [#178](https://github.com/eurosky-social/eurosky-portal/pull/178) [`f1f946c`](https://github.com/eurosky-social/eurosky-portal/commit/f1f946ccd7e37f6d3d5985717ad02caa37004689) Thanks [@wooorm](https://github.com/wooorm)! - Add social post (mu)
+
+- [#205](https://github.com/eurosky-social/eurosky-portal/pull/205) [`f89263c`](https://github.com/eurosky-social/eurosky-portal/commit/f89263cbb23134ea60150dc8174d0b45080eeca5) Thanks [@wooorm](https://github.com/wooorm)! - Add recent activity to dashboard
+
+### Patch Changes
+
+- [#190](https://github.com/eurosky-social/eurosky-portal/pull/190) [`b231373`](https://github.com/eurosky-social/eurosky-portal/commit/b2313735d7f13791aced5126dfeff14cb0506d4c) Thanks [@wooorm](https://github.com/wooorm)! - Fix to use `history` for backlinks
+
+- [#199](https://github.com/eurosky-social/eurosky-portal/pull/199) [`690fd29`](https://github.com/eurosky-social/eurosky-portal/commit/690fd2987df74e243752736a03cb6e4bcd4be7bf) Thanks [@wooorm](https://github.com/wooorm)! - Fix to cap backfill concurrency at reasonable value
+
+- [#197](https://github.com/eurosky-social/eurosky-portal/pull/197) [`b8f6f96`](https://github.com/eurosky-social/eurosky-portal/commit/b8f6f96f93236ecd13fe85b22349a6ace36c82a5) Thanks [@wooorm](https://github.com/wooorm)! - Fix to limit default cache memory
+
+- [#191](https://github.com/eurosky-social/eurosky-portal/pull/191) [`f8879c1`](https://github.com/eurosky-social/eurosky-portal/commit/f8879c11ac630f84643c4d7c433d732d2339ce33) Thanks [@wooorm](https://github.com/wooorm)! - Add loading skeleton to blob images
+
+- [#184](https://github.com/eurosky-social/eurosky-portal/pull/184) [`3019b45`](https://github.com/eurosky-social/eurosky-portal/commit/3019b45fe4ae307427a8a5408720e20717ae893f) Thanks [@wooorm](https://github.com/wooorm)! - Update privacy, terms
+
+- [#182](https://github.com/eurosky-social/eurosky-portal/pull/182) [`9480619`](https://github.com/eurosky-social/eurosky-portal/commit/9480619aacd91ad1fc9f01064e7c8dc2a0633c7a) Thanks [@wooorm](https://github.com/wooorm)! - Add mu to list of apps
+
+- [#204](https://github.com/eurosky-social/eurosky-portal/pull/204) [`fb014cd`](https://github.com/eurosky-social/eurosky-portal/commit/fb014cd422a2032e24e8cc9ecb21c74c22e9f898) Thanks [@wooorm](https://github.com/wooorm)! - Add feedback link to beta banner
+
+- [#192](https://github.com/eurosky-social/eurosky-portal/pull/192) [`51dfacc`](https://github.com/eurosky-social/eurosky-portal/commit/51dfaccae32c22b8c0edeebc0a016b3c8ebd8afa) Thanks [@wooorm](https://github.com/wooorm)! - Add user info to follow activity detail page
+
+- [#185](https://github.com/eurosky-social/eurosky-portal/pull/185) [`4619abb`](https://github.com/eurosky-social/eurosky-portal/commit/4619abbe5c1840a0c0d206be11d0d12259502e04) Thanks [@wooorm](https://github.com/wooorm)! - Change help links to `eurosky.tech/help`
+
+- [#201](https://github.com/eurosky-social/eurosky-portal/pull/201) [`b4e0f7d`](https://github.com/eurosky-social/eurosky-portal/commit/b4e0f7d6bc72620bab4b67a1b48cc0d35d6ca327) Thanks [@wooorm](https://github.com/wooorm)! - Refactor markdown pipeline
+
+- [#207](https://github.com/eurosky-social/eurosky-portal/pull/207) [`9bb281c`](https://github.com/eurosky-social/eurosky-portal/commit/9bb281c02455f3a5a4f0f2badc54edb5b85a9e36) Thanks [@wooorm](https://github.com/wooorm)! - Add plausible
+
+- [#200](https://github.com/eurosky-social/eurosky-portal/pull/200) [`3959da0`](https://github.com/eurosky-social/eurosky-portal/commit/3959da0037a41d7ec74abb706aa1f93133a7ca80) Thanks [@wooorm](https://github.com/wooorm)! - Fix to remove unneeded `prune` call
+
+- [#203](https://github.com/eurosky-social/eurosky-portal/pull/203) [`348dd5a`](https://github.com/eurosky-social/eurosky-portal/commit/348dd5a017c46c86db69e80e7c2ab7c65fdd0b43) Thanks [@wooorm](https://github.com/wooorm)! - Use `@adonisjs/queue`
+
+- [#198](https://github.com/eurosky-social/eurosky-portal/pull/198) [`c9ee493`](https://github.com/eurosky-social/eurosky-portal/commit/c9ee49324c4feeb75d0e837724d4bcbee7f7ecb7) Thanks [@wooorm](https://github.com/wooorm)! - Fix to cache pds resolution with slingshot
+
+- [#179](https://github.com/eurosky-social/eurosky-portal/pull/179) [`1234c13`](https://github.com/eurosky-social/eurosky-portal/commit/1234c13f6c9fce7ca875dbe600d8aa1a8a45b5c2) Thanks [@wooorm](https://github.com/wooorm)! - Change to mark colibri and currents as Europe
+
+- [#195](https://github.com/eurosky-social/eurosky-portal/pull/195) [`5b6424b`](https://github.com/eurosky-social/eurosky-portal/commit/5b6424be05d3e961b5b4f25d24a1ea1f86c3cec2) Thanks [@wooorm](https://github.com/wooorm)! - Remove use of example collection
+
+- [#183](https://github.com/eurosky-social/eurosky-portal/pull/183) [`727b9c8`](https://github.com/eurosky-social/eurosky-portal/commit/727b9c8baecd2b269db33835263cccf16ec88916) Thanks [@wooorm](https://github.com/wooorm)! - Remove “change password” from sidebar
+
+- [#193](https://github.com/eurosky-social/eurosky-portal/pull/193) [`6d299e1`](https://github.com/eurosky-social/eurosky-portal/commit/6d299e1b6c721e56b76cba8311b6e6ed64798fb7) Thanks [@wooorm](https://github.com/wooorm)! - Add post info to like activity detail page
+
+- [#186](https://github.com/eurosky-social/eurosky-portal/pull/186) [`5aa6376`](https://github.com/eurosky-social/eurosky-portal/commit/5aa6376c71b35543b148d072ae7332bef4367e22) Thanks [@wooorm](https://github.com/wooorm)! - Refactor activity feed
+
+- [#194](https://github.com/eurosky-social/eurosky-portal/pull/194) [`a38d334`](https://github.com/eurosky-social/eurosky-portal/commit/a38d334383b8876dadad07dad0139c90bbe9b8c9) Thanks [@wooorm](https://github.com/wooorm)! - Add little info about what is replied to or quoted
+
+- [#196](https://github.com/eurosky-social/eurosky-portal/pull/196) [`fbb444c`](https://github.com/eurosky-social/eurosky-portal/commit/fbb444c745d4eb6d02fdcd5309c175015ffc5ffb) Thanks [@wooorm](https://github.com/wooorm)! - Fix cmd+click and similar on `BackLink`
+
 ## 1.6.0
 
 ### Minor Changes
