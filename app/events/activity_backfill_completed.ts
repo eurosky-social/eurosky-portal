@@ -1,5 +1,7 @@
 import { BaseEvent } from '@adonisjs/core/events'
 
+type Outcome = 'error' | 'success'
+
 /**
  * Options for {@linkcode ActivityBackfillCompleted}.
  */
@@ -17,7 +19,7 @@ interface Options {
   /**
    * Status: success or not.
    */
-  outcome: 'error' | 'success'
+  outcome: Outcome
 
   /**
    * Client user agent.
@@ -31,7 +33,7 @@ interface Options {
 export default class ActivityBackfillCompleted extends BaseEvent {
   durationMs: number
   ip: string
-  outcome: 'error' | 'success'
+  outcome: Outcome
   userAgent: string | undefined
 
   constructor(options: Options) {

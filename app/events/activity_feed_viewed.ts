@@ -1,5 +1,7 @@
 import { BaseEvent } from '@adonisjs/core/events'
 
+type State = 'ready' | 'syncing'
+
 /**
  * Options for {@linkcode ActivityFeedViewed}.
  */
@@ -12,7 +14,7 @@ interface Options {
   /**
    * Status: already synced or still backfilling.
    */
-  state: 'ready' | 'syncing'
+  state: State
 
   /**
    * Client user agent.
@@ -25,7 +27,7 @@ interface Options {
  */
 export default class ActivityFeedViewed extends BaseEvent {
   ip: string
-  state: 'ready' | 'syncing'
+  state: State
   userAgent: string | undefined
 
   constructor(options: Options) {
