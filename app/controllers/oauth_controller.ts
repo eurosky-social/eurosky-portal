@@ -358,8 +358,8 @@ export default class OAuthController {
             outcome: 'denied',
             source,
             userAgent,
-          }).catch((err: unknown) => {
-            logger.warn({ err }, 'plausible: cannot track auth flow denied')
+          }).catch((cause: unknown) => {
+            logger.warn({ err: cause }, 'plausible: cannot track auth flow denied')
           })
           return response.redirect().toRoute(source === 'signup' ? 'account.create' : 'auth.login')
         }
@@ -387,8 +387,8 @@ export default class OAuthController {
             outcome: 'error',
             source,
             userAgent,
-          }).catch((err: unknown) => {
-            logger.warn({ err }, 'plausible: cannot track auth flow error')
+          }).catch((cause: unknown) => {
+            logger.warn({ err: cause }, 'plausible: cannot track auth flow error')
           })
           return response.redirect().toRoute(source === 'signup' ? 'account.create' : 'auth.login')
         }
@@ -427,8 +427,8 @@ export default class OAuthController {
         outcome: 'error',
         source,
         userAgent,
-      }).catch((err: unknown) => {
-        logger.warn({ err }, 'plausible: cannot track auth flow error')
+      }).catch((cause: unknown) => {
+        logger.warn({ err: cause }, 'plausible: cannot track auth flow error')
       })
       return response.redirect().toRoute(source === 'signup' ? 'account.create' : 'auth.login')
     }
