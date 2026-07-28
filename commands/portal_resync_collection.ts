@@ -47,6 +47,7 @@ export default class PortalResyncCollection extends BaseCommand {
     while (more) {
       const result = await Account.query()
         .where('lastActiveAt', '>=', toSqlDateTime(dormancyCutoff()))
+        .whereNotNull('lastActivitySyncAt')
         .orderBy('did')
         .paginate(page + 1, 50)
 
