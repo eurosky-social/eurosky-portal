@@ -9,12 +9,18 @@ export default defineConfig({
      * Max jobs allowed at once; prevents problems on bursts at launch /
      * wild pathological cases.
      *
-     * For now, there’s only the backfill job.
-     * The current choice `200` is a plausible value to start with.
-     * Should be revisited later.
-     * At that point moving it to another process may be a good idea.
+     * Currently there is only the backfill job which fans out to 4 supported
+     * collections, which each paginate by `100` (to get up to `1000` records
+     * per collection).
+     * So this number is relatively low because:
+     *
+     * * users are all on single PDS
+     * * single SQLite writer lock
+     *
+     * Can be revisited if database is changed or if the worker moves to
+     * another process.
      */
-    concurrency: 200,
+    concurrency: 20,
 
     /**
      * Backfills are network-bound and can run for a while.

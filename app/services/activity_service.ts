@@ -1,7 +1,15 @@
 import { DateTime } from 'luxon'
 import cache from '@adonisjs/cache/services/main'
 import logger from '@adonisjs/core/services/logger'
-import { type AtUriString, Client, type DidString, XrpcResponseError } from '@atproto/lex'
+import {
+  type AtUriString,
+  Client,
+  type DidString,
+  type Procedure,
+  type Query,
+  type XrpcResponse,
+  XrpcResponseError,
+} from '@atproto/lex'
 import BackfillJob from '#jobs/backfill_job'
 import * as lexicon from '#lexicons'
 import Account from '#models/account'
@@ -19,10 +27,16 @@ import type { ActivityRecordSchema } from '#database/schema'
 
 /**
  * Max activities per user across all collections;
- * See {@linkcode ActivityService.prune}.
+ * see {@linkcode ActivityService.prune}.
  * Very low for now.
  */
 const maxActivitiesPerUser = 1000
+
+/**
+ * Max `Retry-After` seconds before giving up;
+ * see {@linkcode withRateLimitRetry}.
+ */
+const maxRetryAfterSeconds = 60
 
 /**
  * Pagination cursor.
@@ -149,14 +163,17 @@ export class ActivityService {
    */
   async backfill(did: DidString): Promise<undefined> {
     const { client } = await this.#clientFor(did)
-    const describeResponse = await client.xrpc(lexicon.com.atproto.repo.describeRepo.main, {
-      params: { repo: did },
-      signal: AbortSignal.timeout(5000),
-    })
+    const describeResponse = await withRateLimitRetry(() =>
+      client.xrpc(lexicon.com.atproto.repo.describeRepo.main, {
+        params: { repo: did },
+        signal: AbortSignal.timeout(5000),
+      })
+    )
 
     const collections = describeResponse.body.collections.filter(isSupportedCollection)
     const indexedAt = DateTime.now()
     const concurrency = 5
+    const errors: Array<unknown> = []
 
     while (collections.length > 0) {
       const batch = collections.splice(0, concurrency)
@@ -166,12 +183,22 @@ export class ActivityService {
             await this.#syncCollection(client, did, collection, indexedAt)
           } catch (err) {
             logger.warn({ collection, did, err }, 'activity: cannot backfill collection')
+            errors.push(err)
           }
         })
       )
     }
 
     await this.prune(did)
+
+    // Not fully synced;
+    // let caller retry (queue job backoff, next dashboard visit).
+    if (errors.length > 0) {
+      throw new AggregateError(
+        errors,
+        `Could not sync activity for \`${did}\`, failed collections: ${errors.length}`
+      )
+    }
 
     const account = await Account.findOrFail(did)
     account.lastActivitySyncAt = indexedAt
@@ -391,13 +418,15 @@ export class ActivityService {
     let seen = 0
 
     do {
-      const result = await client.listRecords(collection, {
-        cursor,
-        limit: 100,
-        repo: did,
-        reverse: true,
-        signal: AbortSignal.timeout(10_000),
-      })
+      const result = await withRateLimitRetry(() =>
+        client.listRecords(collection, {
+          cursor,
+          limit: 100,
+          repo: did,
+          reverse: true,
+          signal: AbortSignal.timeout(10_000),
+        })
+      )
 
       const records = result.body?.records ?? []
       if (records.length === 0) break
@@ -455,4 +484,33 @@ function decodeSnapshot(snapshot: string): SnapshotCursor | undefined {
  */
 function encodeSnapshot(cursor: SnapshotCursor): string {
   return Buffer.from(JSON.stringify(cursor)).toString('base64url')
+}
+
+/**
+ * Retry a request if rate limited;
+ * honors `Retry-After` up to a point ({@linkcode maxRetryAfterSeconds});
+ * Rethrows other errors.
+ *
+ * @param request
+ *   Attempt a request, which may throw `RateLimitExceeded` errors.
+ * @returns
+ *   Promise that resolves to the result of `request`.
+ */
+async function withRateLimitRetry<M extends Procedure | Query>(
+  request: () => Promise<XrpcResponse<M>>
+): Promise<XrpcResponse<M>> {
+  try {
+    return await request()
+  } catch (err: unknown) {
+    if (!(err instanceof XrpcResponseError) || err.error !== 'RateLimitExceeded') throw err
+
+    const retryAfter = Number(err.headers.get('retry-after'))
+    if (!Number.isFinite(retryAfter) || retryAfter <= 0 || retryAfter > maxRetryAfterSeconds) {
+      throw err
+    }
+
+    logger.warn({ err, retryAfter }, 'activity: rate limited, waiting before retry')
+    await new Promise((resolve) => setTimeout(resolve, retryAfter * 1000))
+    return request()
+  }
 }

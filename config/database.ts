@@ -35,6 +35,9 @@ const dbConfig = defineConfig({
          * and enforce foreign keys (off by default per-connection in SQLite).
          */
         afterCreate: (connection: { pragma: (statement: string) => unknown }, done: () => void) => {
+          // 30s instead of the default 5s; okay to wait rather than fail with
+          // `SQLITE_BUSY` for concurrent backfills.
+          connection.pragma('busy_timeout = 30000')
           connection.pragma('journal_mode = WAL')
           connection.pragma('foreign_keys = ON')
           done()
