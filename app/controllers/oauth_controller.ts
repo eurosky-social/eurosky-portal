@@ -5,6 +5,9 @@ import { isUriString, asAtIdentifierString, type AtIdentifierString } from '@atp
 import { DateTime } from 'luxon'
 import env from '#start/env'
 import Account from '#models/account'
+import AuthFlowCompleted from '#events/auth_flow_completed'
+import AuthFlowStarted from '#events/auth_flow_started'
+import AuthLoggedOut from '#events/auth_logged_out'
 import activityService from '#services/activity_service'
 import jetstreamService from '#services/jetstream_service'
 import { SlingshotService } from '#services/slingshot_service'
@@ -133,6 +136,14 @@ export default class OAuthController {
     try {
       const authorizationUrl = await oauth.authorize(input)
 
+      AuthFlowStarted.dispatch({
+        ip: request.ip(),
+        source: 'login',
+        userAgent: request.header('user-agent'),
+      }).catch((err: unknown) => {
+        logger.warn({ err }, 'plausible: cannot track auth flow login started')
+      })
+
       inertia.location(authorizationUrl)
     } catch (err) {
       // We expect this error, which is when the handle doesn't exist:
@@ -179,6 +190,14 @@ export default class OAuthController {
     try {
       const authorizationUrl = await oauth.register(oauthServerUrl)
 
+      AuthFlowStarted.dispatch({
+        ip: request.ip(),
+        source: 'signup',
+        userAgent: request.header('user-agent'),
+      }).catch((err: unknown) => {
+        logger.warn({ err }, 'plausible: cannot track auth flow signup started')
+      })
+
       inertia.location(authorizationUrl)
     } catch (err) {
       Monocle.captureException(err, {
@@ -191,9 +210,16 @@ export default class OAuthController {
     }
   }
 
-  async logout({ auth, oauth, session, response }: HttpContext) {
+  async logout({ auth, oauth, session, request, response, logger }: HttpContext) {
     await oauth.logout(auth.user?.did)
     await auth.use('web').logout()
+
+    AuthLoggedOut.dispatch({
+      ip: request.ip(),
+      userAgent: request.header('user-agent'),
+    }).catch((err: unknown) => {
+      logger.warn({ err }, 'plausible: cannot track logged out')
+    })
 
     session.clear()
 
@@ -223,6 +249,14 @@ export default class OAuthController {
       })
 
       session.flash('error', 'An error occurred during signup')
+      AuthFlowCompleted.dispatch({
+        ip,
+        outcome: 'error',
+        source,
+        userAgent,
+      }).catch((err: unknown) => {
+        logger.warn({ err }, 'plausible: cannot track auth flow failed')
+      })
       return response.redirect().toRoute('account.create')
     }
 
@@ -253,6 +287,14 @@ export default class OAuthController {
           login_failed: 'We could not log you in at this time, please try again later.',
         })
 
+        AuthFlowCompleted.dispatch({
+          ip,
+          outcome: 'error',
+          source,
+          userAgent,
+        }).catch((err: unknown) => {
+          logger.warn({ err }, 'plausible: cannot track auth flow failed')
+        })
         return response.redirect().toRoute('auth.login')
       }
 
@@ -285,6 +327,14 @@ export default class OAuthController {
 
       await auth.use('web').login(result.user)
 
+      AuthFlowCompleted.dispatch({
+        ip,
+        outcome: 'success',
+        source,
+        userAgent,
+      }).catch((err: unknown) => {
+        logger.warn({ err }, 'plausible: cannot track auth flow succeeded')
+      })
       return response.redirect().toIntendedRoute('dashboard.show')
     } catch (err) {
       if (err instanceof OAuthCallbackError) {
@@ -303,6 +353,14 @@ export default class OAuthController {
                 : 'You denied the sign in attempt',
           })
 
+          AuthFlowCompleted.dispatch({
+            ip,
+            outcome: 'denied',
+            source,
+            userAgent,
+          }).catch((err: unknown) => {
+            logger.warn({ err }, 'plausible: cannot track auth flow denied')
+          })
           return response.redirect().toRoute(source === 'signup' ? 'account.create' : 'auth.login')
         }
 
@@ -324,6 +382,14 @@ export default class OAuthController {
             },
           })
 
+          AuthFlowCompleted.dispatch({
+            ip,
+            outcome: 'error',
+            source,
+            userAgent,
+          }).catch((err: unknown) => {
+            logger.warn({ err }, 'plausible: cannot track auth flow error')
+          })
           return response.redirect().toRoute(source === 'signup' ? 'account.create' : 'auth.login')
         }
 
@@ -356,6 +422,14 @@ export default class OAuthController {
         error: 'An unknown error occurred, please try again later.',
       })
 
+      AuthFlowCompleted.dispatch({
+        ip,
+        outcome: 'error',
+        source,
+        userAgent,
+      }).catch((err: unknown) => {
+        logger.warn({ err }, 'plausible: cannot track auth flow error')
+      })
       return response.redirect().toRoute(source === 'signup' ? 'account.create' : 'auth.login')
     }
   }

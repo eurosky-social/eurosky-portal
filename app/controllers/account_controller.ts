@@ -8,6 +8,8 @@ import LegalDocumentsCollection, {
   type LegalDocuments,
 } from '#collections/legal'
 import LegalDocumentsTransformer from '#transformers/legal_documents_transformer'
+import TermsAccepted from '#events/terms_accepted'
+import WelcomeDismissed from '#events/welcome_dismissed'
 
 export type RenderedDocuments = {
   terms: LegalDocument & { rendered: string }
@@ -69,8 +71,10 @@ export default class RegistrationController {
     })
   }
 
-  async storeAcceptance({ auth, request, response }: HttpContext) {
+  async storeAcceptance({ auth, logger, request, response }: HttpContext) {
     const user = auth.getUserOrFail()
+    const account = await user.getAccount()
+    const reacceptance = !!account.termsAcceptedAt
 
     await request.validateUsing(termsRequestValidator, {
       messagesProvider: {
@@ -85,16 +89,31 @@ export default class RegistrationController {
 
     await Account.updateOrCreate({ did: user.did }, { termsAcceptedAt: DateTime.now() })
 
+    TermsAccepted.dispatch({
+      ip: request.ip(),
+      reacceptance,
+      userAgent: request.header('user-agent'),
+    }).catch((err: unknown) => {
+      logger.warn({ err }, 'plausible: cannot track terms accepted')
+    })
+
     return response.redirect().toIntendedRoute('dashboard.show')
   }
 
-  async dismissWelcome({ auth, response }: HttpContext) {
+  async dismissWelcome({ auth, logger, request, response }: HttpContext) {
     const account = await auth.getUserOrFail().getAccount()
     await account
       .merge({
         welcomeDismissed: true,
       })
       .save()
+
+    WelcomeDismissed.dispatch({
+      ip: request.ip(),
+      userAgent: request.header('user-agent'),
+    }).catch((err: unknown) => {
+      logger.warn({ err }, 'plausible: cannot track welcome dismissed')
+    })
 
     return response.ok({ success: true })
   }

@@ -7,10 +7,20 @@ import ActivityBackfillCompleted from '#events/activity_backfill_completed'
 import ActivityBackfillStarted from '#events/activity_backfill_started'
 import ActivityFeedViewed from '#events/activity_feed_viewed'
 import PageViewed from '#events/page_viewed'
+import AuthFlowStarted from '#events/auth_flow_started'
+import AuthFlowCompleted from '#events/auth_flow_completed'
+import AuthLoggedOut from '#events/auth_logged_out'
+import TermsAccepted from '#events/terms_accepted'
+import WelcomeDismissed from '#events/welcome_dismissed'
 
 export const events = {
   ActivityBackfillCompleted: ActivityBackfillCompleted,
   ActivityBackfillStarted: ActivityBackfillStarted,
   ActivityFeedViewed: ActivityFeedViewed,
   PageViewed: PageViewed,
+  AuthFlowStarted: AuthFlowStarted,
+  AuthFlowCompleted: AuthFlowCompleted,
+  AuthLoggedOut: AuthLoggedOut,
+  TermsAccepted: TermsAccepted,
+  WelcomeDismissed: WelcomeDismissed,
 }
