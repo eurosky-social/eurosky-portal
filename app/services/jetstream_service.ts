@@ -310,7 +310,9 @@ export class JetstreamService {
 
     if (status === 'deleted') {
       const oauthClient = await app.container.make('atproto.oauth.client')
-      await oauthClient.client.revoke(did)
+      await oauthClient.client.revoke(did).catch((err: unknown) => {
+        logger.warn({ did, err }, 'jetstream: cannot revoke oauth session for deleted account')
+      })
       await Account.query().where('did', did).delete()
     }
   }
