@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon'
 import cache from '@adonisjs/cache/services/main'
+import app from '@adonisjs/core/services/app'
 import logger from '@adonisjs/core/services/logger'
 import { type DidString, type LexValue, isDidString, isNsidString, lexParse } from '@atproto/lex'
 import Account from '#models/account'
@@ -307,7 +308,13 @@ export class JetstreamService {
     logger.info({ did, status }, 'jetstream: account no longer active')
     this.removeDid(did)
 
-    if (status === 'deleted') await Account.query().where('did', did).delete()
+    if (status === 'deleted') {
+      const oauthClient = await app.container.make('atproto.oauth.client')
+      await oauthClient.client.revoke(did).catch((err: unknown) => {
+        logger.warn({ did, err }, 'jetstream: cannot revoke oauth session for deleted account')
+      })
+      await Account.query().where('did', did).delete()
+    }
   }
 
   /**
