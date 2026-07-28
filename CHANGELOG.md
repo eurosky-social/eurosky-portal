@@ -1,5 +1,23 @@
 # eurosky-portal
 
+## 1.7.1
+
+### Patch Changes
+
+- [#211](https://github.com/eurosky-social/eurosky-portal/pull/211) [`eaf23dc`](https://github.com/eurosky-social/eurosky-portal/commit/eaf23dc052f0b08510cd92d8ce9124c1e9115824) Thanks [@wooorm](https://github.com/wooorm)! - Fix resync collection on active users
+
+- [#210](https://github.com/eurosky-social/eurosky-portal/pull/210) [`97dbaef`](https://github.com/eurosky-social/eurosky-portal/commit/97dbaef09d3237399ff256e9e02734c9a11b3aea) Thanks [@wooorm](https://github.com/wooorm)! - Fix markdown worker bundling
+
+- [#212](https://github.com/eurosky-social/eurosky-portal/pull/212) [`2d86bb3`](https://github.com/eurosky-social/eurosky-portal/commit/2d86bb394c4c1291ed1f4d8c0b006842e805a911) Thanks [@wooorm](https://github.com/wooorm)! - Add more events to plausible
+
+- [#209](https://github.com/eurosky-social/eurosky-portal/pull/209) [`969b982`](https://github.com/eurosky-social/eurosky-portal/commit/969b9829d319f9fdd9e9014df61d539e6a01fe7a) Thanks [@wooorm](https://github.com/wooorm)! - Fix activity syncing
+
+  Some improvements to activity syncing:
+  - lower concurrency (number of users at the same time)
+  - longer SQLite busy_timeout (5s -> 30s)
+  - don’t swallow problems when syncing collections
+  - honor `Retry-After` headers up to a point (1m)
+
 ## 1.7.0
 
 ### Minor Changes
