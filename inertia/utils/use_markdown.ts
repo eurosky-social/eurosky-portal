@@ -55,8 +55,11 @@ export function useMarkdown(value: string | undefined): Result {
 
     const request: WorkerRequest = { value }
     const timeoutId = setTimeout(ontimeout, timeout)
-    const url = new URL('../workers/markdown_worker.ts', import.meta.url)
-    const worker = new Worker(url, { type: 'module' })
+    // Note: `URL` has to be literal as an argument for Vite to resolve it
+    // correctly; can’t be a separate variable.
+    const worker = new Worker(new URL('../workers/markdown_worker.ts', import.meta.url), {
+      type: 'module',
+    })
 
     worker.onerror = onerror
     worker.onmessage = onmessage
