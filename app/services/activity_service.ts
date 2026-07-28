@@ -423,7 +423,6 @@ export class ActivityService {
           cursor,
           limit: 100,
           repo: did,
-          reverse: true,
           signal: AbortSignal.timeout(10_000),
         })
       )
