@@ -1,5 +1,15 @@
 # eurosky-portal
 
+## 1.7.2
+
+### Patch Changes
+
+- [#215](https://github.com/eurosky-social/eurosky-portal/pull/215) [`2e010e2`](https://github.com/eurosky-social/eurosky-portal/commit/2e010e2fcbca6f79e5450a05359c05bbe0cd9a37) Thanks [@wooorm](https://github.com/wooorm)! - Fix order of pagination
+
+- [#214](https://github.com/eurosky-social/eurosky-portal/pull/214) [`6d95120`](https://github.com/eurosky-social/eurosky-portal/commit/6d951204b31bb911ddd297d0224f2471fc4d7629) Thanks [@wooorm](https://github.com/wooorm)! - Fix deleted account oauth session
+
+- [#217](https://github.com/eurosky-social/eurosky-portal/pull/217) [`dfa6623`](https://github.com/eurosky-social/eurosky-portal/commit/dfa6623dc97226687700a69126f37f33c1a14b95) Thanks [@wooorm](https://github.com/wooorm)! - Fix big warning on deactivated repos
+
 ## 1.7.1
 
 ### Patch Changes
