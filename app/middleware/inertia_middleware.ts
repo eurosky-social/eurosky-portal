@@ -2,6 +2,7 @@ import '@inertiajs/core'
 import type { InferSharedProps } from '@adonisjs/inertia/types'
 import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
+import { Monocle } from '@monocle.sh/adonisjs-agent'
 import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
 import Account from '#models/account'
 import AccountTransformer from '#transformers/account_transformer'
@@ -16,11 +17,26 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
      * In that case, we must always assume that HttpContext is not fully hydrated
      * with all the properties
      */
-    const { session, auth } = ctx as Partial<HttpContext>
+    const { auth, session, oauth } = ctx as Partial<HttpContext>
 
     let account: Account | undefined
     if (auth?.user?.did) {
-      account = await Account.findOrFail(auth.user.did)
+      account = (await Account.find(auth.user.did)) ?? undefined
+
+      // If there is an auth session, but no corresponding account row,
+      // we’re in a weird place.
+      // Best to log out.
+      if (!account) {
+        Monocle.captureMessage('Auth session referenced an account with no matching row', {
+          extra: { did: auth.user.did },
+          level: 'warning',
+          tags: { component: 'inertia', type: 'stale_session_account' },
+        })
+
+        await oauth?.logout(auth.user.did)
+        await auth.use('web').logout()
+        session?.clear()
+      }
     }
 
     /**
