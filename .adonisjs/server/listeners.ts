@@ -8,4 +8,9 @@ export const listeners = {
   TrackActivityBackfillStarted: () => import('#listeners/track_activity_backfill_started'),
   TrackActivityFeedViewed: () => import('#listeners/track_activity_feed_viewed'),
   TrackPageViewed: () => import('#listeners/track_page_viewed'),
+  TrackAuthFlowStarted: () => import('#listeners/track_auth_flow_started'),
+  TrackAuthFlowCompleted: () => import('#listeners/track_auth_flow_completed'),
+  TrackAuthLoggedOut: () => import('#listeners/track_auth_logged_out'),
+  TrackTermsAccepted: () => import('#listeners/track_terms_accepted'),
+  TrackWelcomeDismissed: () => import('#listeners/track_welcome_dismissed'),
 }
