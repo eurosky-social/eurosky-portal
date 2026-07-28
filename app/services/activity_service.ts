@@ -163,12 +163,29 @@ export class ActivityService {
    */
   async backfill(did: DidString): Promise<undefined> {
     const { client } = await this.#clientFor(did)
-    const describeResponse = await withRateLimitRetry(() =>
-      client.xrpc(lexicon.com.atproto.repo.describeRepo.main, {
-        params: { repo: did },
-        signal: AbortSignal.timeout(5000),
-      })
-    )
+
+    let describeResponse: XrpcResponse<typeof lexicon.com.atproto.repo.describeRepo.main>
+    try {
+      describeResponse = await withRateLimitRetry(() =>
+        client.xrpc(lexicon.com.atproto.repo.describeRepo.main, {
+          params: { repo: did },
+          signal: AbortSignal.timeout(5000),
+        })
+      )
+    } catch (err: unknown) {
+      // Nothing to try right now. But also not permanent.
+      if (
+        err instanceof XrpcResponseError &&
+        (err.error === 'RepoDeactivated' ||
+          err.error === 'RepoNotFound' ||
+          err.error === 'RepoTakendown')
+      ) {
+        logger.info({ did, err }, 'activity: repo unavailable, skipping backfill')
+        return
+      }
+
+      throw err
+    }
 
     const collections = describeResponse.body.collections.filter(isSupportedCollection)
     const indexedAt = DateTime.now()
