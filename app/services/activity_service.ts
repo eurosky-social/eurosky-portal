@@ -164,7 +164,7 @@ export class ActivityService {
   async backfill(did: DidString): Promise<undefined> {
     const { client } = await this.#clientFor(did)
 
-    let describeResponse
+    let describeResponse: XrpcResponse<typeof lexicon.com.atproto.repo.describeRepo.main>
     try {
       describeResponse = await withRateLimitRetry(() =>
         client.xrpc(lexicon.com.atproto.repo.describeRepo.main, {
@@ -172,7 +172,7 @@ export class ActivityService {
           signal: AbortSignal.timeout(5000),
         })
       )
-    } catch (err) {
+    } catch (err: unknown) {
       // Nothing to try right now. But also not permanent.
       if (
         err instanceof XrpcResponseError &&
