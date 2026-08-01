@@ -90,7 +90,7 @@
     "@adonisjs/session": "^8.1.0",
     "@adonisjs/shield": "^9.0.0",
     "@adonisjs/static": "^2.0.1",
-    "@adonisjs/vite": "^5.1.0",
+    "@adonisjs/vite": "^5.1.1",
     "@atproto-labs/simple-store": "^0.3.0",
     "@atproto/jwk-jose": "^0.1.11",
     "@atproto/lex": "^0.0.25",
