@@ -1,11 +1,11 @@
 export interface BrandIdentity {
   name: string
   nameShort: string
-  tagline: string
+  taglineLead: string
   helpUrl: string
   contactUrl: string
   feedbackUrl?: string
-  ecosystemName?: string
+  homeDescriptor?: string
 }
 
 export interface PluginDefinition {
@@ -16,11 +16,11 @@ export interface PluginDefinition {
 export const defaultBrand: BrandIdentity = {
   name: 'Eurosky',
   nameShort: 'Eurosky',
-  tagline: 'Your Portal to the Atmosphere',
+  taglineLead: 'Your Portal to',
   helpUrl: 'https://eurosky.tech/help/',
   contactUrl: 'https://eurosky.tech/contact/',
   feedbackUrl: 'https://userinput.app/#/s/did:plc:ooensn4mr5mhznzypvxelfa3/3mr5gmbhteg2p',
-  ecosystemName: 'the Atmosphere',
+  homeDescriptor: 'European',
 }
 
 export default class PluginRegistry {

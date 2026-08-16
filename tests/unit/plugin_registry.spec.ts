@@ -16,7 +16,7 @@ test.group('PluginRegistry', () => {
       brand: {
         name: 'Example Co.',
         nameShort: 'Example',
-        tagline: 'A portal for example',
+        taglineLead: 'A portal for',
         helpUrl: 'https://example.com/help',
         contactUrl: 'https://example.com/contact',
       },
@@ -26,7 +26,7 @@ test.group('PluginRegistry', () => {
       ...defaultBrand,
       name: 'Example Co.',
       nameShort: 'Example',
-      tagline: 'A portal for example',
+      taglineLead: 'A portal for',
       helpUrl: 'https://example.com/help',
       contactUrl: 'https://example.com/contact',
     })
@@ -41,7 +41,7 @@ test.group('PluginRegistry', () => {
     })
 
     assert.equal(registry.brand.name, 'Example Co.')
-    assert.equal(registry.brand.tagline, defaultBrand.tagline)
+    assert.equal(registry.brand.taglineLead, defaultBrand.taglineLead)
     assert.equal(registry.brand.helpUrl, defaultBrand.helpUrl)
   })
 
