@@ -63,6 +63,7 @@ export default defineConfig({
     () => import('@adonisjs/inertia/inertia_provider'),
     () => import('@adonisjs/auth/auth_provider'),
     () => import('#providers/api_provider'),
+    () => import('#providers/plugin_registry_provider'),
     () => import('#providers/jetstream_provider'),
     () => import('#providers/queue_worker_provider'),
     () => import('@thisismissem/adonisjs-atproto-oauth/provider'),

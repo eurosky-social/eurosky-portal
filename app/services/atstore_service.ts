@@ -79,7 +79,7 @@ const localAppSchema = vine.object({
   'madeInEurope': vine.boolean().optional(),
 
   /**
-   * Custom category: apps recommended by eurosky.
+   * Custom category: apps recommended by the portal.
    */
   'recommended': vine.boolean().optional(),
 })

@@ -32,7 +32,7 @@ import BetaWarning from '~/components/BetaWarning'
 
 export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedProps> }) {
   const {
-    props: { authorizationServer },
+    props: { authorizationServer, brand },
     url,
   } = usePage()
   const user = useAuth()
@@ -80,7 +80,7 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
                 </SidebarSection>
                 <SidebarHeading className="mt-10 font-bold">Support</SidebarHeading>
                 <SidebarSection>
-                  <SidebarItem href="https://eurosky.tech/help/" target="_blank" as={'a'}>
+                  <SidebarItem href={brand.helpUrl} target="_blank" as={'a'}>
                     <LifebuoyIcon />
                     <SidebarLabel>Help</SidebarLabel>
                   </SidebarItem>
@@ -88,7 +88,7 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
                     <QuestionMarkCircleIcon />
                     <SidebarLabel>FAQ</SidebarLabel>
                   </SidebarItem>
-                  <SidebarItem href="https://eurosky.tech/contact/" target="_blank" as={'a'}>
+                  <SidebarItem href={brand.contactUrl} target="_blank" as={'a'}>
                     <ChatBubbleOvalLeftEllipsisIcon />
                     <SidebarLabel>Contact Us</SidebarLabel>
                   </SidebarItem>

@@ -15,7 +15,9 @@ export default function Faq(props: InertiaProps<{ faq: { question: string; answe
       </Container>
       <div className="bg-neutral-50 dark:bg-slate-800 min-h-dvh-minus-35">
         <Container className="pt-5 pb-10 md:pb-24 md:pt-12 faq">
-          <h2 className="text-2xl font-semibold text-ink dark:text-white mb-8">Eurosky Portal</h2>
+          <h2 className="text-2xl font-semibold text-ink dark:text-white mb-8">
+            {props.brand.name} Portal
+          </h2>
           {props.faq.map((entry, idx) => (
             <details
               key={idx}

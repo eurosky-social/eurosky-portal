@@ -4,13 +4,14 @@ import {
   lucidStateStore,
 } from '@thisismissem/adonisjs-atproto-oauth'
 import env from '#start/env'
+import { defaultBrand } from '#services/plugin_registry'
 
 export default defineConfig({
   publicUrl: env.get('APP_URL'),
   metadata: {
     // If ATPROTO_OAUTH_CLIENT_ID is set, the client metadata will be fetched from that URL:
     client_id: env.get('ATPROTO_OAUTH_CLIENT_ID'),
-    client_name: 'Eurosky Portal',
+    client_name: `${defaultBrand.name} Portal`,
     client_uri: new URL('/', env.get('APP_URL')).toString(),
     // See: https://atproto.com/guides/scopes
     scope: [

@@ -1,11 +1,17 @@
-const feedbackUrl = 'https://userinput.app/#/s/did:plc:ooensn4mr5mhznzypvxelfa3/3mr5gmbhteg2p'
+import { usePage } from '@inertiajs/react'
 
 export default function BetaWarning() {
+  const {
+    props: { brand },
+  } = usePage()
+
+  if (!brand.feedbackUrl) return null
+
   return (
     <div className="bg-brand py-2 px-3 text-center text-black/80 font-semibold">
-      Eurosky Portal is currently in beta.{' '}
+      {brand.name} Portal is currently in beta.{' '}
       <a
-        href={feedbackUrl}
+        href={brand.feedbackUrl}
         rel="noopener noreferrer"
         target="_blank"
         className="underline hover:text-black/60"

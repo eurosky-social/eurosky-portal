@@ -10,10 +10,21 @@ import { resolvePageComponent } from '@adonisjs/inertia/helpers'
 
 import.meta.glob(['../resources/images/og-image.png', './images/**'])
 
-const appName = import.meta.env.VITE_APP_NAME || 'Eurosky Portal'
+const fallbackPortalName = import.meta.env.VITE_APP_NAME || 'Portal'
+
+function getPortalName() {
+  if (typeof document !== 'undefined') {
+    return document.documentElement.dataset.portalName || fallbackPortalName
+  }
+
+  return fallbackPortalName
+}
 
 createInertiaApp({
-  title: (title) => (title ? `${title} - ${appName}` : appName),
+  title: (title) => {
+    const appName = getPortalName()
+    return title ? `${title} - ${appName}` : appName
+  },
   resolve: (name) => {
     return resolvePageComponent(
       `./pages/${name}.tsx`,
