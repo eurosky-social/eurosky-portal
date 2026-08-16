@@ -2,9 +2,11 @@ import '@inertiajs/core'
 import type { InferSharedProps } from '@adonisjs/inertia/types'
 import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
+import app from '@adonisjs/core/services/app'
 import { Monocle } from '@monocle.sh/adonisjs-agent'
 import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
 import Account from '#models/account'
+import PluginRegistry from '#services/plugin_registry'
 import AccountTransformer from '#transformers/account_transformer'
 
 export default class InertiaMiddleware extends BaseInertiaMiddleware {
@@ -18,6 +20,7 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
      * with all the properties
      */
     const { auth, session, oauth } = ctx as Partial<HttpContext>
+    const pluginRegistry = await app.container.make(PluginRegistry)
 
     let account: Account | undefined
     if (auth?.user?.did) {
@@ -56,6 +59,7 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
       flash: ctx.inertia.always({
         error: error,
       }),
+      brand: ctx.inertia.always({ ...pluginRegistry.brand }),
       isAuthenticated: !!auth?.user,
       authorizationServer: ctx.inertia.always(auth?.user?.authorizationServer),
       user: ctx.inertia.always(
