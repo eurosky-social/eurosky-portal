@@ -8,6 +8,9 @@ import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
 import Account from '#models/account'
 import PluginRegistry from '#services/plugin_registry'
 import AccountTransformer from '#transformers/account_transformer'
+import { getHandleDomain } from '#utils/oauth'
+
+const handleDomain = getHandleDomain()
 
 export default class InertiaMiddleware extends BaseInertiaMiddleware {
   async share(ctx: HttpContext) {
@@ -60,6 +63,7 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
         error: error,
       }),
       brand: ctx.inertia.always({ ...pluginRegistry.brand }),
+      handleDomain: ctx.inertia.always(handleDomain),
       isAuthenticated: !!auth?.user,
       authorizationServer: ctx.inertia.always(auth?.user?.authorizationServer),
       user: ctx.inertia.always(

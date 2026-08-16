@@ -4,7 +4,7 @@ import { Apps } from '~/components/Apps'
 import Card from '~/lib/card'
 import { InertiaProps } from '~/types'
 
-export default function ApplicationsPage({ sections }: InertiaProps<Data.Apps>) {
+export default function ApplicationsPage({ sections, brand }: InertiaProps<Data.Apps>) {
   return (
     <Card className="p-6 sm:p-8">
       <Head title="Applications" />
@@ -12,7 +12,7 @@ export default function ApplicationsPage({ sections }: InertiaProps<Data.Apps>) 
         Applications
       </h2>
       <p className="mb-4 text-sm/6 text-gray-500 dark:text-gray-300">
-        Browse featured apps that work with your Eurosky account.
+        Browse featured apps that work with your {brand.name} account.
       </p>
       <Apps sections={sections} />
     </Card>

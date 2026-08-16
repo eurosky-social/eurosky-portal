@@ -1,4 +1,5 @@
 import type { HttpContext } from '@adonisjs/core/http'
+import app from '@adonisjs/core/services/app'
 import { Monocle } from '@monocle.sh/adonisjs-agent'
 import { OAuthCallbackError, OAuthResolverError } from '@atproto/oauth-client-node'
 import { isUriString, asAtIdentifierString, type AtIdentifierString } from '@atproto/lex'
@@ -10,6 +11,7 @@ import AuthFlowStarted from '#events/auth_flow_started'
 import AuthLoggedOut from '#events/auth_logged_out'
 import activityService from '#services/activity_service'
 import jetstreamService from '#services/jetstream_service'
+import PluginRegistry from '#services/plugin_registry'
 import { SlingshotService } from '#services/slingshot_service'
 import { loginRequestValidator, signupRequestValidator } from '#validators/oauth'
 import { createFieldError } from '#utils/errors'
@@ -59,6 +61,8 @@ export default class OAuthController {
   }
 
   async login({ request, inertia, oauth, session, logger }: HttpContext) {
+    const pluginRegistry = await app.container.make(PluginRegistry)
+    const { name: brandName } = pluginRegistry.brand
     const data = await request.validateUsing(loginRequestValidator, {
       meta: {
         handleDomain,
@@ -66,7 +70,7 @@ export default class OAuthController {
       messagesProvider: {
         getMessage(defaultMessage, rule, field) {
           if (rule === 'at-handle' || rule === 'at-handle-username') {
-            return `Please enter a valid Atmosphere account, e.g., username${handleDomain ?? '.bsky.social'}`
+            return `Please enter a valid Atmosphere account, e.g., ${handleDomain ? `username${handleDomain}` : 'username.example.com'}`
           }
 
           return defaultMessage.replace(/\{\{\s*field\s*\}\}/, field.getFieldPath())
@@ -94,7 +98,7 @@ export default class OAuthController {
         throw createFieldError(
           'input',
           input,
-          'Currently the Eurosky portal is only available for Eurosky accounts.'
+          `Currently the ${brandName} portal is only available for ${brandName} accounts.`
         )
       }
 
@@ -124,7 +128,7 @@ export default class OAuthController {
           throw createFieldError(
             'input',
             input,
-            'Currently the Eurosky portal is only available for Eurosky accounts.'
+            `Currently the ${brandName} portal is only available for ${brandName} accounts.`
           )
         }
       }
@@ -183,7 +187,7 @@ export default class OAuthController {
     //
     // const registrationSupported = await oauth.canRegister(oauthServerUrl)
     // if (!registrationSupported) {
-    // // Handle registration not supported, this should never be the case for Eurosky:
+    // // Handle registration not supported, this should never be the case for the configured portal:
     //   return response.abort('Registration not supported')
     // }
 

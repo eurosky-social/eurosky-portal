@@ -1,6 +1,7 @@
 import env from '#start/env'
 import app from '@adonisjs/core/services/app'
 import { defineConfig, stores } from '@adonisjs/session'
+import { defaultBrand } from '#services/plugin_registry'
 
 const sessionConfig = defineConfig({
   /**
@@ -11,7 +12,7 @@ const sessionConfig = defineConfig({
   /**
    * Cookie name storing the session identifier.
    */
-  cookieName: 'eurosky-portal-session',
+  cookieName: `${defaultBrand.nameShort.toLowerCase()}-portal-session`,
 
   /**
    * When set to true, the session id cookie will be deleted

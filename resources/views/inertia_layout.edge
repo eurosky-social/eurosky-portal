@@ -1,8 +1,8 @@
-@let(title = "Eurosky Portal")
-@let(description = "Your Portal to the Atmosphere")
+@let(title = portal_brand.name + " Portal")
+@let(description = portal_brand.taglineLead + " the Atmosphere")
 
 <!DOCTYPE html>
-<html>
+<html data-portal-name="{{ title }}">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -30,7 +30,7 @@
     <!-- Facebook Meta Tags -->
     <meta property="og:url" content="{{ opengraph_url() }}" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Eurosky Portal" />
+    <meta property="og:title" content="{{ title }}" />
     <meta property="og:description" content="{{ description }}" />
     <meta property="og:image" content="{{ opengraph_url(asset('resources/images/og-image.png')) }}" />
     <meta property="og:image:height" content="630" />
@@ -40,7 +40,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta property="twitter:domain" content="{{ service_domain }}" />
     <meta property="twitter:url" content="{{ opengraph_url() }}" />
-    <meta name="twitter:title" content="Eurosky Portal" />
+    <meta name="twitter:title" content="{{ title }}" />
     <meta name="twitter:description" content="{{ description }}" />
     <meta name="twitter:image" content="{{ opengraph_url(asset('resources/images/og-image.png')) }}" />
 

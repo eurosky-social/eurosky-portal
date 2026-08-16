@@ -1,8 +1,13 @@
 import { Container } from '~/lib/container'
 import { Button } from '~/lib/button'
 import { LockClosedIcon } from '@heroicons/react/24/solid'
+import { usePage } from '@inertiajs/react'
 
 export function Hero() {
+  const {
+    props: { brand },
+  } = usePage()
+
   return (
     <div className="bg-neutral-50 dark:bg-slate-800">
       <Container className="pt-6 md:pt-10 pb-12 mb-6 text-center lg:pt-24">
@@ -17,7 +22,8 @@ export function Hero() {
         </div>
 
         <h1 className="mx-auto max-w-4xl font-display text-3xl sm:text-6xl lg:text-5xl leading-[1.3] font-extrabold tracking-tight text-slate-900 dark:text-slate-200">
-          Eurosky: Your Portal to <div className="text-brand">the Atmosphere.</div>
+          {brand.name}: {brand.taglineLead}
+          <div className="text-brand">the Atmosphere.</div>
         </h1>
         <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-500 dark:text-slate-400 font-bold">
           One account. Dozens of apps. No lock-in.

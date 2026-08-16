@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react'
-import { router as inertiaRouter } from '@inertiajs/react'
+import { router as inertiaRouter, usePage } from '@inertiajs/react'
 import type { ActivityRow, GetRecordsResult } from '#services/activity_service'
 import { ActivityList } from '~/components/ActivityList'
 import { UserAvatar } from '~/components/UserAvatar'
@@ -30,6 +30,9 @@ export default function Dashboard({
 }>) {
   const user = useAuth()
   const router = useRouter()
+  const {
+    props: { brand },
+  } = usePage()
   const isHandleInvalid = user.handle === INVALID_HANDLE
 
   const dismissWelcome = useCallback(async () => {
@@ -59,7 +62,7 @@ export default function Dashboard({
             <Text className="text-white! text-shadow-sm text-shadow-amber-600/80">
               It looks like you've attempted to change your handle, and we can't verify it.{' '}
               <a
-                href="https://eurosky.tech/help/#handle-invalid"
+                href={`${brand.helpUrl}#handle-invalid`}
                 target="_blank"
                 className="font-semibold hover:underline"
               >
@@ -76,8 +79,8 @@ export default function Dashboard({
               Welcome to the Atmosphere
             </h2>
             <p className="mt-0.5 text-xs/6 text-gray-500 dark:text-gray-300">
-              Eurosky is your European home on the Atmosphere &ndash; a global network of social
-              apps and services.
+              {brand.name} is your{brand.homeDescriptor ? ` ${brand.homeDescriptor}` : ''} home on
+              the Atmosphere &ndash; a global network of social apps and services.
             </p>
             {!isHandleInvalid && (
               <p className="mt-0.5 text-xs/6 text-gray-500 dark:text-gray-300">
@@ -148,8 +151,8 @@ export default function Dashboard({
             Explore the ecosystem
           </h2>
           <p className="text-xs/6 text-gray-500 dark:text-gray-300">
-            Your Eurosky account works with dozens of apps. Browse the featured apps below and click
-            one to get started.
+            Your {brand.name} account works with dozens of apps. Browse the featured apps below and
+            click one to get started.
           </p>
           <Button
             route="explore.learn_more"
@@ -192,7 +195,7 @@ export default function Dashboard({
           Featured applications
         </h2>
         <p className="text-base text-neutral-400 dark:text-slate-400 mb-6">
-          Your Eurosky account works with all of these.
+          Your {brand.name} account works with all of these.
         </p>
 
         <AppGrid apps={apps} />
