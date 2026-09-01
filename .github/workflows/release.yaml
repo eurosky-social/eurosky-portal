@@ -45,7 +45,7 @@ jobs:
 
       - name: Create pull request for next release, or Publish a new github release and tag
         id: changesets
-        uses: changesets/action@v1
+        uses: changesets/action@v2
 
         with:
           title: Prepare next release
