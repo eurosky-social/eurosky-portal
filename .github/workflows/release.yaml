@@ -48,18 +48,18 @@ jobs:
         uses: changesets/action@v2
 
         with:
-          title: Prepare next release
-          createGithubReleases: true
-          publish: pnpm release
-          version: pnpm version-package
+          pr-title: Prepare next release
+          create-github-releases: true
+          publish-script: pnpm release
+          version-script: pnpm version-package
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup release variables
         id: release
         run: |
-          echo '${{steps.changesets.outputs.publishedPackages}}'
-          release_version=$(jq -cr '.[] | select(.name | contains("eurosky-portal")) | .version' <<< '${{ steps.changesets.outputs.publishedPackages }}')
+          echo '${{steps.changesets.outputs.published-packages}}'
+          release_version=$(jq -cr '.[] | select(.name | contains("eurosky-portal")) | .version' <<< '${{ steps.changesets.outputs.published-packages }}')
           echo "tag_ref=v${release_version%,}" >> "$GITHUB_OUTPUT"
 
       - name: Print tag_ref
