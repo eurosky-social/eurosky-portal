@@ -85,15 +85,39 @@ function toDate(value: string): DateTime<true> | undefined {
 export function toPreview(value: Activity): Preview {
   // Again, when changing these, run `node ace portal:resync-collection`!
   const $type = value.$type
+  const createdAt = toCreatedAt(value)
   switch ($type) {
     case 'app.bsky.feed.like':
-      return { createdAt: toDate(value.createdAt), text: undefined }
+      return { createdAt, text: undefined }
     case 'app.bsky.feed.post':
-      return { createdAt: toDate(value.createdAt), text: value.text }
+      return { createdAt, text: value.text }
     case 'app.bsky.graph.follow':
-      return { createdAt: toDate(value.createdAt), text: undefined }
+      return { createdAt, text: undefined }
     case 'site.standard.document':
-      return { createdAt: toDate(value.publishedAt), text: value.title }
+      return { createdAt, text: value.title }
+    default:
+      throw new Error(`Unsupported collection: ${$type}`)
+  }
+}
+
+/**
+ * @param value
+ *   Value.
+ * @returns
+ *   Valid date time.
+ */
+export function toCreatedAt(value: Activity): DateTime<true> | undefined {
+  // Again, when changing these, run `node ace portal:resync-collection`!
+  const $type = value.$type
+  switch ($type) {
+    case 'app.bsky.feed.like':
+      return toDate(value.createdAt)
+    case 'app.bsky.feed.post':
+      return toDate(value.createdAt)
+    case 'app.bsky.graph.follow':
+      return toDate(value.createdAt)
+    case 'site.standard.document':
+      return toDate(value.publishedAt)
     default:
       throw new Error(`Unsupported collection: ${$type}`)
   }

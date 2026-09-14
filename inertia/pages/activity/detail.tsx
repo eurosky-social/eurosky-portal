@@ -11,6 +11,7 @@ import { UserName } from '~/components/UserName'
 import { Avatar } from '~/lib/avatar'
 import Card from '~/lib/card'
 import { BackLink } from '~/lib/link'
+import { RelativeTime } from '~/lib/relative-time'
 import type { InertiaProps } from '~/types'
 
 export default function ActivityDetailPage({
@@ -110,7 +111,12 @@ export default function ActivityDetailPage({
           {' / '}
           <span aria-current="page">{title}</span>
         </nav>
-        {actions}
+        <div className="flex flex-col items-end gap-2 sm:flex-row sm:items-center sm:gap-3">
+          <span className="text-sm text-zinc-500 dark:text-zinc-400">
+            <RelativeTime value={activity.createdAt} />
+          </span>
+          {actions}
+        </div>
       </div>
 
       <div className="mt-6 space-y-4">{detail}</div>

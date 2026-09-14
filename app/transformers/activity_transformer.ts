@@ -3,7 +3,7 @@ import type { JSONDataTypes } from '@adonisjs/core/types/transformers'
 import type { AtUriString } from '@atproto/lex'
 import { truncate } from 'hast-util-truncate'
 import * as lexicon from '#lexicons'
-import type { Activity } from '#utils/activity'
+import { type Activity, toCreatedAt } from '#utils/activity'
 import { type Context, toBlobLocator } from '#utils/blob'
 import { toEmbed } from '#utils/embed'
 import { toHast as bskyRichtextToHast } from '#utils/bsky_richtext'
@@ -51,7 +51,11 @@ export default class ActivityTransformer extends BaseTransformer<Activity> {
 
 class AppBskyFeedLike extends BaseTransformer<lexicon.app.bsky.feed.like.Main> {
   toObject() {
-    return { ...this.pick(this.resource, ['$type']), openUri: this.resource.subject.uri }
+    return {
+      ...this.pick(this.resource, ['$type']),
+      createdAt: toCreatedAt(this.resource)?.toISO(),
+      openUri: this.resource.subject.uri,
+    }
   }
 }
 
@@ -72,7 +76,14 @@ class AppBskyFeedPost extends BaseTransformer<lexicon.app.bsky.feed.post.Main> {
       this.resource.text,
       this.resource.facets
     ) as unknown as JSONDataTypes
-    return { ...this.pick(this.resource, ['$type']), embed, openUri, replyUri, text }
+    return {
+      ...this.pick(this.resource, ['$type']),
+      createdAt: toCreatedAt(this.resource)?.toISO(),
+      embed,
+      openUri,
+      replyUri,
+      text,
+    }
   }
 }
 
@@ -80,7 +91,12 @@ class AppBskyGraphFollow extends BaseTransformer<lexicon.app.bsky.graph.follow.M
   toObject() {
     const { subject } = this.resource
     const openUri: AtUriString = `at://${subject}`
-    return { ...this.pick(this.resource, ['$type']), openUri, subject }
+    return {
+      ...this.pick(this.resource, ['$type']),
+      createdAt: toCreatedAt(this.resource)?.toISO(),
+      openUri,
+      subject,
+    }
   }
 }
 
@@ -120,6 +136,7 @@ class SiteStandardDocument extends BaseTransformer<lexicon.site.standard.documen
       ]),
       content,
       coverImage,
+      createdAt: toCreatedAt(this.resource)?.toISO(),
       openUri: this.#context.uri,
     }
   }

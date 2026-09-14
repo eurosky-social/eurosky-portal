@@ -96,6 +96,7 @@
     "@atproto/lex": "^0.3.11",
     "@atproto/oauth-client-node": "^0.5.7",
     "@atproto/syntax": "^0.7.6",
+    "@github/relative-time-element": "^5.3.1",
     "@headlessui/react": "^2.2.10",
     "@heroicons/react": "^2.2.0",
     "@inertiajs/core": "^3.7.1",
