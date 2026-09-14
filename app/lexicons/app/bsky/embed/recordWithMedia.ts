@@ -3,4 +3,4 @@
  */
 
 export * from './recordWithMedia.defs.js'
-export * as $defs from './recordWithMedia.defs.js'
+export { main as default } from './recordWithMedia.defs.js'

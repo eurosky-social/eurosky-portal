@@ -3,4 +3,4 @@
  */
 
 export * from './standardSitePublication.defs.js'
-export * as $defs from './standardSitePublication.defs.js'
+export { main as default } from './standardSitePublication.defs.js'

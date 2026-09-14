@@ -10,32 +10,43 @@ import * as BlocksOrderedList from './orderedList.defs.js'
 
 const $nsid = 'pub.leaflet.blocks.unorderedList'
 
+type $nsid = typeof $nsid
+
 export { $nsid }
 
 type Main = { $type?: 'pub.leaflet.blocks.unorderedList'; children: ListItem[] }
 
 export type { Main }
 
-const main = l.typedObject<Main>(
+const main = /*#__PURE__*/ l.typedObject<Main>(
   $nsid,
   'main',
-  l.object({ children: l.array(l.ref<ListItem>((() => listItem) as any)) }),
+  /*#__PURE__*/ l.object({
+    children: /*#__PURE__*/ l.array(
+      /*#__PURE__*/ l.ref<ListItem>((() => listItem) as any),
+    ),
+  }),
 )
 
 export { main }
 
-export const $isTypeOf = /*#__PURE__*/ main.isTypeOf.bind(main),
-  $build = /*#__PURE__*/ main.build.bind(main),
-  $type = /*#__PURE__*/ main.$type
-export const $assert = /*#__PURE__*/ main.assert.bind(main),
-  $check = /*#__PURE__*/ main.check.bind(main),
-  $cast = /*#__PURE__*/ main.cast.bind(main),
-  $ifMatches = /*#__PURE__*/ main.ifMatches.bind(main),
-  $matches = /*#__PURE__*/ main.matches.bind(main),
-  $parse = /*#__PURE__*/ main.parse.bind(main),
-  $safeParse = /*#__PURE__*/ main.safeParse.bind(main),
-  $validate = /*#__PURE__*/ main.validate.bind(main),
-  $safeValidate = /*#__PURE__*/ main.safeValidate.bind(main)
+const $type = $nsid
+
+type $type = typeof $type
+
+export { $type }
+
+export const $isTypeOf = /*#__PURE__*/ main.isTypeOf.bind(main)
+export const $build = /*#__PURE__*/ main.build.bind(main)
+export const $assert = /*#__PURE__*/ main.assert.bind(main)
+export const $check = /*#__PURE__*/ main.check.bind(main)
+export const $cast = /*#__PURE__*/ main.cast.bind(main)
+export const $ifMatches = /*#__PURE__*/ main.ifMatches.bind(main)
+export const $matches = /*#__PURE__*/ main.matches.bind(main)
+export const $parse = /*#__PURE__*/ main.parse.bind(main)
+export const $safeParse = /*#__PURE__*/ main.safeParse.bind(main)
+export const $validate = /*#__PURE__*/ main.validate.bind(main)
+export const $safeValidate = /*#__PURE__*/ main.safeValidate.bind(main)
 
 type ListItem = {
   $type?: 'pub.leaflet.blocks.unorderedList#listItem'
@@ -63,22 +74,34 @@ type ListItem = {
 
 export type { ListItem }
 
-const listItem = l.typedObject<ListItem>(
+const listItem = /*#__PURE__*/ l.typedObject<ListItem>(
   $nsid,
   'listItem',
-  l.object({
-    checked: l.optional(l.boolean()),
-    content: l.typedUnion(
+  /*#__PURE__*/ l.object({
+    checked: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
+    content: /*#__PURE__*/ l.typedUnion(
       [
-        l.typedRef<BlocksText.Main>((() => BlocksText.main) as any),
-        l.typedRef<BlocksHeader.Main>((() => BlocksHeader.main) as any),
-        l.typedRef<BlocksImage.Main>((() => BlocksImage.main) as any),
+        /*#__PURE__*/ l.typedRef<BlocksText.Main>(
+          (() => BlocksText.main) as any,
+        ),
+        /*#__PURE__*/ l.typedRef<BlocksHeader.Main>(
+          (() => BlocksHeader.main) as any,
+        ),
+        /*#__PURE__*/ l.typedRef<BlocksImage.Main>(
+          (() => BlocksImage.main) as any,
+        ),
       ],
       false,
     ),
-    children: l.optional(l.array(l.ref<ListItem>((() => listItem) as any))),
-    orderedListChildren: l.optional(
-      l.ref<BlocksOrderedList.Main>((() => BlocksOrderedList.main) as any),
+    children: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<ListItem>((() => listItem) as any),
+      ),
+    ),
+    orderedListChildren: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<BlocksOrderedList.Main>(
+        (() => BlocksOrderedList.main) as any,
+      ),
     ),
   }),
 )

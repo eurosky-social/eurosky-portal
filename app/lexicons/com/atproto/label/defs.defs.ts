@@ -6,6 +6,8 @@ import { l } from '@atproto/lex'
 
 const $nsid = 'com.atproto.label.defs'
 
+type $nsid = typeof $nsid
+
 export { $nsid }
 
 /** Metadata tag on an atproto resource (eg, repo or record). */
@@ -61,19 +63,21 @@ type Label = {
 export type { Label }
 
 /** Metadata tag on an atproto resource (eg, repo or record). */
-const label = l.typedObject<Label>(
+const label = /*#__PURE__*/ l.typedObject<Label>(
   $nsid,
   'label',
-  l.object({
-    cid: l.optional(l.string({ format: 'cid' })),
-    cts: l.string({ format: 'datetime' }),
-    exp: l.optional(l.string({ format: 'datetime' })),
-    neg: l.optional(l.boolean()),
-    sig: l.optional(l.bytes()),
-    src: l.string({ format: 'did' }),
-    uri: l.string({ format: 'uri' }),
-    val: l.string({ maxLength: 128 }),
-    ver: l.optional(l.integer()),
+  /*#__PURE__*/ l.object({
+    cid: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'cid' })),
+    cts: /*#__PURE__*/ l.string({ format: 'datetime' }),
+    exp: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'datetime' }),
+    ),
+    neg: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
+    sig: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.bytes()),
+    src: /*#__PURE__*/ l.string({ format: 'did' }),
+    uri: /*#__PURE__*/ l.string({ format: 'uri' }),
+    val: /*#__PURE__*/ l.string({ maxLength: 128 }),
+    ver: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
   }),
 )
 
@@ -92,10 +96,10 @@ type SelfLabel = {
 export type { SelfLabel }
 
 /** Metadata tag on an atproto record, published by the author within the record. Note that schemas should use #selfLabels, not #selfLabel. */
-const selfLabel = l.typedObject<SelfLabel>(
+const selfLabel = /*#__PURE__*/ l.typedObject<SelfLabel>(
   $nsid,
   'selfLabel',
-  l.object({ val: l.string({ maxLength: 128 }) }),
+  /*#__PURE__*/ l.object({ val: /*#__PURE__*/ l.string({ maxLength: 128 }) }),
 )
 
 export { selfLabel }
@@ -113,7 +117,7 @@ type LabelValue =
 
 export type { LabelValue }
 
-const labelValue = l.string<{
+const labelValue = /*#__PURE__*/ l.string<{
   knownValues: [
     '!hide',
     '!warn',
@@ -137,13 +141,14 @@ type SelfLabels = {
 export type { SelfLabels }
 
 /** Metadata tags on an atproto record, published by the author within the record. */
-const selfLabels = l.typedObject<SelfLabels>(
+const selfLabels = /*#__PURE__*/ l.typedObject<SelfLabels>(
   $nsid,
   'selfLabels',
-  l.object({
-    values: l.array(l.ref<SelfLabel>((() => selfLabel) as any), {
-      maxLength: 10,
-    }),
+  /*#__PURE__*/ l.object({
+    values: /*#__PURE__*/ l.array(
+      /*#__PURE__*/ l.ref<SelfLabel>((() => selfLabel) as any),
+      { maxLength: 10 },
+    ),
   }),
 )
 
@@ -183,22 +188,26 @@ type LabelValueDefinition = {
 export type { LabelValueDefinition }
 
 /** Declares a label value and its expected interpretations and behaviors. */
-const labelValueDefinition = l.typedObject<LabelValueDefinition>(
+const labelValueDefinition = /*#__PURE__*/ l.typedObject<LabelValueDefinition>(
   $nsid,
   'labelValueDefinition',
-  l.object({
-    blurs: l.string<{ knownValues: ['content', 'media', 'none'] }>(),
-    locales: l.array(
-      l.ref<LabelValueDefinitionStrings>(
+  /*#__PURE__*/ l.object({
+    blurs: /*#__PURE__*/ l.string<{
+      knownValues: ['content', 'media', 'none']
+    }>(),
+    locales: /*#__PURE__*/ l.array(
+      /*#__PURE__*/ l.ref<LabelValueDefinitionStrings>(
         (() => labelValueDefinitionStrings) as any,
       ),
     ),
-    severity: l.string<{ knownValues: ['inform', 'alert', 'none'] }>(),
-    adultOnly: l.optional(l.boolean()),
-    identifier: l.string({ maxLength: 100, maxGraphemes: 100 }),
-    defaultSetting: l.optional(
-      l.withDefault(
-        l.string<{ knownValues: ['ignore', 'warn', 'hide'] }>(),
+    severity: /*#__PURE__*/ l.string<{
+      knownValues: ['inform', 'alert', 'none']
+    }>(),
+    adultOnly: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
+    identifier: /*#__PURE__*/ l.string({ maxLength: 100, maxGraphemes: 100 }),
+    defaultSetting: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.withDefault(
+        /*#__PURE__*/ l.string<{ knownValues: ['ignore', 'warn', 'hide'] }>(),
         'warn',
       ),
     ),
@@ -230,14 +239,18 @@ type LabelValueDefinitionStrings = {
 export type { LabelValueDefinitionStrings }
 
 /** Strings which describe the label in the UI, localized into a specific language. */
-const labelValueDefinitionStrings = l.typedObject<LabelValueDefinitionStrings>(
-  $nsid,
-  'labelValueDefinitionStrings',
-  l.object({
-    lang: l.string({ format: 'language' }),
-    name: l.string({ maxLength: 640, maxGraphemes: 64 }),
-    description: l.string({ maxLength: 100000, maxGraphemes: 10000 }),
-  }),
-)
+const labelValueDefinitionStrings =
+  /*#__PURE__*/ l.typedObject<LabelValueDefinitionStrings>(
+    $nsid,
+    'labelValueDefinitionStrings',
+    /*#__PURE__*/ l.object({
+      lang: /*#__PURE__*/ l.string({ format: 'language' }),
+      name: /*#__PURE__*/ l.string({ maxLength: 640, maxGraphemes: 64 }),
+      description: /*#__PURE__*/ l.string({
+        maxLength: 100000,
+        maxGraphemes: 10000,
+      }),
+    }),
+  )
 
 export { labelValueDefinitionStrings }

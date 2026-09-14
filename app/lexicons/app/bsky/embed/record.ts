@@ -3,4 +3,4 @@
  */
 
 export * from './record.defs.js'
-export * as $defs from './record.defs.js'
+export { main as default } from './record.defs.js'

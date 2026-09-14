@@ -3,4 +3,4 @@
  */
 
 export * from './blockquote.defs.js'
-export * as $defs from './blockquote.defs.js'
+export { main as default } from './blockquote.defs.js'

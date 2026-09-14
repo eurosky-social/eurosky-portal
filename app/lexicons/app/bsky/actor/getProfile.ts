@@ -3,4 +3,4 @@
  */
 
 export * from './getProfile.defs.js'
-export * as $defs from './getProfile.defs.js'
+export { main as default } from './getProfile.defs.js'

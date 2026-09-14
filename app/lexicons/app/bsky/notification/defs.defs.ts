@@ -6,6 +6,8 @@ import { l } from '@atproto/lex'
 
 const $nsid = 'app.bsky.notification.defs'
 
+type $nsid = typeof $nsid
+
 export { $nsid }
 
 type Preference = {
@@ -16,10 +18,13 @@ type Preference = {
 
 export type { Preference }
 
-const preference = l.typedObject<Preference>(
+const preference = /*#__PURE__*/ l.typedObject<Preference>(
   $nsid,
   'preference',
-  l.object({ list: l.boolean(), push: l.boolean() }),
+  /*#__PURE__*/ l.object({
+    list: /*#__PURE__*/ l.boolean(),
+    push: /*#__PURE__*/ l.boolean(),
+  }),
 )
 
 export { preference }
@@ -43,27 +48,41 @@ type Preferences = {
 
 export type { Preferences }
 
-const preferences = l.typedObject<Preferences>(
+const preferences = /*#__PURE__*/ l.typedObject<Preferences>(
   $nsid,
   'preferences',
-  l.object({
-    chat: l.ref<ChatPreference>((() => chatPreference) as any),
-    like: l.ref<FilterablePreference>((() => filterablePreference) as any),
-    quote: l.ref<FilterablePreference>((() => filterablePreference) as any),
-    reply: l.ref<FilterablePreference>((() => filterablePreference) as any),
-    follow: l.ref<FilterablePreference>((() => filterablePreference) as any),
-    repost: l.ref<FilterablePreference>((() => filterablePreference) as any),
-    mention: l.ref<FilterablePreference>((() => filterablePreference) as any),
-    verified: l.ref<Preference>((() => preference) as any),
-    unverified: l.ref<Preference>((() => preference) as any),
-    likeViaRepost: l.ref<FilterablePreference>(
+  /*#__PURE__*/ l.object({
+    chat: /*#__PURE__*/ l.ref<ChatPreference>((() => chatPreference) as any),
+    like: /*#__PURE__*/ l.ref<FilterablePreference>(
       (() => filterablePreference) as any,
     ),
-    subscribedPost: l.ref<Preference>((() => preference) as any),
-    repostViaRepost: l.ref<FilterablePreference>(
+    quote: /*#__PURE__*/ l.ref<FilterablePreference>(
       (() => filterablePreference) as any,
     ),
-    starterpackJoined: l.ref<Preference>((() => preference) as any),
+    reply: /*#__PURE__*/ l.ref<FilterablePreference>(
+      (() => filterablePreference) as any,
+    ),
+    follow: /*#__PURE__*/ l.ref<FilterablePreference>(
+      (() => filterablePreference) as any,
+    ),
+    repost: /*#__PURE__*/ l.ref<FilterablePreference>(
+      (() => filterablePreference) as any,
+    ),
+    mention: /*#__PURE__*/ l.ref<FilterablePreference>(
+      (() => filterablePreference) as any,
+    ),
+    verified: /*#__PURE__*/ l.ref<Preference>((() => preference) as any),
+    unverified: /*#__PURE__*/ l.ref<Preference>((() => preference) as any),
+    likeViaRepost: /*#__PURE__*/ l.ref<FilterablePreference>(
+      (() => filterablePreference) as any,
+    ),
+    subscribedPost: /*#__PURE__*/ l.ref<Preference>((() => preference) as any),
+    repostViaRepost: /*#__PURE__*/ l.ref<FilterablePreference>(
+      (() => filterablePreference) as any,
+    ),
+    starterpackJoined: /*#__PURE__*/ l.ref<Preference>(
+      (() => preference) as any,
+    ),
   }),
 )
 
@@ -73,10 +92,10 @@ type RecordDeleted = { $type?: 'app.bsky.notification.defs#recordDeleted' }
 
 export type { RecordDeleted }
 
-const recordDeleted = l.typedObject<RecordDeleted>(
+const recordDeleted = /*#__PURE__*/ l.typedObject<RecordDeleted>(
   $nsid,
   'recordDeleted',
-  l.object({}),
+  /*#__PURE__*/ l.object({}),
 )
 
 export { recordDeleted }
@@ -89,12 +108,12 @@ type ChatPreference = {
 
 export type { ChatPreference }
 
-const chatPreference = l.typedObject<ChatPreference>(
+const chatPreference = /*#__PURE__*/ l.typedObject<ChatPreference>(
   $nsid,
   'chatPreference',
-  l.object({
-    push: l.boolean(),
-    include: l.string<{ knownValues: ['all', 'accepted'] }>(),
+  /*#__PURE__*/ l.object({
+    push: /*#__PURE__*/ l.boolean(),
+    include: /*#__PURE__*/ l.string<{ knownValues: ['all', 'accepted'] }>(),
   }),
 )
 
@@ -108,10 +127,13 @@ type ActivitySubscription = {
 
 export type { ActivitySubscription }
 
-const activitySubscription = l.typedObject<ActivitySubscription>(
+const activitySubscription = /*#__PURE__*/ l.typedObject<ActivitySubscription>(
   $nsid,
   'activitySubscription',
-  l.object({ post: l.boolean(), reply: l.boolean() }),
+  /*#__PURE__*/ l.object({
+    post: /*#__PURE__*/ l.boolean(),
+    reply: /*#__PURE__*/ l.boolean(),
+  }),
 )
 
 export { activitySubscription }
@@ -125,13 +147,13 @@ type FilterablePreference = {
 
 export type { FilterablePreference }
 
-const filterablePreference = l.typedObject<FilterablePreference>(
+const filterablePreference = /*#__PURE__*/ l.typedObject<FilterablePreference>(
   $nsid,
   'filterablePreference',
-  l.object({
-    list: l.boolean(),
-    push: l.boolean(),
-    include: l.string<{ knownValues: ['all', 'follows'] }>(),
+  /*#__PURE__*/ l.object({
+    list: /*#__PURE__*/ l.boolean(),
+    push: /*#__PURE__*/ l.boolean(),
+    include: /*#__PURE__*/ l.string<{ knownValues: ['all', 'follows'] }>(),
   }),
 )
 
@@ -147,15 +169,16 @@ type SubjectActivitySubscription = {
 export type { SubjectActivitySubscription }
 
 /** Object used to store activity subscription data in stash. */
-const subjectActivitySubscription = l.typedObject<SubjectActivitySubscription>(
-  $nsid,
-  'subjectActivitySubscription',
-  l.object({
-    subject: l.string({ format: 'did' }),
-    activitySubscription: l.ref<ActivitySubscription>(
-      (() => activitySubscription) as any,
-    ),
-  }),
-)
+const subjectActivitySubscription =
+  /*#__PURE__*/ l.typedObject<SubjectActivitySubscription>(
+    $nsid,
+    'subjectActivitySubscription',
+    /*#__PURE__*/ l.object({
+      subject: /*#__PURE__*/ l.string({ format: 'did' }),
+      activitySubscription: /*#__PURE__*/ l.ref<ActivitySubscription>(
+        (() => activitySubscription) as any,
+      ),
+    }),
+  )
 
 export { subjectActivitySubscription }

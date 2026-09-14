@@ -3,4 +3,4 @@
  */
 
 export * from './bskyPost.defs.js'
-export * as $defs from './bskyPost.defs.js'
+export { main as default } from './bskyPost.defs.js'

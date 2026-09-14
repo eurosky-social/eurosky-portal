@@ -3,4 +3,4 @@
  */
 
 export * from './canvas.defs.js'
-export * as $defs from './canvas.defs.js'
+export { main as default } from './canvas.defs.js'

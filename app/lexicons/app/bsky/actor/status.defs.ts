@@ -7,17 +7,22 @@ import * as EmbedExternal from '../embed/external.defs.js'
 
 const $nsid = 'app.bsky.actor.status'
 
+type $nsid = typeof $nsid
+
 export { $nsid }
 
 /** Advertises an account as currently offering live content. */
-type Live = 'app.bsky.actor.status#live'
-
-export type { Live }
-
-/** Advertises an account as currently offering live content. */
-const live = l.token($nsid, 'live')
+const live = /*#__PURE__*/ l.token($nsid, 'live')
 
 export { live }
+
+/** Advertises an account as currently offering live content. */
+const Live = /*#__PURE__*/ live.value
+
+/** Advertises an account as currently offering live content. */
+type Live = typeof Live
+
+export { Live }
 
 /** A declaration of a Bluesky account status. */
 type Main = {
@@ -43,33 +48,46 @@ type Main = {
 export type { Main }
 
 /** A declaration of a Bluesky account status. */
-const main = l.record<'literal:self', Main>(
+const main = /*#__PURE__*/ l.record<'literal:self', Main>(
   'literal:self',
   $nsid,
-  l.object({
-    embed: l.optional(
-      l.typedUnion(
-        [l.typedRef<EmbedExternal.Main>((() => EmbedExternal.main) as any)],
+  /*#__PURE__*/ l.object({
+    embed: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.typedUnion(
+        [
+          /*#__PURE__*/ l.typedRef<EmbedExternal.Main>(
+            (() => EmbedExternal.main) as any,
+          ),
+        ],
         false,
       ),
     ),
-    status: l.string<{ knownValues: ['app.bsky.actor.status#live'] }>(),
-    createdAt: l.string({ format: 'datetime' }),
-    durationMinutes: l.optional(l.integer({ minimum: 1 })),
+    status: /*#__PURE__*/ l.string<{
+      knownValues: ['app.bsky.actor.status#live']
+    }>(),
+    createdAt: /*#__PURE__*/ l.string({ format: 'datetime' }),
+    durationMinutes: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.integer({ minimum: 1 }),
+    ),
   }),
 )
 
 export { main }
 
-export const $isTypeOf = /*#__PURE__*/ main.isTypeOf.bind(main),
-  $build = /*#__PURE__*/ main.build.bind(main),
-  $type = /*#__PURE__*/ main.$type
-export const $assert = /*#__PURE__*/ main.assert.bind(main),
-  $check = /*#__PURE__*/ main.check.bind(main),
-  $cast = /*#__PURE__*/ main.cast.bind(main),
-  $ifMatches = /*#__PURE__*/ main.ifMatches.bind(main),
-  $matches = /*#__PURE__*/ main.matches.bind(main),
-  $parse = /*#__PURE__*/ main.parse.bind(main),
-  $safeParse = /*#__PURE__*/ main.safeParse.bind(main),
-  $validate = /*#__PURE__*/ main.validate.bind(main),
-  $safeValidate = /*#__PURE__*/ main.safeValidate.bind(main)
+const $type = $nsid
+
+type $type = typeof $type
+
+export { $type }
+
+export const $isTypeOf = /*#__PURE__*/ main.isTypeOf.bind(main)
+export const $build = /*#__PURE__*/ main.build.bind(main)
+export const $assert = /*#__PURE__*/ main.assert.bind(main)
+export const $check = /*#__PURE__*/ main.check.bind(main)
+export const $cast = /*#__PURE__*/ main.cast.bind(main)
+export const $ifMatches = /*#__PURE__*/ main.ifMatches.bind(main)
+export const $matches = /*#__PURE__*/ main.matches.bind(main)
+export const $parse = /*#__PURE__*/ main.parse.bind(main)
+export const $safeParse = /*#__PURE__*/ main.safeParse.bind(main)
+export const $validate = /*#__PURE__*/ main.validate.bind(main)
+export const $safeValidate = /*#__PURE__*/ main.safeValidate.bind(main)

@@ -3,4 +3,4 @@
  */
 
 export * from './horizontalRule.defs.js'
-export * as $defs from './horizontalRule.defs.js'
+export { main as default } from './horizontalRule.defs.js'

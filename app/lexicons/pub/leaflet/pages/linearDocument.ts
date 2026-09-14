@@ -3,4 +3,4 @@
  */
 
 export * from './linearDocument.defs.js'
-export * as $defs from './linearDocument.defs.js'
+export { main as default } from './linearDocument.defs.js'

@@ -3,4 +3,4 @@
  */
 
 export * from './content.defs.js'
-export * as $defs from './content.defs.js'
+export { main as default } from './content.defs.js'

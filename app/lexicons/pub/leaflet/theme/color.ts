@@ -3,4 +3,3 @@
  */
 
 export * from './color.defs.js'
-export * as $defs from './color.defs.js'

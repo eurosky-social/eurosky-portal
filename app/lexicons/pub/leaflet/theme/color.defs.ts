@@ -6,6 +6,8 @@ import { l } from '@atproto/lex'
 
 const $nsid = 'pub.leaflet.theme.color'
 
+type $nsid = typeof $nsid
+
 export { $nsid }
 
 type Rgb = {
@@ -17,13 +19,13 @@ type Rgb = {
 
 export type { Rgb }
 
-const rgb = l.typedObject<Rgb>(
+const rgb = /*#__PURE__*/ l.typedObject<Rgb>(
   $nsid,
   'rgb',
-  l.object({
-    b: l.integer({ maximum: 255, minimum: 0 }),
-    g: l.integer({ maximum: 255, minimum: 0 }),
-    r: l.integer({ maximum: 255, minimum: 0 }),
+  /*#__PURE__*/ l.object({
+    b: /*#__PURE__*/ l.integer({ maximum: 255, minimum: 0 }),
+    g: /*#__PURE__*/ l.integer({ maximum: 255, minimum: 0 }),
+    r: /*#__PURE__*/ l.integer({ maximum: 255, minimum: 0 }),
   }),
 )
 
@@ -39,14 +41,14 @@ type Rgba = {
 
 export type { Rgba }
 
-const rgba = l.typedObject<Rgba>(
+const rgba = /*#__PURE__*/ l.typedObject<Rgba>(
   $nsid,
   'rgba',
-  l.object({
-    a: l.integer({ maximum: 100, minimum: 0 }),
-    b: l.integer({ maximum: 255, minimum: 0 }),
-    g: l.integer({ maximum: 255, minimum: 0 }),
-    r: l.integer({ maximum: 255, minimum: 0 }),
+  /*#__PURE__*/ l.object({
+    a: /*#__PURE__*/ l.integer({ maximum: 100, minimum: 0 }),
+    b: /*#__PURE__*/ l.integer({ maximum: 255, minimum: 0 }),
+    g: /*#__PURE__*/ l.integer({ maximum: 255, minimum: 0 }),
+    r: /*#__PURE__*/ l.integer({ maximum: 255, minimum: 0 }),
   }),
 )
 

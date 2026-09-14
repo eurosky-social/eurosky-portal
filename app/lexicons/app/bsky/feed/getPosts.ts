@@ -3,4 +3,4 @@
  */
 
 export * from './getPosts.defs.js'
-export * as $defs from './getPosts.defs.js'
+export { main as default } from './getPosts.defs.js'

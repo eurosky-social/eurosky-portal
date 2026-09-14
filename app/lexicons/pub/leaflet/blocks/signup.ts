@@ -3,4 +3,4 @@
  */
 
 export * from './signup.defs.js'
-export * as $defs from './signup.defs.js'
+export { main as default } from './signup.defs.js'

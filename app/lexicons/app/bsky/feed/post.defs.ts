@@ -14,6 +14,8 @@ import * as RepoStrongRef from '../../../com/atproto/repo/strongRef.defs.js'
 
 const $nsid = 'app.bsky.feed.post'
 
+type $nsid = typeof $nsid
+
 export { $nsid }
 
 /** Record containing a Bluesky post. */
@@ -67,60 +69,90 @@ type Main = {
 export type { Main }
 
 /** Record containing a Bluesky post. */
-const main = l.record<'tid', Main>(
+const main = /*#__PURE__*/ l.record<'tid', Main>(
   'tid',
   $nsid,
-  l.object({
-    tags: l.optional(
-      l.array(l.string({ maxLength: 640, maxGraphemes: 64 }), { maxLength: 8 }),
+  /*#__PURE__*/ l.object({
+    tags: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.string({ maxLength: 640, maxGraphemes: 64 }),
+        { maxLength: 8 },
+      ),
     ),
-    text: l.string({ maxLength: 3000, maxGraphemes: 300 }),
-    embed: l.optional(
-      l.typedUnion(
+    text: /*#__PURE__*/ l.string({ maxLength: 3000, maxGraphemes: 300 }),
+    embed: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.typedUnion(
         [
-          l.typedRef<EmbedImages.Main>((() => EmbedImages.main) as any),
-          l.typedRef<EmbedVideo.Main>((() => EmbedVideo.main) as any),
-          l.typedRef<EmbedExternal.Main>((() => EmbedExternal.main) as any),
-          l.typedRef<EmbedRecord.Main>((() => EmbedRecord.main) as any),
-          l.typedRef<EmbedRecordWithMedia.Main>(
+          /*#__PURE__*/ l.typedRef<EmbedImages.Main>(
+            (() => EmbedImages.main) as any,
+          ),
+          /*#__PURE__*/ l.typedRef<EmbedVideo.Main>(
+            (() => EmbedVideo.main) as any,
+          ),
+          /*#__PURE__*/ l.typedRef<EmbedExternal.Main>(
+            (() => EmbedExternal.main) as any,
+          ),
+          /*#__PURE__*/ l.typedRef<EmbedRecord.Main>(
+            (() => EmbedRecord.main) as any,
+          ),
+          /*#__PURE__*/ l.typedRef<EmbedRecordWithMedia.Main>(
             (() => EmbedRecordWithMedia.main) as any,
           ),
         ],
         false,
       ),
     ),
-    langs: l.optional(
-      l.array(l.string({ format: 'language' }), { maxLength: 3 }),
+    langs: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(/*#__PURE__*/ l.string({ format: 'language' }), {
+        maxLength: 3,
+      }),
     ),
-    reply: l.optional(l.ref<ReplyRef>((() => replyRef) as any)),
-    facets: l.optional(
-      l.array(l.ref<RichtextFacet.Main>((() => RichtextFacet.main) as any)),
+    reply: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<ReplyRef>((() => replyRef) as any),
     ),
-    labels: l.optional(
-      l.typedUnion(
-        [l.typedRef<LabelDefs.SelfLabels>((() => LabelDefs.selfLabels) as any)],
+    facets: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<RichtextFacet.Main>(
+          (() => RichtextFacet.main) as any,
+        ),
+      ),
+    ),
+    labels: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.typedUnion(
+        [
+          /*#__PURE__*/ l.typedRef<LabelDefs.SelfLabels>(
+            (() => LabelDefs.selfLabels) as any,
+          ),
+        ],
         false,
       ),
     ),
-    entities: l.optional(l.array(l.ref<Entity>((() => entity) as any))),
-    createdAt: l.string({ format: 'datetime' }),
+    entities: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(/*#__PURE__*/ l.ref<Entity>((() => entity) as any)),
+    ),
+    createdAt: /*#__PURE__*/ l.string({ format: 'datetime' }),
   }),
 )
 
 export { main }
 
-export const $isTypeOf = /*#__PURE__*/ main.isTypeOf.bind(main),
-  $build = /*#__PURE__*/ main.build.bind(main),
-  $type = /*#__PURE__*/ main.$type
-export const $assert = /*#__PURE__*/ main.assert.bind(main),
-  $check = /*#__PURE__*/ main.check.bind(main),
-  $cast = /*#__PURE__*/ main.cast.bind(main),
-  $ifMatches = /*#__PURE__*/ main.ifMatches.bind(main),
-  $matches = /*#__PURE__*/ main.matches.bind(main),
-  $parse = /*#__PURE__*/ main.parse.bind(main),
-  $safeParse = /*#__PURE__*/ main.safeParse.bind(main),
-  $validate = /*#__PURE__*/ main.validate.bind(main),
-  $safeValidate = /*#__PURE__*/ main.safeValidate.bind(main)
+const $type = $nsid
+
+type $type = typeof $type
+
+export { $type }
+
+export const $isTypeOf = /*#__PURE__*/ main.isTypeOf.bind(main)
+export const $build = /*#__PURE__*/ main.build.bind(main)
+export const $assert = /*#__PURE__*/ main.assert.bind(main)
+export const $check = /*#__PURE__*/ main.check.bind(main)
+export const $cast = /*#__PURE__*/ main.cast.bind(main)
+export const $ifMatches = /*#__PURE__*/ main.ifMatches.bind(main)
+export const $matches = /*#__PURE__*/ main.matches.bind(main)
+export const $parse = /*#__PURE__*/ main.parse.bind(main)
+export const $safeParse = /*#__PURE__*/ main.safeParse.bind(main)
+export const $validate = /*#__PURE__*/ main.validate.bind(main)
+export const $safeValidate = /*#__PURE__*/ main.safeValidate.bind(main)
 
 /** @deprecated use facets instead. */
 type Entity = {
@@ -137,13 +169,13 @@ type Entity = {
 export type { Entity }
 
 /** @deprecated use facets instead. */
-const entity = l.typedObject<Entity>(
+const entity = /*#__PURE__*/ l.typedObject<Entity>(
   $nsid,
   'entity',
-  l.object({
-    type: l.string(),
-    index: l.ref<TextSlice>((() => textSlice) as any),
-    value: l.string(),
+  /*#__PURE__*/ l.object({
+    type: /*#__PURE__*/ l.string(),
+    index: /*#__PURE__*/ l.ref<TextSlice>((() => textSlice) as any),
+    value: /*#__PURE__*/ l.string(),
   }),
 )
 
@@ -157,12 +189,16 @@ type ReplyRef = {
 
 export type { ReplyRef }
 
-const replyRef = l.typedObject<ReplyRef>(
+const replyRef = /*#__PURE__*/ l.typedObject<ReplyRef>(
   $nsid,
   'replyRef',
-  l.object({
-    root: l.ref<RepoStrongRef.Main>((() => RepoStrongRef.main) as any),
-    parent: l.ref<RepoStrongRef.Main>((() => RepoStrongRef.main) as any),
+  /*#__PURE__*/ l.object({
+    root: /*#__PURE__*/ l.ref<RepoStrongRef.Main>(
+      (() => RepoStrongRef.main) as any,
+    ),
+    parent: /*#__PURE__*/ l.ref<RepoStrongRef.Main>(
+      (() => RepoStrongRef.main) as any,
+    ),
   }),
 )
 
@@ -184,12 +220,12 @@ export type { TextSlice }
  * A text segment. Start is inclusive, end is exclusive. Indices are for utf16-encoded strings.
  * @deprecated . Use app.bsky.richtext instead
  */
-const textSlice = l.typedObject<TextSlice>(
+const textSlice = /*#__PURE__*/ l.typedObject<TextSlice>(
   $nsid,
   'textSlice',
-  l.object({
-    end: l.integer({ minimum: 0 }),
-    start: l.integer({ minimum: 0 }),
+  /*#__PURE__*/ l.object({
+    end: /*#__PURE__*/ l.integer({ minimum: 0 }),
+    start: /*#__PURE__*/ l.integer({ minimum: 0 }),
   }),
 )
 

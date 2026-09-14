@@ -3,4 +3,4 @@
  */
 
 export * from './math.defs.js'
-export * as $defs from './math.defs.js'
+export { main as default } from './math.defs.js'

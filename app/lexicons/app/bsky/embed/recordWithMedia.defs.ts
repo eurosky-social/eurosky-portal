@@ -10,6 +10,8 @@ import * as EmbedRecord from './record.defs.js'
 
 const $nsid = 'app.bsky.embed.recordWithMedia'
 
+type $nsid = typeof $nsid
+
 export { $nsid }
 
 type Main = {
@@ -24,36 +26,49 @@ type Main = {
 
 export type { Main }
 
-const main = l.typedObject<Main>(
+const main = /*#__PURE__*/ l.typedObject<Main>(
   $nsid,
   'main',
-  l.object({
-    media: l.typedUnion(
+  /*#__PURE__*/ l.object({
+    media: /*#__PURE__*/ l.typedUnion(
       [
-        l.typedRef<EmbedImages.Main>((() => EmbedImages.main) as any),
-        l.typedRef<EmbedVideo.Main>((() => EmbedVideo.main) as any),
-        l.typedRef<EmbedExternal.Main>((() => EmbedExternal.main) as any),
+        /*#__PURE__*/ l.typedRef<EmbedImages.Main>(
+          (() => EmbedImages.main) as any,
+        ),
+        /*#__PURE__*/ l.typedRef<EmbedVideo.Main>(
+          (() => EmbedVideo.main) as any,
+        ),
+        /*#__PURE__*/ l.typedRef<EmbedExternal.Main>(
+          (() => EmbedExternal.main) as any,
+        ),
       ],
       false,
     ),
-    record: l.ref<EmbedRecord.Main>((() => EmbedRecord.main) as any),
+    record: /*#__PURE__*/ l.ref<EmbedRecord.Main>(
+      (() => EmbedRecord.main) as any,
+    ),
   }),
 )
 
 export { main }
 
-export const $isTypeOf = /*#__PURE__*/ main.isTypeOf.bind(main),
-  $build = /*#__PURE__*/ main.build.bind(main),
-  $type = /*#__PURE__*/ main.$type
-export const $assert = /*#__PURE__*/ main.assert.bind(main),
-  $check = /*#__PURE__*/ main.check.bind(main),
-  $cast = /*#__PURE__*/ main.cast.bind(main),
-  $ifMatches = /*#__PURE__*/ main.ifMatches.bind(main),
-  $matches = /*#__PURE__*/ main.matches.bind(main),
-  $parse = /*#__PURE__*/ main.parse.bind(main),
-  $safeParse = /*#__PURE__*/ main.safeParse.bind(main),
-  $validate = /*#__PURE__*/ main.validate.bind(main),
-  $safeValidate = /*#__PURE__*/ main.safeValidate.bind(main)
+const $type = $nsid
+
+type $type = typeof $type
+
+export { $type }
+
+export const $isTypeOf = /*#__PURE__*/ main.isTypeOf.bind(main)
+export const $build = /*#__PURE__*/ main.build.bind(main)
+export const $assert = /*#__PURE__*/ main.assert.bind(main)
+export const $check = /*#__PURE__*/ main.check.bind(main)
+export const $cast = /*#__PURE__*/ main.cast.bind(main)
+export const $ifMatches = /*#__PURE__*/ main.ifMatches.bind(main)
+export const $matches = /*#__PURE__*/ main.matches.bind(main)
+export const $parse = /*#__PURE__*/ main.parse.bind(main)
+export const $safeParse = /*#__PURE__*/ main.safeParse.bind(main)
+export const $validate = /*#__PURE__*/ main.validate.bind(main)
+export const $safeValidate = /*#__PURE__*/ main.safeValidate.bind(main)
 
 type View = {
   $type?: 'app.bsky.embed.recordWithMedia#view'
@@ -67,19 +82,27 @@ type View = {
 
 export type { View }
 
-const view = l.typedObject<View>(
+const view = /*#__PURE__*/ l.typedObject<View>(
   $nsid,
   'view',
-  l.object({
-    media: l.typedUnion(
+  /*#__PURE__*/ l.object({
+    media: /*#__PURE__*/ l.typedUnion(
       [
-        l.typedRef<EmbedImages.View>((() => EmbedImages.view) as any),
-        l.typedRef<EmbedVideo.View>((() => EmbedVideo.view) as any),
-        l.typedRef<EmbedExternal.View>((() => EmbedExternal.view) as any),
+        /*#__PURE__*/ l.typedRef<EmbedImages.View>(
+          (() => EmbedImages.view) as any,
+        ),
+        /*#__PURE__*/ l.typedRef<EmbedVideo.View>(
+          (() => EmbedVideo.view) as any,
+        ),
+        /*#__PURE__*/ l.typedRef<EmbedExternal.View>(
+          (() => EmbedExternal.view) as any,
+        ),
       ],
       false,
     ),
-    record: l.ref<EmbedRecord.View>((() => EmbedRecord.view) as any),
+    record: /*#__PURE__*/ l.ref<EmbedRecord.View>(
+      (() => EmbedRecord.view) as any,
+    ),
   }),
 )
 

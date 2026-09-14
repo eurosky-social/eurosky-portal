@@ -10,17 +10,22 @@ import * as FeedDefs from '../feed/defs.defs.js'
 
 const $nsid = 'app.bsky.graph.defs'
 
+type $nsid = typeof $nsid
+
 export { $nsid }
 
 /** A list of actors to apply an aggregate moderation action (mute/block) on. */
-type Modlist = 'app.bsky.graph.defs#modlist'
-
-export type { Modlist }
-
-/** A list of actors to apply an aggregate moderation action (mute/block) on. */
-const modlist = l.token($nsid, 'modlist')
+const modlist = /*#__PURE__*/ l.token($nsid, 'modlist')
 
 export { modlist }
+
+/** A list of actors to apply an aggregate moderation action (mute/block) on. */
+const Modlist = /*#__PURE__*/ modlist.value
+
+/** A list of actors to apply an aggregate moderation action (mute/block) on. */
+type Modlist = typeof Modlist
+
+export { Modlist }
 
 type ListView = {
   $type?: 'app.bsky.graph.defs#listView'
@@ -40,25 +45,39 @@ type ListView = {
 
 export type { ListView }
 
-const listView = l.typedObject<ListView>(
+const listView = /*#__PURE__*/ l.typedObject<ListView>(
   $nsid,
   'listView',
-  l.object({
-    cid: l.string({ format: 'cid' }),
-    uri: l.string({ format: 'at-uri' }),
-    name: l.string({ maxLength: 64, minLength: 1 }),
-    avatar: l.optional(l.string({ format: 'uri' })),
-    labels: l.optional(
-      l.array(l.ref<LabelDefs.Label>((() => LabelDefs.label) as any)),
+  /*#__PURE__*/ l.object({
+    cid: /*#__PURE__*/ l.string({ format: 'cid' }),
+    uri: /*#__PURE__*/ l.string({ format: 'at-uri' }),
+    name: /*#__PURE__*/ l.string({ maxLength: 64, minLength: 1 }),
+    avatar: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'uri' })),
+    labels: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any),
+      ),
     ),
-    viewer: l.optional(l.ref<ListViewerState>((() => listViewerState) as any)),
-    creator: l.ref<ActorDefs.ProfileView>((() => ActorDefs.profileView) as any),
-    purpose: l.ref<ListPurpose>((() => listPurpose) as any),
-    indexedAt: l.string({ format: 'datetime' }),
-    description: l.optional(l.string({ maxLength: 3000, maxGraphemes: 300 })),
-    listItemCount: l.optional(l.integer({ minimum: 0 })),
-    descriptionFacets: l.optional(
-      l.array(l.ref<RichtextFacet.Main>((() => RichtextFacet.main) as any)),
+    viewer: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<ListViewerState>((() => listViewerState) as any),
+    ),
+    creator: /*#__PURE__*/ l.ref<ActorDefs.ProfileView>(
+      (() => ActorDefs.profileView) as any,
+    ),
+    purpose: /*#__PURE__*/ l.ref<ListPurpose>((() => listPurpose) as any),
+    indexedAt: /*#__PURE__*/ l.string({ format: 'datetime' }),
+    description: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ maxLength: 3000, maxGraphemes: 300 }),
+    ),
+    listItemCount: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.integer({ minimum: 0 }),
+    ),
+    descriptionFacets: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<RichtextFacet.Main>(
+          (() => RichtextFacet.main) as any,
+        ),
+      ),
     ),
   }),
 )
@@ -66,14 +85,17 @@ const listView = l.typedObject<ListView>(
 export { listView }
 
 /** A list of actors used for curation purposes such as list feeds or interaction gating. */
-type Curatelist = 'app.bsky.graph.defs#curatelist'
-
-export type { Curatelist }
-
-/** A list of actors used for curation purposes such as list feeds or interaction gating. */
-const curatelist = l.token($nsid, 'curatelist')
+const curatelist = /*#__PURE__*/ l.token($nsid, 'curatelist')
 
 export { curatelist }
+
+/** A list of actors used for curation purposes such as list feeds or interaction gating. */
+const Curatelist = /*#__PURE__*/ curatelist.value
+
+/** A list of actors used for curation purposes such as list feeds or interaction gating. */
+type Curatelist = typeof Curatelist
+
+export { Curatelist }
 
 type ListPurpose =
   | 'app.bsky.graph.defs#modlist'
@@ -83,7 +105,7 @@ type ListPurpose =
 
 export type { ListPurpose }
 
-const listPurpose = l.string<{
+const listPurpose = /*#__PURE__*/ l.string<{
   knownValues: [
     'app.bsky.graph.defs#modlist',
     'app.bsky.graph.defs#curatelist',
@@ -101,12 +123,14 @@ type ListItemView = {
 
 export type { ListItemView }
 
-const listItemView = l.typedObject<ListItemView>(
+const listItemView = /*#__PURE__*/ l.typedObject<ListItemView>(
   $nsid,
   'listItemView',
-  l.object({
-    uri: l.string({ format: 'at-uri' }),
-    subject: l.ref<ActorDefs.ProfileView>((() => ActorDefs.profileView) as any),
+  /*#__PURE__*/ l.object({
+    uri: /*#__PURE__*/ l.string({ format: 'at-uri' }),
+    subject: /*#__PURE__*/ l.ref<ActorDefs.ProfileView>(
+      (() => ActorDefs.profileView) as any,
+    ),
   }),
 )
 
@@ -151,17 +175,29 @@ type Relationship = {
 export type { Relationship }
 
 /** lists the bi-directional graph relationships between one actor (not indicated in the object), and the target actors (the DID included in the object) */
-const relationship = l.typedObject<Relationship>(
+const relationship = /*#__PURE__*/ l.typedObject<Relationship>(
   $nsid,
   'relationship',
-  l.object({
-    did: l.string({ format: 'did' }),
-    blocking: l.optional(l.string({ format: 'at-uri' })),
-    blockedBy: l.optional(l.string({ format: 'at-uri' })),
-    following: l.optional(l.string({ format: 'at-uri' })),
-    followedBy: l.optional(l.string({ format: 'at-uri' })),
-    blockedByList: l.optional(l.string({ format: 'at-uri' })),
-    blockingByList: l.optional(l.string({ format: 'at-uri' })),
+  /*#__PURE__*/ l.object({
+    did: /*#__PURE__*/ l.string({ format: 'did' }),
+    blocking: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'at-uri' }),
+    ),
+    blockedBy: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'at-uri' }),
+    ),
+    following: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'at-uri' }),
+    ),
+    followedBy: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'at-uri' }),
+    ),
+    blockedByList: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'at-uri' }),
+    ),
+    blockingByList: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'at-uri' }),
+    ),
   }),
 )
 
@@ -182,21 +218,29 @@ type ListViewBasic = {
 
 export type { ListViewBasic }
 
-const listViewBasic = l.typedObject<ListViewBasic>(
+const listViewBasic = /*#__PURE__*/ l.typedObject<ListViewBasic>(
   $nsid,
   'listViewBasic',
-  l.object({
-    cid: l.string({ format: 'cid' }),
-    uri: l.string({ format: 'at-uri' }),
-    name: l.string({ maxLength: 64, minLength: 1 }),
-    avatar: l.optional(l.string({ format: 'uri' })),
-    labels: l.optional(
-      l.array(l.ref<LabelDefs.Label>((() => LabelDefs.label) as any)),
+  /*#__PURE__*/ l.object({
+    cid: /*#__PURE__*/ l.string({ format: 'cid' }),
+    uri: /*#__PURE__*/ l.string({ format: 'at-uri' }),
+    name: /*#__PURE__*/ l.string({ maxLength: 64, minLength: 1 }),
+    avatar: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'uri' })),
+    labels: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any),
+      ),
     ),
-    viewer: l.optional(l.ref<ListViewerState>((() => listViewerState) as any)),
-    purpose: l.ref<ListPurpose>((() => listPurpose) as any),
-    indexedAt: l.optional(l.string({ format: 'datetime' })),
-    listItemCount: l.optional(l.integer({ minimum: 0 })),
+    viewer: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<ListViewerState>((() => listViewerState) as any),
+    ),
+    purpose: /*#__PURE__*/ l.ref<ListPurpose>((() => listPurpose) as any),
+    indexedAt: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'datetime' }),
+    ),
+    listItemCount: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.integer({ minimum: 0 }),
+    ),
   }),
 )
 
@@ -212,26 +256,29 @@ type NotFoundActor = {
 export type { NotFoundActor }
 
 /** indicates that a handle or DID could not be resolved */
-const notFoundActor = l.typedObject<NotFoundActor>(
+const notFoundActor = /*#__PURE__*/ l.typedObject<NotFoundActor>(
   $nsid,
   'notFoundActor',
-  l.object({
-    actor: l.string({ format: 'at-identifier' }),
-    notFound: l.literal(true),
+  /*#__PURE__*/ l.object({
+    actor: /*#__PURE__*/ l.string({ format: 'at-identifier' }),
+    notFound: /*#__PURE__*/ l.literal(true),
   }),
 )
 
 export { notFoundActor }
 
 /** A list of actors used for only for reference purposes such as within a starter pack. */
-type Referencelist = 'app.bsky.graph.defs#referencelist'
-
-export type { Referencelist }
-
-/** A list of actors used for only for reference purposes such as within a starter pack. */
-const referencelist = l.token($nsid, 'referencelist')
+const referencelist = /*#__PURE__*/ l.token($nsid, 'referencelist')
 
 export { referencelist }
+
+/** A list of actors used for only for reference purposes such as within a starter pack. */
+const Referencelist = /*#__PURE__*/ referencelist.value
+
+/** A list of actors used for only for reference purposes such as within a starter pack. */
+type Referencelist = typeof Referencelist
+
+export { Referencelist }
 
 type ListViewerState = {
   $type?: 'app.bsky.graph.defs#listViewerState'
@@ -241,12 +288,14 @@ type ListViewerState = {
 
 export type { ListViewerState }
 
-const listViewerState = l.typedObject<ListViewerState>(
+const listViewerState = /*#__PURE__*/ l.typedObject<ListViewerState>(
   $nsid,
   'listViewerState',
-  l.object({
-    muted: l.optional(l.boolean()),
-    blocked: l.optional(l.string({ format: 'at-uri' })),
+  /*#__PURE__*/ l.object({
+    muted: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
+    blocked: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'at-uri' }),
+    ),
   }),
 )
 
@@ -269,34 +318,45 @@ type StarterPackView = {
 
 export type { StarterPackView }
 
-const starterPackView = l.typedObject<StarterPackView>(
+const starterPackView = /*#__PURE__*/ l.typedObject<StarterPackView>(
   $nsid,
   'starterPackView',
-  l.object({
-    cid: l.string({ format: 'cid' }),
-    uri: l.string({ format: 'at-uri' }),
-    list: l.optional(l.ref<ListViewBasic>((() => listViewBasic) as any)),
-    feeds: l.optional(
-      l.array(
-        l.ref<FeedDefs.GeneratorView>((() => FeedDefs.generatorView) as any),
+  /*#__PURE__*/ l.object({
+    cid: /*#__PURE__*/ l.string({ format: 'cid' }),
+    uri: /*#__PURE__*/ l.string({ format: 'at-uri' }),
+    list: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<ListViewBasic>((() => listViewBasic) as any),
+    ),
+    feeds: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<FeedDefs.GeneratorView>(
+          (() => FeedDefs.generatorView) as any,
+        ),
         { maxLength: 3 },
       ),
     ),
-    labels: l.optional(
-      l.array(l.ref<LabelDefs.Label>((() => LabelDefs.label) as any)),
+    labels: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any),
+      ),
     ),
-    record: l.lexMap(),
-    creator: l.ref<ActorDefs.ProfileViewBasic>(
+    record: /*#__PURE__*/ l.lexMap(),
+    creator: /*#__PURE__*/ l.ref<ActorDefs.ProfileViewBasic>(
       (() => ActorDefs.profileViewBasic) as any,
     ),
-    indexedAt: l.string({ format: 'datetime' }),
-    joinedWeekCount: l.optional(l.integer({ minimum: 0 })),
-    listItemsSample: l.optional(
-      l.array(l.ref<ListItemView>((() => listItemView) as any), {
-        maxLength: 12,
-      }),
+    indexedAt: /*#__PURE__*/ l.string({ format: 'datetime' }),
+    joinedWeekCount: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.integer({ minimum: 0 }),
     ),
-    joinedAllTimeCount: l.optional(l.integer({ minimum: 0 })),
+    listItemsSample: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<ListItemView>((() => listItemView) as any),
+        { maxLength: 12 },
+      ),
+    ),
+    joinedAllTimeCount: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.integer({ minimum: 0 }),
+    ),
   }),
 )
 
@@ -317,23 +377,31 @@ type StarterPackViewBasic = {
 
 export type { StarterPackViewBasic }
 
-const starterPackViewBasic = l.typedObject<StarterPackViewBasic>(
+const starterPackViewBasic = /*#__PURE__*/ l.typedObject<StarterPackViewBasic>(
   $nsid,
   'starterPackViewBasic',
-  l.object({
-    cid: l.string({ format: 'cid' }),
-    uri: l.string({ format: 'at-uri' }),
-    labels: l.optional(
-      l.array(l.ref<LabelDefs.Label>((() => LabelDefs.label) as any)),
+  /*#__PURE__*/ l.object({
+    cid: /*#__PURE__*/ l.string({ format: 'cid' }),
+    uri: /*#__PURE__*/ l.string({ format: 'at-uri' }),
+    labels: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any),
+      ),
     ),
-    record: l.lexMap(),
-    creator: l.ref<ActorDefs.ProfileViewBasic>(
+    record: /*#__PURE__*/ l.lexMap(),
+    creator: /*#__PURE__*/ l.ref<ActorDefs.ProfileViewBasic>(
       (() => ActorDefs.profileViewBasic) as any,
     ),
-    indexedAt: l.string({ format: 'datetime' }),
-    listItemCount: l.optional(l.integer({ minimum: 0 })),
-    joinedWeekCount: l.optional(l.integer({ minimum: 0 })),
-    joinedAllTimeCount: l.optional(l.integer({ minimum: 0 })),
+    indexedAt: /*#__PURE__*/ l.string({ format: 'datetime' }),
+    listItemCount: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.integer({ minimum: 0 }),
+    ),
+    joinedWeekCount: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.integer({ minimum: 0 }),
+    ),
+    joinedAllTimeCount: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.integer({ minimum: 0 }),
+    ),
   }),
 )
 

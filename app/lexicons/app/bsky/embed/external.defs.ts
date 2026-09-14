@@ -6,6 +6,8 @@ import { l } from '@atproto/lex'
 
 const $nsid = 'app.bsky.embed.external'
 
+type $nsid = typeof $nsid
+
 export { $nsid }
 
 /** A representation of some externally linked content (eg, a URL and 'card'), embedded in a Bluesky record (eg, a post). */
@@ -14,35 +16,44 @@ type Main = { $type?: 'app.bsky.embed.external'; external: External }
 export type { Main }
 
 /** A representation of some externally linked content (eg, a URL and 'card'), embedded in a Bluesky record (eg, a post). */
-const main = l.typedObject<Main>(
+const main = /*#__PURE__*/ l.typedObject<Main>(
   $nsid,
   'main',
-  l.object({ external: l.ref<External>((() => external) as any) }),
+  /*#__PURE__*/ l.object({
+    external: /*#__PURE__*/ l.ref<External>((() => external) as any),
+  }),
 )
 
 export { main }
 
-export const $isTypeOf = /*#__PURE__*/ main.isTypeOf.bind(main),
-  $build = /*#__PURE__*/ main.build.bind(main),
-  $type = /*#__PURE__*/ main.$type
-export const $assert = /*#__PURE__*/ main.assert.bind(main),
-  $check = /*#__PURE__*/ main.check.bind(main),
-  $cast = /*#__PURE__*/ main.cast.bind(main),
-  $ifMatches = /*#__PURE__*/ main.ifMatches.bind(main),
-  $matches = /*#__PURE__*/ main.matches.bind(main),
-  $parse = /*#__PURE__*/ main.parse.bind(main),
-  $safeParse = /*#__PURE__*/ main.safeParse.bind(main),
-  $validate = /*#__PURE__*/ main.validate.bind(main),
-  $safeValidate = /*#__PURE__*/ main.safeValidate.bind(main)
+const $type = $nsid
+
+type $type = typeof $type
+
+export { $type }
+
+export const $isTypeOf = /*#__PURE__*/ main.isTypeOf.bind(main)
+export const $build = /*#__PURE__*/ main.build.bind(main)
+export const $assert = /*#__PURE__*/ main.assert.bind(main)
+export const $check = /*#__PURE__*/ main.check.bind(main)
+export const $cast = /*#__PURE__*/ main.cast.bind(main)
+export const $ifMatches = /*#__PURE__*/ main.ifMatches.bind(main)
+export const $matches = /*#__PURE__*/ main.matches.bind(main)
+export const $parse = /*#__PURE__*/ main.parse.bind(main)
+export const $safeParse = /*#__PURE__*/ main.safeParse.bind(main)
+export const $validate = /*#__PURE__*/ main.validate.bind(main)
+export const $safeValidate = /*#__PURE__*/ main.safeValidate.bind(main)
 
 type View = { $type?: 'app.bsky.embed.external#view'; external: ViewExternal }
 
 export type { View }
 
-const view = l.typedObject<View>(
+const view = /*#__PURE__*/ l.typedObject<View>(
   $nsid,
   'view',
-  l.object({ external: l.ref<ViewExternal>((() => viewExternal) as any) }),
+  /*#__PURE__*/ l.object({
+    external: /*#__PURE__*/ l.ref<ViewExternal>((() => viewExternal) as any),
+  }),
 )
 
 export { view }
@@ -57,14 +68,16 @@ type External = {
 
 export type { External }
 
-const external = l.typedObject<External>(
+const external = /*#__PURE__*/ l.typedObject<External>(
   $nsid,
   'external',
-  l.object({
-    uri: l.string({ format: 'uri' }),
-    thumb: l.optional(l.blob({ accept: ['image/*'], maxSize: 1000000 })),
-    title: l.string(),
-    description: l.string(),
+  /*#__PURE__*/ l.object({
+    uri: /*#__PURE__*/ l.string({ format: 'uri' }),
+    thumb: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.blob({ accept: ['image/*'], maxSize: 1000000 }),
+    ),
+    title: /*#__PURE__*/ l.string(),
+    description: /*#__PURE__*/ l.string(),
   }),
 )
 
@@ -80,14 +93,14 @@ type ViewExternal = {
 
 export type { ViewExternal }
 
-const viewExternal = l.typedObject<ViewExternal>(
+const viewExternal = /*#__PURE__*/ l.typedObject<ViewExternal>(
   $nsid,
   'viewExternal',
-  l.object({
-    uri: l.string({ format: 'uri' }),
-    thumb: l.optional(l.string({ format: 'uri' })),
-    title: l.string(),
-    description: l.string(),
+  /*#__PURE__*/ l.object({
+    uri: /*#__PURE__*/ l.string({ format: 'uri' }),
+    thumb: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'uri' })),
+    title: /*#__PURE__*/ l.string(),
+    description: /*#__PURE__*/ l.string(),
   }),
 )
 

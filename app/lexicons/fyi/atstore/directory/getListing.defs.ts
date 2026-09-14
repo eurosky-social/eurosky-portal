@@ -6,33 +6,48 @@ import { l } from '@atproto/lex'
 
 const $nsid = 'fyi.atstore.directory.getListing'
 
+type $nsid = typeof $nsid
+
 export { $nsid }
 
-/** Fetch one public verified listing. Provide exactly one of `uri` (fyi.atstore.listing.detail AT URI) or `externalUrl` (unique storefront URL); `externalUrl` uses the same matching rules as the former resolve endpoint. */
-const main = l.query(
-  $nsid,
-  l.params({
-    uri: l.optional(l.string({ format: 'at-uri', maxLength: 2560 })),
-    externalUrl: l.optional(l.string({ maxLength: 2048 })),
-  }),
-  l.payload(
-    'application/json',
-    l.ref<ListingDetailResponse>((() => listingDetailResponse) as any),
+export const $params = /*#__PURE__*/ l.params({
+  uri: /*#__PURE__*/ l.optional(
+    /*#__PURE__*/ l.string({ format: 'at-uri', maxLength: 2560 }),
   ),
-  ['ListingNotFound', 'InvalidParams', 'AmbiguousResolution'],
-)
-export { main }
+  externalUrl: /*#__PURE__*/ l.optional(
+    /*#__PURE__*/ l.string({ maxLength: 2048 }),
+  ),
+})
 
-export type $Params = l.InferMethodParams<typeof main>
-export type $Output<B = l.BinaryData> = l.InferMethodOutput<typeof main, B>
-export type $OutputBody<B = l.BinaryData> = l.InferMethodOutputBody<
-  typeof main,
+export type $Params = l.InferOutput<typeof $params>
+
+export const $output = /*#__PURE__*/ l.payload(
+  'application/json',
+  /*#__PURE__*/ l.ref<ListingDetailResponse>(
+    (() => listingDetailResponse) as any,
+  ),
+)
+
+export type $Output<B = l.BinaryData> = l.InferPayload<typeof $output, B>
+export type $OutputBody<B = l.BinaryData> = l.InferPayloadBody<
+  typeof $output,
   B
 >
 
-export const $lxm = main.nsid,
-  $params = main.parameters,
-  $output = main.output
+/** Fetch one public verified listing. Provide exactly one of `uri` (fyi.atstore.listing.detail AT URI) or `externalUrl` (unique storefront URL); `externalUrl` uses the same matching rules as the former resolve endpoint. */
+const main = /*#__PURE__*/ l.query($nsid, $params, $output, [
+  'ListingNotFound',
+  'InvalidParams',
+  'AmbiguousResolution',
+])
+
+export { main }
+
+const $lxm = $nsid
+
+type $lxm = typeof $lxm
+
+export { $lxm }
 
 type ListingCardGet = {
   $type?: 'fyi.atstore.directory.getListing#listingCardGet'
@@ -59,28 +74,38 @@ type ListingCardGet = {
 
 export type { ListingCardGet }
 
-const listingCardGet = l.typedObject<ListingCardGet>(
+const listingCardGet = /*#__PURE__*/ l.typedObject<ListingCardGet>(
   $nsid,
   'listingCardGet',
-  l.object({
-    uri: l.string({ format: 'at-uri', maxLength: 2560 }),
-    name: l.string({ maxLength: 640 }),
-    accent: l.string<{
+  /*#__PURE__*/ l.object({
+    uri: /*#__PURE__*/ l.string({ format: 'at-uri', maxLength: 2560 }),
+    name: /*#__PURE__*/ l.string({ maxLength: 640 }),
+    accent: /*#__PURE__*/ l.string<{
       maxLength: 16
       knownValues: ['blue', 'pink', 'purple', 'green']
     }>({ maxLength: 16 }),
-    rating: l.nullable(l.string({ maxLength: 16 })),
-    appTags: l.array(l.string({ maxLength: 256 })),
-    iconUrl: l.nullable(l.string({ maxLength: 8192 })),
-    tagline: l.string({ maxLength: 2000 }),
-    category: l.string({ maxLength: 640 }),
-    priceLabel: l.string({ maxLength: 32 }),
-    description: l.string({ maxLength: 20000 }),
-    reviewCount: l.integer(),
-    categorySlug: l.nullable(l.string({ maxLength: 512 })),
-    heroImageUrl: l.nullable(l.string({ maxLength: 8192 })),
-    categorySlugs: l.array(l.string({ maxLength: 512 })),
-    productAccountHandle: l.nullable(l.string({ maxLength: 512 })),
+    rating: /*#__PURE__*/ l.nullable(/*#__PURE__*/ l.string({ maxLength: 16 })),
+    appTags: /*#__PURE__*/ l.array(/*#__PURE__*/ l.string({ maxLength: 256 })),
+    iconUrl: /*#__PURE__*/ l.nullable(
+      /*#__PURE__*/ l.string({ maxLength: 8192 }),
+    ),
+    tagline: /*#__PURE__*/ l.string({ maxLength: 2000 }),
+    category: /*#__PURE__*/ l.string({ maxLength: 640 }),
+    priceLabel: /*#__PURE__*/ l.string({ maxLength: 32 }),
+    description: /*#__PURE__*/ l.string({ maxLength: 20000 }),
+    reviewCount: /*#__PURE__*/ l.integer(),
+    categorySlug: /*#__PURE__*/ l.nullable(
+      /*#__PURE__*/ l.string({ maxLength: 512 }),
+    ),
+    heroImageUrl: /*#__PURE__*/ l.nullable(
+      /*#__PURE__*/ l.string({ maxLength: 8192 }),
+    ),
+    categorySlugs: /*#__PURE__*/ l.array(
+      /*#__PURE__*/ l.string({ maxLength: 512 }),
+    ),
+    productAccountHandle: /*#__PURE__*/ l.nullable(
+      /*#__PURE__*/ l.string({ maxLength: 512 }),
+    ),
   }),
 )
 
@@ -94,12 +119,12 @@ type ListingLinkRow = {
 
 export type { ListingLinkRow }
 
-const listingLinkRow = l.typedObject<ListingLinkRow>(
+const listingLinkRow = /*#__PURE__*/ l.typedObject<ListingLinkRow>(
   $nsid,
   'listingLinkRow',
-  l.object({
-    uri: l.string({ maxLength: 2048 }),
-    label: l.optional(l.string({ maxLength: 640 })),
+  /*#__PURE__*/ l.object({
+    uri: /*#__PURE__*/ l.string({ maxLength: 2048 }),
+    label: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ maxLength: 640 })),
   }),
 )
 
@@ -123,25 +148,48 @@ type ListingDetailResponse = {
 
 export type { ListingDetailResponse }
 
-const listingDetailResponse = l.typedObject<ListingDetailResponse>(
-  $nsid,
-  'listingDetailResponse',
-  l.object({
-    links: l.optional(
-      l.array(l.ref<ListingLinkRow>((() => listingLinkRow) as any)),
-    ),
-    listing: l.ref<ListingCardGet>((() => listingCardGet) as any),
-    repoDid: l.nullable(l.string({ maxLength: 2048 })),
-    createdAt: l.nullable(l.string({ maxLength: 64 })),
-    sourceUrl: l.nullable(l.string({ maxLength: 8192 })),
-    updatedAt: l.nullable(l.string({ maxLength: 64 })),
-    externalUrl: l.nullable(l.string({ maxLength: 2048 })),
-    screenshots: l.optional(l.array(l.string({ maxLength: 4096 }))),
-    sourceTagline: l.nullable(l.string({ maxLength: 20000 })),
-    isStoreManaged: l.boolean(),
-    productAccountDid: l.nullable(l.string({ maxLength: 2048 })),
-    sourceFullDescription: l.nullable(l.string({ maxLength: 20000 })),
-  }),
-)
+const listingDetailResponse =
+  /*#__PURE__*/ l.typedObject<ListingDetailResponse>(
+    $nsid,
+    'listingDetailResponse',
+    /*#__PURE__*/ l.object({
+      links: /*#__PURE__*/ l.optional(
+        /*#__PURE__*/ l.array(
+          /*#__PURE__*/ l.ref<ListingLinkRow>((() => listingLinkRow) as any),
+        ),
+      ),
+      listing: /*#__PURE__*/ l.ref<ListingCardGet>(
+        (() => listingCardGet) as any,
+      ),
+      repoDid: /*#__PURE__*/ l.nullable(
+        /*#__PURE__*/ l.string({ maxLength: 2048 }),
+      ),
+      createdAt: /*#__PURE__*/ l.nullable(
+        /*#__PURE__*/ l.string({ maxLength: 64 }),
+      ),
+      sourceUrl: /*#__PURE__*/ l.nullable(
+        /*#__PURE__*/ l.string({ maxLength: 8192 }),
+      ),
+      updatedAt: /*#__PURE__*/ l.nullable(
+        /*#__PURE__*/ l.string({ maxLength: 64 }),
+      ),
+      externalUrl: /*#__PURE__*/ l.nullable(
+        /*#__PURE__*/ l.string({ maxLength: 2048 }),
+      ),
+      screenshots: /*#__PURE__*/ l.optional(
+        /*#__PURE__*/ l.array(/*#__PURE__*/ l.string({ maxLength: 4096 })),
+      ),
+      sourceTagline: /*#__PURE__*/ l.nullable(
+        /*#__PURE__*/ l.string({ maxLength: 20000 }),
+      ),
+      isStoreManaged: /*#__PURE__*/ l.boolean(),
+      productAccountDid: /*#__PURE__*/ l.nullable(
+        /*#__PURE__*/ l.string({ maxLength: 2048 }),
+      ),
+      sourceFullDescription: /*#__PURE__*/ l.nullable(
+        /*#__PURE__*/ l.string({ maxLength: 20000 }),
+      ),
+    }),
+  )
 
 export { listingDetailResponse }

@@ -7,27 +7,37 @@ import * as FeedDefs from './defs.defs.js'
 
 const $nsid = 'app.bsky.feed.getPosts'
 
+type $nsid = typeof $nsid
+
 export { $nsid }
 
-/** Gets post views for a specified list of posts (by AT-URI). This is sometimes referred to as 'hydrating' a 'feed skeleton'. */
-const main = l.query(
-  $nsid,
-  l.params({
-    uris: l.array(l.string({ format: 'at-uri' }), { maxLength: 25 }),
+export const $params = /*#__PURE__*/ l.params({
+  uris: /*#__PURE__*/ l.array(/*#__PURE__*/ l.string({ format: 'at-uri' }), {
+    maxLength: 25,
   }),
-  l.jsonPayload({
-    posts: l.array(l.ref<FeedDefs.PostView>((() => FeedDefs.postView) as any)),
-  }),
-)
-export { main }
+})
 
-export type $Params = l.InferMethodParams<typeof main>
-export type $Output<B = l.BinaryData> = l.InferMethodOutput<typeof main, B>
-export type $OutputBody<B = l.BinaryData> = l.InferMethodOutputBody<
-  typeof main,
+export type $Params = l.InferOutput<typeof $params>
+
+export const $output = /*#__PURE__*/ l.jsonPayload({
+  posts: /*#__PURE__*/ l.array(
+    /*#__PURE__*/ l.ref<FeedDefs.PostView>((() => FeedDefs.postView) as any),
+  ),
+})
+
+export type $Output<B = l.BinaryData> = l.InferPayload<typeof $output, B>
+export type $OutputBody<B = l.BinaryData> = l.InferPayloadBody<
+  typeof $output,
   B
 >
 
-export const $lxm = main.nsid,
-  $params = main.parameters,
-  $output = main.output
+/** Gets post views for a specified list of posts (by AT-URI). This is sometimes referred to as 'hydrating' a 'feed skeleton'. */
+const main = /*#__PURE__*/ l.query($nsid, $params, $output)
+
+export { main }
+
+const $lxm = $nsid
+
+type $lxm = typeof $lxm
+
+export { $lxm }

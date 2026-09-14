@@ -5,9 +5,7 @@ import { segment } from '#utils/facets'
 
 const allowedProtocols = /^https?$/i
 
-function predicate(
-  feature: lexicon.pub.leaflet.richtext.facet.$defs.Main['features'][number]
-): boolean {
+function predicate(feature: lexicon.pub.leaflet.richtext.facet.Main['features'][number]): boolean {
   return (
     lexicon.pub.leaflet.richtext.facet.bold.isTypeOf(feature) ||
     lexicon.pub.leaflet.richtext.facet.code.isTypeOf(feature) ||

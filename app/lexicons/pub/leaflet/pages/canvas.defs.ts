@@ -27,35 +27,44 @@ import * as BlocksMembersOnlyDelimiter from '../blocks/membersOnlyDelimiter.defs
 
 const $nsid = 'pub.leaflet.pages.canvas'
 
+type $nsid = typeof $nsid
+
 export { $nsid }
 
 type Main = { $type?: 'pub.leaflet.pages.canvas'; id?: string; blocks: Block[] }
 
 export type { Main }
 
-const main = l.typedObject<Main>(
+const main = /*#__PURE__*/ l.typedObject<Main>(
   $nsid,
   'main',
-  l.object({
-    id: l.optional(l.string()),
-    blocks: l.array(l.ref<Block>((() => block) as any)),
+  /*#__PURE__*/ l.object({
+    id: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string()),
+    blocks: /*#__PURE__*/ l.array(
+      /*#__PURE__*/ l.ref<Block>((() => block) as any),
+    ),
   }),
 )
 
 export { main }
 
-export const $isTypeOf = /*#__PURE__*/ main.isTypeOf.bind(main),
-  $build = /*#__PURE__*/ main.build.bind(main),
-  $type = /*#__PURE__*/ main.$type
-export const $assert = /*#__PURE__*/ main.assert.bind(main),
-  $check = /*#__PURE__*/ main.check.bind(main),
-  $cast = /*#__PURE__*/ main.cast.bind(main),
-  $ifMatches = /*#__PURE__*/ main.ifMatches.bind(main),
-  $matches = /*#__PURE__*/ main.matches.bind(main),
-  $parse = /*#__PURE__*/ main.parse.bind(main),
-  $safeParse = /*#__PURE__*/ main.safeParse.bind(main),
-  $validate = /*#__PURE__*/ main.validate.bind(main),
-  $safeValidate = /*#__PURE__*/ main.safeValidate.bind(main)
+const $type = $nsid
+
+type $type = typeof $type
+
+export { $type }
+
+export const $isTypeOf = /*#__PURE__*/ main.isTypeOf.bind(main)
+export const $build = /*#__PURE__*/ main.build.bind(main)
+export const $assert = /*#__PURE__*/ main.assert.bind(main)
+export const $check = /*#__PURE__*/ main.check.bind(main)
+export const $cast = /*#__PURE__*/ main.cast.bind(main)
+export const $ifMatches = /*#__PURE__*/ main.ifMatches.bind(main)
+export const $matches = /*#__PURE__*/ main.matches.bind(main)
+export const $parse = /*#__PURE__*/ main.parse.bind(main)
+export const $safeParse = /*#__PURE__*/ main.safeParse.bind(main)
+export const $validate = /*#__PURE__*/ main.validate.bind(main)
+export const $safeValidate = /*#__PURE__*/ main.safeValidate.bind(main)
 
 type Block = {
   $type?: 'pub.leaflet.pages.canvas#block'
@@ -95,55 +104,83 @@ type Block = {
 
 export type { Block }
 
-const block = l.typedObject<Block>(
+const block = /*#__PURE__*/ l.typedObject<Block>(
   $nsid,
   'block',
-  l.object({
-    x: l.integer(),
-    y: l.integer(),
-    block: l.typedUnion(
+  /*#__PURE__*/ l.object({
+    x: /*#__PURE__*/ l.integer(),
+    y: /*#__PURE__*/ l.integer(),
+    block: /*#__PURE__*/ l.typedUnion(
       [
-        l.typedRef<BlocksIframe.Main>((() => BlocksIframe.main) as any),
-        l.typedRef<BlocksText.Main>((() => BlocksText.main) as any),
-        l.typedRef<BlocksBlockquote.Main>((() => BlocksBlockquote.main) as any),
-        l.typedRef<BlocksHeader.Main>((() => BlocksHeader.main) as any),
-        l.typedRef<BlocksImage.Main>((() => BlocksImage.main) as any),
-        l.typedRef<BlocksImageGallery.Main>(
+        /*#__PURE__*/ l.typedRef<BlocksIframe.Main>(
+          (() => BlocksIframe.main) as any,
+        ),
+        /*#__PURE__*/ l.typedRef<BlocksText.Main>(
+          (() => BlocksText.main) as any,
+        ),
+        /*#__PURE__*/ l.typedRef<BlocksBlockquote.Main>(
+          (() => BlocksBlockquote.main) as any,
+        ),
+        /*#__PURE__*/ l.typedRef<BlocksHeader.Main>(
+          (() => BlocksHeader.main) as any,
+        ),
+        /*#__PURE__*/ l.typedRef<BlocksImage.Main>(
+          (() => BlocksImage.main) as any,
+        ),
+        /*#__PURE__*/ l.typedRef<BlocksImageGallery.Main>(
           (() => BlocksImageGallery.main) as any,
         ),
-        l.typedRef<BlocksUnorderedList.Main>(
+        /*#__PURE__*/ l.typedRef<BlocksUnorderedList.Main>(
           (() => BlocksUnorderedList.main) as any,
         ),
-        l.typedRef<BlocksOrderedList.Main>(
+        /*#__PURE__*/ l.typedRef<BlocksOrderedList.Main>(
           (() => BlocksOrderedList.main) as any,
         ),
-        l.typedRef<BlocksWebsite.Main>((() => BlocksWebsite.main) as any),
-        l.typedRef<BlocksMath.Main>((() => BlocksMath.main) as any),
-        l.typedRef<BlocksCode.Main>((() => BlocksCode.main) as any),
-        l.typedRef<BlocksHorizontalRule.Main>(
+        /*#__PURE__*/ l.typedRef<BlocksWebsite.Main>(
+          (() => BlocksWebsite.main) as any,
+        ),
+        /*#__PURE__*/ l.typedRef<BlocksMath.Main>(
+          (() => BlocksMath.main) as any,
+        ),
+        /*#__PURE__*/ l.typedRef<BlocksCode.Main>(
+          (() => BlocksCode.main) as any,
+        ),
+        /*#__PURE__*/ l.typedRef<BlocksHorizontalRule.Main>(
           (() => BlocksHorizontalRule.main) as any,
         ),
-        l.typedRef<BlocksBskyPost.Main>((() => BlocksBskyPost.main) as any),
-        l.typedRef<BlocksStandardSitePost.Main>(
+        /*#__PURE__*/ l.typedRef<BlocksBskyPost.Main>(
+          (() => BlocksBskyPost.main) as any,
+        ),
+        /*#__PURE__*/ l.typedRef<BlocksStandardSitePost.Main>(
           (() => BlocksStandardSitePost.main) as any,
         ),
-        l.typedRef<BlocksStandardSitePublication.Main>(
+        /*#__PURE__*/ l.typedRef<BlocksStandardSitePublication.Main>(
           (() => BlocksStandardSitePublication.main) as any,
         ),
-        l.typedRef<BlocksPage.Main>((() => BlocksPage.main) as any),
-        l.typedRef<BlocksPoll.Main>((() => BlocksPoll.main) as any),
-        l.typedRef<BlocksButton.Main>((() => BlocksButton.main) as any),
-        l.typedRef<BlocksPostsList.Main>((() => BlocksPostsList.main) as any),
-        l.typedRef<BlocksSignup.Main>((() => BlocksSignup.main) as any),
-        l.typedRef<BlocksMembersOnlyDelimiter.Main>(
+        /*#__PURE__*/ l.typedRef<BlocksPage.Main>(
+          (() => BlocksPage.main) as any,
+        ),
+        /*#__PURE__*/ l.typedRef<BlocksPoll.Main>(
+          (() => BlocksPoll.main) as any,
+        ),
+        /*#__PURE__*/ l.typedRef<BlocksButton.Main>(
+          (() => BlocksButton.main) as any,
+        ),
+        /*#__PURE__*/ l.typedRef<BlocksPostsList.Main>(
+          (() => BlocksPostsList.main) as any,
+        ),
+        /*#__PURE__*/ l.typedRef<BlocksSignup.Main>(
+          (() => BlocksSignup.main) as any,
+        ),
+        /*#__PURE__*/ l.typedRef<BlocksMembersOnlyDelimiter.Main>(
           (() => BlocksMembersOnlyDelimiter.main) as any,
         ),
       ],
       false,
     ),
-    width: l.integer(),
-    height: l.optional(l.integer()),
-    rotation: l.optional(l.integer()),
+    width: /*#__PURE__*/ l.integer(),
+    height: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
+    rotation: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
   }),
 )
 
@@ -157,12 +194,12 @@ type Quote = {
 
 export type { Quote }
 
-const quote = l.typedObject<Quote>(
+const quote = /*#__PURE__*/ l.typedObject<Quote>(
   $nsid,
   'quote',
-  l.object({
-    end: l.ref<Position>((() => position) as any),
-    start: l.ref<Position>((() => position) as any),
+  /*#__PURE__*/ l.object({
+    end: /*#__PURE__*/ l.ref<Position>((() => position) as any),
+    start: /*#__PURE__*/ l.ref<Position>((() => position) as any),
   }),
 )
 
@@ -176,34 +213,43 @@ type Position = {
 
 export type { Position }
 
-const position = l.typedObject<Position>(
+const position = /*#__PURE__*/ l.typedObject<Position>(
   $nsid,
   'position',
-  l.object({ block: l.array(l.integer()), offset: l.integer() }),
+  /*#__PURE__*/ l.object({
+    block: /*#__PURE__*/ l.array(/*#__PURE__*/ l.integer()),
+    offset: /*#__PURE__*/ l.integer(),
+  }),
 )
 
 export { position }
 
-type TextAlignLeft = 'pub.leaflet.pages.canvas#textAlignLeft'
-
-export type { TextAlignLeft }
-
-const textAlignLeft = l.token($nsid, 'textAlignLeft')
+const textAlignLeft = /*#__PURE__*/ l.token($nsid, 'textAlignLeft')
 
 export { textAlignLeft }
 
-type TextAlignRight = 'pub.leaflet.pages.canvas#textAlignRight'
+const TextAlignLeft = /*#__PURE__*/ textAlignLeft.value
 
-export type { TextAlignRight }
+type TextAlignLeft = typeof TextAlignLeft
 
-const textAlignRight = l.token($nsid, 'textAlignRight')
+export { TextAlignLeft }
+
+const textAlignRight = /*#__PURE__*/ l.token($nsid, 'textAlignRight')
 
 export { textAlignRight }
 
-type TextAlignCenter = 'pub.leaflet.pages.canvas#textAlignCenter'
+const TextAlignRight = /*#__PURE__*/ textAlignRight.value
 
-export type { TextAlignCenter }
+type TextAlignRight = typeof TextAlignRight
 
-const textAlignCenter = l.token($nsid, 'textAlignCenter')
+export { TextAlignRight }
+
+const textAlignCenter = /*#__PURE__*/ l.token($nsid, 'textAlignCenter')
 
 export { textAlignCenter }
+
+const TextAlignCenter = /*#__PURE__*/ textAlignCenter.value
+
+type TextAlignCenter = typeof TextAlignCenter
+
+export { TextAlignCenter }

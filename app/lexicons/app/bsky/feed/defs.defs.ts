@@ -15,6 +15,8 @@ import * as GraphDefs from '../graph/defs.defs.js'
 
 const $nsid = 'app.bsky.feed.defs'
 
+type $nsid = typeof $nsid
+
 export { $nsid }
 
 type PostView = {
@@ -48,44 +50,56 @@ type PostView = {
 
 export type { PostView }
 
-const postView = l.typedObject<PostView>(
+const postView = /*#__PURE__*/ l.typedObject<PostView>(
   $nsid,
   'postView',
-  l.object({
-    cid: l.string({ format: 'cid' }),
-    uri: l.string({ format: 'at-uri' }),
-    debug: l.optional(l.lexMap()),
-    embed: l.optional(
-      l.typedUnion(
+  /*#__PURE__*/ l.object({
+    cid: /*#__PURE__*/ l.string({ format: 'cid' }),
+    uri: /*#__PURE__*/ l.string({ format: 'at-uri' }),
+    debug: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.lexMap()),
+    embed: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.typedUnion(
         [
-          l.typedRef<EmbedImages.View>((() => EmbedImages.view) as any),
-          l.typedRef<EmbedVideo.View>((() => EmbedVideo.view) as any),
-          l.typedRef<EmbedExternal.View>((() => EmbedExternal.view) as any),
-          l.typedRef<EmbedRecord.View>((() => EmbedRecord.view) as any),
-          l.typedRef<EmbedRecordWithMedia.View>(
+          /*#__PURE__*/ l.typedRef<EmbedImages.View>(
+            (() => EmbedImages.view) as any,
+          ),
+          /*#__PURE__*/ l.typedRef<EmbedVideo.View>(
+            (() => EmbedVideo.view) as any,
+          ),
+          /*#__PURE__*/ l.typedRef<EmbedExternal.View>(
+            (() => EmbedExternal.view) as any,
+          ),
+          /*#__PURE__*/ l.typedRef<EmbedRecord.View>(
+            (() => EmbedRecord.view) as any,
+          ),
+          /*#__PURE__*/ l.typedRef<EmbedRecordWithMedia.View>(
             (() => EmbedRecordWithMedia.view) as any,
           ),
         ],
         false,
       ),
     ),
-    author: l.ref<ActorDefs.ProfileViewBasic>(
+    author: /*#__PURE__*/ l.ref<ActorDefs.ProfileViewBasic>(
       (() => ActorDefs.profileViewBasic) as any,
     ),
-    labels: l.optional(
-      l.array(l.ref<LabelDefs.Label>((() => LabelDefs.label) as any)),
+    labels: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any),
+      ),
     ),
-    record: l.lexMap(),
-    viewer: l.optional(l.ref<ViewerState>((() => viewerState) as any)),
-    indexedAt: l.string({ format: 'datetime' }),
-    likeCount: l.optional(l.integer()),
-    quoteCount: l.optional(l.integer()),
-    replyCount: l.optional(l.integer()),
-    threadgate: l.optional(
-      l.ref<ThreadgateView>((() => threadgateView) as any),
+    record: /*#__PURE__*/ l.lexMap(),
+    viewer: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<ViewerState>((() => viewerState) as any),
     ),
-    repostCount: l.optional(l.integer()),
-    bookmarkCount: l.optional(l.integer()),
+    indexedAt: /*#__PURE__*/ l.string({ format: 'datetime' }),
+    likeCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
+    quoteCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
+    replyCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
+    threadgate: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<ThreadgateView>((() => threadgateView) as any),
+    ),
+    repostCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
+    bookmarkCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
   }),
 )
 
@@ -112,28 +126,28 @@ type ReplyRef = {
 
 export type { ReplyRef }
 
-const replyRef = l.typedObject<ReplyRef>(
+const replyRef = /*#__PURE__*/ l.typedObject<ReplyRef>(
   $nsid,
   'replyRef',
-  l.object({
-    root: l.typedUnion(
+  /*#__PURE__*/ l.object({
+    root: /*#__PURE__*/ l.typedUnion(
       [
-        l.typedRef<PostView>((() => postView) as any),
-        l.typedRef<NotFoundPost>((() => notFoundPost) as any),
-        l.typedRef<BlockedPost>((() => blockedPost) as any),
+        /*#__PURE__*/ l.typedRef<PostView>((() => postView) as any),
+        /*#__PURE__*/ l.typedRef<NotFoundPost>((() => notFoundPost) as any),
+        /*#__PURE__*/ l.typedRef<BlockedPost>((() => blockedPost) as any),
       ],
       false,
     ),
-    parent: l.typedUnion(
+    parent: /*#__PURE__*/ l.typedUnion(
       [
-        l.typedRef<PostView>((() => postView) as any),
-        l.typedRef<NotFoundPost>((() => notFoundPost) as any),
-        l.typedRef<BlockedPost>((() => blockedPost) as any),
+        /*#__PURE__*/ l.typedRef<PostView>((() => postView) as any),
+        /*#__PURE__*/ l.typedRef<NotFoundPost>((() => notFoundPost) as any),
+        /*#__PURE__*/ l.typedRef<BlockedPost>((() => blockedPost) as any),
       ],
       false,
     ),
-    grandparentAuthor: l.optional(
-      l.ref<ActorDefs.ProfileViewBasic>(
+    grandparentAuthor: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<ActorDefs.ProfileViewBasic>(
         (() => ActorDefs.profileViewBasic) as any,
       ),
     ),
@@ -146,7 +160,11 @@ type ReasonPin = { $type?: 'app.bsky.feed.defs#reasonPin' }
 
 export type { ReasonPin }
 
-const reasonPin = l.typedObject<ReasonPin>($nsid, 'reasonPin', l.object({}))
+const reasonPin = /*#__PURE__*/ l.typedObject<ReasonPin>(
+  $nsid,
+  'reasonPin',
+  /*#__PURE__*/ l.object({}),
+)
 
 export { reasonPin }
 
@@ -159,13 +177,13 @@ type BlockedPost = {
 
 export type { BlockedPost }
 
-const blockedPost = l.typedObject<BlockedPost>(
+const blockedPost = /*#__PURE__*/ l.typedObject<BlockedPost>(
   $nsid,
   'blockedPost',
-  l.object({
-    uri: l.string({ format: 'at-uri' }),
-    author: l.ref<BlockedAuthor>((() => blockedAuthor) as any),
-    blocked: l.literal(true),
+  /*#__PURE__*/ l.object({
+    uri: /*#__PURE__*/ l.string({ format: 'at-uri' }),
+    author: /*#__PURE__*/ l.ref<BlockedAuthor>((() => blockedAuthor) as any),
+    blocked: /*#__PURE__*/ l.literal(true),
   }),
 )
 
@@ -202,13 +220,15 @@ type Interaction = {
 
 export type { Interaction }
 
-const interaction = l.typedObject<Interaction>(
+const interaction = /*#__PURE__*/ l.typedObject<Interaction>(
   $nsid,
   'interaction',
-  l.object({
-    item: l.optional(l.string({ format: 'at-uri' })),
-    event: l.optional(
-      l.string<{
+  /*#__PURE__*/ l.object({
+    item: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'at-uri' }),
+    ),
+    event: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string<{
         knownValues: [
           'app.bsky.feed.defs#requestLess',
           'app.bsky.feed.defs#requestMore',
@@ -225,32 +245,40 @@ const interaction = l.typedObject<Interaction>(
         ]
       }>(),
     ),
-    reqId: l.optional(l.string({ maxLength: 100 })),
-    feedContext: l.optional(l.string({ maxLength: 2000 })),
+    reqId: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ maxLength: 100 })),
+    feedContext: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ maxLength: 2000 }),
+    ),
   }),
 )
 
 export { interaction }
 
 /** Request that less content like the given feed item be shown in the feed */
-type RequestLess = 'app.bsky.feed.defs#requestLess'
-
-export type { RequestLess }
-
-/** Request that less content like the given feed item be shown in the feed */
-const requestLess = l.token($nsid, 'requestLess')
+const requestLess = /*#__PURE__*/ l.token($nsid, 'requestLess')
 
 export { requestLess }
 
-/** Request that more content like the given feed item be shown in the feed */
-type RequestMore = 'app.bsky.feed.defs#requestMore'
+/** Request that less content like the given feed item be shown in the feed */
+const RequestLess = /*#__PURE__*/ requestLess.value
 
-export type { RequestMore }
+/** Request that less content like the given feed item be shown in the feed */
+type RequestLess = typeof RequestLess
+
+export { RequestLess }
 
 /** Request that more content like the given feed item be shown in the feed */
-const requestMore = l.token($nsid, 'requestMore')
+const requestMore = /*#__PURE__*/ l.token($nsid, 'requestMore')
 
 export { requestMore }
+
+/** Request that more content like the given feed item be shown in the feed */
+const RequestMore = /*#__PURE__*/ requestMore.value
+
+/** Request that more content like the given feed item be shown in the feed */
+type RequestMore = typeof RequestMore
+
+export { RequestMore }
 
 /** Metadata about the requesting account's relationship with the subject content. Only has meaningful content for authed requests. */
 type ViewerState = {
@@ -267,17 +295,21 @@ type ViewerState = {
 export type { ViewerState }
 
 /** Metadata about the requesting account's relationship with the subject content. Only has meaningful content for authed requests. */
-const viewerState = l.typedObject<ViewerState>(
+const viewerState = /*#__PURE__*/ l.typedObject<ViewerState>(
   $nsid,
   'viewerState',
-  l.object({
-    like: l.optional(l.string({ format: 'at-uri' })),
-    pinned: l.optional(l.boolean()),
-    repost: l.optional(l.string({ format: 'at-uri' })),
-    bookmarked: l.optional(l.boolean()),
-    threadMuted: l.optional(l.boolean()),
-    replyDisabled: l.optional(l.boolean()),
-    embeddingDisabled: l.optional(l.boolean()),
+  /*#__PURE__*/ l.object({
+    like: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'at-uri' }),
+    ),
+    pinned: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
+    repost: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'at-uri' }),
+    ),
+    bookmarked: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
+    threadMuted: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
+    replyDisabled: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
+    embeddingDisabled: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
   }),
 )
 
@@ -302,23 +334,27 @@ type FeedViewPost = {
 
 export type { FeedViewPost }
 
-const feedViewPost = l.typedObject<FeedViewPost>(
+const feedViewPost = /*#__PURE__*/ l.typedObject<FeedViewPost>(
   $nsid,
   'feedViewPost',
-  l.object({
-    post: l.ref<PostView>((() => postView) as any),
-    reply: l.optional(l.ref<ReplyRef>((() => replyRef) as any)),
-    reqId: l.optional(l.string({ maxLength: 100 })),
-    reason: l.optional(
-      l.typedUnion(
+  /*#__PURE__*/ l.object({
+    post: /*#__PURE__*/ l.ref<PostView>((() => postView) as any),
+    reply: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<ReplyRef>((() => replyRef) as any),
+    ),
+    reqId: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ maxLength: 100 })),
+    reason: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.typedUnion(
         [
-          l.typedRef<ReasonRepost>((() => reasonRepost) as any),
-          l.typedRef<ReasonPin>((() => reasonPin) as any),
+          /*#__PURE__*/ l.typedRef<ReasonRepost>((() => reasonRepost) as any),
+          /*#__PURE__*/ l.typedRef<ReasonPin>((() => reasonPin) as any),
         ],
         false,
       ),
     ),
-    feedContext: l.optional(l.string({ maxLength: 2000 })),
+    feedContext: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ maxLength: 2000 }),
+    ),
   }),
 )
 
@@ -332,10 +368,13 @@ type NotFoundPost = {
 
 export type { NotFoundPost }
 
-const notFoundPost = l.typedObject<NotFoundPost>(
+const notFoundPost = /*#__PURE__*/ l.typedObject<NotFoundPost>(
   $nsid,
   'notFoundPost',
-  l.object({ uri: l.string({ format: 'at-uri' }), notFound: l.literal(true) }),
+  /*#__PURE__*/ l.object({
+    uri: /*#__PURE__*/ l.string({ format: 'at-uri' }),
+    notFound: /*#__PURE__*/ l.literal(true),
+  }),
 )
 
 export { notFoundPost }
@@ -350,16 +389,16 @@ type ReasonRepost = {
 
 export type { ReasonRepost }
 
-const reasonRepost = l.typedObject<ReasonRepost>(
+const reasonRepost = /*#__PURE__*/ l.typedObject<ReasonRepost>(
   $nsid,
   'reasonRepost',
-  l.object({
-    by: l.ref<ActorDefs.ProfileViewBasic>(
+  /*#__PURE__*/ l.object({
+    by: /*#__PURE__*/ l.ref<ActorDefs.ProfileViewBasic>(
       (() => ActorDefs.profileViewBasic) as any,
     ),
-    cid: l.optional(l.string({ format: 'cid' })),
-    uri: l.optional(l.string({ format: 'at-uri' })),
-    indexedAt: l.string({ format: 'datetime' }),
+    cid: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'cid' })),
+    uri: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'at-uri' })),
+    indexedAt: /*#__PURE__*/ l.string({ format: 'datetime' }),
   }),
 )
 
@@ -373,13 +412,15 @@ type BlockedAuthor = {
 
 export type { BlockedAuthor }
 
-const blockedAuthor = l.typedObject<BlockedAuthor>(
+const blockedAuthor = /*#__PURE__*/ l.typedObject<BlockedAuthor>(
   $nsid,
   'blockedAuthor',
-  l.object({
-    did: l.string({ format: 'did' }),
-    viewer: l.optional(
-      l.ref<ActorDefs.ViewerState>((() => ActorDefs.viewerState) as any),
+  /*#__PURE__*/ l.object({
+    did: /*#__PURE__*/ l.string({ format: 'did' }),
+    viewer: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<ActorDefs.ViewerState>(
+        (() => ActorDefs.viewerState) as any,
+      ),
     ),
   }),
 )
@@ -409,37 +450,51 @@ type GeneratorView = {
 
 export type { GeneratorView }
 
-const generatorView = l.typedObject<GeneratorView>(
+const generatorView = /*#__PURE__*/ l.typedObject<GeneratorView>(
   $nsid,
   'generatorView',
-  l.object({
-    cid: l.string({ format: 'cid' }),
-    did: l.string({ format: 'did' }),
-    uri: l.string({ format: 'at-uri' }),
-    avatar: l.optional(l.string({ format: 'uri' })),
-    labels: l.optional(
-      l.array(l.ref<LabelDefs.Label>((() => LabelDefs.label) as any)),
+  /*#__PURE__*/ l.object({
+    cid: /*#__PURE__*/ l.string({ format: 'cid' }),
+    did: /*#__PURE__*/ l.string({ format: 'did' }),
+    uri: /*#__PURE__*/ l.string({ format: 'at-uri' }),
+    avatar: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'uri' })),
+    labels: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any),
+      ),
     ),
-    viewer: l.optional(
-      l.ref<GeneratorViewerState>((() => generatorViewerState) as any),
+    viewer: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<GeneratorViewerState>(
+        (() => generatorViewerState) as any,
+      ),
     ),
-    creator: l.ref<ActorDefs.ProfileView>((() => ActorDefs.profileView) as any),
-    indexedAt: l.string({ format: 'datetime' }),
-    likeCount: l.optional(l.integer({ minimum: 0 })),
-    contentMode: l.optional(
-      l.string<{
+    creator: /*#__PURE__*/ l.ref<ActorDefs.ProfileView>(
+      (() => ActorDefs.profileView) as any,
+    ),
+    indexedAt: /*#__PURE__*/ l.string({ format: 'datetime' }),
+    likeCount: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.integer({ minimum: 0 }),
+    ),
+    contentMode: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string<{
         knownValues: [
           'app.bsky.feed.defs#contentModeUnspecified',
           'app.bsky.feed.defs#contentModeVideo',
         ]
       }>(),
     ),
-    description: l.optional(l.string({ maxLength: 3000, maxGraphemes: 300 })),
-    displayName: l.string(),
-    descriptionFacets: l.optional(
-      l.array(l.ref<RichtextFacet.Main>((() => RichtextFacet.main) as any)),
+    description: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ maxLength: 3000, maxGraphemes: 300 }),
     ),
-    acceptsInteractions: l.optional(l.boolean()),
+    displayName: /*#__PURE__*/ l.string(),
+    descriptionFacets: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<RichtextFacet.Main>(
+          (() => RichtextFacet.main) as any,
+        ),
+      ),
+    ),
+    acceptsInteractions: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
   }),
 )
 
@@ -454,10 +509,14 @@ type ThreadContext = {
 export type { ThreadContext }
 
 /** Metadata about this post within the context of the thread it is in. */
-const threadContext = l.typedObject<ThreadContext>(
+const threadContext = /*#__PURE__*/ l.typedObject<ThreadContext>(
   $nsid,
   'threadContext',
-  l.object({ rootAuthorLike: l.optional(l.string({ format: 'at-uri' })) }),
+  /*#__PURE__*/ l.object({
+    rootAuthorLike: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'at-uri' }),
+    ),
+  }),
 )
 
 export { threadContext }
@@ -481,35 +540,39 @@ type ThreadViewPost = {
 
 export type { ThreadViewPost }
 
-const threadViewPost = l.typedObject<ThreadViewPost>(
+const threadViewPost = /*#__PURE__*/ l.typedObject<ThreadViewPost>(
   $nsid,
   'threadViewPost',
-  l.object({
-    post: l.ref<PostView>((() => postView) as any),
-    parent: l.optional(
-      l.typedUnion(
+  /*#__PURE__*/ l.object({
+    post: /*#__PURE__*/ l.ref<PostView>((() => postView) as any),
+    parent: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.typedUnion(
         [
-          l.typedRef<ThreadViewPost>((() => threadViewPost) as any),
-          l.typedRef<NotFoundPost>((() => notFoundPost) as any),
-          l.typedRef<BlockedPost>((() => blockedPost) as any),
+          /*#__PURE__*/ l.typedRef<ThreadViewPost>(
+            (() => threadViewPost) as any,
+          ),
+          /*#__PURE__*/ l.typedRef<NotFoundPost>((() => notFoundPost) as any),
+          /*#__PURE__*/ l.typedRef<BlockedPost>((() => blockedPost) as any),
         ],
         false,
       ),
     ),
-    replies: l.optional(
-      l.array(
-        l.typedUnion(
+    replies: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.typedUnion(
           [
-            l.typedRef<ThreadViewPost>((() => threadViewPost) as any),
-            l.typedRef<NotFoundPost>((() => notFoundPost) as any),
-            l.typedRef<BlockedPost>((() => blockedPost) as any),
+            /*#__PURE__*/ l.typedRef<ThreadViewPost>(
+              (() => threadViewPost) as any,
+            ),
+            /*#__PURE__*/ l.typedRef<NotFoundPost>((() => notFoundPost) as any),
+            /*#__PURE__*/ l.typedRef<BlockedPost>((() => blockedPost) as any),
           ],
           false,
         ),
       ),
     ),
-    threadContext: l.optional(
-      l.ref<ThreadContext>((() => threadContext) as any),
+    threadContext: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<ThreadContext>((() => threadContext) as any),
     ),
   }),
 )
@@ -526,92 +589,115 @@ type ThreadgateView = {
 
 export type { ThreadgateView }
 
-const threadgateView = l.typedObject<ThreadgateView>(
+const threadgateView = /*#__PURE__*/ l.typedObject<ThreadgateView>(
   $nsid,
   'threadgateView',
-  l.object({
-    cid: l.optional(l.string({ format: 'cid' })),
-    uri: l.optional(l.string({ format: 'at-uri' })),
-    lists: l.optional(
-      l.array(
-        l.ref<GraphDefs.ListViewBasic>((() => GraphDefs.listViewBasic) as any),
+  /*#__PURE__*/ l.object({
+    cid: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'cid' })),
+    uri: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'at-uri' })),
+    lists: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<GraphDefs.ListViewBasic>(
+          (() => GraphDefs.listViewBasic) as any,
+        ),
       ),
     ),
-    record: l.optional(l.lexMap()),
+    record: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.lexMap()),
   }),
 )
 
 export { threadgateView }
 
 /** User liked the feed item */
-type InteractionLike = 'app.bsky.feed.defs#interactionLike'
-
-export type { InteractionLike }
-
-/** User liked the feed item */
-const interactionLike = l.token($nsid, 'interactionLike')
+const interactionLike = /*#__PURE__*/ l.token($nsid, 'interactionLike')
 
 export { interactionLike }
 
-/** Feed item was seen by user */
-type InteractionSeen = 'app.bsky.feed.defs#interactionSeen'
+/** User liked the feed item */
+const InteractionLike = /*#__PURE__*/ interactionLike.value
 
-export type { InteractionSeen }
+/** User liked the feed item */
+type InteractionLike = typeof InteractionLike
+
+export { InteractionLike }
 
 /** Feed item was seen by user */
-const interactionSeen = l.token($nsid, 'interactionSeen')
+const interactionSeen = /*#__PURE__*/ l.token($nsid, 'interactionSeen')
 
 export { interactionSeen }
 
-/** User clicked through to the feed item */
-type ClickthroughItem = 'app.bsky.feed.defs#clickthroughItem'
+/** Feed item was seen by user */
+const InteractionSeen = /*#__PURE__*/ interactionSeen.value
 
-export type { ClickthroughItem }
+/** Feed item was seen by user */
+type InteractionSeen = typeof InteractionSeen
+
+export { InteractionSeen }
 
 /** User clicked through to the feed item */
-const clickthroughItem = l.token($nsid, 'clickthroughItem')
+const clickthroughItem = /*#__PURE__*/ l.token($nsid, 'clickthroughItem')
 
 export { clickthroughItem }
 
-/** Declares the feed generator returns posts containing app.bsky.embed.video embeds. */
-type ContentModeVideo = 'app.bsky.feed.defs#contentModeVideo'
+/** User clicked through to the feed item */
+const ClickthroughItem = /*#__PURE__*/ clickthroughItem.value
 
-export type { ContentModeVideo }
+/** User clicked through to the feed item */
+type ClickthroughItem = typeof ClickthroughItem
+
+export { ClickthroughItem }
 
 /** Declares the feed generator returns posts containing app.bsky.embed.video embeds. */
-const contentModeVideo = l.token($nsid, 'contentModeVideo')
+const contentModeVideo = /*#__PURE__*/ l.token($nsid, 'contentModeVideo')
 
 export { contentModeVideo }
 
-/** User quoted the feed item */
-type InteractionQuote = 'app.bsky.feed.defs#interactionQuote'
+/** Declares the feed generator returns posts containing app.bsky.embed.video embeds. */
+const ContentModeVideo = /*#__PURE__*/ contentModeVideo.value
 
-export type { InteractionQuote }
+/** Declares the feed generator returns posts containing app.bsky.embed.video embeds. */
+type ContentModeVideo = typeof ContentModeVideo
+
+export { ContentModeVideo }
 
 /** User quoted the feed item */
-const interactionQuote = l.token($nsid, 'interactionQuote')
+const interactionQuote = /*#__PURE__*/ l.token($nsid, 'interactionQuote')
 
 export { interactionQuote }
 
-/** User replied to the feed item */
-type InteractionReply = 'app.bsky.feed.defs#interactionReply'
+/** User quoted the feed item */
+const InteractionQuote = /*#__PURE__*/ interactionQuote.value
 
-export type { InteractionReply }
+/** User quoted the feed item */
+type InteractionQuote = typeof InteractionQuote
+
+export { InteractionQuote }
 
 /** User replied to the feed item */
-const interactionReply = l.token($nsid, 'interactionReply')
+const interactionReply = /*#__PURE__*/ l.token($nsid, 'interactionReply')
 
 export { interactionReply }
 
-/** User shared the feed item */
-type InteractionShare = 'app.bsky.feed.defs#interactionShare'
+/** User replied to the feed item */
+const InteractionReply = /*#__PURE__*/ interactionReply.value
 
-export type { InteractionShare }
+/** User replied to the feed item */
+type InteractionReply = typeof InteractionReply
+
+export { InteractionReply }
 
 /** User shared the feed item */
-const interactionShare = l.token($nsid, 'interactionShare')
+const interactionShare = /*#__PURE__*/ l.token($nsid, 'interactionShare')
 
 export { interactionShare }
+
+/** User shared the feed item */
+const InteractionShare = /*#__PURE__*/ interactionShare.value
+
+/** User shared the feed item */
+type InteractionShare = typeof InteractionShare
+
+export { InteractionShare }
 
 type SkeletonFeedPost = {
   $type?: 'app.bsky.feed.defs#skeletonFeedPost'
@@ -629,77 +715,98 @@ type SkeletonFeedPost = {
 
 export type { SkeletonFeedPost }
 
-const skeletonFeedPost = l.typedObject<SkeletonFeedPost>(
+const skeletonFeedPost = /*#__PURE__*/ l.typedObject<SkeletonFeedPost>(
   $nsid,
   'skeletonFeedPost',
-  l.object({
-    post: l.string({ format: 'at-uri' }),
-    reason: l.optional(
-      l.typedUnion(
+  /*#__PURE__*/ l.object({
+    post: /*#__PURE__*/ l.string({ format: 'at-uri' }),
+    reason: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.typedUnion(
         [
-          l.typedRef<SkeletonReasonRepost>((() => skeletonReasonRepost) as any),
-          l.typedRef<SkeletonReasonPin>((() => skeletonReasonPin) as any),
+          /*#__PURE__*/ l.typedRef<SkeletonReasonRepost>(
+            (() => skeletonReasonRepost) as any,
+          ),
+          /*#__PURE__*/ l.typedRef<SkeletonReasonPin>(
+            (() => skeletonReasonPin) as any,
+          ),
         ],
         false,
       ),
     ),
-    feedContext: l.optional(l.string({ maxLength: 2000 })),
+    feedContext: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ maxLength: 2000 }),
+    ),
   }),
 )
 
 export { skeletonFeedPost }
 
 /** User clicked through to the embedded content of the feed item */
-type ClickthroughEmbed = 'app.bsky.feed.defs#clickthroughEmbed'
-
-export type { ClickthroughEmbed }
-
-/** User clicked through to the embedded content of the feed item */
-const clickthroughEmbed = l.token($nsid, 'clickthroughEmbed')
+const clickthroughEmbed = /*#__PURE__*/ l.token($nsid, 'clickthroughEmbed')
 
 export { clickthroughEmbed }
 
-/** User reposted the feed item */
-type InteractionRepost = 'app.bsky.feed.defs#interactionRepost'
+/** User clicked through to the embedded content of the feed item */
+const ClickthroughEmbed = /*#__PURE__*/ clickthroughEmbed.value
 
-export type { InteractionRepost }
+/** User clicked through to the embedded content of the feed item */
+type ClickthroughEmbed = typeof ClickthroughEmbed
+
+export { ClickthroughEmbed }
 
 /** User reposted the feed item */
-const interactionRepost = l.token($nsid, 'interactionRepost')
+const interactionRepost = /*#__PURE__*/ l.token($nsid, 'interactionRepost')
 
 export { interactionRepost }
+
+/** User reposted the feed item */
+const InteractionRepost = /*#__PURE__*/ interactionRepost.value
+
+/** User reposted the feed item */
+type InteractionRepost = typeof InteractionRepost
+
+export { InteractionRepost }
 
 type SkeletonReasonPin = { $type?: 'app.bsky.feed.defs#skeletonReasonPin' }
 
 export type { SkeletonReasonPin }
 
-const skeletonReasonPin = l.typedObject<SkeletonReasonPin>(
+const skeletonReasonPin = /*#__PURE__*/ l.typedObject<SkeletonReasonPin>(
   $nsid,
   'skeletonReasonPin',
-  l.object({}),
+  /*#__PURE__*/ l.object({}),
 )
 
 export { skeletonReasonPin }
 
 /** User clicked through to the author of the feed item */
-type ClickthroughAuthor = 'app.bsky.feed.defs#clickthroughAuthor'
-
-export type { ClickthroughAuthor }
-
-/** User clicked through to the author of the feed item */
-const clickthroughAuthor = l.token($nsid, 'clickthroughAuthor')
+const clickthroughAuthor = /*#__PURE__*/ l.token($nsid, 'clickthroughAuthor')
 
 export { clickthroughAuthor }
 
-/** User clicked through to the reposter of the feed item */
-type ClickthroughReposter = 'app.bsky.feed.defs#clickthroughReposter'
+/** User clicked through to the author of the feed item */
+const ClickthroughAuthor = /*#__PURE__*/ clickthroughAuthor.value
 
-export type { ClickthroughReposter }
+/** User clicked through to the author of the feed item */
+type ClickthroughAuthor = typeof ClickthroughAuthor
+
+export { ClickthroughAuthor }
 
 /** User clicked through to the reposter of the feed item */
-const clickthroughReposter = l.token($nsid, 'clickthroughReposter')
+const clickthroughReposter = /*#__PURE__*/ l.token(
+  $nsid,
+  'clickthroughReposter',
+)
 
 export { clickthroughReposter }
+
+/** User clicked through to the reposter of the feed item */
+const ClickthroughReposter = /*#__PURE__*/ clickthroughReposter.value
+
+/** User clicked through to the reposter of the feed item */
+type ClickthroughReposter = typeof ClickthroughReposter
+
+export { ClickthroughReposter }
 
 type GeneratorViewerState = {
   $type?: 'app.bsky.feed.defs#generatorViewerState'
@@ -708,10 +815,14 @@ type GeneratorViewerState = {
 
 export type { GeneratorViewerState }
 
-const generatorViewerState = l.typedObject<GeneratorViewerState>(
+const generatorViewerState = /*#__PURE__*/ l.typedObject<GeneratorViewerState>(
   $nsid,
   'generatorViewerState',
-  l.object({ like: l.optional(l.string({ format: 'at-uri' })) }),
+  /*#__PURE__*/ l.object({
+    like: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'at-uri' }),
+    ),
+  }),
 )
 
 export { generatorViewerState }
@@ -723,20 +834,28 @@ type SkeletonReasonRepost = {
 
 export type { SkeletonReasonRepost }
 
-const skeletonReasonRepost = l.typedObject<SkeletonReasonRepost>(
+const skeletonReasonRepost = /*#__PURE__*/ l.typedObject<SkeletonReasonRepost>(
   $nsid,
   'skeletonReasonRepost',
-  l.object({ repost: l.string({ format: 'at-uri' }) }),
+  /*#__PURE__*/ l.object({
+    repost: /*#__PURE__*/ l.string({ format: 'at-uri' }),
+  }),
 )
 
 export { skeletonReasonRepost }
 
 /** Declares the feed generator returns any types of posts. */
-type ContentModeUnspecified = 'app.bsky.feed.defs#contentModeUnspecified'
-
-export type { ContentModeUnspecified }
-
-/** Declares the feed generator returns any types of posts. */
-const contentModeUnspecified = l.token($nsid, 'contentModeUnspecified')
+const contentModeUnspecified = /*#__PURE__*/ l.token(
+  $nsid,
+  'contentModeUnspecified',
+)
 
 export { contentModeUnspecified }
+
+/** Declares the feed generator returns any types of posts. */
+const ContentModeUnspecified = /*#__PURE__*/ contentModeUnspecified.value
+
+/** Declares the feed generator returns any types of posts. */
+type ContentModeUnspecified = typeof ContentModeUnspecified
+
+export { ContentModeUnspecified }

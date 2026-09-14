@@ -7,6 +7,8 @@ import * as EmbedDefs from './defs.defs.js'
 
 const $nsid = 'app.bsky.embed.video'
 
+type $nsid = typeof $nsid
+
 export { $nsid }
 
 type Main = {
@@ -32,36 +34,50 @@ type Main = {
 
 export type { Main }
 
-const main = l.typedObject<Main>(
+const main = /*#__PURE__*/ l.typedObject<Main>(
   $nsid,
   'main',
-  l.object({
-    alt: l.optional(l.string({ maxLength: 10000, maxGraphemes: 1000 })),
-    video: l.blob({ accept: ['video/mp4'], maxSize: 100000000 }),
-    captions: l.optional(
-      l.array(l.ref<Caption>((() => caption) as any), { maxLength: 20 }),
+  /*#__PURE__*/ l.object({
+    alt: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ maxLength: 10000, maxGraphemes: 1000 }),
     ),
-    aspectRatio: l.optional(
-      l.ref<EmbedDefs.AspectRatio>((() => EmbedDefs.aspectRatio) as any),
+    video: /*#__PURE__*/ l.blob({ accept: ['video/mp4'], maxSize: 100000000 }),
+    captions: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<Caption>((() => caption) as any),
+        { maxLength: 20 },
+      ),
     ),
-    presentation: l.optional(l.string<{ knownValues: ['default', 'gif'] }>()),
+    aspectRatio: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<EmbedDefs.AspectRatio>(
+        (() => EmbedDefs.aspectRatio) as any,
+      ),
+    ),
+    presentation: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string<{ knownValues: ['default', 'gif'] }>(),
+    ),
   }),
 )
 
 export { main }
 
-export const $isTypeOf = /*#__PURE__*/ main.isTypeOf.bind(main),
-  $build = /*#__PURE__*/ main.build.bind(main),
-  $type = /*#__PURE__*/ main.$type
-export const $assert = /*#__PURE__*/ main.assert.bind(main),
-  $check = /*#__PURE__*/ main.check.bind(main),
-  $cast = /*#__PURE__*/ main.cast.bind(main),
-  $ifMatches = /*#__PURE__*/ main.ifMatches.bind(main),
-  $matches = /*#__PURE__*/ main.matches.bind(main),
-  $parse = /*#__PURE__*/ main.parse.bind(main),
-  $safeParse = /*#__PURE__*/ main.safeParse.bind(main),
-  $validate = /*#__PURE__*/ main.validate.bind(main),
-  $safeValidate = /*#__PURE__*/ main.safeValidate.bind(main)
+const $type = $nsid
+
+type $type = typeof $type
+
+export { $type }
+
+export const $isTypeOf = /*#__PURE__*/ main.isTypeOf.bind(main)
+export const $build = /*#__PURE__*/ main.build.bind(main)
+export const $assert = /*#__PURE__*/ main.assert.bind(main)
+export const $check = /*#__PURE__*/ main.check.bind(main)
+export const $cast = /*#__PURE__*/ main.cast.bind(main)
+export const $ifMatches = /*#__PURE__*/ main.ifMatches.bind(main)
+export const $matches = /*#__PURE__*/ main.matches.bind(main)
+export const $parse = /*#__PURE__*/ main.parse.bind(main)
+export const $safeParse = /*#__PURE__*/ main.safeParse.bind(main)
+export const $validate = /*#__PURE__*/ main.validate.bind(main)
+export const $safeValidate = /*#__PURE__*/ main.safeValidate.bind(main)
 
 type View = {
   $type?: 'app.bsky.embed.video#view'
@@ -79,18 +95,26 @@ type View = {
 
 export type { View }
 
-const view = l.typedObject<View>(
+const view = /*#__PURE__*/ l.typedObject<View>(
   $nsid,
   'view',
-  l.object({
-    alt: l.optional(l.string({ maxLength: 10000, maxGraphemes: 1000 })),
-    cid: l.string({ format: 'cid' }),
-    playlist: l.string({ format: 'uri' }),
-    thumbnail: l.optional(l.string({ format: 'uri' })),
-    aspectRatio: l.optional(
-      l.ref<EmbedDefs.AspectRatio>((() => EmbedDefs.aspectRatio) as any),
+  /*#__PURE__*/ l.object({
+    alt: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ maxLength: 10000, maxGraphemes: 1000 }),
     ),
-    presentation: l.optional(l.string<{ knownValues: ['default', 'gif'] }>()),
+    cid: /*#__PURE__*/ l.string({ format: 'cid' }),
+    playlist: /*#__PURE__*/ l.string({ format: 'uri' }),
+    thumbnail: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'uri' }),
+    ),
+    aspectRatio: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<EmbedDefs.AspectRatio>(
+        (() => EmbedDefs.aspectRatio) as any,
+      ),
+    ),
+    presentation: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string<{ knownValues: ['default', 'gif'] }>(),
+    ),
   }),
 )
 
@@ -104,12 +128,12 @@ type Caption = {
 
 export type { Caption }
 
-const caption = l.typedObject<Caption>(
+const caption = /*#__PURE__*/ l.typedObject<Caption>(
   $nsid,
   'caption',
-  l.object({
-    file: l.blob({ accept: ['text/vtt'], maxSize: 20000 }),
-    lang: l.string({ format: 'language' }),
+  /*#__PURE__*/ l.object({
+    file: /*#__PURE__*/ l.blob({ accept: ['text/vtt'], maxSize: 20000 }),
+    lang: /*#__PURE__*/ l.string({ format: 'language' }),
   }),
 )
 

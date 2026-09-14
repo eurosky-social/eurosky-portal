@@ -3,4 +3,4 @@
  */
 
 export * from './membersOnlyDelimiter.defs.js'
-export * as $defs from './membersOnlyDelimiter.defs.js'
+export { main as default } from './membersOnlyDelimiter.defs.js'

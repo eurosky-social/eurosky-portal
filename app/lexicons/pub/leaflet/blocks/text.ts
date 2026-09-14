@@ -3,4 +3,4 @@
  */
 
 export * from './text.defs.js'
-export * as $defs from './text.defs.js'
+export { main as default } from './text.defs.js'

@@ -8,6 +8,8 @@ import * as PagesCanvas from './pages/canvas.defs.js'
 
 const $nsid = 'pub.leaflet.content'
 
+type $nsid = typeof $nsid
+
 export { $nsid }
 
 /** Content format for leaflet documents */
@@ -33,39 +35,50 @@ type Main = {
 export type { Main }
 
 /** Content format for leaflet documents */
-const main = l.typedObject<Main>(
+const main = /*#__PURE__*/ l.typedObject<Main>(
   $nsid,
   'main',
-  l.object({
-    blobs: l.optional(l.array(l.blob({ accept: ['*/*'], maxSize: 10000000 }))),
-    pages: l.array(
-      l.typedUnion(
+  /*#__PURE__*/ l.object({
+    blobs: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.blob({ accept: ['*/*'], maxSize: 10000000 }),
+      ),
+    ),
+    pages: /*#__PURE__*/ l.array(
+      /*#__PURE__*/ l.typedUnion(
         [
-          l.typedRef<PagesLinearDocument.Main>(
+          /*#__PURE__*/ l.typedRef<PagesLinearDocument.Main>(
             (() => PagesLinearDocument.main) as any,
           ),
-          l.typedRef<PagesCanvas.Main>((() => PagesCanvas.main) as any),
+          /*#__PURE__*/ l.typedRef<PagesCanvas.Main>(
+            (() => PagesCanvas.main) as any,
+          ),
         ],
         false,
       ),
     ),
-    blobPages: l.optional(
-      l.blob({ accept: ['application/json'], maxSize: 5000000 }),
+    blobPages: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.blob({ accept: ['application/json'], maxSize: 5000000 }),
     ),
   }),
 )
 
 export { main }
 
-export const $isTypeOf = /*#__PURE__*/ main.isTypeOf.bind(main),
-  $build = /*#__PURE__*/ main.build.bind(main),
-  $type = /*#__PURE__*/ main.$type
-export const $assert = /*#__PURE__*/ main.assert.bind(main),
-  $check = /*#__PURE__*/ main.check.bind(main),
-  $cast = /*#__PURE__*/ main.cast.bind(main),
-  $ifMatches = /*#__PURE__*/ main.ifMatches.bind(main),
-  $matches = /*#__PURE__*/ main.matches.bind(main),
-  $parse = /*#__PURE__*/ main.parse.bind(main),
-  $safeParse = /*#__PURE__*/ main.safeParse.bind(main),
-  $validate = /*#__PURE__*/ main.validate.bind(main),
-  $safeValidate = /*#__PURE__*/ main.safeValidate.bind(main)
+const $type = $nsid
+
+type $type = typeof $type
+
+export { $type }
+
+export const $isTypeOf = /*#__PURE__*/ main.isTypeOf.bind(main)
+export const $build = /*#__PURE__*/ main.build.bind(main)
+export const $assert = /*#__PURE__*/ main.assert.bind(main)
+export const $check = /*#__PURE__*/ main.check.bind(main)
+export const $cast = /*#__PURE__*/ main.cast.bind(main)
+export const $ifMatches = /*#__PURE__*/ main.ifMatches.bind(main)
+export const $matches = /*#__PURE__*/ main.matches.bind(main)
+export const $parse = /*#__PURE__*/ main.parse.bind(main)
+export const $safeParse = /*#__PURE__*/ main.safeParse.bind(main)
+export const $validate = /*#__PURE__*/ main.validate.bind(main)
+export const $safeValidate = /*#__PURE__*/ main.safeValidate.bind(main)

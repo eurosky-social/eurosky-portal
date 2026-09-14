@@ -6,6 +6,8 @@ import { l } from '@atproto/lex'
 
 const $nsid = 'pub.leaflet.blocks.imageGallery'
 
+type $nsid = typeof $nsid
+
 export { $nsid }
 
 type Main = {
@@ -26,33 +28,40 @@ type Main = {
 
 export type { Main }
 
-const main = l.typedObject<Main>(
+const main = /*#__PURE__*/ l.typedObject<Main>(
   $nsid,
   'main',
-  l.object({
-    gap: l.optional(l.integer()),
-    format: l.optional(
-      l.string<{ knownValues: ['grid', 'carousel', 'strip'] }>(),
+  /*#__PURE__*/ l.object({
+    gap: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
+    format: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string<{ knownValues: ['grid', 'carousel', 'strip'] }>(),
     ),
-    images: l.array(l.ref<Image>((() => image) as any)),
-    maxWidth: l.optional(l.integer()),
+    images: /*#__PURE__*/ l.array(
+      /*#__PURE__*/ l.ref<Image>((() => image) as any),
+    ),
+    maxWidth: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
   }),
 )
 
 export { main }
 
-export const $isTypeOf = /*#__PURE__*/ main.isTypeOf.bind(main),
-  $build = /*#__PURE__*/ main.build.bind(main),
-  $type = /*#__PURE__*/ main.$type
-export const $assert = /*#__PURE__*/ main.assert.bind(main),
-  $check = /*#__PURE__*/ main.check.bind(main),
-  $cast = /*#__PURE__*/ main.cast.bind(main),
-  $ifMatches = /*#__PURE__*/ main.ifMatches.bind(main),
-  $matches = /*#__PURE__*/ main.matches.bind(main),
-  $parse = /*#__PURE__*/ main.parse.bind(main),
-  $safeParse = /*#__PURE__*/ main.safeParse.bind(main),
-  $validate = /*#__PURE__*/ main.validate.bind(main),
-  $safeValidate = /*#__PURE__*/ main.safeValidate.bind(main)
+const $type = $nsid
+
+type $type = typeof $type
+
+export { $type }
+
+export const $isTypeOf = /*#__PURE__*/ main.isTypeOf.bind(main)
+export const $build = /*#__PURE__*/ main.build.bind(main)
+export const $assert = /*#__PURE__*/ main.assert.bind(main)
+export const $check = /*#__PURE__*/ main.check.bind(main)
+export const $cast = /*#__PURE__*/ main.cast.bind(main)
+export const $ifMatches = /*#__PURE__*/ main.ifMatches.bind(main)
+export const $matches = /*#__PURE__*/ main.matches.bind(main)
+export const $parse = /*#__PURE__*/ main.parse.bind(main)
+export const $safeParse = /*#__PURE__*/ main.safeParse.bind(main)
+export const $validate = /*#__PURE__*/ main.validate.bind(main)
+export const $safeValidate = /*#__PURE__*/ main.safeValidate.bind(main)
 
 type Image = {
   $type?: 'pub.leaflet.blocks.imageGallery#image'
@@ -67,13 +76,13 @@ type Image = {
 
 export type { Image }
 
-const image = l.typedObject<Image>(
+const image = /*#__PURE__*/ l.typedObject<Image>(
   $nsid,
   'image',
-  l.object({
-    alt: l.optional(l.string()),
-    image: l.blob({ accept: ['image/*'], maxSize: 1000000 }),
-    aspectRatio: l.ref<AspectRatio>((() => aspectRatio) as any),
+  /*#__PURE__*/ l.object({
+    alt: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string()),
+    image: /*#__PURE__*/ l.blob({ accept: ['image/*'], maxSize: 1000000 }),
+    aspectRatio: /*#__PURE__*/ l.ref<AspectRatio>((() => aspectRatio) as any),
   }),
 )
 
@@ -87,10 +96,13 @@ type AspectRatio = {
 
 export type { AspectRatio }
 
-const aspectRatio = l.typedObject<AspectRatio>(
+const aspectRatio = /*#__PURE__*/ l.typedObject<AspectRatio>(
   $nsid,
   'aspectRatio',
-  l.object({ width: l.integer(), height: l.integer() }),
+  /*#__PURE__*/ l.object({
+    width: /*#__PURE__*/ l.integer(),
+    height: /*#__PURE__*/ l.integer(),
+  }),
 )
 
 export { aspectRatio }

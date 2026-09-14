@@ -3,4 +3,4 @@
  */
 
 export * from './like.defs.js'
-export * as $defs from './like.defs.js'
+export { main as default } from './like.defs.js'

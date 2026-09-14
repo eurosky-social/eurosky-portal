@@ -3,4 +3,4 @@
  */
 
 export * from './video.defs.js'
-export * as $defs from './video.defs.js'
+export { main as default } from './video.defs.js'

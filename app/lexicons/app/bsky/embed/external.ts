@@ -3,4 +3,4 @@
  */
 
 export * from './external.defs.js'
-export * as $defs from './external.defs.js'
+export { main as default } from './external.defs.js'

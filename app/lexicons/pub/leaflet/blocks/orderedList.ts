@@ -3,4 +3,4 @@
  */
 
 export * from './orderedList.defs.js'
-export * as $defs from './orderedList.defs.js'
+export { main as default } from './orderedList.defs.js'

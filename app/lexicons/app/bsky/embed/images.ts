@@ -3,4 +3,4 @@
  */
 
 export * from './images.defs.js'
-export * as $defs from './images.defs.js'
+export { main as default } from './images.defs.js'

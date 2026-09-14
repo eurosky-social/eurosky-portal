@@ -16,34 +16,43 @@ import * as LabelDefs from '../../../com/atproto/label/defs.defs.js'
 
 const $nsid = 'app.bsky.embed.record'
 
+type $nsid = typeof $nsid
+
 export { $nsid }
 
 type Main = { $type?: 'app.bsky.embed.record'; record: RepoStrongRef.Main }
 
 export type { Main }
 
-const main = l.typedObject<Main>(
+const main = /*#__PURE__*/ l.typedObject<Main>(
   $nsid,
   'main',
-  l.object({
-    record: l.ref<RepoStrongRef.Main>((() => RepoStrongRef.main) as any),
+  /*#__PURE__*/ l.object({
+    record: /*#__PURE__*/ l.ref<RepoStrongRef.Main>(
+      (() => RepoStrongRef.main) as any,
+    ),
   }),
 )
 
 export { main }
 
-export const $isTypeOf = /*#__PURE__*/ main.isTypeOf.bind(main),
-  $build = /*#__PURE__*/ main.build.bind(main),
-  $type = /*#__PURE__*/ main.$type
-export const $assert = /*#__PURE__*/ main.assert.bind(main),
-  $check = /*#__PURE__*/ main.check.bind(main),
-  $cast = /*#__PURE__*/ main.cast.bind(main),
-  $ifMatches = /*#__PURE__*/ main.ifMatches.bind(main),
-  $matches = /*#__PURE__*/ main.matches.bind(main),
-  $parse = /*#__PURE__*/ main.parse.bind(main),
-  $safeParse = /*#__PURE__*/ main.safeParse.bind(main),
-  $validate = /*#__PURE__*/ main.validate.bind(main),
-  $safeValidate = /*#__PURE__*/ main.safeValidate.bind(main)
+const $type = $nsid
+
+type $type = typeof $type
+
+export { $type }
+
+export const $isTypeOf = /*#__PURE__*/ main.isTypeOf.bind(main)
+export const $build = /*#__PURE__*/ main.build.bind(main)
+export const $assert = /*#__PURE__*/ main.assert.bind(main)
+export const $check = /*#__PURE__*/ main.check.bind(main)
+export const $cast = /*#__PURE__*/ main.cast.bind(main)
+export const $ifMatches = /*#__PURE__*/ main.ifMatches.bind(main)
+export const $matches = /*#__PURE__*/ main.matches.bind(main)
+export const $parse = /*#__PURE__*/ main.parse.bind(main)
+export const $safeParse = /*#__PURE__*/ main.safeParse.bind(main)
+export const $validate = /*#__PURE__*/ main.validate.bind(main)
+export const $safeValidate = /*#__PURE__*/ main.safeValidate.bind(main)
 
 type View = {
   $type?: 'app.bsky.embed.record#view'
@@ -61,24 +70,26 @@ type View = {
 
 export type { View }
 
-const view = l.typedObject<View>(
+const view = /*#__PURE__*/ l.typedObject<View>(
   $nsid,
   'view',
-  l.object({
-    record: l.typedUnion(
+  /*#__PURE__*/ l.object({
+    record: /*#__PURE__*/ l.typedUnion(
       [
-        l.typedRef<ViewRecord>((() => viewRecord) as any),
-        l.typedRef<ViewNotFound>((() => viewNotFound) as any),
-        l.typedRef<ViewBlocked>((() => viewBlocked) as any),
-        l.typedRef<ViewDetached>((() => viewDetached) as any),
-        l.typedRef<FeedDefs.GeneratorView>(
+        /*#__PURE__*/ l.typedRef<ViewRecord>((() => viewRecord) as any),
+        /*#__PURE__*/ l.typedRef<ViewNotFound>((() => viewNotFound) as any),
+        /*#__PURE__*/ l.typedRef<ViewBlocked>((() => viewBlocked) as any),
+        /*#__PURE__*/ l.typedRef<ViewDetached>((() => viewDetached) as any),
+        /*#__PURE__*/ l.typedRef<FeedDefs.GeneratorView>(
           (() => FeedDefs.generatorView) as any,
         ),
-        l.typedRef<GraphDefs.ListView>((() => GraphDefs.listView) as any),
-        l.typedRef<LabelerDefs.LabelerView>(
+        /*#__PURE__*/ l.typedRef<GraphDefs.ListView>(
+          (() => GraphDefs.listView) as any,
+        ),
+        /*#__PURE__*/ l.typedRef<LabelerDefs.LabelerView>(
           (() => LabelerDefs.labelerView) as any,
         ),
-        l.typedRef<GraphDefs.StarterPackViewBasic>(
+        /*#__PURE__*/ l.typedRef<GraphDefs.StarterPackViewBasic>(
           (() => GraphDefs.starterPackViewBasic) as any,
         ),
       ],
@@ -117,25 +128,31 @@ type ViewRecord = {
 
 export type { ViewRecord }
 
-const viewRecord = l.typedObject<ViewRecord>(
+const viewRecord = /*#__PURE__*/ l.typedObject<ViewRecord>(
   $nsid,
   'viewRecord',
-  l.object({
-    cid: l.string({ format: 'cid' }),
-    uri: l.string({ format: 'at-uri' }),
-    value: l.lexMap(),
-    author: l.ref<ActorDefs.ProfileViewBasic>(
+  /*#__PURE__*/ l.object({
+    cid: /*#__PURE__*/ l.string({ format: 'cid' }),
+    uri: /*#__PURE__*/ l.string({ format: 'at-uri' }),
+    value: /*#__PURE__*/ l.lexMap(),
+    author: /*#__PURE__*/ l.ref<ActorDefs.ProfileViewBasic>(
       (() => ActorDefs.profileViewBasic) as any,
     ),
-    embeds: l.optional(
-      l.array(
-        l.typedUnion(
+    embeds: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.typedUnion(
           [
-            l.typedRef<EmbedImages.View>((() => EmbedImages.view) as any),
-            l.typedRef<EmbedVideo.View>((() => EmbedVideo.view) as any),
-            l.typedRef<EmbedExternal.View>((() => EmbedExternal.view) as any),
-            l.typedRef<View>((() => view) as any),
-            l.typedRef<EmbedRecordWithMedia.View>(
+            /*#__PURE__*/ l.typedRef<EmbedImages.View>(
+              (() => EmbedImages.view) as any,
+            ),
+            /*#__PURE__*/ l.typedRef<EmbedVideo.View>(
+              (() => EmbedVideo.view) as any,
+            ),
+            /*#__PURE__*/ l.typedRef<EmbedExternal.View>(
+              (() => EmbedExternal.view) as any,
+            ),
+            /*#__PURE__*/ l.typedRef<View>((() => view) as any),
+            /*#__PURE__*/ l.typedRef<EmbedRecordWithMedia.View>(
               (() => EmbedRecordWithMedia.view) as any,
             ),
           ],
@@ -143,14 +160,16 @@ const viewRecord = l.typedObject<ViewRecord>(
         ),
       ),
     ),
-    labels: l.optional(
-      l.array(l.ref<LabelDefs.Label>((() => LabelDefs.label) as any)),
+    labels: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any),
+      ),
     ),
-    indexedAt: l.string({ format: 'datetime' }),
-    likeCount: l.optional(l.integer()),
-    quoteCount: l.optional(l.integer()),
-    replyCount: l.optional(l.integer()),
-    repostCount: l.optional(l.integer()),
+    indexedAt: /*#__PURE__*/ l.string({ format: 'datetime' }),
+    likeCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
+    quoteCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
+    replyCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
+    repostCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
   }),
 )
 
@@ -165,15 +184,15 @@ type ViewBlocked = {
 
 export type { ViewBlocked }
 
-const viewBlocked = l.typedObject<ViewBlocked>(
+const viewBlocked = /*#__PURE__*/ l.typedObject<ViewBlocked>(
   $nsid,
   'viewBlocked',
-  l.object({
-    uri: l.string({ format: 'at-uri' }),
-    author: l.ref<FeedDefs.BlockedAuthor>(
+  /*#__PURE__*/ l.object({
+    uri: /*#__PURE__*/ l.string({ format: 'at-uri' }),
+    author: /*#__PURE__*/ l.ref<FeedDefs.BlockedAuthor>(
       (() => FeedDefs.blockedAuthor) as any,
     ),
-    blocked: l.literal(true),
+    blocked: /*#__PURE__*/ l.literal(true),
   }),
 )
 
@@ -187,10 +206,13 @@ type ViewDetached = {
 
 export type { ViewDetached }
 
-const viewDetached = l.typedObject<ViewDetached>(
+const viewDetached = /*#__PURE__*/ l.typedObject<ViewDetached>(
   $nsid,
   'viewDetached',
-  l.object({ uri: l.string({ format: 'at-uri' }), detached: l.literal(true) }),
+  /*#__PURE__*/ l.object({
+    uri: /*#__PURE__*/ l.string({ format: 'at-uri' }),
+    detached: /*#__PURE__*/ l.literal(true),
+  }),
 )
 
 export { viewDetached }
@@ -203,10 +225,13 @@ type ViewNotFound = {
 
 export type { ViewNotFound }
 
-const viewNotFound = l.typedObject<ViewNotFound>(
+const viewNotFound = /*#__PURE__*/ l.typedObject<ViewNotFound>(
   $nsid,
   'viewNotFound',
-  l.object({ uri: l.string({ format: 'at-uri' }), notFound: l.literal(true) }),
+  /*#__PURE__*/ l.object({
+    uri: /*#__PURE__*/ l.string({ format: 'at-uri' }),
+    notFound: /*#__PURE__*/ l.literal(true),
+  }),
 )
 
 export { viewNotFound }

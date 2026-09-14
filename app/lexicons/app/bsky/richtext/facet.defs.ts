@@ -6,6 +6,8 @@ import { l } from '@atproto/lex'
 
 const $nsid = 'app.bsky.richtext.facet'
 
+type $nsid = typeof $nsid
+
 export { $nsid }
 
 /** Facet feature for a hashtag. The text usually includes a '#' prefix, but the facet reference should not (except in the case of 'double hash tags'). */
@@ -14,10 +16,12 @@ type Tag = { $type?: 'app.bsky.richtext.facet#tag'; tag: string }
 export type { Tag }
 
 /** Facet feature for a hashtag. The text usually includes a '#' prefix, but the facet reference should not (except in the case of 'double hash tags'). */
-const tag = l.typedObject<Tag>(
+const tag = /*#__PURE__*/ l.typedObject<Tag>(
   $nsid,
   'tag',
-  l.object({ tag: l.string({ maxLength: 640, maxGraphemes: 64 }) }),
+  /*#__PURE__*/ l.object({
+    tag: /*#__PURE__*/ l.string({ maxLength: 640, maxGraphemes: 64 }),
+  }),
 )
 
 export { tag }
@@ -28,10 +32,10 @@ type Link = { $type?: 'app.bsky.richtext.facet#link'; uri: l.UriString }
 export type { Link }
 
 /** Facet feature for a URL. The text URL may have been simplified or truncated, but the facet reference should be a complete URL. */
-const link = l.typedObject<Link>(
+const link = /*#__PURE__*/ l.typedObject<Link>(
   $nsid,
   'link',
-  l.object({ uri: l.string({ format: 'uri' }) }),
+  /*#__PURE__*/ l.object({ uri: /*#__PURE__*/ l.string({ format: 'uri' }) }),
 )
 
 export { link }
@@ -41,27 +45,24 @@ type Main = {
   $type?: 'app.bsky.richtext.facet'
   index: ByteSlice
   features: (
-    | l.$Typed<Mention>
-    | l.$Typed<Link>
-    | l.$Typed<Tag>
-    | l.Unknown$TypedObject
+    l.$Typed<Mention> | l.$Typed<Link> | l.$Typed<Tag> | l.Unknown$TypedObject
   )[]
 }
 
 export type { Main }
 
 /** Annotation of a sub-string within rich text. */
-const main = l.typedObject<Main>(
+const main = /*#__PURE__*/ l.typedObject<Main>(
   $nsid,
   'main',
-  l.object({
-    index: l.ref<ByteSlice>((() => byteSlice) as any),
-    features: l.array(
-      l.typedUnion(
+  /*#__PURE__*/ l.object({
+    index: /*#__PURE__*/ l.ref<ByteSlice>((() => byteSlice) as any),
+    features: /*#__PURE__*/ l.array(
+      /*#__PURE__*/ l.typedUnion(
         [
-          l.typedRef<Mention>((() => mention) as any),
-          l.typedRef<Link>((() => link) as any),
-          l.typedRef<Tag>((() => tag) as any),
+          /*#__PURE__*/ l.typedRef<Mention>((() => mention) as any),
+          /*#__PURE__*/ l.typedRef<Link>((() => link) as any),
+          /*#__PURE__*/ l.typedRef<Tag>((() => tag) as any),
         ],
         false,
       ),
@@ -71,18 +72,23 @@ const main = l.typedObject<Main>(
 
 export { main }
 
-export const $isTypeOf = /*#__PURE__*/ main.isTypeOf.bind(main),
-  $build = /*#__PURE__*/ main.build.bind(main),
-  $type = /*#__PURE__*/ main.$type
-export const $assert = /*#__PURE__*/ main.assert.bind(main),
-  $check = /*#__PURE__*/ main.check.bind(main),
-  $cast = /*#__PURE__*/ main.cast.bind(main),
-  $ifMatches = /*#__PURE__*/ main.ifMatches.bind(main),
-  $matches = /*#__PURE__*/ main.matches.bind(main),
-  $parse = /*#__PURE__*/ main.parse.bind(main),
-  $safeParse = /*#__PURE__*/ main.safeParse.bind(main),
-  $validate = /*#__PURE__*/ main.validate.bind(main),
-  $safeValidate = /*#__PURE__*/ main.safeValidate.bind(main)
+const $type = $nsid
+
+type $type = typeof $type
+
+export { $type }
+
+export const $isTypeOf = /*#__PURE__*/ main.isTypeOf.bind(main)
+export const $build = /*#__PURE__*/ main.build.bind(main)
+export const $assert = /*#__PURE__*/ main.assert.bind(main)
+export const $check = /*#__PURE__*/ main.check.bind(main)
+export const $cast = /*#__PURE__*/ main.cast.bind(main)
+export const $ifMatches = /*#__PURE__*/ main.ifMatches.bind(main)
+export const $matches = /*#__PURE__*/ main.matches.bind(main)
+export const $parse = /*#__PURE__*/ main.parse.bind(main)
+export const $safeParse = /*#__PURE__*/ main.safeParse.bind(main)
+export const $validate = /*#__PURE__*/ main.validate.bind(main)
+export const $safeValidate = /*#__PURE__*/ main.safeValidate.bind(main)
 
 /** Facet feature for mention of another account. The text is usually a handle, including a '@' prefix, but the facet reference is a DID. */
 type Mention = { $type?: 'app.bsky.richtext.facet#mention'; did: l.DidString }
@@ -90,10 +96,10 @@ type Mention = { $type?: 'app.bsky.richtext.facet#mention'; did: l.DidString }
 export type { Mention }
 
 /** Facet feature for mention of another account. The text is usually a handle, including a '@' prefix, but the facet reference is a DID. */
-const mention = l.typedObject<Mention>(
+const mention = /*#__PURE__*/ l.typedObject<Mention>(
   $nsid,
   'mention',
-  l.object({ did: l.string({ format: 'did' }) }),
+  /*#__PURE__*/ l.object({ did: /*#__PURE__*/ l.string({ format: 'did' }) }),
 )
 
 export { mention }
@@ -108,12 +114,12 @@ type ByteSlice = {
 export type { ByteSlice }
 
 /** Specifies the sub-string range a facet feature applies to. Start index is inclusive, end index is exclusive. Indices are zero-indexed, counting bytes of the UTF-8 encoded text. NOTE: some languages, like Javascript, use UTF-16 or Unicode codepoints for string slice indexing; in these languages, convert to byte arrays before working with facets. */
-const byteSlice = l.typedObject<ByteSlice>(
+const byteSlice = /*#__PURE__*/ l.typedObject<ByteSlice>(
   $nsid,
   'byteSlice',
-  l.object({
-    byteEnd: l.integer({ minimum: 0 }),
-    byteStart: l.integer({ minimum: 0 }),
+  /*#__PURE__*/ l.object({
+    byteEnd: /*#__PURE__*/ l.integer({ minimum: 0 }),
+    byteStart: /*#__PURE__*/ l.integer({ minimum: 0 }),
   }),
 )
 

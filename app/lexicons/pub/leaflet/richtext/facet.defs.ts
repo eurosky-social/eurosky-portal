@@ -7,6 +7,8 @@ import * as ThemeColor from '../theme/color.defs.js'
 
 const $nsid = 'pub.leaflet.richtext.facet'
 
+type $nsid = typeof $nsid
+
 export { $nsid }
 
 /** Facet feature for an identifier. Used for linking to a segment */
@@ -15,10 +17,12 @@ type Id = { $type?: 'pub.leaflet.richtext.facet#id'; id?: string }
 export type { Id }
 
 /** Facet feature for an identifier. Used for linking to a segment */
-const id = l.typedObject<Id>(
+const id = /*#__PURE__*/ l.typedObject<Id>(
   $nsid,
   'id',
-  l.object({ id: l.optional(l.string()) }),
+  /*#__PURE__*/ l.object({
+    id: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string()),
+  }),
 )
 
 export { id }
@@ -29,7 +33,11 @@ type Bold = { $type?: 'pub.leaflet.richtext.facet#bold' }
 export type { Bold }
 
 /** Facet feature for bold text */
-const bold = l.typedObject<Bold>($nsid, 'bold', l.object({}))
+const bold = /*#__PURE__*/ l.typedObject<Bold>(
+  $nsid,
+  'bold',
+  /*#__PURE__*/ l.object({}),
+)
 
 export { bold }
 
@@ -39,7 +47,11 @@ type Code = { $type?: 'pub.leaflet.richtext.facet#code' }
 export type { Code }
 
 /** Facet feature for inline code. */
-const code = l.typedObject<Code>($nsid, 'code', l.object({}))
+const code = /*#__PURE__*/ l.typedObject<Code>(
+  $nsid,
+  'code',
+  /*#__PURE__*/ l.object({}),
+)
 
 export { code }
 
@@ -49,7 +61,11 @@ type Link = { $type?: 'pub.leaflet.richtext.facet#link'; uri: string }
 export type { Link }
 
 /** Facet feature for a URL. The text URL may have been simplified or truncated, but the facet reference should be a complete URL. */
-const link = l.typedObject<Link>($nsid, 'link', l.object({ uri: l.string() }))
+const link = /*#__PURE__*/ l.typedObject<Link>(
+  $nsid,
+  'link',
+  /*#__PURE__*/ l.object({ uri: /*#__PURE__*/ l.string() }),
+)
 
 export { link }
 
@@ -76,25 +92,25 @@ type Main = {
 export type { Main }
 
 /** Annotation of a sub-string within rich text. */
-const main = l.typedObject<Main>(
+const main = /*#__PURE__*/ l.typedObject<Main>(
   $nsid,
   'main',
-  l.object({
-    index: l.ref<ByteSlice>((() => byteSlice) as any),
-    features: l.array(
-      l.typedUnion(
+  /*#__PURE__*/ l.object({
+    index: /*#__PURE__*/ l.ref<ByteSlice>((() => byteSlice) as any),
+    features: /*#__PURE__*/ l.array(
+      /*#__PURE__*/ l.typedUnion(
         [
-          l.typedRef<Link>((() => link) as any),
-          l.typedRef<DidMention>((() => didMention) as any),
-          l.typedRef<AtMention>((() => atMention) as any),
-          l.typedRef<Code>((() => code) as any),
-          l.typedRef<Highlight>((() => highlight) as any),
-          l.typedRef<Underline>((() => underline) as any),
-          l.typedRef<Strikethrough>((() => strikethrough) as any),
-          l.typedRef<Id>((() => id) as any),
-          l.typedRef<Bold>((() => bold) as any),
-          l.typedRef<Italic>((() => italic) as any),
-          l.typedRef<Footnote>((() => footnote) as any),
+          /*#__PURE__*/ l.typedRef<Link>((() => link) as any),
+          /*#__PURE__*/ l.typedRef<DidMention>((() => didMention) as any),
+          /*#__PURE__*/ l.typedRef<AtMention>((() => atMention) as any),
+          /*#__PURE__*/ l.typedRef<Code>((() => code) as any),
+          /*#__PURE__*/ l.typedRef<Highlight>((() => highlight) as any),
+          /*#__PURE__*/ l.typedRef<Underline>((() => underline) as any),
+          /*#__PURE__*/ l.typedRef<Strikethrough>((() => strikethrough) as any),
+          /*#__PURE__*/ l.typedRef<Id>((() => id) as any),
+          /*#__PURE__*/ l.typedRef<Bold>((() => bold) as any),
+          /*#__PURE__*/ l.typedRef<Italic>((() => italic) as any),
+          /*#__PURE__*/ l.typedRef<Footnote>((() => footnote) as any),
         ],
         false,
       ),
@@ -104,18 +120,23 @@ const main = l.typedObject<Main>(
 
 export { main }
 
-export const $isTypeOf = /*#__PURE__*/ main.isTypeOf.bind(main),
-  $build = /*#__PURE__*/ main.build.bind(main),
-  $type = /*#__PURE__*/ main.$type
-export const $assert = /*#__PURE__*/ main.assert.bind(main),
-  $check = /*#__PURE__*/ main.check.bind(main),
-  $cast = /*#__PURE__*/ main.cast.bind(main),
-  $ifMatches = /*#__PURE__*/ main.ifMatches.bind(main),
-  $matches = /*#__PURE__*/ main.matches.bind(main),
-  $parse = /*#__PURE__*/ main.parse.bind(main),
-  $safeParse = /*#__PURE__*/ main.safeParse.bind(main),
-  $validate = /*#__PURE__*/ main.validate.bind(main),
-  $safeValidate = /*#__PURE__*/ main.safeValidate.bind(main)
+const $type = $nsid
+
+type $type = typeof $type
+
+export { $type }
+
+export const $isTypeOf = /*#__PURE__*/ main.isTypeOf.bind(main)
+export const $build = /*#__PURE__*/ main.build.bind(main)
+export const $assert = /*#__PURE__*/ main.assert.bind(main)
+export const $check = /*#__PURE__*/ main.check.bind(main)
+export const $cast = /*#__PURE__*/ main.cast.bind(main)
+export const $ifMatches = /*#__PURE__*/ main.ifMatches.bind(main)
+export const $matches = /*#__PURE__*/ main.matches.bind(main)
+export const $parse = /*#__PURE__*/ main.parse.bind(main)
+export const $safeParse = /*#__PURE__*/ main.safeParse.bind(main)
+export const $validate = /*#__PURE__*/ main.validate.bind(main)
+export const $safeValidate = /*#__PURE__*/ main.safeValidate.bind(main)
 
 /** Facet feature for italic text */
 type Italic = { $type?: 'pub.leaflet.richtext.facet#italic' }
@@ -123,7 +144,11 @@ type Italic = { $type?: 'pub.leaflet.richtext.facet#italic' }
 export type { Italic }
 
 /** Facet feature for italic text */
-const italic = l.typedObject<Italic>($nsid, 'italic', l.object({}))
+const italic = /*#__PURE__*/ l.typedObject<Italic>(
+  $nsid,
+  'italic',
+  /*#__PURE__*/ l.object({}),
+)
 
 export { italic }
 
@@ -138,13 +163,15 @@ type Footnote = {
 export type { Footnote }
 
 /** Facet feature for a footnote reference */
-const footnote = l.typedObject<Footnote>(
+const footnote = /*#__PURE__*/ l.typedObject<Footnote>(
   $nsid,
   'footnote',
-  l.object({
-    footnoteId: l.string(),
-    contentFacets: l.optional(l.array(l.ref<Main>((() => main) as any))),
-    contentPlaintext: l.string(),
+  /*#__PURE__*/ l.object({
+    footnoteId: /*#__PURE__*/ l.string(),
+    contentFacets: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(/*#__PURE__*/ l.ref<Main>((() => main) as any)),
+    ),
+    contentPlaintext: /*#__PURE__*/ l.string(),
   }),
 )
 
@@ -160,12 +187,12 @@ type AtMention = {
 export type { AtMention }
 
 /** Facet feature for mentioning an AT URI. */
-const atMention = l.typedObject<AtMention>(
+const atMention = /*#__PURE__*/ l.typedObject<AtMention>(
   $nsid,
   'atMention',
-  l.object({
-    href: l.optional(l.string({ format: 'uri' })),
-    atURI: l.string({ format: 'uri' }),
+  /*#__PURE__*/ l.object({
+    href: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'uri' })),
+    atURI: /*#__PURE__*/ l.string({ format: 'uri' }),
   }),
 )
 
@@ -181,12 +208,12 @@ type ByteSlice = {
 export type { ByteSlice }
 
 /** Specifies the sub-string range a facet feature applies to. Start index is inclusive, end index is exclusive. Indices are zero-indexed, counting bytes of the UTF-8 encoded text. NOTE: some languages, like Javascript, use UTF-16 or Unicode codepoints for string slice indexing; in these languages, convert to byte arrays before working with facets. */
-const byteSlice = l.typedObject<ByteSlice>(
+const byteSlice = /*#__PURE__*/ l.typedObject<ByteSlice>(
   $nsid,
   'byteSlice',
-  l.object({
-    byteEnd: l.integer({ minimum: 0 }),
-    byteStart: l.integer({ minimum: 0 }),
+  /*#__PURE__*/ l.object({
+    byteEnd: /*#__PURE__*/ l.integer({ minimum: 0 }),
+    byteStart: /*#__PURE__*/ l.integer({ minimum: 0 }),
   }),
 )
 
@@ -196,23 +223,25 @@ export { byteSlice }
 type Highlight = {
   $type?: 'pub.leaflet.richtext.facet#highlight'
   color?:
-    | l.$Typed<ThemeColor.Rgba>
-    | l.$Typed<ThemeColor.Rgb>
-    | l.Unknown$TypedObject
+    l.$Typed<ThemeColor.Rgba> | l.$Typed<ThemeColor.Rgb> | l.Unknown$TypedObject
 }
 
 export type { Highlight }
 
 /** Facet feature for highlighted text. */
-const highlight = l.typedObject<Highlight>(
+const highlight = /*#__PURE__*/ l.typedObject<Highlight>(
   $nsid,
   'highlight',
-  l.object({
-    color: l.optional(
-      l.typedUnion(
+  /*#__PURE__*/ l.object({
+    color: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.typedUnion(
         [
-          l.typedRef<ThemeColor.Rgba>((() => ThemeColor.rgba) as any),
-          l.typedRef<ThemeColor.Rgb>((() => ThemeColor.rgb) as any),
+          /*#__PURE__*/ l.typedRef<ThemeColor.Rgba>(
+            (() => ThemeColor.rgba) as any,
+          ),
+          /*#__PURE__*/ l.typedRef<ThemeColor.Rgb>(
+            (() => ThemeColor.rgb) as any,
+          ),
         ],
         false,
       ),
@@ -228,7 +257,11 @@ type Underline = { $type?: 'pub.leaflet.richtext.facet#underline' }
 export type { Underline }
 
 /** Facet feature for underline markup */
-const underline = l.typedObject<Underline>($nsid, 'underline', l.object({}))
+const underline = /*#__PURE__*/ l.typedObject<Underline>(
+  $nsid,
+  'underline',
+  /*#__PURE__*/ l.object({}),
+)
 
 export { underline }
 
@@ -241,10 +274,10 @@ type DidMention = {
 export type { DidMention }
 
 /** Facet feature for mentioning a did. */
-const didMention = l.typedObject<DidMention>(
+const didMention = /*#__PURE__*/ l.typedObject<DidMention>(
   $nsid,
   'didMention',
-  l.object({ did: l.string({ format: 'did' }) }),
+  /*#__PURE__*/ l.object({ did: /*#__PURE__*/ l.string({ format: 'did' }) }),
 )
 
 export { didMention }
@@ -255,10 +288,10 @@ type Strikethrough = { $type?: 'pub.leaflet.richtext.facet#strikethrough' }
 export type { Strikethrough }
 
 /** Facet feature for strikethrough markup */
-const strikethrough = l.typedObject<Strikethrough>(
+const strikethrough = /*#__PURE__*/ l.typedObject<Strikethrough>(
   $nsid,
   'strikethrough',
-  l.object({}),
+  /*#__PURE__*/ l.object({}),
 )
 
 export { strikethrough }

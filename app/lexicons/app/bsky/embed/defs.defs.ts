@@ -6,6 +6,8 @@ import { l } from '@atproto/lex'
 
 const $nsid = 'app.bsky.embed.defs'
 
+type $nsid = typeof $nsid
+
 export { $nsid }
 
 /** width:height represents an aspect ratio. It may be approximate, and may not correspond to absolute dimensions in any given unit. */
@@ -18,12 +20,12 @@ type AspectRatio = {
 export type { AspectRatio }
 
 /** width:height represents an aspect ratio. It may be approximate, and may not correspond to absolute dimensions in any given unit. */
-const aspectRatio = l.typedObject<AspectRatio>(
+const aspectRatio = /*#__PURE__*/ l.typedObject<AspectRatio>(
   $nsid,
   'aspectRatio',
-  l.object({
-    width: l.integer({ minimum: 1 }),
-    height: l.integer({ minimum: 1 }),
+  /*#__PURE__*/ l.object({
+    width: /*#__PURE__*/ l.integer({ minimum: 1 }),
+    height: /*#__PURE__*/ l.integer({ minimum: 1 }),
   }),
 )
 

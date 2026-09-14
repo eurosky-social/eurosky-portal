@@ -8,6 +8,8 @@ import * as RepoStrongRef from '../../com/atproto/repo/strongRef.defs.js'
 
 const $nsid = 'site.standard.document'
 
+type $nsid = typeof $nsid
+
 export { $nsid }
 
 /** A document record representing a published article, blog post, or other content. Documents can belong to a publication or exist independently. */
@@ -84,50 +86,73 @@ type Main = {
 export type { Main }
 
 /** A document record representing a published article, blog post, or other content. Documents can belong to a publication or exist independently. */
-const main = l.record<'tid', Main>(
+const main = /*#__PURE__*/ l.record<'tid', Main>(
   'tid',
   $nsid,
-  l.object({
-    path: l.optional(l.string()),
-    site: l.string({ format: 'uri' }),
-    tags: l.optional(l.array(l.string({ maxLength: 1280, maxGraphemes: 128 }))),
-    links: l.optional(l.typedUnion([], false)),
-    title: l.string({ maxLength: 5000, maxGraphemes: 500 }),
-    labels: l.optional(
-      l.typedUnion(
-        [l.typedRef<LabelDefs.SelfLabels>((() => LabelDefs.selfLabels) as any)],
+  /*#__PURE__*/ l.object({
+    path: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string()),
+    site: /*#__PURE__*/ l.string({ format: 'uri' }),
+    tags: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.string({ maxLength: 1280, maxGraphemes: 128 }),
+      ),
+    ),
+    links: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.typedUnion([], false)),
+    title: /*#__PURE__*/ l.string({ maxLength: 5000, maxGraphemes: 500 }),
+    labels: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.typedUnion(
+        [
+          /*#__PURE__*/ l.typedRef<LabelDefs.SelfLabels>(
+            (() => LabelDefs.selfLabels) as any,
+          ),
+        ],
         false,
       ),
     ),
-    content: l.optional(l.typedUnion([], false)),
-    updatedAt: l.optional(l.string({ format: 'datetime' })),
-    coverImage: l.optional(l.blob({ accept: ['image/*'], maxSize: 1000000 })),
-    bskyPostRef: l.optional(
-      l.ref<RepoStrongRef.Main>((() => RepoStrongRef.main) as any),
+    content: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.typedUnion([], false)),
+    updatedAt: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'datetime' }),
     ),
-    description: l.optional(l.string({ maxLength: 30000, maxGraphemes: 3000 })),
-    publishedAt: l.string({ format: 'datetime' }),
-    textContent: l.optional(l.string()),
-    contributors: l.optional(
-      l.array(l.ref<Contributor>((() => contributor) as any)),
+    coverImage: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.blob({ accept: ['image/*'], maxSize: 1000000 }),
+    ),
+    bskyPostRef: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<RepoStrongRef.Main>(
+        (() => RepoStrongRef.main) as any,
+      ),
+    ),
+    description: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ maxLength: 30000, maxGraphemes: 3000 }),
+    ),
+    publishedAt: /*#__PURE__*/ l.string({ format: 'datetime' }),
+    textContent: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string()),
+    contributors: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<Contributor>((() => contributor) as any),
+      ),
     ),
   }),
 )
 
 export { main }
 
-export const $isTypeOf = /*#__PURE__*/ main.isTypeOf.bind(main),
-  $build = /*#__PURE__*/ main.build.bind(main),
-  $type = /*#__PURE__*/ main.$type
-export const $assert = /*#__PURE__*/ main.assert.bind(main),
-  $check = /*#__PURE__*/ main.check.bind(main),
-  $cast = /*#__PURE__*/ main.cast.bind(main),
-  $ifMatches = /*#__PURE__*/ main.ifMatches.bind(main),
-  $matches = /*#__PURE__*/ main.matches.bind(main),
-  $parse = /*#__PURE__*/ main.parse.bind(main),
-  $safeParse = /*#__PURE__*/ main.safeParse.bind(main),
-  $validate = /*#__PURE__*/ main.validate.bind(main),
-  $safeValidate = /*#__PURE__*/ main.safeValidate.bind(main)
+const $type = $nsid
+
+type $type = typeof $type
+
+export { $type }
+
+export const $isTypeOf = /*#__PURE__*/ main.isTypeOf.bind(main)
+export const $build = /*#__PURE__*/ main.build.bind(main)
+export const $assert = /*#__PURE__*/ main.assert.bind(main)
+export const $check = /*#__PURE__*/ main.check.bind(main)
+export const $cast = /*#__PURE__*/ main.cast.bind(main)
+export const $ifMatches = /*#__PURE__*/ main.ifMatches.bind(main)
+export const $matches = /*#__PURE__*/ main.matches.bind(main)
+export const $parse = /*#__PURE__*/ main.parse.bind(main)
+export const $safeParse = /*#__PURE__*/ main.safeParse.bind(main)
+export const $validate = /*#__PURE__*/ main.validate.bind(main)
+export const $safeValidate = /*#__PURE__*/ main.safeValidate.bind(main)
 
 type Contributor = {
   $type?: 'site.standard.document#contributor'
@@ -138,13 +163,17 @@ type Contributor = {
 
 export type { Contributor }
 
-const contributor = l.typedObject<Contributor>(
+const contributor = /*#__PURE__*/ l.typedObject<Contributor>(
   $nsid,
   'contributor',
-  l.object({
-    did: l.string({ format: 'did' }),
-    role: l.optional(l.string({ maxLength: 1000, maxGraphemes: 100 })),
-    displayName: l.optional(l.string({ maxLength: 1000, maxGraphemes: 100 })),
+  /*#__PURE__*/ l.object({
+    did: /*#__PURE__*/ l.string({ format: 'did' }),
+    role: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ maxLength: 1000, maxGraphemes: 100 }),
+    ),
+    displayName: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ maxLength: 1000, maxGraphemes: 100 }),
+    ),
   }),
 )
 

@@ -3,4 +3,4 @@
  */
 
 export * from './button.defs.js'
-export * as $defs from './button.defs.js'
+export { main as default } from './button.defs.js'

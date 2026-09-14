@@ -9,6 +9,8 @@ import * as ModerationDefs from '../../../com/atproto/moderation/defs.defs.js'
 
 const $nsid = 'app.bsky.labeler.defs'
 
+type $nsid = typeof $nsid
+
 export { $nsid }
 
 type LabelerView = {
@@ -24,21 +26,29 @@ type LabelerView = {
 
 export type { LabelerView }
 
-const labelerView = l.typedObject<LabelerView>(
+const labelerView = /*#__PURE__*/ l.typedObject<LabelerView>(
   $nsid,
   'labelerView',
-  l.object({
-    cid: l.string({ format: 'cid' }),
-    uri: l.string({ format: 'at-uri' }),
-    labels: l.optional(
-      l.array(l.ref<LabelDefs.Label>((() => LabelDefs.label) as any)),
+  /*#__PURE__*/ l.object({
+    cid: /*#__PURE__*/ l.string({ format: 'cid' }),
+    uri: /*#__PURE__*/ l.string({ format: 'at-uri' }),
+    labels: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any),
+      ),
     ),
-    viewer: l.optional(
-      l.ref<LabelerViewerState>((() => labelerViewerState) as any),
+    viewer: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<LabelerViewerState>(
+        (() => labelerViewerState) as any,
+      ),
     ),
-    creator: l.ref<ActorDefs.ProfileView>((() => ActorDefs.profileView) as any),
-    indexedAt: l.string({ format: 'datetime' }),
-    likeCount: l.optional(l.integer({ minimum: 0 })),
+    creator: /*#__PURE__*/ l.ref<ActorDefs.ProfileView>(
+      (() => ActorDefs.profileView) as any,
+    ),
+    indexedAt: /*#__PURE__*/ l.string({ format: 'datetime' }),
+    likeCount: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.integer({ minimum: 0 }),
+    ),
   }),
 )
 
@@ -60,16 +70,18 @@ type LabelerPolicies = {
 
 export type { LabelerPolicies }
 
-const labelerPolicies = l.typedObject<LabelerPolicies>(
+const labelerPolicies = /*#__PURE__*/ l.typedObject<LabelerPolicies>(
   $nsid,
   'labelerPolicies',
-  l.object({
-    labelValues: l.array(
-      l.ref<LabelDefs.LabelValue>((() => LabelDefs.labelValue) as any),
+  /*#__PURE__*/ l.object({
+    labelValues: /*#__PURE__*/ l.array(
+      /*#__PURE__*/ l.ref<LabelDefs.LabelValue>(
+        (() => LabelDefs.labelValue) as any,
+      ),
     ),
-    labelValueDefinitions: l.optional(
-      l.array(
-        l.ref<LabelDefs.LabelValueDefinition>(
+    labelValueDefinitions: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<LabelDefs.LabelValueDefinition>(
           (() => LabelDefs.labelValueDefinition) as any,
         ),
       ),
@@ -86,10 +98,14 @@ type LabelerViewerState = {
 
 export type { LabelerViewerState }
 
-const labelerViewerState = l.typedObject<LabelerViewerState>(
+const labelerViewerState = /*#__PURE__*/ l.typedObject<LabelerViewerState>(
   $nsid,
   'labelerViewerState',
-  l.object({ like: l.optional(l.string({ format: 'at-uri' })) }),
+  /*#__PURE__*/ l.object({
+    like: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'at-uri' }),
+    ),
+  }),
 )
 
 export { labelerViewerState }
@@ -123,37 +139,49 @@ type LabelerViewDetailed = {
 
 export type { LabelerViewDetailed }
 
-const labelerViewDetailed = l.typedObject<LabelerViewDetailed>(
+const labelerViewDetailed = /*#__PURE__*/ l.typedObject<LabelerViewDetailed>(
   $nsid,
   'labelerViewDetailed',
-  l.object({
-    cid: l.string({ format: 'cid' }),
-    uri: l.string({ format: 'at-uri' }),
-    labels: l.optional(
-      l.array(l.ref<LabelDefs.Label>((() => LabelDefs.label) as any)),
+  /*#__PURE__*/ l.object({
+    cid: /*#__PURE__*/ l.string({ format: 'cid' }),
+    uri: /*#__PURE__*/ l.string({ format: 'at-uri' }),
+    labels: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any),
+      ),
     ),
-    viewer: l.optional(
-      l.ref<LabelerViewerState>((() => labelerViewerState) as any),
+    viewer: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<LabelerViewerState>(
+        (() => labelerViewerState) as any,
+      ),
     ),
-    creator: l.ref<ActorDefs.ProfileView>((() => ActorDefs.profileView) as any),
-    policies: l.ref<LabelerPolicies>((() => labelerPolicies) as any),
-    indexedAt: l.string({ format: 'datetime' }),
-    likeCount: l.optional(l.integer({ minimum: 0 })),
-    reasonTypes: l.optional(
-      l.array(
-        l.ref<ModerationDefs.ReasonType>(
+    creator: /*#__PURE__*/ l.ref<ActorDefs.ProfileView>(
+      (() => ActorDefs.profileView) as any,
+    ),
+    policies: /*#__PURE__*/ l.ref<LabelerPolicies>(
+      (() => labelerPolicies) as any,
+    ),
+    indexedAt: /*#__PURE__*/ l.string({ format: 'datetime' }),
+    likeCount: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.integer({ minimum: 0 }),
+    ),
+    reasonTypes: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<ModerationDefs.ReasonType>(
           (() => ModerationDefs.reasonType) as any,
         ),
       ),
     ),
-    subjectTypes: l.optional(
-      l.array(
-        l.ref<ModerationDefs.SubjectType>(
+    subjectTypes: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<ModerationDefs.SubjectType>(
           (() => ModerationDefs.subjectType) as any,
         ),
       ),
     ),
-    subjectCollections: l.optional(l.array(l.string({ format: 'nsid' }))),
+    subjectCollections: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(/*#__PURE__*/ l.string({ format: 'nsid' })),
+    ),
   }),
 )
 

@@ -5,9 +5,7 @@ import { segment } from '#utils/facets'
 
 const allowedProtocols = /^https?$/i
 
-function predicate(
-  feature: lexicon.app.bsky.richtext.facet.$defs.Main['features'][number]
-): boolean {
+function predicate(feature: lexicon.app.bsky.richtext.facet.Main['features'][number]): boolean {
   return (
     lexicon.app.bsky.richtext.facet.link.isTypeOf(feature) ||
     lexicon.app.bsky.richtext.facet.mention.isTypeOf(feature) ||

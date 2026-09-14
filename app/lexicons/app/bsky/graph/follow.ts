@@ -3,4 +3,4 @@
  */
 
 export * from './follow.defs.js'
-export * as $defs from './follow.defs.js'
+export { main as default } from './follow.defs.js'

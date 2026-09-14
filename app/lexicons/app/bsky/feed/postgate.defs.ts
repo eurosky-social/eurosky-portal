@@ -6,6 +6,8 @@ import { l } from '@atproto/lex'
 
 const $nsid = 'app.bsky.feed.postgate'
 
+type $nsid = typeof $nsid
+
 export { $nsid }
 
 /** Record defining interaction rules for a post. The record key (rkey) of the postgate record must match the record key of the post, and that record must be in the same repository. */
@@ -32,41 +34,48 @@ type Main = {
 export type { Main }
 
 /** Record defining interaction rules for a post. The record key (rkey) of the postgate record must match the record key of the post, and that record must be in the same repository. */
-const main = l.record<'tid', Main>(
+const main = /*#__PURE__*/ l.record<'tid', Main>(
   'tid',
   $nsid,
-  l.object({
-    post: l.string({ format: 'at-uri' }),
-    createdAt: l.string({ format: 'datetime' }),
-    embeddingRules: l.optional(
-      l.array(
-        l.typedUnion(
-          [l.typedRef<DisableRule>((() => disableRule) as any)],
+  /*#__PURE__*/ l.object({
+    post: /*#__PURE__*/ l.string({ format: 'at-uri' }),
+    createdAt: /*#__PURE__*/ l.string({ format: 'datetime' }),
+    embeddingRules: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.typedUnion(
+          [/*#__PURE__*/ l.typedRef<DisableRule>((() => disableRule) as any)],
           false,
         ),
         { maxLength: 5 },
       ),
     ),
-    detachedEmbeddingUris: l.optional(
-      l.array(l.string({ format: 'at-uri' }), { maxLength: 50 }),
+    detachedEmbeddingUris: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(/*#__PURE__*/ l.string({ format: 'at-uri' }), {
+        maxLength: 50,
+      }),
     ),
   }),
 )
 
 export { main }
 
-export const $isTypeOf = /*#__PURE__*/ main.isTypeOf.bind(main),
-  $build = /*#__PURE__*/ main.build.bind(main),
-  $type = /*#__PURE__*/ main.$type
-export const $assert = /*#__PURE__*/ main.assert.bind(main),
-  $check = /*#__PURE__*/ main.check.bind(main),
-  $cast = /*#__PURE__*/ main.cast.bind(main),
-  $ifMatches = /*#__PURE__*/ main.ifMatches.bind(main),
-  $matches = /*#__PURE__*/ main.matches.bind(main),
-  $parse = /*#__PURE__*/ main.parse.bind(main),
-  $safeParse = /*#__PURE__*/ main.safeParse.bind(main),
-  $validate = /*#__PURE__*/ main.validate.bind(main),
-  $safeValidate = /*#__PURE__*/ main.safeValidate.bind(main)
+const $type = $nsid
+
+type $type = typeof $type
+
+export { $type }
+
+export const $isTypeOf = /*#__PURE__*/ main.isTypeOf.bind(main)
+export const $build = /*#__PURE__*/ main.build.bind(main)
+export const $assert = /*#__PURE__*/ main.assert.bind(main)
+export const $check = /*#__PURE__*/ main.check.bind(main)
+export const $cast = /*#__PURE__*/ main.cast.bind(main)
+export const $ifMatches = /*#__PURE__*/ main.ifMatches.bind(main)
+export const $matches = /*#__PURE__*/ main.matches.bind(main)
+export const $parse = /*#__PURE__*/ main.parse.bind(main)
+export const $safeParse = /*#__PURE__*/ main.safeParse.bind(main)
+export const $validate = /*#__PURE__*/ main.validate.bind(main)
+export const $safeValidate = /*#__PURE__*/ main.safeValidate.bind(main)
 
 /** Disables embedding of this post. */
 type DisableRule = { $type?: 'app.bsky.feed.postgate#disableRule' }
@@ -74,10 +83,10 @@ type DisableRule = { $type?: 'app.bsky.feed.postgate#disableRule' }
 export type { DisableRule }
 
 /** Disables embedding of this post. */
-const disableRule = l.typedObject<DisableRule>(
+const disableRule = /*#__PURE__*/ l.typedObject<DisableRule>(
   $nsid,
   'disableRule',
-  l.object({}),
+  /*#__PURE__*/ l.object({}),
 )
 
 export { disableRule }

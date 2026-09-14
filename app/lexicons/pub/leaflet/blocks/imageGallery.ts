@@ -3,4 +3,4 @@
  */
 
 export * from './imageGallery.defs.js'
-export * as $defs from './imageGallery.defs.js'
+export { main as default } from './imageGallery.defs.js'

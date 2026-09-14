@@ -3,4 +3,4 @@
  */
 
 export * from './facet.defs.js'
-export * as $defs from './facet.defs.js'
+export { main as default } from './facet.defs.js'

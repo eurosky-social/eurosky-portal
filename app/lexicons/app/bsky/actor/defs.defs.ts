@@ -13,6 +13,8 @@ import * as FeedPostgate from '../feed/postgate.defs.js'
 
 const $nsid = 'app.bsky.actor.defs'
 
+type $nsid = typeof $nsid
+
 export { $nsid }
 
 /** A new user experiences (NUX) storage object */
@@ -35,14 +37,18 @@ type Nux = {
 export type { Nux }
 
 /** A new user experiences (NUX) storage object */
-const nux = l.typedObject<Nux>(
+const nux = /*#__PURE__*/ l.typedObject<Nux>(
   $nsid,
   'nux',
-  l.object({
-    id: l.string({ maxLength: 100 }),
-    data: l.optional(l.string({ maxLength: 3000, maxGraphemes: 300 })),
-    completed: l.withDefault(l.boolean(), false),
-    expiresAt: l.optional(l.string({ format: 'datetime' })),
+  /*#__PURE__*/ l.object({
+    id: /*#__PURE__*/ l.string({ maxLength: 100 }),
+    data: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ maxLength: 3000, maxGraphemes: 300 }),
+    ),
+    completed: /*#__PURE__*/ l.withDefault(/*#__PURE__*/ l.boolean(), false),
+    expiresAt: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'datetime' }),
+    ),
   }),
 )
 
@@ -77,17 +83,21 @@ type MutedWord = {
 export type { MutedWord }
 
 /** A word that the account owner has muted. */
-const mutedWord = l.typedObject<MutedWord>(
+const mutedWord = /*#__PURE__*/ l.typedObject<MutedWord>(
   $nsid,
   'mutedWord',
-  l.object({
-    id: l.optional(l.string()),
-    value: l.string({ maxLength: 10000, maxGraphemes: 1000 }),
-    targets: l.array(l.ref<MutedWordTarget>((() => mutedWordTarget) as any)),
-    expiresAt: l.optional(l.string({ format: 'datetime' })),
-    actorTarget: l.optional(
-      l.withDefault(
-        l.string<{ knownValues: ['all', 'exclude-following'] }>(),
+  /*#__PURE__*/ l.object({
+    id: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string()),
+    value: /*#__PURE__*/ l.string({ maxLength: 10000, maxGraphemes: 1000 }),
+    targets: /*#__PURE__*/ l.array(
+      /*#__PURE__*/ l.ref<MutedWordTarget>((() => mutedWordTarget) as any),
+    ),
+    expiresAt: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'datetime' }),
+    ),
+    actorTarget: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.withDefault(
+        /*#__PURE__*/ l.string<{ knownValues: ['all', 'exclude-following'] }>(),
         'all',
       ),
     ),
@@ -106,14 +116,16 @@ type SavedFeed = {
 
 export type { SavedFeed }
 
-const savedFeed = l.typedObject<SavedFeed>(
+const savedFeed = /*#__PURE__*/ l.typedObject<SavedFeed>(
   $nsid,
   'savedFeed',
-  l.object({
-    id: l.string(),
-    type: l.string<{ knownValues: ['feed', 'list', 'timeline'] }>(),
-    value: l.string(),
-    pinned: l.boolean(),
+  /*#__PURE__*/ l.object({
+    id: /*#__PURE__*/ l.string(),
+    type: /*#__PURE__*/ l.string<{
+      knownValues: ['feed', 'list', 'timeline']
+    }>(),
+    value: /*#__PURE__*/ l.string(),
+    pinned: /*#__PURE__*/ l.boolean(),
   }),
 )
 
@@ -154,26 +166,36 @@ type StatusView = {
 
 export type { StatusView }
 
-const statusView = l.typedObject<StatusView>(
+const statusView = /*#__PURE__*/ l.typedObject<StatusView>(
   $nsid,
   'statusView',
-  l.object({
-    cid: l.optional(l.string({ format: 'cid' })),
-    uri: l.optional(l.string({ format: 'at-uri' })),
-    embed: l.optional(
-      l.typedUnion(
-        [l.typedRef<EmbedExternal.View>((() => EmbedExternal.view) as any)],
+  /*#__PURE__*/ l.object({
+    cid: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'cid' })),
+    uri: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'at-uri' })),
+    embed: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.typedUnion(
+        [
+          /*#__PURE__*/ l.typedRef<EmbedExternal.View>(
+            (() => EmbedExternal.view) as any,
+          ),
+        ],
         false,
       ),
     ),
-    labels: l.optional(
-      l.array(l.ref<LabelDefs.Label>((() => LabelDefs.label) as any)),
+    labels: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any),
+      ),
     ),
-    record: l.lexMap(),
-    status: l.string<{ knownValues: ['app.bsky.actor.status#live'] }>(),
-    isActive: l.optional(l.boolean()),
-    expiresAt: l.optional(l.string({ format: 'datetime' })),
-    isDisabled: l.optional(l.boolean()),
+    record: /*#__PURE__*/ l.lexMap(),
+    status: /*#__PURE__*/ l.string<{
+      knownValues: ['app.bsky.actor.status#live']
+    }>(),
+    isActive: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
+    expiresAt: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'datetime' }),
+    ),
+    isDisabled: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
   }),
 )
 
@@ -201,27 +223,41 @@ type Preferences = (
 
 export type { Preferences }
 
-const preferences = l.array<Preferences[number]>(
-  l.typedUnion(
+const preferences = /*#__PURE__*/ l.array<Preferences[number]>(
+  /*#__PURE__*/ l.typedUnion(
     [
-      l.typedRef<AdultContentPref>((() => adultContentPref) as any),
-      l.typedRef<ContentLabelPref>((() => contentLabelPref) as any),
-      l.typedRef<SavedFeedsPref>((() => savedFeedsPref) as any),
-      l.typedRef<SavedFeedsPrefV2>((() => savedFeedsPrefV2) as any),
-      l.typedRef<PersonalDetailsPref>((() => personalDetailsPref) as any),
-      l.typedRef<DeclaredAgePref>((() => declaredAgePref) as any),
-      l.typedRef<FeedViewPref>((() => feedViewPref) as any),
-      l.typedRef<ThreadViewPref>((() => threadViewPref) as any),
-      l.typedRef<InterestsPref>((() => interestsPref) as any),
-      l.typedRef<MutedWordsPref>((() => mutedWordsPref) as any),
-      l.typedRef<HiddenPostsPref>((() => hiddenPostsPref) as any),
-      l.typedRef<BskyAppStatePref>((() => bskyAppStatePref) as any),
-      l.typedRef<LabelersPref>((() => labelersPref) as any),
-      l.typedRef<PostInteractionSettingsPref>(
+      /*#__PURE__*/ l.typedRef<AdultContentPref>(
+        (() => adultContentPref) as any,
+      ),
+      /*#__PURE__*/ l.typedRef<ContentLabelPref>(
+        (() => contentLabelPref) as any,
+      ),
+      /*#__PURE__*/ l.typedRef<SavedFeedsPref>((() => savedFeedsPref) as any),
+      /*#__PURE__*/ l.typedRef<SavedFeedsPrefV2>(
+        (() => savedFeedsPrefV2) as any,
+      ),
+      /*#__PURE__*/ l.typedRef<PersonalDetailsPref>(
+        (() => personalDetailsPref) as any,
+      ),
+      /*#__PURE__*/ l.typedRef<DeclaredAgePref>((() => declaredAgePref) as any),
+      /*#__PURE__*/ l.typedRef<FeedViewPref>((() => feedViewPref) as any),
+      /*#__PURE__*/ l.typedRef<ThreadViewPref>((() => threadViewPref) as any),
+      /*#__PURE__*/ l.typedRef<InterestsPref>((() => interestsPref) as any),
+      /*#__PURE__*/ l.typedRef<MutedWordsPref>((() => mutedWordsPref) as any),
+      /*#__PURE__*/ l.typedRef<HiddenPostsPref>((() => hiddenPostsPref) as any),
+      /*#__PURE__*/ l.typedRef<BskyAppStatePref>(
+        (() => bskyAppStatePref) as any,
+      ),
+      /*#__PURE__*/ l.typedRef<LabelersPref>((() => labelersPref) as any),
+      /*#__PURE__*/ l.typedRef<PostInteractionSettingsPref>(
         (() => postInteractionSettingsPref) as any,
       ),
-      l.typedRef<VerificationPrefs>((() => verificationPrefs) as any),
-      l.typedRef<LiveEventPreferences>((() => liveEventPreferences) as any),
+      /*#__PURE__*/ l.typedRef<VerificationPrefs>(
+        (() => verificationPrefs) as any,
+      ),
+      /*#__PURE__*/ l.typedRef<LiveEventPreferences>(
+        (() => liveEventPreferences) as any,
+      ),
     ],
     false,
   ),
@@ -253,29 +289,43 @@ type ProfileView = {
 
 export type { ProfileView }
 
-const profileView = l.typedObject<ProfileView>(
+const profileView = /*#__PURE__*/ l.typedObject<ProfileView>(
   $nsid,
   'profileView',
-  l.object({
-    did: l.string({ format: 'did' }),
-    debug: l.optional(l.lexMap()),
-    avatar: l.optional(l.string({ format: 'uri' })),
-    handle: l.string({ format: 'handle' }),
-    labels: l.optional(
-      l.array(l.ref<LabelDefs.Label>((() => LabelDefs.label) as any)),
+  /*#__PURE__*/ l.object({
+    did: /*#__PURE__*/ l.string({ format: 'did' }),
+    debug: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.lexMap()),
+    avatar: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'uri' })),
+    handle: /*#__PURE__*/ l.string({ format: 'handle' }),
+    labels: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any),
+      ),
     ),
-    status: l.optional(l.ref<StatusView>((() => statusView) as any)),
-    viewer: l.optional(l.ref<ViewerState>((() => viewerState) as any)),
-    pronouns: l.optional(l.string()),
-    createdAt: l.optional(l.string({ format: 'datetime' })),
-    indexedAt: l.optional(l.string({ format: 'datetime' })),
-    associated: l.optional(
-      l.ref<ProfileAssociated>((() => profileAssociated) as any),
+    status: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<StatusView>((() => statusView) as any),
     ),
-    description: l.optional(l.string({ maxLength: 2560, maxGraphemes: 256 })),
-    displayName: l.optional(l.string({ maxLength: 640, maxGraphemes: 64 })),
-    verification: l.optional(
-      l.ref<VerificationState>((() => verificationState) as any),
+    viewer: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<ViewerState>((() => viewerState) as any),
+    ),
+    pronouns: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string()),
+    createdAt: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'datetime' }),
+    ),
+    indexedAt: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'datetime' }),
+    ),
+    associated: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<ProfileAssociated>((() => profileAssociated) as any),
+    ),
+    description: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ maxLength: 2560, maxGraphemes: 256 }),
+    ),
+    displayName: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ maxLength: 640, maxGraphemes: 64 }),
+    ),
+    verification: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<VerificationState>((() => verificationState) as any),
     ),
   }),
 )
@@ -307,26 +357,36 @@ type ViewerState = {
 export type { ViewerState }
 
 /** Metadata about the requesting account's relationship with the subject account. Only has meaningful content for authed requests. */
-const viewerState = l.typedObject<ViewerState>(
+const viewerState = /*#__PURE__*/ l.typedObject<ViewerState>(
   $nsid,
   'viewerState',
-  l.object({
-    muted: l.optional(l.boolean()),
-    blocking: l.optional(l.string({ format: 'at-uri' })),
-    blockedBy: l.optional(l.boolean()),
-    following: l.optional(l.string({ format: 'at-uri' })),
-    followedBy: l.optional(l.string({ format: 'at-uri' })),
-    mutedByList: l.optional(
-      l.ref<GraphDefs.ListViewBasic>((() => GraphDefs.listViewBasic) as any),
+  /*#__PURE__*/ l.object({
+    muted: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
+    blocking: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'at-uri' }),
     ),
-    blockingByList: l.optional(
-      l.ref<GraphDefs.ListViewBasic>((() => GraphDefs.listViewBasic) as any),
+    blockedBy: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
+    following: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'at-uri' }),
     ),
-    knownFollowers: l.optional(
-      l.ref<KnownFollowers>((() => knownFollowers) as any),
+    followedBy: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'at-uri' }),
     ),
-    activitySubscription: l.optional(
-      l.ref<NotificationDefs.ActivitySubscription>(
+    mutedByList: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<GraphDefs.ListViewBasic>(
+        (() => GraphDefs.listViewBasic) as any,
+      ),
+    ),
+    blockingByList: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<GraphDefs.ListViewBasic>(
+        (() => GraphDefs.listViewBasic) as any,
+      ),
+    ),
+    knownFollowers: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<KnownFollowers>((() => knownFollowers) as any),
+    ),
+    activitySubscription: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<NotificationDefs.ActivitySubscription>(
         (() => NotificationDefs.activitySubscription) as any,
       ),
     ),
@@ -371,16 +431,18 @@ type FeedViewPref = {
 
 export type { FeedViewPref }
 
-const feedViewPref = l.typedObject<FeedViewPref>(
+const feedViewPref = /*#__PURE__*/ l.typedObject<FeedViewPref>(
   $nsid,
   'feedViewPref',
-  l.object({
-    feed: l.string(),
-    hideReplies: l.optional(l.boolean()),
-    hideReposts: l.optional(l.boolean()),
-    hideQuotePosts: l.optional(l.boolean()),
-    hideRepliesByLikeCount: l.optional(l.integer()),
-    hideRepliesByUnfollowed: l.optional(l.withDefault(l.boolean(), true)),
+  /*#__PURE__*/ l.object({
+    feed: /*#__PURE__*/ l.string(),
+    hideReplies: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
+    hideReposts: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
+    hideQuotePosts: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
+    hideRepliesByLikeCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
+    hideRepliesByUnfollowed: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.withDefault(/*#__PURE__*/ l.boolean(), true),
+    ),
   }),
 )
 
@@ -393,11 +455,13 @@ type LabelersPref = {
 
 export type { LabelersPref }
 
-const labelersPref = l.typedObject<LabelersPref>(
+const labelersPref = /*#__PURE__*/ l.typedObject<LabelersPref>(
   $nsid,
   'labelersPref',
-  l.object({
-    labelers: l.array(l.ref<LabelerPrefItem>((() => labelerPrefItem) as any)),
+  /*#__PURE__*/ l.object({
+    labelers: /*#__PURE__*/ l.array(
+      /*#__PURE__*/ l.ref<LabelerPrefItem>((() => labelerPrefItem) as any),
+    ),
   }),
 )
 
@@ -414,13 +478,14 @@ type InterestsPref = {
 
 export type { InterestsPref }
 
-const interestsPref = l.typedObject<InterestsPref>(
+const interestsPref = /*#__PURE__*/ l.typedObject<InterestsPref>(
   $nsid,
   'interestsPref',
-  l.object({
-    tags: l.array(l.string({ maxLength: 640, maxGraphemes: 64 }), {
-      maxLength: 100,
-    }),
+  /*#__PURE__*/ l.object({
+    tags: /*#__PURE__*/ l.array(
+      /*#__PURE__*/ l.string({ maxLength: 640, maxGraphemes: 64 }),
+      { maxLength: 100 },
+    ),
   }),
 )
 
@@ -436,13 +501,13 @@ type KnownFollowers = {
 export type { KnownFollowers }
 
 /** The subject's followers whom you also follow */
-const knownFollowers = l.typedObject<KnownFollowers>(
+const knownFollowers = /*#__PURE__*/ l.typedObject<KnownFollowers>(
   $nsid,
   'knownFollowers',
-  l.object({
-    count: l.integer(),
-    followers: l.array(
-      l.ref<ProfileViewBasic>((() => profileViewBasic) as any),
+  /*#__PURE__*/ l.object({
+    count: /*#__PURE__*/ l.integer(),
+    followers: /*#__PURE__*/ l.array(
+      /*#__PURE__*/ l.ref<ProfileViewBasic>((() => profileViewBasic) as any),
       { maxLength: 5, minLength: 0 },
     ),
   }),
@@ -461,10 +526,14 @@ type MutedWordsPref = {
 
 export type { MutedWordsPref }
 
-const mutedWordsPref = l.typedObject<MutedWordsPref>(
+const mutedWordsPref = /*#__PURE__*/ l.typedObject<MutedWordsPref>(
   $nsid,
   'mutedWordsPref',
-  l.object({ items: l.array(l.ref<MutedWord>((() => mutedWord) as any)) }),
+  /*#__PURE__*/ l.object({
+    items: /*#__PURE__*/ l.array(
+      /*#__PURE__*/ l.ref<MutedWord>((() => mutedWord) as any),
+    ),
+  }),
 )
 
 export { mutedWordsPref }
@@ -478,13 +547,13 @@ type SavedFeedsPref = {
 
 export type { SavedFeedsPref }
 
-const savedFeedsPref = l.typedObject<SavedFeedsPref>(
+const savedFeedsPref = /*#__PURE__*/ l.typedObject<SavedFeedsPref>(
   $nsid,
   'savedFeedsPref',
-  l.object({
-    saved: l.array(l.string({ format: 'at-uri' })),
-    pinned: l.array(l.string({ format: 'at-uri' })),
-    timelineIndex: l.optional(l.integer()),
+  /*#__PURE__*/ l.object({
+    saved: /*#__PURE__*/ l.array(/*#__PURE__*/ l.string({ format: 'at-uri' })),
+    pinned: /*#__PURE__*/ l.array(/*#__PURE__*/ l.string({ format: 'at-uri' })),
+    timelineIndex: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
   }),
 )
 
@@ -497,22 +566,17 @@ type ThreadViewPref = {
    * Sorting mode for threads.
    */
   sort?:
-    | 'oldest'
-    | 'newest'
-    | 'most-likes'
-    | 'random'
-    | 'hotness'
-    | l.UnknownString
+    'oldest' | 'newest' | 'most-likes' | 'random' | 'hotness' | l.UnknownString
 }
 
 export type { ThreadViewPref }
 
-const threadViewPref = l.typedObject<ThreadViewPref>(
+const threadViewPref = /*#__PURE__*/ l.typedObject<ThreadViewPref>(
   $nsid,
   'threadViewPref',
-  l.object({
-    sort: l.optional(
-      l.string<{
+  /*#__PURE__*/ l.object({
+    sort: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string<{
         knownValues: ['oldest', 'newest', 'most-likes', 'random', 'hotness']
       }>(),
     ),
@@ -544,13 +608,13 @@ type DeclaredAgePref = {
 export type { DeclaredAgePref }
 
 /** Read-only preference containing value(s) inferred from the user's declared birthdate. Absence of this preference object in the response indicates that the user has not made a declaration. */
-const declaredAgePref = l.typedObject<DeclaredAgePref>(
+const declaredAgePref = /*#__PURE__*/ l.typedObject<DeclaredAgePref>(
   $nsid,
   'declaredAgePref',
-  l.object({
-    isOverAge13: l.optional(l.boolean()),
-    isOverAge16: l.optional(l.boolean()),
-    isOverAge18: l.optional(l.boolean()),
+  /*#__PURE__*/ l.object({
+    isOverAge13: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
+    isOverAge16: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
+    isOverAge18: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
   }),
 )
 
@@ -567,10 +631,12 @@ type HiddenPostsPref = {
 
 export type { HiddenPostsPref }
 
-const hiddenPostsPref = l.typedObject<HiddenPostsPref>(
+const hiddenPostsPref = /*#__PURE__*/ l.typedObject<HiddenPostsPref>(
   $nsid,
   'hiddenPostsPref',
-  l.object({ items: l.array(l.string({ format: 'at-uri' })) }),
+  /*#__PURE__*/ l.object({
+    items: /*#__PURE__*/ l.array(/*#__PURE__*/ l.string({ format: 'at-uri' })),
+  }),
 )
 
 export { hiddenPostsPref }
@@ -582,10 +648,10 @@ type LabelerPrefItem = {
 
 export type { LabelerPrefItem }
 
-const labelerPrefItem = l.typedObject<LabelerPrefItem>(
+const labelerPrefItem = /*#__PURE__*/ l.typedObject<LabelerPrefItem>(
   $nsid,
   'labelerPrefItem',
-  l.object({ did: l.string({ format: 'did' }) }),
+  /*#__PURE__*/ l.object({ did: /*#__PURE__*/ l.string({ format: 'did' }) }),
 )
 
 export { labelerPrefItem }
@@ -594,7 +660,7 @@ type MutedWordTarget = 'content' | 'tag' | l.UnknownString
 
 export type { MutedWordTarget }
 
-const mutedWordTarget = l.string<{
+const mutedWordTarget = /*#__PURE__*/ l.string<{
   maxLength: 640
   knownValues: ['content', 'tag']
   maxGraphemes: 64
@@ -609,10 +675,12 @@ type AdultContentPref = {
 
 export type { AdultContentPref }
 
-const adultContentPref = l.typedObject<AdultContentPref>(
+const adultContentPref = /*#__PURE__*/ l.typedObject<AdultContentPref>(
   $nsid,
   'adultContentPref',
-  l.object({ enabled: l.withDefault(l.boolean(), false) }),
+  /*#__PURE__*/ l.object({
+    enabled: /*#__PURE__*/ l.withDefault(/*#__PURE__*/ l.boolean(), false),
+  }),
 )
 
 export { adultContentPref }
@@ -636,18 +704,24 @@ type BskyAppStatePref = {
 export type { BskyAppStatePref }
 
 /** A grab bag of state that's specific to the bsky.app program. Third-party apps shouldn't use this. */
-const bskyAppStatePref = l.typedObject<BskyAppStatePref>(
+const bskyAppStatePref = /*#__PURE__*/ l.typedObject<BskyAppStatePref>(
   $nsid,
   'bskyAppStatePref',
-  l.object({
-    nuxs: l.optional(
-      l.array(l.ref<Nux>((() => nux) as any), { maxLength: 100 }),
+  /*#__PURE__*/ l.object({
+    nuxs: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(/*#__PURE__*/ l.ref<Nux>((() => nux) as any), {
+        maxLength: 100,
+      }),
     ),
-    queuedNudges: l.optional(
-      l.array(l.string({ maxLength: 100 }), { maxLength: 1000 }),
+    queuedNudges: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(/*#__PURE__*/ l.string({ maxLength: 100 }), {
+        maxLength: 1000,
+      }),
     ),
-    activeProgressGuide: l.optional(
-      l.ref<BskyAppProgressGuide>((() => bskyAppProgressGuide) as any),
+    activeProgressGuide: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<BskyAppProgressGuide>(
+        (() => bskyAppProgressGuide) as any,
+      ),
     ),
   }),
 )
@@ -667,13 +741,17 @@ type ContentLabelPref = {
 
 export type { ContentLabelPref }
 
-const contentLabelPref = l.typedObject<ContentLabelPref>(
+const contentLabelPref = /*#__PURE__*/ l.typedObject<ContentLabelPref>(
   $nsid,
   'contentLabelPref',
-  l.object({
-    label: l.string(),
-    labelerDid: l.optional(l.string({ format: 'did' })),
-    visibility: l.string<{ knownValues: ['ignore', 'show', 'warn', 'hide'] }>(),
+  /*#__PURE__*/ l.object({
+    label: /*#__PURE__*/ l.string(),
+    labelerDid: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'did' }),
+    ),
+    visibility: /*#__PURE__*/ l.string<{
+      knownValues: ['ignore', 'show', 'warn', 'hide']
+    }>(),
   }),
 )
 
@@ -701,27 +779,37 @@ type ProfileViewBasic = {
 
 export type { ProfileViewBasic }
 
-const profileViewBasic = l.typedObject<ProfileViewBasic>(
+const profileViewBasic = /*#__PURE__*/ l.typedObject<ProfileViewBasic>(
   $nsid,
   'profileViewBasic',
-  l.object({
-    did: l.string({ format: 'did' }),
-    debug: l.optional(l.lexMap()),
-    avatar: l.optional(l.string({ format: 'uri' })),
-    handle: l.string({ format: 'handle' }),
-    labels: l.optional(
-      l.array(l.ref<LabelDefs.Label>((() => LabelDefs.label) as any)),
+  /*#__PURE__*/ l.object({
+    did: /*#__PURE__*/ l.string({ format: 'did' }),
+    debug: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.lexMap()),
+    avatar: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'uri' })),
+    handle: /*#__PURE__*/ l.string({ format: 'handle' }),
+    labels: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any),
+      ),
     ),
-    status: l.optional(l.ref<StatusView>((() => statusView) as any)),
-    viewer: l.optional(l.ref<ViewerState>((() => viewerState) as any)),
-    pronouns: l.optional(l.string()),
-    createdAt: l.optional(l.string({ format: 'datetime' })),
-    associated: l.optional(
-      l.ref<ProfileAssociated>((() => profileAssociated) as any),
+    status: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<StatusView>((() => statusView) as any),
     ),
-    displayName: l.optional(l.string({ maxLength: 640, maxGraphemes: 64 })),
-    verification: l.optional(
-      l.ref<VerificationState>((() => verificationState) as any),
+    viewer: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<ViewerState>((() => viewerState) as any),
+    ),
+    pronouns: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string()),
+    createdAt: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'datetime' }),
+    ),
+    associated: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<ProfileAssociated>((() => profileAssociated) as any),
+    ),
+    displayName: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ maxLength: 640, maxGraphemes: 64 }),
+    ),
+    verification: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<VerificationState>((() => verificationState) as any),
     ),
   }),
 )
@@ -735,10 +823,14 @@ type SavedFeedsPrefV2 = {
 
 export type { SavedFeedsPrefV2 }
 
-const savedFeedsPrefV2 = l.typedObject<SavedFeedsPrefV2>(
+const savedFeedsPrefV2 = /*#__PURE__*/ l.typedObject<SavedFeedsPrefV2>(
   $nsid,
   'savedFeedsPrefV2',
-  l.object({ items: l.array(l.ref<SavedFeed>((() => savedFeed) as any)) }),
+  /*#__PURE__*/ l.object({
+    items: /*#__PURE__*/ l.array(
+      /*#__PURE__*/ l.ref<SavedFeed>((() => savedFeed) as any),
+    ),
+  }),
 )
 
 export { savedFeedsPrefV2 }
@@ -771,14 +863,14 @@ type VerificationView = {
 export type { VerificationView }
 
 /** An individual verification for an associated subject. */
-const verificationView = l.typedObject<VerificationView>(
+const verificationView = /*#__PURE__*/ l.typedObject<VerificationView>(
   $nsid,
   'verificationView',
-  l.object({
-    uri: l.string({ format: 'at-uri' }),
-    issuer: l.string({ format: 'did' }),
-    isValid: l.boolean(),
-    createdAt: l.string({ format: 'datetime' }),
+  /*#__PURE__*/ l.object({
+    uri: /*#__PURE__*/ l.string({ format: 'at-uri' }),
+    issuer: /*#__PURE__*/ l.string({ format: 'did' }),
+    isValid: /*#__PURE__*/ l.boolean(),
+    createdAt: /*#__PURE__*/ l.string({ format: 'datetime' }),
   }),
 )
 
@@ -797,22 +889,26 @@ type ProfileAssociated = {
 
 export type { ProfileAssociated }
 
-const profileAssociated = l.typedObject<ProfileAssociated>(
+const profileAssociated = /*#__PURE__*/ l.typedObject<ProfileAssociated>(
   $nsid,
   'profileAssociated',
-  l.object({
-    chat: l.optional(
-      l.ref<ProfileAssociatedChat>((() => profileAssociatedChat) as any),
+  /*#__PURE__*/ l.object({
+    chat: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<ProfileAssociatedChat>(
+        (() => profileAssociatedChat) as any,
+      ),
     ),
-    germ: l.optional(
-      l.ref<ProfileAssociatedGerm>((() => profileAssociatedGerm) as any),
+    germ: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<ProfileAssociatedGerm>(
+        (() => profileAssociatedGerm) as any,
+      ),
     ),
-    lists: l.optional(l.integer()),
-    labeler: l.optional(l.boolean()),
-    feedgens: l.optional(l.integer()),
-    starterPacks: l.optional(l.integer()),
-    activitySubscription: l.optional(
-      l.ref<ProfileAssociatedActivitySubscription>(
+    lists: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
+    labeler: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
+    feedgens: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
+    starterPacks: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
+    activitySubscription: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<ProfileAssociatedActivitySubscription>(
         (() => profileAssociatedActivitySubscription) as any,
       ),
     ),
@@ -834,10 +930,14 @@ type VerificationPrefs = {
 export type { VerificationPrefs }
 
 /** Preferences for how verified accounts appear in the app. */
-const verificationPrefs = l.typedObject<VerificationPrefs>(
+const verificationPrefs = /*#__PURE__*/ l.typedObject<VerificationPrefs>(
   $nsid,
   'verificationPrefs',
-  l.object({ hideBadges: l.optional(l.withDefault(l.boolean(), false)) }),
+  /*#__PURE__*/ l.object({
+    hideBadges: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.withDefault(/*#__PURE__*/ l.boolean(), false),
+    ),
+  }),
 )
 
 export { verificationPrefs }
@@ -865,15 +965,17 @@ type VerificationState = {
 export type { VerificationState }
 
 /** Represents the verification information about the user this object is attached to. */
-const verificationState = l.typedObject<VerificationState>(
+const verificationState = /*#__PURE__*/ l.typedObject<VerificationState>(
   $nsid,
   'verificationState',
-  l.object({
-    verifications: l.array(
-      l.ref<VerificationView>((() => verificationView) as any),
+  /*#__PURE__*/ l.object({
+    verifications: /*#__PURE__*/ l.array(
+      /*#__PURE__*/ l.ref<VerificationView>((() => verificationView) as any),
     ),
-    verifiedStatus: l.string<{ knownValues: ['valid', 'invalid', 'none'] }>(),
-    trustedVerifierStatus: l.string<{
+    verifiedStatus: /*#__PURE__*/ l.string<{
+      knownValues: ['valid', 'invalid', 'none']
+    }>(),
+    trustedVerifierStatus: /*#__PURE__*/ l.string<{
       knownValues: ['valid', 'invalid', 'none']
     }>(),
   }),
@@ -892,10 +994,14 @@ type PersonalDetailsPref = {
 
 export type { PersonalDetailsPref }
 
-const personalDetailsPref = l.typedObject<PersonalDetailsPref>(
+const personalDetailsPref = /*#__PURE__*/ l.typedObject<PersonalDetailsPref>(
   $nsid,
   'personalDetailsPref',
-  l.object({ birthDate: l.optional(l.string({ format: 'datetime' })) }),
+  /*#__PURE__*/ l.object({
+    birthDate: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'datetime' }),
+    ),
+  }),
 )
 
 export { personalDetailsPref }
@@ -931,40 +1037,58 @@ type ProfileViewDetailed = {
 
 export type { ProfileViewDetailed }
 
-const profileViewDetailed = l.typedObject<ProfileViewDetailed>(
+const profileViewDetailed = /*#__PURE__*/ l.typedObject<ProfileViewDetailed>(
   $nsid,
   'profileViewDetailed',
-  l.object({
-    did: l.string({ format: 'did' }),
-    debug: l.optional(l.lexMap()),
-    avatar: l.optional(l.string({ format: 'uri' })),
-    banner: l.optional(l.string({ format: 'uri' })),
-    handle: l.string({ format: 'handle' }),
-    labels: l.optional(
-      l.array(l.ref<LabelDefs.Label>((() => LabelDefs.label) as any)),
+  /*#__PURE__*/ l.object({
+    did: /*#__PURE__*/ l.string({ format: 'did' }),
+    debug: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.lexMap()),
+    avatar: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'uri' })),
+    banner: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'uri' })),
+    handle: /*#__PURE__*/ l.string({ format: 'handle' }),
+    labels: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any),
+      ),
     ),
-    status: l.optional(l.ref<StatusView>((() => statusView) as any)),
-    viewer: l.optional(l.ref<ViewerState>((() => viewerState) as any)),
-    website: l.optional(l.string({ format: 'uri' })),
-    pronouns: l.optional(l.string()),
-    createdAt: l.optional(l.string({ format: 'datetime' })),
-    indexedAt: l.optional(l.string({ format: 'datetime' })),
-    associated: l.optional(
-      l.ref<ProfileAssociated>((() => profileAssociated) as any),
+    status: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<StatusView>((() => statusView) as any),
     ),
-    pinnedPost: l.optional(
-      l.ref<RepoStrongRef.Main>((() => RepoStrongRef.main) as any),
+    viewer: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<ViewerState>((() => viewerState) as any),
     ),
-    postsCount: l.optional(l.integer()),
-    description: l.optional(l.string({ maxLength: 2560, maxGraphemes: 256 })),
-    displayName: l.optional(l.string({ maxLength: 640, maxGraphemes: 64 })),
-    followsCount: l.optional(l.integer()),
-    verification: l.optional(
-      l.ref<VerificationState>((() => verificationState) as any),
+    website: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'uri' }),
     ),
-    followersCount: l.optional(l.integer()),
-    joinedViaStarterPack: l.optional(
-      l.ref<GraphDefs.StarterPackViewBasic>(
+    pronouns: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string()),
+    createdAt: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'datetime' }),
+    ),
+    indexedAt: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'datetime' }),
+    ),
+    associated: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<ProfileAssociated>((() => profileAssociated) as any),
+    ),
+    pinnedPost: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<RepoStrongRef.Main>(
+        (() => RepoStrongRef.main) as any,
+      ),
+    ),
+    postsCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
+    description: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ maxLength: 2560, maxGraphemes: 256 }),
+    ),
+    displayName: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ maxLength: 640, maxGraphemes: 64 }),
+    ),
+    followsCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
+    verification: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<VerificationState>((() => verificationState) as any),
+    ),
+    followersCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
+    joinedViaStarterPack: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<GraphDefs.StarterPackViewBasic>(
         (() => GraphDefs.starterPackViewBasic) as any,
       ),
     ),
@@ -982,10 +1106,10 @@ type BskyAppProgressGuide = {
 export type { BskyAppProgressGuide }
 
 /** If set, an active progress guide. Once completed, can be set to undefined. Should have unspecced fields tracking progress. */
-const bskyAppProgressGuide = l.typedObject<BskyAppProgressGuide>(
+const bskyAppProgressGuide = /*#__PURE__*/ l.typedObject<BskyAppProgressGuide>(
   $nsid,
   'bskyAppProgressGuide',
-  l.object({ guide: l.string({ maxLength: 100 }) }),
+  /*#__PURE__*/ l.object({ guide: /*#__PURE__*/ l.string({ maxLength: 100 }) }),
 )
 
 export { bskyAppProgressGuide }
@@ -1008,12 +1132,16 @@ type LiveEventPreferences = {
 export type { LiveEventPreferences }
 
 /** Preferences for live events. */
-const liveEventPreferences = l.typedObject<LiveEventPreferences>(
+const liveEventPreferences = /*#__PURE__*/ l.typedObject<LiveEventPreferences>(
   $nsid,
   'liveEventPreferences',
-  l.object({
-    hideAllFeeds: l.optional(l.withDefault(l.boolean(), false)),
-    hiddenFeedIds: l.optional(l.array(l.string())),
+  /*#__PURE__*/ l.object({
+    hideAllFeeds: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.withDefault(/*#__PURE__*/ l.boolean(), false),
+    ),
+    hiddenFeedIds: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(/*#__PURE__*/ l.string()),
+    ),
   }),
 )
 
@@ -1026,13 +1154,16 @@ type ProfileAssociatedChat = {
 
 export type { ProfileAssociatedChat }
 
-const profileAssociatedChat = l.typedObject<ProfileAssociatedChat>(
-  $nsid,
-  'profileAssociatedChat',
-  l.object({
-    allowIncoming: l.string<{ knownValues: ['all', 'none', 'following'] }>(),
-  }),
-)
+const profileAssociatedChat =
+  /*#__PURE__*/ l.typedObject<ProfileAssociatedChat>(
+    $nsid,
+    'profileAssociatedChat',
+    /*#__PURE__*/ l.object({
+      allowIncoming: /*#__PURE__*/ l.string<{
+        knownValues: ['all', 'none', 'following']
+      }>(),
+    }),
+  )
 
 export { profileAssociatedChat }
 
@@ -1044,14 +1175,17 @@ type ProfileAssociatedGerm = {
 
 export type { ProfileAssociatedGerm }
 
-const profileAssociatedGerm = l.typedObject<ProfileAssociatedGerm>(
-  $nsid,
-  'profileAssociatedGerm',
-  l.object({
-    messageMeUrl: l.string({ format: 'uri' }),
-    showButtonTo: l.string<{ knownValues: ['usersIFollow', 'everyone'] }>(),
-  }),
-)
+const profileAssociatedGerm =
+  /*#__PURE__*/ l.typedObject<ProfileAssociatedGerm>(
+    $nsid,
+    'profileAssociatedGerm',
+    /*#__PURE__*/ l.object({
+      messageMeUrl: /*#__PURE__*/ l.string({ format: 'uri' }),
+      showButtonTo: /*#__PURE__*/ l.string<{
+        knownValues: ['usersIFollow', 'everyone']
+      }>(),
+    }),
+  )
 
 export { profileAssociatedGerm }
 
@@ -1074,55 +1208,55 @@ type PostInteractionSettingsPref = {
    * Matches postgate record. List of rules defining who can embed this users posts. If value is an empty array or is undefined, no particular rules apply and anyone can embed.
    */
   postgateEmbeddingRules?: (
-    | l.$Typed<FeedPostgate.DisableRule>
-    | l.Unknown$TypedObject
+    l.$Typed<FeedPostgate.DisableRule> | l.Unknown$TypedObject
   )[]
 }
 
 export type { PostInteractionSettingsPref }
 
 /** Default post interaction settings for the account. These values should be applied as default values when creating new posts. These refs should mirror the threadgate and postgate records exactly. */
-const postInteractionSettingsPref = l.typedObject<PostInteractionSettingsPref>(
-  $nsid,
-  'postInteractionSettingsPref',
-  l.object({
-    threadgateAllowRules: l.optional(
-      l.array(
-        l.typedUnion(
-          [
-            l.typedRef<FeedThreadgate.MentionRule>(
-              (() => FeedThreadgate.mentionRule) as any,
-            ),
-            l.typedRef<FeedThreadgate.FollowerRule>(
-              (() => FeedThreadgate.followerRule) as any,
-            ),
-            l.typedRef<FeedThreadgate.FollowingRule>(
-              (() => FeedThreadgate.followingRule) as any,
-            ),
-            l.typedRef<FeedThreadgate.ListRule>(
-              (() => FeedThreadgate.listRule) as any,
-            ),
-          ],
-          false,
+const postInteractionSettingsPref =
+  /*#__PURE__*/ l.typedObject<PostInteractionSettingsPref>(
+    $nsid,
+    'postInteractionSettingsPref',
+    /*#__PURE__*/ l.object({
+      threadgateAllowRules: /*#__PURE__*/ l.optional(
+        /*#__PURE__*/ l.array(
+          /*#__PURE__*/ l.typedUnion(
+            [
+              /*#__PURE__*/ l.typedRef<FeedThreadgate.MentionRule>(
+                (() => FeedThreadgate.mentionRule) as any,
+              ),
+              /*#__PURE__*/ l.typedRef<FeedThreadgate.FollowerRule>(
+                (() => FeedThreadgate.followerRule) as any,
+              ),
+              /*#__PURE__*/ l.typedRef<FeedThreadgate.FollowingRule>(
+                (() => FeedThreadgate.followingRule) as any,
+              ),
+              /*#__PURE__*/ l.typedRef<FeedThreadgate.ListRule>(
+                (() => FeedThreadgate.listRule) as any,
+              ),
+            ],
+            false,
+          ),
+          { maxLength: 5 },
         ),
-        { maxLength: 5 },
       ),
-    ),
-    postgateEmbeddingRules: l.optional(
-      l.array(
-        l.typedUnion(
-          [
-            l.typedRef<FeedPostgate.DisableRule>(
-              (() => FeedPostgate.disableRule) as any,
-            ),
-          ],
-          false,
+      postgateEmbeddingRules: /*#__PURE__*/ l.optional(
+        /*#__PURE__*/ l.array(
+          /*#__PURE__*/ l.typedUnion(
+            [
+              /*#__PURE__*/ l.typedRef<FeedPostgate.DisableRule>(
+                (() => FeedPostgate.disableRule) as any,
+              ),
+            ],
+            false,
+          ),
+          { maxLength: 5 },
         ),
-        { maxLength: 5 },
       ),
-    ),
-  }),
-)
+    }),
+  )
 
 export { postInteractionSettingsPref }
 
@@ -1134,11 +1268,11 @@ type ProfileAssociatedActivitySubscription = {
 export type { ProfileAssociatedActivitySubscription }
 
 const profileAssociatedActivitySubscription =
-  l.typedObject<ProfileAssociatedActivitySubscription>(
+  /*#__PURE__*/ l.typedObject<ProfileAssociatedActivitySubscription>(
     $nsid,
     'profileAssociatedActivitySubscription',
-    l.object({
-      allowSubscriptions: l.string<{
+    /*#__PURE__*/ l.object({
+      allowSubscriptions: /*#__PURE__*/ l.string<{
         knownValues: ['followers', 'mutuals', 'none']
       }>(),
     }),

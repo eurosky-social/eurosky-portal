@@ -3,4 +3,4 @@
  */
 
 export * from './postgate.defs.js'
-export * as $defs from './postgate.defs.js'
+export { main as default } from './postgate.defs.js'

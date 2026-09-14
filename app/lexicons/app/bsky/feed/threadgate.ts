@@ -3,4 +3,4 @@
  */
 
 export * from './threadgate.defs.js'
-export * as $defs from './threadgate.defs.js'
+export { main as default } from './threadgate.defs.js'

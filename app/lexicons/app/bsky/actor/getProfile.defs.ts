@@ -7,28 +7,36 @@ import * as ActorDefs from './defs.defs.js'
 
 const $nsid = 'app.bsky.actor.getProfile'
 
+type $nsid = typeof $nsid
+
 export { $nsid }
 
-/** Get detailed profile view of an actor. Does not require auth, but contains relevant metadata with auth. */
-const main = l.query(
-  $nsid,
-  l.params({ actor: l.string({ format: 'at-identifier' }) }),
-  l.payload(
-    'application/json',
-    l.ref<ActorDefs.ProfileViewDetailed>(
-      (() => ActorDefs.profileViewDetailed) as any,
-    ),
+export const $params = /*#__PURE__*/ l.params({
+  actor: /*#__PURE__*/ l.string({ format: 'at-identifier' }),
+})
+
+export type $Params = l.InferOutput<typeof $params>
+
+export const $output = /*#__PURE__*/ l.payload(
+  'application/json',
+  /*#__PURE__*/ l.ref<ActorDefs.ProfileViewDetailed>(
+    (() => ActorDefs.profileViewDetailed) as any,
   ),
 )
-export { main }
 
-export type $Params = l.InferMethodParams<typeof main>
-export type $Output<B = l.BinaryData> = l.InferMethodOutput<typeof main, B>
-export type $OutputBody<B = l.BinaryData> = l.InferMethodOutputBody<
-  typeof main,
+export type $Output<B = l.BinaryData> = l.InferPayload<typeof $output, B>
+export type $OutputBody<B = l.BinaryData> = l.InferPayloadBody<
+  typeof $output,
   B
 >
 
-export const $lxm = main.nsid,
-  $params = main.parameters,
-  $output = main.output
+/** Get detailed profile view of an actor. Does not require auth, but contains relevant metadata with auth. */
+const main = /*#__PURE__*/ l.query($nsid, $params, $output)
+
+export { main }
+
+const $lxm = $nsid
+
+type $lxm = typeof $lxm
+
+export { $lxm }

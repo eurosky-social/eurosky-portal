@@ -6,29 +6,39 @@ import { l } from '@atproto/lex'
 
 const $nsid = 'com.atproto.repo.describeRepo'
 
+type $nsid = typeof $nsid
+
 export { $nsid }
 
-/** Get information about an account and repository, including the list of collections. Does not require auth. */
-const main = l.query(
-  $nsid,
-  l.params({ repo: l.string({ format: 'at-identifier' }) }),
-  l.jsonPayload({
-    did: l.string({ format: 'did' }),
-    didDoc: l.lexMap(),
-    handle: l.string({ format: 'handle' }),
-    collections: l.array(l.string({ format: 'nsid' })),
-    handleIsCorrect: l.boolean(),
-  }),
-)
-export { main }
+export const $params = /*#__PURE__*/ l.params({
+  repo: /*#__PURE__*/ l.string({ format: 'at-identifier' }),
+})
 
-export type $Params = l.InferMethodParams<typeof main>
-export type $Output<B = l.BinaryData> = l.InferMethodOutput<typeof main, B>
-export type $OutputBody<B = l.BinaryData> = l.InferMethodOutputBody<
-  typeof main,
+export type $Params = l.InferOutput<typeof $params>
+
+export const $output = /*#__PURE__*/ l.jsonPayload({
+  did: /*#__PURE__*/ l.string({ format: 'did' }),
+  didDoc: /*#__PURE__*/ l.lexMap(),
+  handle: /*#__PURE__*/ l.string({ format: 'handle' }),
+  collections: /*#__PURE__*/ l.array(
+    /*#__PURE__*/ l.string({ format: 'nsid' }),
+  ),
+  handleIsCorrect: /*#__PURE__*/ l.boolean(),
+})
+
+export type $Output<B = l.BinaryData> = l.InferPayload<typeof $output, B>
+export type $OutputBody<B = l.BinaryData> = l.InferPayloadBody<
+  typeof $output,
   B
 >
 
-export const $lxm = main.nsid,
-  $params = main.parameters,
-  $output = main.output
+/** Get information about an account and repository, including the list of collections. Does not require auth. */
+const main = /*#__PURE__*/ l.query($nsid, $params, $output)
+
+export { main }
+
+const $lxm = $nsid
+
+type $lxm = typeof $lxm
+
+export { $lxm }

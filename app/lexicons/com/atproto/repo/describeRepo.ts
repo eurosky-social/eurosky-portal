@@ -3,4 +3,4 @@
  */
 
 export * from './describeRepo.defs.js'
-export * as $defs from './describeRepo.defs.js'
+export { main as default } from './describeRepo.defs.js'

@@ -3,4 +3,4 @@
  */
 
 export * from './getListing.defs.js'
-export * as $defs from './getListing.defs.js'
+export { main as default } from './getListing.defs.js'

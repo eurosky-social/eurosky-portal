@@ -6,6 +6,8 @@ import { l } from '@atproto/lex'
 
 const $nsid = 'tools.ozone.report.defs'
 
+type $nsid = typeof $nsid
+
 export { $nsid }
 
 type ReasonType =
@@ -53,7 +55,7 @@ type ReasonType =
 
 export type { ReasonType }
 
-const reasonType = l.string<{
+const reasonType = /*#__PURE__*/ l.string<{
   knownValues: [
     'tools.ozone.report.defs#reasonAppeal',
     'tools.ozone.report.defs#reasonOther',
@@ -101,429 +103,617 @@ const reasonType = l.string<{
 export { reasonType }
 
 /** An issue not included in these options */
-type ReasonOther = 'tools.ozone.report.defs#reasonOther'
-
-export type { ReasonOther }
-
-/** An issue not included in these options */
-const reasonOther = l.token($nsid, 'reasonOther')
+const reasonOther = /*#__PURE__*/ l.token($nsid, 'reasonOther')
 
 export { reasonOther }
 
-/** Appeal a previously taken moderation action */
-type ReasonAppeal = 'tools.ozone.report.defs#reasonAppeal'
+/** An issue not included in these options */
+const ReasonOther = /*#__PURE__*/ reasonOther.value
 
-export type { ReasonAppeal }
+/** An issue not included in these options */
+type ReasonOther = typeof ReasonOther
+
+export { ReasonOther }
 
 /** Appeal a previously taken moderation action */
-const reasonAppeal = l.token($nsid, 'reasonAppeal')
+const reasonAppeal = /*#__PURE__*/ l.token($nsid, 'reasonAppeal')
 
 export { reasonAppeal }
 
-/** Other */
-type ReasonRuleOther = 'tools.ozone.report.defs#reasonRuleOther'
+/** Appeal a previously taken moderation action */
+const ReasonAppeal = /*#__PURE__*/ reasonAppeal.value
 
-export type { ReasonRuleOther }
+/** Appeal a previously taken moderation action */
+type ReasonAppeal = typeof ReasonAppeal
+
+export { ReasonAppeal }
 
 /** Other */
-const reasonRuleOther = l.token($nsid, 'reasonRuleOther')
+const reasonRuleOther = /*#__PURE__*/ l.token($nsid, 'reasonRuleOther')
 
 export { reasonRuleOther }
 
-/** Eating disorders */
-type ReasonSelfHarmED = 'tools.ozone.report.defs#reasonSelfHarmED'
+/** Other */
+const ReasonRuleOther = /*#__PURE__*/ reasonRuleOther.value
 
-export type { ReasonSelfHarmED as ReasonSelfHarmEd }
+/** Other */
+type ReasonRuleOther = typeof ReasonRuleOther
+
+export { ReasonRuleOther }
 
 /** Eating disorders */
-const reasonSelfHarmED = l.token($nsid, 'reasonSelfHarmED')
+const reasonSelfHarmED = /*#__PURE__*/ l.token($nsid, 'reasonSelfHarmED')
 
 export { reasonSelfHarmED }
 
-/** Non-consensual intimate imagery */
-type ReasonSexualNCII = 'tools.ozone.report.defs#reasonSexualNCII'
+/** Eating disorders */
+const ReasonSelfHarmEd = /*#__PURE__*/ reasonSelfHarmED.value
 
-export type { ReasonSexualNCII as ReasonSexualNcii }
+/** Eating disorders */
+type ReasonSelfHarmEd = typeof ReasonSelfHarmEd
+
+export { ReasonSelfHarmEd }
 
 /** Non-consensual intimate imagery */
-const reasonSexualNCII = l.token($nsid, 'reasonSexualNCII')
+const reasonSexualNCII = /*#__PURE__*/ l.token($nsid, 'reasonSexualNCII')
 
 export { reasonSexualNCII }
 
-/** Other sexual violence content */
-type ReasonSexualOther = 'tools.ozone.report.defs#reasonSexualOther'
+/** Non-consensual intimate imagery */
+const ReasonSexualNcii = /*#__PURE__*/ reasonSexualNCII.value
 
-export type { ReasonSexualOther }
+/** Non-consensual intimate imagery */
+type ReasonSexualNcii = typeof ReasonSexualNcii
+
+export { ReasonSexualNcii }
 
 /** Other sexual violence content */
-const reasonSexualOther = l.token($nsid, 'reasonSexualOther')
+const reasonSexualOther = /*#__PURE__*/ l.token($nsid, 'reasonSexualOther')
 
 export { reasonSexualOther }
 
-/** Animal sexual abuse */
-type ReasonSexualAnimal = 'tools.ozone.report.defs#reasonSexualAnimal'
+/** Other sexual violence content */
+const ReasonSexualOther = /*#__PURE__*/ reasonSexualOther.value
 
-export type { ReasonSexualAnimal }
+/** Other sexual violence content */
+type ReasonSexualOther = typeof ReasonSexualOther
+
+export { ReasonSexualOther }
 
 /** Animal sexual abuse */
-const reasonSexualAnimal = l.token($nsid, 'reasonSexualAnimal')
+const reasonSexualAnimal = /*#__PURE__*/ l.token($nsid, 'reasonSexualAnimal')
 
 export { reasonSexualAnimal }
 
-/** Fake account or bot */
-type ReasonMisleadingBot = 'tools.ozone.report.defs#reasonMisleadingBot'
+/** Animal sexual abuse */
+const ReasonSexualAnimal = /*#__PURE__*/ reasonSexualAnimal.value
 
-export type { ReasonMisleadingBot }
+/** Animal sexual abuse */
+type ReasonSexualAnimal = typeof ReasonSexualAnimal
+
+export { ReasonSexualAnimal }
 
 /** Fake account or bot */
-const reasonMisleadingBot = l.token($nsid, 'reasonMisleadingBot')
+const reasonMisleadingBot = /*#__PURE__*/ l.token($nsid, 'reasonMisleadingBot')
 
 export { reasonMisleadingBot }
 
-/** Other dangerous content */
-type ReasonSelfHarmOther = 'tools.ozone.report.defs#reasonSelfHarmOther'
+/** Fake account or bot */
+const ReasonMisleadingBot = /*#__PURE__*/ reasonMisleadingBot.value
 
-export type { ReasonSelfHarmOther }
+/** Fake account or bot */
+type ReasonMisleadingBot = typeof ReasonMisleadingBot
+
+export { ReasonMisleadingBot }
 
 /** Other dangerous content */
-const reasonSelfHarmOther = l.token($nsid, 'reasonSelfHarmOther')
+const reasonSelfHarmOther = /*#__PURE__*/ l.token($nsid, 'reasonSelfHarmOther')
 
 export { reasonSelfHarmOther }
 
-/** Other violent content */
-type ReasonViolenceOther = 'tools.ozone.report.defs#reasonViolenceOther'
+/** Other dangerous content */
+const ReasonSelfHarmOther = /*#__PURE__*/ reasonSelfHarmOther.value
 
-export type { ReasonViolenceOther }
+/** Other dangerous content */
+type ReasonSelfHarmOther = typeof ReasonSelfHarmOther
+
+export { ReasonSelfHarmOther }
 
 /** Other violent content */
-const reasonViolenceOther = l.token($nsid, 'reasonViolenceOther')
+const reasonViolenceOther = /*#__PURE__*/ l.token($nsid, 'reasonViolenceOther')
 
 export { reasonViolenceOther }
 
-/** Scam */
-type ReasonMisleadingScam = 'tools.ozone.report.defs#reasonMisleadingScam'
+/** Other violent content */
+const ReasonViolenceOther = /*#__PURE__*/ reasonViolenceOther.value
 
-export type { ReasonMisleadingScam }
+/** Other violent content */
+type ReasonViolenceOther = typeof ReasonViolenceOther
+
+export { ReasonViolenceOther }
 
 /** Scam */
-const reasonMisleadingScam = l.token($nsid, 'reasonMisleadingScam')
+const reasonMisleadingScam = /*#__PURE__*/ l.token(
+  $nsid,
+  'reasonMisleadingScam',
+)
 
 export { reasonMisleadingScam }
 
-/** Spam */
-type ReasonMisleadingSpam = 'tools.ozone.report.defs#reasonMisleadingSpam'
+/** Scam */
+const ReasonMisleadingScam = /*#__PURE__*/ reasonMisleadingScam.value
 
-export type { ReasonMisleadingSpam }
+/** Scam */
+type ReasonMisleadingScam = typeof ReasonMisleadingScam
+
+export { ReasonMisleadingScam }
 
 /** Spam */
-const reasonMisleadingSpam = l.token($nsid, 'reasonMisleadingSpam')
+const reasonMisleadingSpam = /*#__PURE__*/ l.token(
+  $nsid,
+  'reasonMisleadingSpam',
+)
 
 export { reasonMisleadingSpam }
 
-/** Banned user returning */
-type ReasonRuleBanEvasion = 'tools.ozone.report.defs#reasonRuleBanEvasion'
+/** Spam */
+const ReasonMisleadingSpam = /*#__PURE__*/ reasonMisleadingSpam.value
 
-export type { ReasonRuleBanEvasion }
+/** Spam */
+type ReasonMisleadingSpam = typeof ReasonMisleadingSpam
+
+export { ReasonMisleadingSpam }
 
 /** Banned user returning */
-const reasonRuleBanEvasion = l.token($nsid, 'reasonRuleBanEvasion')
+const reasonRuleBanEvasion = /*#__PURE__*/ l.token(
+  $nsid,
+  'reasonRuleBanEvasion',
+)
 
 export { reasonRuleBanEvasion }
 
-/** Dangerous challenges or activities */
-type ReasonSelfHarmStunts = 'tools.ozone.report.defs#reasonSelfHarmStunts'
+/** Banned user returning */
+const ReasonRuleBanEvasion = /*#__PURE__*/ reasonRuleBanEvasion.value
 
-export type { ReasonSelfHarmStunts }
+/** Banned user returning */
+type ReasonRuleBanEvasion = typeof ReasonRuleBanEvasion
+
+export { ReasonRuleBanEvasion }
 
 /** Dangerous challenges or activities */
-const reasonSelfHarmStunts = l.token($nsid, 'reasonSelfHarmStunts')
+const reasonSelfHarmStunts = /*#__PURE__*/ l.token(
+  $nsid,
+  'reasonSelfHarmStunts',
+)
 
 export { reasonSelfHarmStunts }
 
-/** Deepfake adult content */
-type ReasonSexualDeepfake = 'tools.ozone.report.defs#reasonSexualDeepfake'
+/** Dangerous challenges or activities */
+const ReasonSelfHarmStunts = /*#__PURE__*/ reasonSelfHarmStunts.value
 
-export type { ReasonSexualDeepfake }
+/** Dangerous challenges or activities */
+type ReasonSelfHarmStunts = typeof ReasonSelfHarmStunts
+
+export { ReasonSelfHarmStunts }
 
 /** Deepfake adult content */
-const reasonSexualDeepfake = l.token($nsid, 'reasonSexualDeepfake')
+const reasonSexualDeepfake = /*#__PURE__*/ l.token(
+  $nsid,
+  'reasonSexualDeepfake',
+)
 
 export { reasonSexualDeepfake }
 
-/** Animal welfare violations */
-type ReasonViolenceAnimal = 'tools.ozone.report.defs#reasonViolenceAnimal'
+/** Deepfake adult content */
+const ReasonSexualDeepfake = /*#__PURE__*/ reasonSexualDeepfake.value
 
-export type { ReasonViolenceAnimal }
+/** Deepfake adult content */
+type ReasonSexualDeepfake = typeof ReasonSexualDeepfake
+
+export { ReasonSexualDeepfake }
 
 /** Animal welfare violations */
-const reasonViolenceAnimal = l.token($nsid, 'reasonViolenceAnimal')
+const reasonViolenceAnimal = /*#__PURE__*/ l.token(
+  $nsid,
+  'reasonViolenceAnimal',
+)
 
 export { reasonViolenceAnimal }
 
-/** Child sexual abuse material (CSAM). These reports will be sent only be sent to the application's Moderation Authority. */
-type ReasonChildSafetyCSAM = 'tools.ozone.report.defs#reasonChildSafetyCSAM'
+/** Animal welfare violations */
+const ReasonViolenceAnimal = /*#__PURE__*/ reasonViolenceAnimal.value
 
-export type { ReasonChildSafetyCSAM as ReasonChildSafetyCsam }
+/** Animal welfare violations */
+type ReasonViolenceAnimal = typeof ReasonViolenceAnimal
+
+export { ReasonViolenceAnimal }
 
 /** Child sexual abuse material (CSAM). These reports will be sent only be sent to the application's Moderation Authority. */
-const reasonChildSafetyCSAM = l.token($nsid, 'reasonChildSafetyCSAM')
+const reasonChildSafetyCSAM = /*#__PURE__*/ l.token(
+  $nsid,
+  'reasonChildSafetyCSAM',
+)
 
 export { reasonChildSafetyCSAM }
 
-/** Other harassing or hateful content */
-type ReasonHarassmentOther = 'tools.ozone.report.defs#reasonHarassmentOther'
+/** Child sexual abuse material (CSAM). These reports will be sent only be sent to the application's Moderation Authority. */
+const ReasonChildSafetyCsam = /*#__PURE__*/ reasonChildSafetyCSAM.value
 
-export type { ReasonHarassmentOther }
+/** Child sexual abuse material (CSAM). These reports will be sent only be sent to the application's Moderation Authority. */
+type ReasonChildSafetyCsam = typeof ReasonChildSafetyCsam
+
+export { ReasonChildSafetyCsam }
 
 /** Other harassing or hateful content */
-const reasonHarassmentOther = l.token($nsid, 'reasonHarassmentOther')
+const reasonHarassmentOther = /*#__PURE__*/ l.token(
+  $nsid,
+  'reasonHarassmentOther',
+)
 
 export { reasonHarassmentOther }
 
-/** Trolling */
-type ReasonHarassmentTroll = 'tools.ozone.report.defs#reasonHarassmentTroll'
+/** Other harassing or hateful content */
+const ReasonHarassmentOther = /*#__PURE__*/ reasonHarassmentOther.value
 
-export type { ReasonHarassmentTroll }
+/** Other harassing or hateful content */
+type ReasonHarassmentOther = typeof ReasonHarassmentOther
+
+export { ReasonHarassmentOther }
 
 /** Trolling */
-const reasonHarassmentTroll = l.token($nsid, 'reasonHarassmentTroll')
+const reasonHarassmentTroll = /*#__PURE__*/ l.token(
+  $nsid,
+  'reasonHarassmentTroll',
+)
 
 export { reasonHarassmentTroll }
 
-/** Other misleading content */
-type ReasonMisleadingOther = 'tools.ozone.report.defs#reasonMisleadingOther'
+/** Trolling */
+const ReasonHarassmentTroll = /*#__PURE__*/ reasonHarassmentTroll.value
 
-export type { ReasonMisleadingOther }
+/** Trolling */
+type ReasonHarassmentTroll = typeof ReasonHarassmentTroll
+
+export { ReasonHarassmentTroll }
 
 /** Other misleading content */
-const reasonMisleadingOther = l.token($nsid, 'reasonMisleadingOther')
+const reasonMisleadingOther = /*#__PURE__*/ l.token(
+  $nsid,
+  'reasonMisleadingOther',
+)
 
 export { reasonMisleadingOther }
 
-/** Content promoting or depicting self-harm */
-type ReasonSelfHarmContent = 'tools.ozone.report.defs#reasonSelfHarmContent'
+/** Other misleading content */
+const ReasonMisleadingOther = /*#__PURE__*/ reasonMisleadingOther.value
 
-export type { ReasonSelfHarmContent }
+/** Other misleading content */
+type ReasonMisleadingOther = typeof ReasonMisleadingOther
+
+export { ReasonMisleadingOther }
 
 /** Content promoting or depicting self-harm */
-const reasonSelfHarmContent = l.token($nsid, 'reasonSelfHarmContent')
+const reasonSelfHarmContent = /*#__PURE__*/ l.token(
+  $nsid,
+  'reasonSelfHarmContent',
+)
 
 export { reasonSelfHarmContent }
 
-/** Unlabelled adult content */
-type ReasonSexualUnlabeled = 'tools.ozone.report.defs#reasonSexualUnlabeled'
+/** Content promoting or depicting self-harm */
+const ReasonSelfHarmContent = /*#__PURE__*/ reasonSelfHarmContent.value
 
-export type { ReasonSexualUnlabeled }
+/** Content promoting or depicting self-harm */
+type ReasonSelfHarmContent = typeof ReasonSelfHarmContent
+
+export { ReasonSelfHarmContent }
 
 /** Unlabelled adult content */
-const reasonSexualUnlabeled = l.token($nsid, 'reasonSexualUnlabeled')
+const reasonSexualUnlabeled = /*#__PURE__*/ l.token(
+  $nsid,
+  'reasonSexualUnlabeled',
+)
 
 export { reasonSexualUnlabeled }
 
-/** Threats or incitement */
-type ReasonViolenceThreats = 'tools.ozone.report.defs#reasonViolenceThreats'
+/** Unlabelled adult content */
+const ReasonSexualUnlabeled = /*#__PURE__*/ reasonSexualUnlabeled.value
 
-export type { ReasonViolenceThreats }
+/** Unlabelled adult content */
+type ReasonSexualUnlabeled = typeof ReasonSexualUnlabeled
+
+export { ReasonSexualUnlabeled }
 
 /** Threats or incitement */
-const reasonViolenceThreats = l.token($nsid, 'reasonViolenceThreats')
+const reasonViolenceThreats = /*#__PURE__*/ l.token(
+  $nsid,
+  'reasonViolenceThreats',
+)
 
 export { reasonViolenceThreats }
 
-/** Grooming or predatory behavior. These reports will be sent only be sent to the application's Moderation Authority. */
-type ReasonChildSafetyGroom = 'tools.ozone.report.defs#reasonChildSafetyGroom'
+/** Threats or incitement */
+const ReasonViolenceThreats = /*#__PURE__*/ reasonViolenceThreats.value
 
-export type { ReasonChildSafetyGroom }
+/** Threats or incitement */
+type ReasonViolenceThreats = typeof ReasonViolenceThreats
+
+export { ReasonViolenceThreats }
 
 /** Grooming or predatory behavior. These reports will be sent only be sent to the application's Moderation Authority. */
-const reasonChildSafetyGroom = l.token($nsid, 'reasonChildSafetyGroom')
+const reasonChildSafetyGroom = /*#__PURE__*/ l.token(
+  $nsid,
+  'reasonChildSafetyGroom',
+)
 
 export { reasonChildSafetyGroom }
 
-/** Other child safety. These reports will be sent only be sent to the application's Moderation Authority. */
-type ReasonChildSafetyOther = 'tools.ozone.report.defs#reasonChildSafetyOther'
+/** Grooming or predatory behavior. These reports will be sent only be sent to the application's Moderation Authority. */
+const ReasonChildSafetyGroom = /*#__PURE__*/ reasonChildSafetyGroom.value
 
-export type { ReasonChildSafetyOther }
+/** Grooming or predatory behavior. These reports will be sent only be sent to the application's Moderation Authority. */
+type ReasonChildSafetyGroom = typeof ReasonChildSafetyGroom
+
+export { ReasonChildSafetyGroom }
 
 /** Other child safety. These reports will be sent only be sent to the application's Moderation Authority. */
-const reasonChildSafetyOther = l.token($nsid, 'reasonChildSafetyOther')
+const reasonChildSafetyOther = /*#__PURE__*/ l.token(
+  $nsid,
+  'reasonChildSafetyOther',
+)
 
 export { reasonChildSafetyOther }
 
-/** Hacking or system attacks */
-type ReasonRuleSiteSecurity = 'tools.ozone.report.defs#reasonRuleSiteSecurity'
+/** Other child safety. These reports will be sent only be sent to the application's Moderation Authority. */
+const ReasonChildSafetyOther = /*#__PURE__*/ reasonChildSafetyOther.value
 
-export type { ReasonRuleSiteSecurity }
+/** Other child safety. These reports will be sent only be sent to the application's Moderation Authority. */
+type ReasonChildSafetyOther = typeof ReasonChildSafetyOther
+
+export { ReasonChildSafetyOther }
 
 /** Hacking or system attacks */
-const reasonRuleSiteSecurity = l.token($nsid, 'reasonRuleSiteSecurity')
+const reasonRuleSiteSecurity = /*#__PURE__*/ l.token(
+  $nsid,
+  'reasonRuleSiteSecurity',
+)
 
 export { reasonRuleSiteSecurity }
 
-/** Doxxing */
-type ReasonHarassmentDoxxing = 'tools.ozone.report.defs#reasonHarassmentDoxxing'
+/** Hacking or system attacks */
+const ReasonRuleSiteSecurity = /*#__PURE__*/ reasonRuleSiteSecurity.value
 
-export type { ReasonHarassmentDoxxing }
+/** Hacking or system attacks */
+type ReasonRuleSiteSecurity = typeof ReasonRuleSiteSecurity
+
+export { ReasonRuleSiteSecurity }
 
 /** Doxxing */
-const reasonHarassmentDoxxing = l.token($nsid, 'reasonHarassmentDoxxing')
+const reasonHarassmentDoxxing = /*#__PURE__*/ l.token(
+  $nsid,
+  'reasonHarassmentDoxxing',
+)
 
 export { reasonHarassmentDoxxing }
 
-/** Privacy violation involving a minor */
-type ReasonChildSafetyPrivacy =
-  'tools.ozone.report.defs#reasonChildSafetyPrivacy'
+/** Doxxing */
+const ReasonHarassmentDoxxing = /*#__PURE__*/ reasonHarassmentDoxxing.value
 
-export type { ReasonChildSafetyPrivacy }
+/** Doxxing */
+type ReasonHarassmentDoxxing = typeof ReasonHarassmentDoxxing
+
+export { ReasonHarassmentDoxxing }
 
 /** Privacy violation involving a minor */
-const reasonChildSafetyPrivacy = l.token($nsid, 'reasonChildSafetyPrivacy')
+const reasonChildSafetyPrivacy = /*#__PURE__*/ l.token(
+  $nsid,
+  'reasonChildSafetyPrivacy',
+)
 
 export { reasonChildSafetyPrivacy }
 
-/** Targeted harassment */
-type ReasonHarassmentTargeted =
-  'tools.ozone.report.defs#reasonHarassmentTargeted'
+/** Privacy violation involving a minor */
+const ReasonChildSafetyPrivacy = /*#__PURE__*/ reasonChildSafetyPrivacy.value
 
-export type { ReasonHarassmentTargeted }
+/** Privacy violation involving a minor */
+type ReasonChildSafetyPrivacy = typeof ReasonChildSafetyPrivacy
+
+export { ReasonChildSafetyPrivacy }
 
 /** Targeted harassment */
-const reasonHarassmentTargeted = l.token($nsid, 'reasonHarassmentTargeted')
+const reasonHarassmentTargeted = /*#__PURE__*/ l.token(
+  $nsid,
+  'reasonHarassmentTargeted',
+)
 
 export { reasonHarassmentTargeted }
 
-/** Dangerous substances or drug abuse */
-type ReasonSelfHarmSubstances =
-  'tools.ozone.report.defs#reasonSelfHarmSubstances'
+/** Targeted harassment */
+const ReasonHarassmentTargeted = /*#__PURE__*/ reasonHarassmentTargeted.value
 
-export type { ReasonSelfHarmSubstances }
+/** Targeted harassment */
+type ReasonHarassmentTargeted = typeof ReasonHarassmentTargeted
+
+export { ReasonHarassmentTargeted }
 
 /** Dangerous substances or drug abuse */
-const reasonSelfHarmSubstances = l.token($nsid, 'reasonSelfHarmSubstances')
+const reasonSelfHarmSubstances = /*#__PURE__*/ l.token(
+  $nsid,
+  'reasonSelfHarmSubstances',
+)
 
 export { reasonSelfHarmSubstances }
 
-/** Adult sexual abuse content */
-type ReasonSexualAbuseContent =
-  'tools.ozone.report.defs#reasonSexualAbuseContent'
+/** Dangerous substances or drug abuse */
+const ReasonSelfHarmSubstances = /*#__PURE__*/ reasonSelfHarmSubstances.value
 
-export type { ReasonSexualAbuseContent }
+/** Dangerous substances or drug abuse */
+type ReasonSelfHarmSubstances = typeof ReasonSelfHarmSubstances
+
+export { ReasonSelfHarmSubstances }
 
 /** Adult sexual abuse content */
-const reasonSexualAbuseContent = l.token($nsid, 'reasonSexualAbuseContent')
+const reasonSexualAbuseContent = /*#__PURE__*/ l.token(
+  $nsid,
+  'reasonSexualAbuseContent',
+)
 
 export { reasonSexualAbuseContent }
 
-/** False information about elections */
-type ReasonMisleadingElections =
-  'tools.ozone.report.defs#reasonMisleadingElections'
+/** Adult sexual abuse content */
+const ReasonSexualAbuseContent = /*#__PURE__*/ reasonSexualAbuseContent.value
 
-export type { ReasonMisleadingElections }
+/** Adult sexual abuse content */
+type ReasonSexualAbuseContent = typeof ReasonSexualAbuseContent
+
+export { ReasonSexualAbuseContent }
 
 /** False information about elections */
-const reasonMisleadingElections = l.token($nsid, 'reasonMisleadingElections')
+const reasonMisleadingElections = /*#__PURE__*/ l.token(
+  $nsid,
+  'reasonMisleadingElections',
+)
 
 export { reasonMisleadingElections }
 
-/** Promoting or selling prohibited items or services */
-type ReasonRuleProhibitedSales =
-  'tools.ozone.report.defs#reasonRuleProhibitedSales'
+/** False information about elections */
+const ReasonMisleadingElections = /*#__PURE__*/ reasonMisleadingElections.value
 
-export type { ReasonRuleProhibitedSales }
+/** False information about elections */
+type ReasonMisleadingElections = typeof ReasonMisleadingElections
+
+export { ReasonMisleadingElections }
 
 /** Promoting or selling prohibited items or services */
-const reasonRuleProhibitedSales = l.token($nsid, 'reasonRuleProhibitedSales')
+const reasonRuleProhibitedSales = /*#__PURE__*/ l.token(
+  $nsid,
+  'reasonRuleProhibitedSales',
+)
 
 export { reasonRuleProhibitedSales }
 
-/** Human trafficking */
-type ReasonViolenceTrafficking =
-  'tools.ozone.report.defs#reasonViolenceTrafficking'
+/** Promoting or selling prohibited items or services */
+const ReasonRuleProhibitedSales = /*#__PURE__*/ reasonRuleProhibitedSales.value
 
-export type { ReasonViolenceTrafficking }
+/** Promoting or selling prohibited items or services */
+type ReasonRuleProhibitedSales = typeof ReasonRuleProhibitedSales
+
+export { ReasonRuleProhibitedSales }
 
 /** Human trafficking */
-const reasonViolenceTrafficking = l.token($nsid, 'reasonViolenceTrafficking')
+const reasonViolenceTrafficking = /*#__PURE__*/ l.token(
+  $nsid,
+  'reasonViolenceTrafficking',
+)
 
 export { reasonViolenceTrafficking }
 
-/** Hate speech */
-type ReasonHarassmentHateSpeech =
-  'tools.ozone.report.defs#reasonHarassmentHateSpeech'
+/** Human trafficking */
+const ReasonViolenceTrafficking = /*#__PURE__*/ reasonViolenceTrafficking.value
 
-export type { ReasonHarassmentHateSpeech }
+/** Human trafficking */
+type ReasonViolenceTrafficking = typeof ReasonViolenceTrafficking
+
+export { ReasonViolenceTrafficking }
 
 /** Hate speech */
-const reasonHarassmentHateSpeech = l.token($nsid, 'reasonHarassmentHateSpeech')
+const reasonHarassmentHateSpeech = /*#__PURE__*/ l.token(
+  $nsid,
+  'reasonHarassmentHateSpeech',
+)
 
 export { reasonHarassmentHateSpeech }
 
-/** Harassment or bullying of minors */
-type ReasonChildSafetyHarassment =
-  'tools.ozone.report.defs#reasonChildSafetyHarassment'
+/** Hate speech */
+const ReasonHarassmentHateSpeech =
+  /*#__PURE__*/ reasonHarassmentHateSpeech.value
 
-export type { ReasonChildSafetyHarassment }
+/** Hate speech */
+type ReasonHarassmentHateSpeech = typeof ReasonHarassmentHateSpeech
+
+export { ReasonHarassmentHateSpeech }
 
 /** Harassment or bullying of minors */
-const reasonChildSafetyHarassment = l.token(
+const reasonChildSafetyHarassment = /*#__PURE__*/ l.token(
   $nsid,
   'reasonChildSafetyHarassment',
 )
 
 export { reasonChildSafetyHarassment }
 
-/** Glorification of violence */
-type ReasonViolenceGlorification =
-  'tools.ozone.report.defs#reasonViolenceGlorification'
+/** Harassment or bullying of minors */
+const ReasonChildSafetyHarassment =
+  /*#__PURE__*/ reasonChildSafetyHarassment.value
 
-export type { ReasonViolenceGlorification }
+/** Harassment or bullying of minors */
+type ReasonChildSafetyHarassment = typeof ReasonChildSafetyHarassment
+
+export { ReasonChildSafetyHarassment }
 
 /** Glorification of violence */
-const reasonViolenceGlorification = l.token(
+const reasonViolenceGlorification = /*#__PURE__*/ l.token(
   $nsid,
   'reasonViolenceGlorification',
 )
 
 export { reasonViolenceGlorification }
 
-/** Graphic violent content */
-type ReasonViolenceGraphicContent =
-  'tools.ozone.report.defs#reasonViolenceGraphicContent'
+/** Glorification of violence */
+const ReasonViolenceGlorification =
+  /*#__PURE__*/ reasonViolenceGlorification.value
 
-export type { ReasonViolenceGraphicContent }
+/** Glorification of violence */
+type ReasonViolenceGlorification = typeof ReasonViolenceGlorification
+
+export { ReasonViolenceGlorification }
 
 /** Graphic violent content */
-const reasonViolenceGraphicContent = l.token(
+const reasonViolenceGraphicContent = /*#__PURE__*/ l.token(
   $nsid,
   'reasonViolenceGraphicContent',
 )
 
 export { reasonViolenceGraphicContent }
 
-/** Impersonation */
-type ReasonMisleadingImpersonation =
-  'tools.ozone.report.defs#reasonMisleadingImpersonation'
+/** Graphic violent content */
+const ReasonViolenceGraphicContent =
+  /*#__PURE__*/ reasonViolenceGraphicContent.value
 
-export type { ReasonMisleadingImpersonation }
+/** Graphic violent content */
+type ReasonViolenceGraphicContent = typeof ReasonViolenceGraphicContent
+
+export { ReasonViolenceGraphicContent }
 
 /** Impersonation */
-const reasonMisleadingImpersonation = l.token(
+const reasonMisleadingImpersonation = /*#__PURE__*/ l.token(
   $nsid,
   'reasonMisleadingImpersonation',
 )
 
 export { reasonMisleadingImpersonation }
 
-/** Extremist content. These reports will be sent only be sent to the application's Moderation Authority. */
-type ReasonViolenceExtremistContent =
-  'tools.ozone.report.defs#reasonViolenceExtremistContent'
+/** Impersonation */
+const ReasonMisleadingImpersonation =
+  /*#__PURE__*/ reasonMisleadingImpersonation.value
 
-export type { ReasonViolenceExtremistContent }
+/** Impersonation */
+type ReasonMisleadingImpersonation = typeof ReasonMisleadingImpersonation
+
+export { ReasonMisleadingImpersonation }
 
 /** Extremist content. These reports will be sent only be sent to the application's Moderation Authority. */
-const reasonViolenceExtremistContent = l.token(
+const reasonViolenceExtremistContent = /*#__PURE__*/ l.token(
   $nsid,
   'reasonViolenceExtremistContent',
 )
 
 export { reasonViolenceExtremistContent }
+
+/** Extremist content. These reports will be sent only be sent to the application's Moderation Authority. */
+const ReasonViolenceExtremistContent =
+  /*#__PURE__*/ reasonViolenceExtremistContent.value
+
+/** Extremist content. These reports will be sent only be sent to the application's Moderation Authority. */
+type ReasonViolenceExtremistContent = typeof ReasonViolenceExtremistContent
+
+export { ReasonViolenceExtremistContent }
