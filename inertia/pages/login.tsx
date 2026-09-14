@@ -41,7 +41,7 @@ export default function Login({ migrationUrl }: InertiaProps<{ migrationUrl?: st
                     name="input"
                     type="input"
                     placeholder="sebastian.eurosky.social"
-                    defaultValue={errors.old_input ?? ''}
+                    defaultValue={errors.input ?? ''}
                     required
                     autoCapitalize="false"
                     autoCorrect="false"
