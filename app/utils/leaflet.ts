@@ -161,8 +161,7 @@ function listItems(
 
 function list(
   value:
-    | lexicon.pub.leaflet.blocks.orderedList.Main
-    | lexicon.pub.leaflet.blocks.unorderedList.Main,
+    lexicon.pub.leaflet.blocks.orderedList.Main | lexicon.pub.leaflet.blocks.unorderedList.Main,
   context: Context,
   ordered: boolean
 ): Element {

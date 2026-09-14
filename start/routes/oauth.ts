@@ -12,7 +12,13 @@ try {
     router.get('/oauth/callback', [controllers.Oauth, 'callback'])
   })
 } catch (err) {
-  if (err.message.includes("Cannot read properties of undefined (reading 'name')")) {
+  if (
+    typeof err === 'object' &&
+    err !== null &&
+    'message' in err &&
+    typeof err.message === 'string' &&
+    err.message.includes("Cannot read properties of undefined (reading 'name')")
+  ) {
     // ignore, as #generated/controllers hasn't been updated
   } else {
     throw err
