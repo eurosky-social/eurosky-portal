@@ -7,7 +7,7 @@
   "engines": {
     "node": "^24.13.0"
   },
-  "packageManager": "pnpm@10.33.0+sha512.10568bb4a6afb58c9eb3630da90cc9516417abebd3fabbe6739f0ae795728da1491e9db5a544c76ad8eb7570f5c4bb3d6c637b2cb41bfdcdb47fa823c8649319",
+  "packageManager": "pnpm@12.4.1+sha512.2e81e399d73fe8390dab25e06aa788ab7a5908248d2f5a370f82b481147a6a7a367bf8048f9a6fdb6460f21a66f0542dedb8b94ca2c8723596741920b1656d4c",
   "scripts": {
     "start": "node bin/server.js",
     "build": "node ace build",
@@ -124,11 +124,6 @@
     "reflect-metadata": "^0.2.2",
     "sonner": "^2.0.8",
     "tailwindcss": "^4.3.3"
-  },
-  "pnpm": {
-    "overrides": {
-      "lodash-es": ">=4.18.0"
-    }
   },
   "hotHook": {
     "boundaries": [
