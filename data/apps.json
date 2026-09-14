@@ -24,6 +24,12 @@
     "category": "reviews"
   },
   {
+    "#": "Cartes.app",
+    "atUri": "at://did:plc:eypg6v3q62jkpoxbgicirvjs/fyi.atstore.listing.detail/3mnhhgryggkoj",
+    "category": "reviews",
+    "madeInEurope": true
+  },
+  {
     "#": "Chive",
     "atUri": "at://did:plc:7natp5xae72bddaqlkef2t4e/fyi.atstore.listing.detail/3mkkxgeomikmf",
     "category": "read-and-write"
