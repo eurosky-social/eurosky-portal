@@ -28,7 +28,7 @@ export function PolicyForm({ route, terms, privacy }: PolicyFormProps<Routes>) {
           header={
             <>
               <DocumentTextIcon className="w-6 h-6 inline-block text-slate-500" />
-              Terms of Service
+              Terms of service
             </>
           }
           document={terms}
@@ -37,7 +37,7 @@ export function PolicyForm({ route, terms, privacy }: PolicyFormProps<Routes>) {
           header={
             <>
               <LockClosedIcon className="w-6 h-6 inline-block text-slate-500" />
-              Privacy Policy
+              Privacy policy
             </>
           }
           document={privacy}
@@ -62,7 +62,7 @@ export function PolicyForm({ route, terms, privacy }: PolicyFormProps<Routes>) {
                     routeParams={{ document: 'terms' }}
                     className="text-blue-500 hover:underline"
                   >
-                    Terms of Service
+                    Terms of service
                   </Link>{' '}
                   and{' '}
                   <Link
@@ -70,7 +70,7 @@ export function PolicyForm({ route, terms, privacy }: PolicyFormProps<Routes>) {
                     routeParams={{ document: 'privacy' }}
                     className="text-blue-500 hover:underline"
                   >
-                    Privacy Policy
+                    Privacy policy
                   </Link>
                 </Label>
               </CheckboxField>

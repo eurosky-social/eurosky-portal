@@ -33,15 +33,15 @@
   },
   {
     "question": "How do I manage my account settings?",
-    "answer": "From the Portal sidebar, use \"Manage Account\" to view connected devices and authorised apps. From there you can also change your password. In a future Portal release, these settings will be available directly within Portal itself."
+    "answer": "From the Portal sidebar, use \"Manage account\" to view connected devices and authorised apps. From there you can also change your password. In a future Portal release, these settings will be available directly within Portal itself."
   },
 
   {
     "question": "I need help, where do I go?",
-    "answer": "The Portal sidebar has links to our [Help centre](https://eurosky.tech/help/), our [main FAQ page](https://eurosky.tech/faq), and the [Contact Us](https://eurosky.tech/contact) page. You can also email support@eurosky.tech directly."
+    "answer": "The Portal sidebar has links to our [Help page](https://eurosky.tech/help/), our [main FAQ page](https://eurosky.tech/faq/), and the [Contact us](https://eurosky.tech/contact/) page. You can also email <support@eurosky.tech> directly."
   },
   {
     "question": "Is Portal open source?",
-    "answer": "Portal is available under an MIT license at https://github.com/eurosky-social/eurosky-portal"
+    "answer": "Portal is available under an MIT license at [`github.com/eurosky-social/eurosky-portal`](https://github.com/eurosky-social/eurosky-portal)"
   }
 ]

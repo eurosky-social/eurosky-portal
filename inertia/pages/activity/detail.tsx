@@ -106,7 +106,7 @@ export default function ActivityDetailPage({
         <nav aria-label="Breadcrumb" className="text-sm text-zinc-500 dark:text-zinc-400">
           <BackLink className="hover:text-zinc-700 dark:hover:text-zinc-300" route="activity.show">
             <ChevronLeftIcon aria-hidden="true" className="size-4 inline-block" />
-            Your Activity
+            Your activity
           </BackLink>
           {' / '}
           <span aria-current="page">{title}</span>

@@ -7,10 +7,10 @@ import { InertiaProps } from '~/types'
 export default function Faq(props: InertiaProps<{ faq: { question: string; answer: string }[] }>) {
   return (
     <>
-      <Head title="Frequently Asked Questions" />
+      <Head title="Frequently asked questions" />
       <Container className="py-16 md:py-24 px-4">
         <h1 className="mb-6 text-4xl md:text-5xl text-black dark:text-slate-200 font-semibold text-center">
-          Frequently Asked Questions
+          Frequently asked questions
         </h1>
       </Container>
       <div className="bg-neutral-50 dark:bg-slate-800 min-h-dvh-minus-35">

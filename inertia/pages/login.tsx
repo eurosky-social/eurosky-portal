@@ -28,7 +28,7 @@ export default function Login({ migrationUrl }: InertiaProps<{ migrationUrl?: st
         )}
         <Card className="w-full md:w-3/4 lg:w-1/2 m-auto p-4 mb-8">
           <h1 className="mx-auto max-w-4xl mb-2 text-center font-display text-3xl leading-[1.2] font-extrabold tracking-tight text-slate-900 dark:text-slate-200 sm:text-5xl">
-            Sign Into Your <span className="text-brand">Eurosky Account.</span>
+            Sign into your <span className="text-brand">Eurosky account.</span>
           </h1>
           <Text className="text-center">Enter your handle below to login to your account</Text>
           <Form className="my-6" route="oauth.login">

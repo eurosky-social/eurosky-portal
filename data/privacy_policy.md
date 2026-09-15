@@ -38,7 +38,7 @@ The three common user paths from the Terms of Service apply here too:
 
 This Privacy Policy does not cover:
 
-- the **Eurosky marketing website**, mailing lists, and general communications: a separate Privacy Policy applies at [https://eurosky.tech/privacy](https://eurosky.tech/privacy);
+- the **Eurosky marketing website**, mailing lists, and general communications: a separate Privacy Policy applies at [https://eurosky.tech/privacy/](https://eurosky.tech/privacy/);
 - the **EU-HAUL** migration tool, which is a separate Modal product with its own Terms of Service and Privacy Policy at [https://move.eurosky.tech](https://move.eurosky.tech);
 - the processing carried out by **other ATProto applications and PDS providers** that you may use through your Eurosky account or alongside mu, which are governed by their own privacy notices.
 

@@ -53,7 +53,7 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
           sidebar={
             <Sidebar>
               <SidebarBody>
-                <SidebarHeading className="font-bold">My Account</SidebarHeading>
+                <SidebarHeading className="font-bold">My account</SidebarHeading>
                 <SidebarSection>
                   <SidebarItem route="dashboard.show" current={url == '/dashboard'}>
                     <HomeIcon />
@@ -61,12 +61,12 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
                   </SidebarItem>
                   <SidebarItem route="activity.show" current={url.startsWith('/activity')}>
                     <ClockIcon />
-                    <SidebarLabel>Your Activity</SidebarLabel>
+                    <SidebarLabel>Your activity</SidebarLabel>
                   </SidebarItem>
                   <SidebarItem href={manageUrl} target="_blank" as={'a'}>
                     <Cog6ToothIcon />
                     <SidebarLabel className="flex gap-1">
-                      Manage Account{' '}
+                      Manage account{' '}
                       <ArrowTopRightOnSquareIcon className="size-4 inline-block self-center" />
                     </SidebarLabel>
                   </SidebarItem>
@@ -90,15 +90,15 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
                   </SidebarItem>
                   <SidebarItem href="https://eurosky.tech/contact/" target="_blank" as={'a'}>
                     <ChatBubbleOvalLeftEllipsisIcon />
-                    <SidebarLabel>Contact Us</SidebarLabel>
+                    <SidebarLabel>Contact us</SidebarLabel>
                   </SidebarItem>
                   <SidebarItem route="legal.show" routeParams={{ document: 'terms' }}>
                     <DocumentTextIcon />
-                    <SidebarLabel>Terms of Service</SidebarLabel>
+                    <SidebarLabel>Terms of service</SidebarLabel>
                   </SidebarItem>
                   <SidebarItem route="legal.show" routeParams={{ document: 'privacy' }}>
                     <LockClosedIcon />
-                    <SidebarLabel>Privacy Policy</SidebarLabel>
+                    <SidebarLabel>Privacy policy</SidebarLabel>
                   </SidebarItem>
                 </SidebarSection>
               </SidebarBody>

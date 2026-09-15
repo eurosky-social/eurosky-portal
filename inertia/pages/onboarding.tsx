@@ -52,12 +52,12 @@ function renderNotice(termsUpdated: boolean, privacyUpdated: boolean) {
     return
   }
 
-  let title = `Our Terms of Service and Privacy Policy have been updated`
+  let title = `Our Terms of service and Privacy policy have been updated`
   if (termsUpdated && !privacyUpdated) {
-    title = `Our Terms of Service has been updated`
+    title = `Our Terms of service has been updated`
   }
   if (privacyUpdated && !termsUpdated) {
-    title = `Our Privacy Policy has been updated`
+    title = `Our Privacy policy has been updated`
   }
 
   return <Notice title={title} text="Please accept the changes to continue using Eurosky Portal" />
