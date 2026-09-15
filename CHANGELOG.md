@@ -1,5 +1,22 @@
 # eurosky-portal
 
+## 1.7.3
+
+### Patch Changes
+
+- [#244](https://github.com/eurosky-social/eurosky-portal/pull/244) [`ab24d20`](https://github.com/eurosky-social/eurosky-portal/commit/ab24d200ef2870eabe4de9bab53606168a6816ac) Thanks [@wooorm](https://github.com/wooorm)! - Add middleware in development to redirect between IPs (`127.0.0.1:4075`) and
+  hostnames (`localhost:4075`), based on what’s configured in `.env`.
+  Needs to be correct for OAuth flow.
+
+- [#243](https://github.com/eurosky-social/eurosky-portal/pull/243) [`63a986f`](https://github.com/eurosky-social/eurosky-portal/commit/63a986f86cda503b6fd849263321e5e4cb30e1a2) Thanks [@wooorm](https://github.com/wooorm)! - Fix crash in exception handler w/o `auth` context.
+  Can happen if errors occur before auth middleware runs.
+
+- [#246](https://github.com/eurosky-social/eurosky-portal/pull/246) [`d43abc2`](https://github.com/eurosky-social/eurosky-portal/commit/d43abc24e07d75639f3e790ad827d0ed6db3a86b) Thanks [@wooorm](https://github.com/wooorm)! - Add better OAuth input resolution
+
+  - add support for auth server as input;
+  - do not crash on unresolvable handle handling;
+  - refactor to externalize some of the logic in this growing function
+
 ## 1.7.2
 
 ### Patch Changes
