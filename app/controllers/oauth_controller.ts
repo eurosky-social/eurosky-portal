@@ -1,7 +1,14 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import { Monocle } from '@monocle.sh/adonisjs-agent'
 import { OAuthCallbackError, OAuthResolverError } from '@atproto/oauth-client-node'
-import { isUriString, asAtIdentifierString, type AtIdentifierString } from '@atproto/lex'
+import {
+  isUriString,
+  asAtIdentifierString,
+  type AtIdentifierString,
+  type UriString,
+  isHandleString,
+} from '@atproto/lex'
+import { type HandleString, INVALID_HANDLE } from '@atproto/syntax'
 import { DateTime } from 'luxon'
 import env from '#start/env'
 import Account from '#models/account'
@@ -74,67 +81,43 @@ export default class OAuthController {
       },
     })
 
-    let input = data.input
+    const input = normalizeInput(data.input)
+    const result = checkAuthInput(input)
+    let resolvedValue: AtIdentifierString | UriString
 
-    if (!isIdentifier(input) && !isUriString(input)) {
-      if (!handleDomain) {
-        throw createFieldError('input', input, 'Please enter a valid Atmosphere account')
-      }
-      input += handleDomain
-    }
+    if (result.type === 'unresolved') {
+      const resolved = await oauth
+        .resolveIdentity(result.value, AbortSignal.timeout(1000))
+        .catch((err: unknown): undefined => {
+          logger.error(err, 'Failed to resolveIdentity for handle: %s', result.value)
+        })
 
-    // Apparently this is a common typo:
-    if (input.endsWith('.bluesky.social')) {
-      input = input.replace('.bluesky.social', '.bsky.social')
-    }
-
-    if (allowExternalLogins !== true) {
-      // We don't need to resolve these authorization servers, since we know they're not us:
-      if (WELL_KNOWN_HANDLE_DOMAINS.some((serviceDomain) => input.endsWith(serviceDomain))) {
+      if (!resolved) {
         throw createFieldError(
           'input',
-          input,
+          result.value,
+          `We couldn't find your Atmosphere account: ${result.value}, please try again later, or try logging in with: ${oauthServerUrl}`
+        )
+      }
+
+      if (resolved.authorizationServer.toString() !== oauthServerUrl) {
+        throw createFieldError(
+          'input',
+          result.value,
           'Currently the Eurosky portal is only available for Eurosky accounts.'
         )
       }
 
-      if (handleDomain && !input.endsWith(handleDomain)) {
-        // the validation is accepting handles, dids, and services, so we need to
-        // assert we only have a handle or did string here:
-        if (!isIdentifier(input)) {
-          throw createFieldError('input', input, 'Please enter a valid Atmosphere account')
-        }
-
-        const resolved = await oauth
-          .resolveIdentity(input, AbortSignal.timeout(1000))
-          .catch((err) => {
-            logger.error(err, 'Failed to resolveIdentity for handle: %s', input)
-            return undefined
-          })
-
-        if (!resolved) {
-          throw createFieldError(
-            'input',
-            input,
-            `We couldn't find your Atmosphere account: ${input}, please try again later.`
-          )
-        }
-
-        if (!resolved || resolved.authorizationServer.toString() !== oauthServerUrl) {
-          throw createFieldError(
-            'input',
-            input,
-            'Currently the Eurosky portal is only available for Eurosky accounts.'
-          )
-        }
-      }
+      resolvedValue = resolved.did
+    } else {
+      resolvedValue = result.value
     }
 
     session.put('source', 'login')
     session.put('handle', input)
 
     try {
-      const authorizationUrl = await oauth.authorize(input)
+      const authorizationUrl = await oauth.authorize(resolvedValue)
 
       AuthFlowStarted.dispatch({
         ip: request.ip(),
@@ -267,17 +250,22 @@ export default class OAuthController {
       const resolved = await oauth
         .resolveIdentity(did, AbortSignal.timeout(1000))
         .catch((error) => {
+          // Timeout.
           if (error instanceof DOMException && error.name === 'AbortError') {
-            return undefined
+            return
           }
+
+          logger.error(error, 'Failed to resolve handle: %s', did)
+
+          // They *did* complete oauth flow, so this is probably an invalid handle.
+          if (error instanceof OAuthResolverError) {
+            return { did: did, handle: INVALID_HANDLE as HandleString }
+          }
+
           throw error
         })
 
       const existingAccount = await Account.findBy({ did })
-
-      if (!resolved) {
-        logger.info({ did }, 'Failed to resolve handle')
-      }
 
       // If we don't have an existing account and weren't able to resolve, abort:
       if (!existingAccount && !resolved) {
@@ -433,4 +421,134 @@ export default class OAuthController {
       return response.redirect().toRoute(source === 'signup' ? 'account.create' : 'auth.login')
     }
   }
+}
+
+/**
+ * Something valid that does not have to be resolved.
+ *
+ * Such as when external logins are allowed (example: `"did:plc:1234..."`,
+ * `"alice.bsky.social"`),
+ * or a handle that uses our handle domain (`alice.eurosky.social`).
+ */
+interface AllowedIdInput {
+  type: 'allowed-id'
+  value: AtIdentifierString
+}
+
+/**
+ * OAuth server (example: `https://eurosky.social`).
+ */
+interface ServiceUrlInput {
+  type: 'service-url'
+  value: UriString
+}
+
+/**
+ * Something that looks valid but has to be resolved
+ * (example: `alice.example.com`, `did:plc:z72i7hdynmk6r22z27h6tvur`).
+ */
+interface UnresolvedInput {
+  type: 'unresolved'
+  value: AtIdentifierString
+}
+
+/**
+ * Checks the type of input (URI, handle, or DID);
+ * classifies as allowed ID (does not need to be resolved), a service URL, or
+ * an unresolved value.
+ *
+ * > **Note**: input value is *not* touched, only classified in types.
+ *
+ * @param value
+ *   Normalized input.
+ * @returns
+ *   Classified input.
+ * @throws
+ *   When known invalid input is used.
+ */
+function checkAuthInput(value: string): AllowedIdInput | ServiceUrlInput | UnresolvedInput {
+  // OAuth server (example: `https://eurosky.social`).
+  if (isUriString(value)) {
+    // Reject early if external logins are not allowed (example:
+    // `https://bsky.social`).
+    if (
+      allowExternalLogins !== true &&
+      // We need to remove any trailing slashes to normalize:
+      value.toLowerCase().replace(/\/$/, '') !== oauthServerUrl.toLowerCase().replace(/\/$/, '')
+    ) {
+      throw createFieldError(
+        'input',
+        value,
+        'Currently the Eurosky portal is only available for Eurosky accounts.'
+      )
+    }
+
+    return { type: 'service-url', value }
+  }
+
+  // Error early for non-did and non-handle.
+  if (!isIdentifier(value)) {
+    throw createFieldError('input', value, 'Please enter a valid Atmosphere account')
+  }
+
+  // Externals allowed, so any identifier goes (example: `"did:plc:1234..."`, `"alice.bsky.social"`).
+  if (allowExternalLogins === true) {
+    return { type: 'allowed-id', value }
+  }
+
+  // Handle configured, we can check it early (example: `alice.eurosky.social`).
+  if (handleDomain && isHandleString(value)) {
+    // We know these are not us.
+    // Note that `handleDomain` is already filtered out.
+    if (WELL_KNOWN_HANDLE_DOMAINS.some((serviceDomain) => value.endsWith(serviceDomain))) {
+      throw createFieldError(
+        'input',
+        value,
+        'Currently the Eurosky portal is only available for Eurosky accounts.'
+      )
+    }
+
+    if (value.endsWith(handleDomain)) {
+      return { type: 'allowed-id', value }
+    }
+
+    // Another handle, like `example.com`.
+  }
+
+  // A DID, or a handle on a domain we don't recognize: only the network can
+  // tell us its authorization server.
+  return { type: 'unresolved', value }
+}
+
+/**
+ * Normalizes input values.
+ *
+ * @param input
+ *   Input value to normalize.
+ * @returns
+ *   Normalized value.
+ */
+function normalizeInput(input: string): string {
+  let result = input
+
+  // Convert a bare username into a full handle.
+  // `alice` > `alice.eurosky.social`.
+  if (handleDomain && !isIdentifier(result) && !isUriString(result)) {
+    result += handleDomain
+  }
+
+  // Handles are case-insensitive but canonically lowercase;
+  // unlike DIDs and URIs.
+  // `Alice.Eurosky.Social` > `alice.eurosky.social`.
+  if (isHandleString(result)) {
+    result = result.toLowerCase()
+  }
+
+  // Common typo.
+  // `alice.bluesky.social` > `alice.bsky.social`.
+  if (result.endsWith('.bluesky.social')) {
+    result = result.replace('.bluesky.social', '.bsky.social')
+  }
+
+  return result
 }
