@@ -17,7 +17,7 @@ export function Hero() {
         </div>
 
         <h1 className="mx-auto max-w-4xl font-display text-3xl sm:text-6xl lg:text-5xl leading-[1.3] font-extrabold tracking-tight text-slate-900 dark:text-slate-200">
-          Eurosky: Your Portal to <div className="text-brand">the Atmosphere.</div>
+          Eurosky: Your Portal to <span className="text-brand">the Atmosphere.</span>
         </h1>
         <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-500 dark:text-slate-400 font-bold">
           One account. Dozens of apps. No lock-in.

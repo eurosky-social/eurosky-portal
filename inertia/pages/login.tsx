@@ -28,7 +28,7 @@ export default function Login({ migrationUrl }: InertiaProps<{ migrationUrl?: st
         )}
         <Card className="w-full md:w-3/4 lg:w-1/2 m-auto p-4 mb-8">
           <h1 className="mx-auto max-w-4xl mb-2 text-center font-display text-3xl leading-[1.2] font-extrabold tracking-tight text-slate-900 dark:text-slate-200 sm:text-5xl">
-            Sign Into Your <div className="text-brand">Eurosky Account.</div>
+            Sign Into Your <span className="text-brand">Eurosky Account.</span>
           </h1>
           <Text className="text-center">Enter your handle below to login to your account</Text>
           <Form className="my-6" route="oauth.login">
@@ -41,11 +41,18 @@ export default function Login({ migrationUrl }: InertiaProps<{ migrationUrl?: st
                     name="input"
                     type="input"
                     placeholder="sebastian.eurosky.social"
-                    defaultValue={errors.input ?? ''}
+                    // Input fields turn into `old_$field` on output.
+                    // See `createFieldError` in `app/utils/errors.ts`.
+                    defaultValue={
+                      ('old_input' in errors &&
+                        typeof errors.old_input === 'string' &&
+                        errors.old_input) ||
+                      ''
+                    }
                     required
-                    autoCapitalize="false"
-                    autoCorrect="false"
-                    autoComplete="true"
+                    autoCapitalize="none"
+                    autoCorrect="off"
+                    autoComplete="off"
                   />
                   {errors?.input && (
                     <ErrorMessage className="text-orange-500!">{errors.input}</ErrorMessage>
@@ -82,6 +89,7 @@ export default function Login({ migrationUrl }: InertiaProps<{ migrationUrl?: st
             </h1>
             <div className="flex items-center">
               <Button
+                as="span"
                 color="brand"
                 className="text-black! dark:bg-black dark:text-white! text-nowrap"
               >

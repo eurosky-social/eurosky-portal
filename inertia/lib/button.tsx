@@ -179,11 +179,15 @@ type ButtonProps = (
   | { color?: never; outline?: never; plain: true; link?: never }
   | { color?: never; outline?: never; plain?: never; link: true }
 ) & { className?: string; children: React.ReactNode } & (
-    | ({ href?: never; route?: never; type?: ButtonType } & Omit<
+    | ({ href?: never; route?: never; as?: never; type?: ButtonType } & Omit<
         Headless.ButtonProps,
         'as' | 'className'
       >)
-    | (LinkProps & Omit<React.ComponentPropsWithoutRef<typeof Link>, 'className'>)
+    | (LinkProps & Omit<React.ComponentPropsWithoutRef<typeof Link>, 'className'> & { as?: never })
+    | ({ as: 'span'; href?: never; route?: never; type?: never } & Omit<
+        React.ComponentPropsWithoutRef<'span'>,
+        'className'
+      >)
   )
 
 export const Button = forwardRef(function Button(
@@ -203,6 +207,15 @@ export const Button = forwardRef(function Button(
   )
 
   let buttonType = (type as ButtonType) ?? ('button' as ButtonType)
+
+  if (props.as === 'span') {
+    let { as: _as, ...spanProps } = props
+    return (
+      <span {...spanProps} className={classes} ref={ref as React.ForwardedRef<HTMLSpanElement>}>
+        {children}
+      </span>
+    )
+  }
 
   return typeof props.href === 'string' || typeof props.route === 'string' ? (
     <Link {...props} className={classes} ref={ref as React.ForwardedRef<HTMLAnchorElement>}>
