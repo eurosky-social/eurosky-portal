@@ -135,11 +135,6 @@ export default function Dashboard({
                 )}
               </div>
             </div>
-            <div className="self-center hidden">
-              <Button href="#" outline>
-                Edit Profile
-              </Button>
-            </div>
           </div>
         </Card>
 
