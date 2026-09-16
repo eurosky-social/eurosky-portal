@@ -47,7 +47,8 @@
     "#database/*": "./database/*.js",
     "#tests/*": "./tests/*.js",
     "#start/*": "./start/*.js",
-    "#config/*": "./config/*.js"
+    "#config/*": "./config/*.js",
+    "#shared/*": "./shared/*.js"
   },
   "devDependencies": {
     "@adonisjs/assembler": "^8.5.1",
@@ -84,6 +85,7 @@
     "@adonisjs/content": "^1.7.1",
     "@adonisjs/core": "^7.5.0",
     "@adonisjs/cors": "^3.0.0",
+    "@adonisjs/i18n": "^3.0.1",
     "@adonisjs/inertia": "^5.0.1",
     "@adonisjs/lucid": "^22.4.2",
     "@adonisjs/queue": "^0.6.2",
@@ -106,6 +108,7 @@
     "@thisismissem/adonisjs-atproto-oauth": "^3.0.4",
     "@tuyau/core": "^1.2.2",
     "@vinejs/vine": "^4.4.0",
+    "bcp-47-match": "^2.0.3",
     "better-sqlite3": "^13.0.3",
     "clsx": "^2.1.1",
     "edge-markdown": "^1.10.2",
@@ -113,6 +116,7 @@
     "hast-util-sanitize": "^5.0.2",
     "hast-util-to-jsx-runtime": "^2.3.6",
     "hast-util-truncate": "^2.0.0",
+    "intl-messageformat": "^11.2.15",
     "lucide-react": "^1.45.0",
     "luxon": "^3.7.2",
     "mdast-util-from-markdown": "^2.0.3",

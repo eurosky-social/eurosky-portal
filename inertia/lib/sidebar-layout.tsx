@@ -66,9 +66,9 @@ export function SidebarLayout({
       </MobileSidebar>
 
       {/* Navbar on mobile */}
-      <header className="flex items-center px-4 lg:hidden">
+      <header className="relative z-10 flex items-center gap-3 px-4 lg:hidden">
         <div className="min-w-0 flex-1">{navbar}</div>
-        <div className="py-2.5">
+        <div className="md:py-2.5">
           <NavbarItem onClick={() => setShowSidebar(true)} aria-label="Open navigation">
             <OpenMenuIcon />
           </NavbarItem>

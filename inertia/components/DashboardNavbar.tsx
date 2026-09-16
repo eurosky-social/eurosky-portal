@@ -4,6 +4,7 @@ import { Logo } from './Logo'
 import { Form } from '@adonisjs/inertia/react'
 import { Button } from '~/lib/button'
 import { useAuth } from '~/utils/use_auth'
+import { LanguageToggle } from './LanguageToggle'
 import { ThemeToggle } from './ThemeToggle'
 import clsx from 'clsx'
 import { INVALID_HANDLE } from '@atproto/syntax'
@@ -39,6 +40,7 @@ export default function DashboardNavbar({ className }: React.ComponentProps<'div
           </Button>
         </Form>
         <ThemeToggle />
+        <LanguageToggle />
       </NavbarSection>
     </Navbar>
   )

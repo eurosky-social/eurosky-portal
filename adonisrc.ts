@@ -69,6 +69,7 @@ export default defineConfig({
     () => import('#extensions/atprotouser'),
     () => import('@adonisjs/content/content_provider'),
     () => import('@adonisjs/cache/cache_provider'),
+    () => import('@adonisjs/i18n/i18n_provider'),
   ],
 
   /*
@@ -140,6 +141,10 @@ export default defineConfig({
     },
     {
       pattern: 'public/**',
+      reloadServer: false,
+    },
+    {
+      pattern: 'resources/lang/**/*.{json,yaml,yml}',
       reloadServer: false,
     },
   ],

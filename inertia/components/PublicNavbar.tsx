@@ -1,6 +1,7 @@
 import { Link } from '~/lib/link'
 import { Navbar, NavbarItem, NavbarSection, NavbarSpacer } from '~/lib/navbar'
 import { Logo } from './Logo'
+import { LanguageToggle } from './LanguageToggle'
 import { ThemeToggle } from './ThemeToggle'
 import { Button } from '~/lib/button'
 import { usePage } from '@inertiajs/react'
@@ -33,6 +34,7 @@ export default function PublicNavbar() {
           Sign in
         </Button>
         <ThemeToggle className="hidden! md:inline-flex!" />
+        <LanguageToggle className="hidden! md:inline-flex!" />
       </NavbarSection>
     </Navbar>
   )

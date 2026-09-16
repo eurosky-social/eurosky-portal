@@ -1,0 +1,17 @@
+{
+  "shared": {
+    "messages": {
+      "accepted": "The {field} field must be accepted.",
+      "at-handle": "Please enter a valid Atmosphere account, such as username{domain}",
+      "enum": "The selected {field} is invalid.",
+      "max": "The {field} field must not be greater than {max}.",
+      "min": "The {field} field must be at least {min}.",
+      "notIn": "The selected {field} is invalid.",
+      "regex": "The {field} field format is invalid.",
+      "required": "The {field} field is required.",
+      "terms": {
+        "required": "You must accept the terms of service & privacy policy to continue."
+      }
+    }
+  }
+}

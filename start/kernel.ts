@@ -45,6 +45,7 @@ router.use([
   () => import('#middleware/silent_auth_middleware'),
   () => import('@thisismissem/adonisjs-atproto-oauth/initialize_atproto_auth_middleware'),
   () => import('#middleware/track_pageview_middleware'),
+  () => import('#middleware/detect_user_locale_middleware'),
 ])
 
 /**

@@ -1,0 +1,17 @@
+{
+  "shared": {
+    "messages": {
+      "accepted": "Het veld {field} moet worden geaccepteerd.",
+      "at-handle": "Vul een geldig Atmosphere account in, bijvoorbeeld naam{domain}",
+      "enum": "De geselecteerde {field} is ongeldig.",
+      "max": "Het veld {field} mag niet meer dan {max} zijn.",
+      "min": "Het veld {field} moet minstens {min} zijn.",
+      "notIn": "Het geselecteerde {field} is ongeldig.",
+      "regex": "De notatie van het veld {field} is ongeldig.",
+      "required": "Het veld {field} is verplicht.",
+      "terms": {
+        "required": "Je moet akkoord gaan met de gebruiksvoorwaarden en het privacybeleid om door te gaan."
+      }
+    }
+  }
+}

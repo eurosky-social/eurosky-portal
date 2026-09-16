@@ -76,16 +76,7 @@ export default class RegistrationController {
     const account = await user.getAccount()
     const reacceptance = !!account.termsAcceptedAt
 
-    await request.validateUsing(termsRequestValidator, {
-      messagesProvider: {
-        getMessage(defaultMessage, rule, field) {
-          if (rule === 'required' && field.name === 'terms') {
-            return 'You must accept the terms of service & privacy policy to continue'
-          }
-          return defaultMessage
-        },
-      },
-    })
+    await request.validateUsing(termsRequestValidator)
 
     await Account.updateOrCreate({ did: user.did }, { termsAcceptedAt: DateTime.now() })
 

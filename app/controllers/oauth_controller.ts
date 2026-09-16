@@ -65,18 +65,20 @@ export default class OAuthController {
     this.slingshot = new SlingshotService()
   }
 
-  async login({ request, inertia, oauth, session, logger }: HttpContext) {
+  async login({ i18n, inertia, logger, oauth, session, request }: HttpContext) {
     const data = await request.validateUsing(loginRequestValidator, {
       meta: {
         handleDomain,
       },
       messagesProvider: {
-        getMessage(defaultMessage, rule, field) {
+        getMessage(defaultMessage, rule, field, meta) {
           if (rule === 'at-handle' || rule === 'at-handle-username') {
-            return `Please enter a valid Atmosphere account, e.g., username${handleDomain ?? '.bsky.social'}`
+            return i18n.t('validator.shared.messages.at-handle', {
+              domain: handleDomain ?? '.bsky.social',
+            })
           }
 
-          return defaultMessage.replace(/\{\{\s*field\s*\}\}/, field.getFieldPath())
+          return i18n.createMessagesProvider().getMessage(defaultMessage, rule, field, meta)
         },
       },
     })
@@ -146,16 +148,7 @@ export default class OAuthController {
   }
 
   async signup({ request, inertia, oauth, session, logger }: HttpContext) {
-    await request.validateUsing(signupRequestValidator, {
-      messagesProvider: {
-        getMessage(defaultMessage, rule, field) {
-          if (rule === 'required' && field.name === 'terms') {
-            return 'You must accept the terms of service & privacy policy to continue'
-          }
-          return defaultMessage
-        },
-      },
-    })
+    await request.validateUsing(signupRequestValidator)
 
     session.put('source', 'signup')
     session.put('terms_accepted', DateTime.now().toISO())
