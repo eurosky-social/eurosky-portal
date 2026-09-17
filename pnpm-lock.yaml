@@ -268,12 +268,18 @@ importers:
       edge.js:
         specifier: ^6.5.1
         version: 6.5.1
+      hast-util-from-html:
+        specifier: ^2.0.3
+        version: 2.0.3
       hast-util-sanitize:
         specifier: ^5.0.2
         version: 5.0.2
       hast-util-to-jsx-runtime:
         specifier: ^2.3.6
         version: 2.3.6(supports-color@10.2.2)
+      hast-util-to-string:
+        specifier: ^3.0.1
+        version: 3.0.1
       hast-util-truncate:
         specifier: ^2.0.0
         version: 2.0.0
@@ -316,6 +322,9 @@ importers:
       tailwindcss:
         specifier: ^4.3.3
         version: 4.3.3
+      unist-util-visit:
+        specifier: ^5.1.0
+        version: 5.1.0
     devDependencies:
       '@adonisjs/assembler':
         specifier: ^8.5.1
@@ -4275,6 +4284,9 @@ packages:
   hasown@2.0.4:
     resolution: {integrity: sha512-T2UbfbBEF32wiepXIsMlTW9+dDYC6wMh/t/vYA4tuOMKqWz/n3vr1NFSxQiyP+zk2mXsoMA/i/7qV6LKut1t1A==}
     engines: {node: '>= 0.4'}
+
+  hast-util-from-html@2.0.3:
+    resolution: {integrity: sha512-CUSRHXyKjzHov8yKsQjGOElXy/3EKpyX56ELnkHH34vDVw1N1XSQ1ZcAvTyAPtGqLTuKP/uxM+aLkSPqF/EtMw==}
 
   hast-util-from-parse5@8.0.3:
     resolution: {integrity: sha512-3kxEVkEKt0zvcZ3hCRYI8rqrgwtlIOFMWkbclACvjlDw8Li9S2hk/d51OI0nr/gIpdMHNepwgOKqZ/sy0Clpyg==}
@@ -10582,6 +10594,15 @@ snapshots:
   hasown@2.0.4:
     dependencies:
       function-bind: 1.1.2
+
+  hast-util-from-html@2.0.3:
+    dependencies:
+      '@types/hast': 3.0.5
+      devlop: 1.1.0
+      hast-util-from-parse5: 8.0.3
+      parse5: 7.3.0
+      vfile: 6.0.3
+      vfile-message: 4.0.3
 
   hast-util-from-parse5@8.0.3:
     dependencies:

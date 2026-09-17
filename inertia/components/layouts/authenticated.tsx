@@ -94,11 +94,15 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
                     <ChatBubbleOvalLeftEllipsisIcon />
                     <SidebarLabel>{t('sidebar.contactUs')}</SidebarLabel>
                   </SidebarItem>
-                  <SidebarItem route="legal.show" routeParams={{ document: 'terms' }}>
+                  <SidebarItem href="https://eurosky.tech/accounts/terms/" target="_blank" as={'a'}>
                     <DocumentTextIcon />
                     <SidebarLabel>{t('sidebar.termsOfService')}</SidebarLabel>
                   </SidebarItem>
-                  <SidebarItem route="legal.show" routeParams={{ document: 'privacy' }}>
+                  <SidebarItem
+                    href="https://eurosky.tech/accounts/privacy/"
+                    target="_blank"
+                    as={'a'}
+                  >
                     <LockClosedIcon />
                     <SidebarLabel>{t('sidebar.privacyPolicy')}</SidebarLabel>
                   </SidebarItem>

@@ -25,11 +25,7 @@ export default function PublicNavbar() {
         <NavbarItem href={`${urlFor('home')}#apps`} current={page.url === '/#apps'}>
           {t('nav.apps')}
         </NavbarItem>
-        <NavbarItem
-          route="legal.show"
-          routeParams={{ document: 'privacy' }}
-          current={page.url === '/legal/privacy'}
-        >
+        <NavbarItem href="https://eurosky.tech/accounts/privacy/" target="_blank">
           {t('nav.privacy')}
         </NavbarItem>
         <Button route="auth.login" outline className="hidden! md:inline-flex!">

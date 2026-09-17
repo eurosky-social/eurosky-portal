@@ -114,8 +114,10 @@
     "clsx": "^2.1.1",
     "edge-markdown": "^1.10.2",
     "edge.js": "^6.5.1",
+    "hast-util-from-html": "^2.0.3",
     "hast-util-sanitize": "^5.0.2",
     "hast-util-to-jsx-runtime": "^2.3.6",
+    "hast-util-to-string": "^3.0.1",
     "hast-util-truncate": "^2.0.0",
     "intl-messageformat": "^11.2.15",
     "lucide-react": "^1.45.0",
@@ -129,7 +131,8 @@
     "react-dom": "^19.3.0",
     "reflect-metadata": "^0.2.2",
     "sonner": "^2.0.8",
-    "tailwindcss": "^4.3.3"
+    "tailwindcss": "^4.3.3",
+    "unist-util-visit": "^5.1.0"
   },
   "hotHook": {
     "boundaries": [

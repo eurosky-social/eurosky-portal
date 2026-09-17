@@ -1,25 +1,18 @@
 import type { HttpContext } from '@adonisjs/core/http'
+import type { JSONDataTypes } from '@adonisjs/core/types/transformers'
+import legalService from '#services/legal_service'
 import { legalValidator } from '#validators/legal'
-import app from '@adonisjs/core/services/app'
-import LegalDocuments from '#collections/legal'
+
+const titles = { privacy: 'Privacy policy', terms: 'Terms of service' }
 
 export default class LegalController {
-  async show({ request, response, inertia, view }: HttpContext) {
+  async show({ inertia, request }: HttpContext) {
     const { params } = await request.validateUsing(legalValidator)
-    const query = await LegalDocuments.load()
-    const document = query.findByName(params.document)
-
-    if (!document) {
-      return response.notFound()
-    }
-
-    const renderedHtml = await view.render('markdown', {
-      document: app.makePath('data', document?.filename),
-    })
+    const document = await legalService.getDocument(params.document)
 
     return inertia.render('legal/show', {
-      title: inertia.always(document.title),
-      document: inertia.always(renderedHtml),
+      title: inertia.always(titles[params.document]),
+      document: inertia.always(document.tree as unknown as JSONDataTypes),
     })
   }
 }

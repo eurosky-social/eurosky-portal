@@ -84,7 +84,7 @@ function image(value: lexicon.pub.leaflet.blocks.image.Main, context: Context): 
     type: 'element',
     tagName: 'img',
     properties,
-    data: { blobCid: locator.cid, blobDid: locator.did, blobPds: locator.pds },
+    data: { blobCid: locator.cid, blobDid: locator.did, blobPds: locator.pds, position: {} },
     children: [],
   }
 }
