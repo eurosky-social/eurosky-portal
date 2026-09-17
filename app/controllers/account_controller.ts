@@ -1,73 +1,31 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import Account from '#models/account'
 import { DateTime } from 'luxon'
-import app from '@adonisjs/core/services/app'
-import { termsRequestValidator } from '#validators/legal'
-import LegalDocumentsCollection, {
-  type LegalDocument,
-  type LegalDocuments,
-} from '#collections/legal'
-import LegalDocumentsTransformer from '#transformers/legal_documents_transformer'
 import TermsAccepted from '#events/terms_accepted'
 import WelcomeDismissed from '#events/welcome_dismissed'
-
-export type RenderedDocuments = {
-  terms: LegalDocument & { rendered: string }
-  privacy: LegalDocument & { rendered: string }
-}
+import Account from '#models/account'
+import legalService from '#services/legal_service'
+import LegalDocumentsTransformer from '#transformers/legal_documents_transformer'
+import { termsRequestValidator } from '#validators/legal'
 
 export default class RegistrationController {
-  private async loadLegalDocuments(): Promise<LegalDocuments> {
-    const query = await LegalDocumentsCollection.load()
-    const documents = await query.all()
-    return documents
-  }
-
-  private renderLegalDocument(document: LegalDocument, view: HttpContext['view']) {
-    if (!document) return undefined
-
-    return view.render('markdown', {
-      document: app.makePath('data', document.filename),
-    })
-  }
-
-  private async transformLegalDocuments(
-    documents: LegalDocuments,
-    view: HttpContext['view']
-  ): Promise<RenderedDocuments> {
-    const [renderedTerms, renderedPrivacy] = await Promise.all([
-      this.renderLegalDocument(documents.terms, view),
-      this.renderLegalDocument(documents.privacy, view),
-    ])
-
-    const renderedDocuments: RenderedDocuments = {
-      terms: { ...documents.terms, rendered: renderedTerms ?? '' },
-      privacy: { ...documents.privacy, rendered: renderedPrivacy ?? '' },
-    }
-
-    return renderedDocuments
-  }
-
-  async create({ inertia, view }: HttpContext) {
-    const documents = await this.loadLegalDocuments()
-    const renderedDocuments = await this.transformLegalDocuments(documents, view)
+  async create({ inertia }: HttpContext) {
+    const documents = await legalService.getDocuments()
 
     return inertia.render('create-account', {
-      legalDocuments: inertia.always(LegalDocumentsTransformer.transform(renderedDocuments)),
+      legalDocuments: inertia.always(LegalDocumentsTransformer.transform(documents)),
     })
   }
 
-  async onboarding({ auth, inertia, view }: HttpContext) {
+  async onboarding({ auth, inertia }: HttpContext) {
     const account = await auth.getUserOrFail().getAccount()
-    const documents = await this.loadLegalDocuments()
-    const renderedDocuments = await this.transformLegalDocuments(documents, view)
+    const documents = await legalService.getDocuments()
 
     return inertia.render('onboarding', {
       termsUpdated:
-        !!account.termsAcceptedAt && account.termsAcceptedAt < documents.terms.updatedAt,
+        !!account.termsAcceptedAt && account.termsAcceptedAt < documents.terms.effectiveAt,
       privacyUpdated:
-        !!account.termsAcceptedAt && account.termsAcceptedAt < documents.privacy.updatedAt,
-      legalDocuments: inertia.always(LegalDocumentsTransformer.transform(renderedDocuments)),
+        !!account.termsAcceptedAt && account.termsAcceptedAt < documents.privacy.effectiveAt,
+      legalDocuments: inertia.always(LegalDocumentsTransformer.transform(documents)),
     })
   }
 

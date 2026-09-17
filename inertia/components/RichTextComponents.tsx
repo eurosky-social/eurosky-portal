@@ -29,7 +29,7 @@ export function a(properties: React.JSX.IntrinsicElements['a'] & ExtraProps) {
 
 export function img(properties: ImageProperties) {
   const { node, ...rest } = properties
-  const data = node?.data ?? {}
+  const data = node?.data ?? { position: {} }
   const { blobCid: cid, blobDid: did, blobPds: pds } = data
 
   return typeof cid === 'string' && typeof did === 'string' && typeof pds === 'string' ? (
