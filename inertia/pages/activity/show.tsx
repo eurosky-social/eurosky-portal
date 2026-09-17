@@ -8,12 +8,15 @@ import { Button } from '~/lib/button'
 import Card from '~/lib/card'
 import { Text } from '~/lib/text'
 import type { InertiaProps } from '~/types'
+import { useT } from '~/lib/i18n'
 
 const feedbackUrl = 'https://userinput.app/#/s/did:plc:ooensn4mr5mhznzypvxelfa3/3mr5gmbhteg2p'
 
 const pageSize = 20
 
 export default function Activity(result: InertiaProps<GetRecordsResult>) {
+  const { t } = useT()
+
   useEffect(() => {
     if (result.state !== 'syncing') return
     const timeout = setTimeout(() => router.reload(), 5_000)
@@ -23,11 +26,13 @@ export default function Activity(result: InertiaProps<GetRecordsResult>) {
   return (
     <div className="flex flex-col gap-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Your activity</h1>
+        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
+          {t('sidebar.yourActivity')}
+        </h1>
         <p aria-live="polite" className="mt-1 text-gray-500 dark:text-gray-400" role="status">
           {result.state === 'syncing'
-            ? 'Syncing your activity, this may take a moment…'
-            : `Showing ${result.activities.length} of ${result.total} ${result.total === 1 ? 'activity' : 'activities'}.`}
+            ? t('dashboard.activity.syncing')
+            : t('activity.showing', { count: result.activities.length, total: result.total })}
         </p>
       </div>
 
@@ -35,11 +40,10 @@ export default function Activity(result: InertiaProps<GetRecordsResult>) {
         <TriangleAlert aria-hidden="true" className="mt-1 h-5 w-5 shrink-0 text-amber-400" />
         <div>
           <Text className="font-semibold text-amber-800! dark:text-amber-200!">
-            Under construction
+            {t('activity.underConstruction.title')}
           </Text>
           <Text className="text-amber-700! dark:text-amber-200/80!">
-            Your activity feed is currently in development. Some of your activity may be missing. We
-            will add more activity soon.
+            {t('activity.underConstruction.text')}
           </Text>
           <Text className="text-amber-700! dark:text-amber-200/80!">
             <a
@@ -48,20 +52,20 @@ export default function Activity(result: InertiaProps<GetRecordsResult>) {
               rel="noopener noreferrer"
               target="_blank"
             >
-              Give feedback
+              {t('beta.giveFeedback')}
             </a>
           </Text>
         </div>
       </Card>
 
       {result.state === 'syncing' ? null : result.activities.length === 0 ? (
-        <p className="text-gray-500 dark:text-gray-400">No records found.</p>
+        <p className="text-gray-500 dark:text-gray-400">{t('activity.noRecords')}</p>
       ) : (
         <>
           <ActivityList activities={result.activities} />
           <div className="flex justify-center">
             <Button disabled={result.activities.length >= result.total} onClick={more} outline>
-              Load more
+              {t('activity.loadMore')}
             </Button>
           </div>
         </>

@@ -3,6 +3,7 @@
 import * as Headless from '@headlessui/react'
 import React, { useState } from 'react'
 import { NavbarItem } from './navbar'
+import { useT } from './i18n'
 
 function OpenMenuIcon() {
   return (
@@ -25,6 +26,8 @@ function MobileSidebar({
   close,
   children,
 }: React.PropsWithChildren<{ open: boolean; close: () => void }>) {
+  const { tPlain } = useT()
+
   return (
     <Headless.Dialog open={open} onClose={close} className="lg:hidden">
       <Headless.DialogBackdrop
@@ -37,7 +40,7 @@ function MobileSidebar({
       >
         <div className="flex h-full flex-col rounded-lg bg-white shadow-xs ring-1 ring-slate-950/5 dark:bg-slate-900 dark:ring-white/10">
           <div className="-mb-3 px-4 pt-3 self-end">
-            <Headless.CloseButton as={NavbarItem} aria-label="Close navigation">
+            <Headless.CloseButton as={NavbarItem} aria-label={tPlain('nav.closeNavigation')}>
               <CloseMenuIcon />
             </Headless.CloseButton>
           </div>
@@ -54,6 +57,7 @@ export function SidebarLayout({
   children,
 }: React.PropsWithChildren<{ navbar: React.ReactNode; sidebar: React.ReactNode }>) {
   let [showSidebar, setShowSidebar] = useState(false)
+  const { tPlain } = useT()
 
   return (
     <div className="relative isolate flex min-h-dvh-minus-32 w-full bg-white max-lg:flex-col lg:bg-white dark:bg-slate-800/70 dark:lg:bg-slate-800/70">
@@ -69,7 +73,10 @@ export function SidebarLayout({
       <header className="relative z-10 flex items-center gap-3 px-4 lg:hidden">
         <div className="min-w-0 flex-1">{navbar}</div>
         <div className="md:py-2.5">
-          <NavbarItem onClick={() => setShowSidebar(true)} aria-label="Open navigation">
+          <NavbarItem
+            onClick={() => setShowSidebar(true)}
+            aria-label={tPlain('nav.openNavigation')}
+          >
             <OpenMenuIcon />
           </NavbarItem>
         </div>

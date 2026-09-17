@@ -10,7 +10,9 @@ export function Apps({ sections }: { sections: Data.Apps['sections'] }) {
         (section) =>
           section.apps.length > 0 && (
             <div key={section.category}>
-              <h3 className={headingStyle}>{categoryTitle(section.category)}</h3>
+              <h3 className={headingStyle} lang="en">
+                {categoryTitle(section.category)}
+              </h3>
               <AppGrid apps={section.apps} />
             </div>
           )

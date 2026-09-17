@@ -1,5 +1,6 @@
 import type { RelativeTimeElement } from '@github/relative-time-element'
-import { formatDate } from '~/utils/date'
+import { formatDate, parseDate } from '~/utils/date'
+import { useT } from '~/lib/i18n'
 
 // Explicitly import for side-effects (registering the custom element).
 import '@github/relative-time-element'
@@ -38,9 +39,11 @@ interface Properties {
  */
 export function RelativeTime(properties: Properties) {
   const { value } = properties
+  const { locale } = useT()
   if (!value) return
-  const absolute = formatDate(value)
-  if (!absolute) return
+  const date = parseDate(value)
+  if (!date) return
+  const absolute = formatDate(date, locale)
   return (
     <relative-time aria-label={absolute} datetime={value} tense="past">
       {absolute}

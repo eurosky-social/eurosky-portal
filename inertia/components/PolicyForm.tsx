@@ -9,6 +9,7 @@ import { Text } from '~/lib/text'
 import { useForm } from '@inertiajs/react'
 import type { routes } from '@generated/registry'
 import MarkdownDocument from './MarkdownDocument'
+import { useT } from '~/lib/i18n'
 
 type Routes = keyof typeof routes
 type PolicyFormProps<Route extends Routes> = {
@@ -20,6 +21,7 @@ export function PolicyForm({ route, terms, privacy }: PolicyFormProps<Routes>) {
   const form = useForm({
     terms: false,
   })
+  const { t } = useT()
 
   return (
     <>
@@ -28,7 +30,7 @@ export function PolicyForm({ route, terms, privacy }: PolicyFormProps<Routes>) {
           header={
             <>
               <DocumentTextIcon className="w-6 h-6 inline-block text-slate-500" />
-              Terms of service
+              {t('sidebar.termsOfService')}
             </>
           }
           document={terms}
@@ -37,7 +39,7 @@ export function PolicyForm({ route, terms, privacy }: PolicyFormProps<Routes>) {
           header={
             <>
               <LockClosedIcon className="w-6 h-6 inline-block text-slate-500" />
-              Privacy policy
+              {t('sidebar.privacyPolicy')}
             </>
           }
           document={privacy}
@@ -56,22 +58,30 @@ export function PolicyForm({ route, terms, privacy }: PolicyFormProps<Routes>) {
                   onChange={(checked) => form.setData('terms', checked)}
                 />
                 <Label>
-                  I have read and accept the{' '}
-                  <Link
-                    route="legal.show"
-                    routeParams={{ document: 'terms' }}
-                    className="text-blue-500 hover:underline"
-                  >
-                    Terms of service
-                  </Link>{' '}
-                  and{' '}
-                  <Link
-                    route="legal.show"
-                    routeParams={{ document: 'privacy' }}
-                    className="text-blue-500 hover:underline"
-                  >
-                    Privacy policy
-                  </Link>
+                  {t('policy.accept', {
+                    terms(chunks) {
+                      return (
+                        <Link
+                          route="legal.show"
+                          routeParams={{ document: 'terms' }}
+                          className="text-blue-500 hover:underline"
+                        >
+                          {chunks}
+                        </Link>
+                      )
+                    },
+                    privacy(chunks) {
+                      return (
+                        <Link
+                          route="legal.show"
+                          routeParams={{ document: 'privacy' }}
+                          className="text-blue-500 hover:underline"
+                        >
+                          {chunks}
+                        </Link>
+                      )
+                    },
+                  })}
                 </Label>
               </CheckboxField>
             </div>
@@ -82,7 +92,7 @@ export function PolicyForm({ route, terms, privacy }: PolicyFormProps<Routes>) {
               className="mt-2 py-3! disabled:cursor-default"
               disabled={!form.data.terms || processing}
             >
-              Continue &rarr;
+              {t('login.continue')}
             </Button>
           </div>
         )}

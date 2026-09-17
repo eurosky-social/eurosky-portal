@@ -6,8 +6,12 @@ import { Heading } from '~/lib/heading'
 import { Link } from '~/lib/link'
 import { Text } from '~/lib/text'
 import { Rating } from './Rating'
+import { useT } from '~/lib/i18n'
+import { formatNumber } from '~/utils/number'
 
 export function App({ app }: { app: Data.AppSummary }) {
+  const { locale, t } = useT()
+
   return (
     <li className="col-span-1 flex rounded-md shadow-xs dark:shadow-none">
       <ClickableCard
@@ -18,12 +22,13 @@ export function App({ app }: { app: Data.AppSummary }) {
       >
         <div className="flex flex-row grow flex-1 gap-4">
           <div className="flex flex-col">
-            <Heading level={4} className="text-base!">
+            <Heading level={4} className="text-base!" lang="en">
               {app.listing.name}
             </Heading>
             <Text
               className="overflow-hidden dark:text-slate-400!"
               style={{ WebkitBoxOrient: 'vertical', WebkitLineClamp: 3, display: '-webkit-box' }}
+              lang="en"
             >
               {app.listing.tagline}
             </Text>
@@ -39,7 +44,7 @@ export function App({ app }: { app: Data.AppSummary }) {
             <span className="flex items-center gap-0.5 text-sm text-amber-500">
               <Rating value={parseFloat(app.listing.rating)} />
               <span className="text-gray-400 dark:text-slate-500 ml-0.5">
-                ({app.listing.reviewCount})
+                ({formatNumber(app.listing.reviewCount, locale)})
               </span>
             </span>
           </div>
@@ -47,7 +52,7 @@ export function App({ app }: { app: Data.AppSummary }) {
         <div className="flex w-full items-center gap-2">
           {app.madeInEurope ? (
             <Badge color="blue" className="ml-auto">
-              Made in Europe
+              {t('apps.madeInEurope')}
             </Badge>
           ) : undefined}
         </div>

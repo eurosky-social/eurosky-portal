@@ -1,20 +1,30 @@
+import type { Locale } from '#shared/locale'
+
 /**
- * Format an ISO 8601 date string for display.
+ * Parse a date string.
  *
  * @param value
- *   ISO 8601 date string.
+ *   Date string.
  * @returns
- *   Human-readable date.
+ *   Parsed date if valid.
  */
-export function formatDate(value: string | null | undefined): string | undefined {
+export function parseDate(value: string | null | undefined): Date | undefined {
   if (!value) return
   const date = new Date(value)
   if (Number.isNaN(date.getTime())) return
-  return date.toLocaleString(undefined, {
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    month: 'short',
-    year: 'numeric',
-  })
+  return date
+}
+
+/**
+ * Format a date for display.
+ *
+ * @param date
+ *   Date to format.
+ * @param locale
+ *   Locale to format with.
+ * @returns
+ *   Human-readable date.
+ */
+export function formatDate(date: Date, locale: Locale): string {
+  return date.toLocaleString(locale, { dateStyle: 'medium', timeStyle: 'short' })
 }

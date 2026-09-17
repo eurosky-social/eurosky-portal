@@ -4,16 +4,18 @@ import { ReactNode } from 'react'
 import * as components from './RichTextComponents'
 import { Text } from '~/lib/text'
 import { useMarkdown } from '~/utils/use_markdown'
+import { useT } from '~/lib/i18n'
 
 /**
  * Render markdown; parsed off the main thread, with a loading skeleton.
  */
 export function MarkdownContent({ value }: { value?: string | undefined }): ReactNode {
   const result = useMarkdown(value)
+  const { t } = useT()
 
   switch (result.type) {
     case 'error':
-      return <Text className="italic">This content couldn’t be displayed.</Text>
+      return <Text className="italic">{t('markdown.error')}</Text>
     case 'loading':
       return (
         <div aria-hidden="true" className="space-y-2">
@@ -24,13 +26,18 @@ export function MarkdownContent({ value }: { value?: string | undefined }): Reac
       )
     case 'ready':
       if (result.tree) {
-        return toJsxRuntime(result.tree, {
-          Fragment,
-          components,
-          jsxs,
-          jsx,
-          passNode: true,
-        })
+        // Not yet translated unlike surrounding UI so mark as English.
+        return (
+          <div lang="en">
+            {toJsxRuntime(result.tree, {
+              Fragment,
+              components,
+              jsxs,
+              jsx,
+              passNode: true,
+            })}
+          </div>
+        )
       }
   }
 }

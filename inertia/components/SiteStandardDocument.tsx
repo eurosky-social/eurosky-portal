@@ -5,14 +5,17 @@ import type { SiteStandardDocumentDetail } from '#transformers/activity_transfor
 import { BlobImage } from '~/components/BlobImage'
 import { MarkdownContent } from '~/components/MarkdownContent'
 import { Text } from '~/lib/text'
-import { formatDate } from '~/utils/date'
+import { parseDate } from '~/utils/date'
+import { formatList } from '~/utils/list'
 import * as components from './RichTextComponents'
+import { useT } from '~/lib/i18n'
 
 export function SiteStandardDocument({ activity }: { activity: SiteStandardDocumentDetail }) {
+  const { locale, t } = useT()
   // Cast because inertia fails on TS `interface`s.
   const structuredContent = activity.content as Nodes | undefined
-  const publishedAtDisplay = formatDate(activity.publishedAt)
-  const updatedAtDisplay = formatDate(activity.updatedAt)
+  const publishedAt = parseDate(activity.publishedAt)
+  const updatedAt = parseDate(activity.updatedAt)
 
   return (
     <>
@@ -45,21 +48,25 @@ export function SiteStandardDocument({ activity }: { activity: SiteStandardDocum
         )}
       </div>
       {activity.tags && activity.tags.length > 0 ? (
-        <Text>Tags: {activity.tags.join(', ')}</Text>
+        <Text>{t('activity.article.tags', { tags: formatList(activity.tags, locale) })}</Text>
       ) : undefined}
       {activity.contributors && activity.contributors.length > 0 ? (
         <Text>
-          By{' '}
-          {activity.contributors
-            .map((contributor) => {
-              const name = contributor.displayName ?? contributor.did
-              return contributor.role ? `${name} (${contributor.role})` : name
-            })
-            .join(', ')}
+          {t('activity.article.by', {
+            contributors: formatList(
+              activity.contributors.map((contributor) => {
+                const name = contributor.displayName ?? contributor.did
+                return contributor.role ? `${name} (${contributor.role})` : name
+              }),
+              locale
+            ),
+          })}
         </Text>
       ) : undefined}
-      {publishedAtDisplay ? <Text>Published: {publishedAtDisplay}</Text> : undefined}
-      {updatedAtDisplay ? <Text>Updated: {updatedAtDisplay}</Text> : undefined}
+      {publishedAt ? (
+        <Text>{t('activity.article.published', { date: publishedAt })}</Text>
+      ) : undefined}
+      {updatedAt ? <Text>{t('activity.article.updated', { date: updatedAt })}</Text> : undefined}
     </>
   )
 }

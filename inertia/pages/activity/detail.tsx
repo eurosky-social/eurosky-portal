@@ -13,6 +13,7 @@ import Card from '~/lib/card'
 import { BackLink } from '~/lib/link'
 import { RelativeTime } from '~/lib/relative-time'
 import type { InertiaProps } from '~/types'
+import { useT } from '~/lib/i18n'
 
 export default function ActivityDetailPage({
   activity,
@@ -25,6 +26,7 @@ export default function ActivityDetailPage({
   profile?: BskyAppProfile | undefined
   quotedPost?: BskyAppPost | undefined
 }>) {
+  const { tPlain, t } = useT()
   let actions: ReactNode
   let detail: ReactNode
   let title: string
@@ -44,7 +46,11 @@ export default function ActivityDetailPage({
           ) : undefined}
           <div>
             <p className="text-sm text-zinc-900 dark:text-white">
-              You liked a post by <UserName user={post?.author} />
+              {t('activity.detail.likedPostBy', {
+                user() {
+                  return <UserName user={post?.author} />
+                },
+              })}
             </p>
             {post?.text ? (
               <p className="my-1 line-clamp-1 text-sm text-zinc-500 dark:text-zinc-400">
@@ -54,7 +60,7 @@ export default function ActivityDetailPage({
           </div>
         </div>
       )
-      title = 'Like'
+      title = tPlain('activity.type.like')
       break
     case 'app.bsky.feed.post':
       actions = <OpenWith uri={activity.openUri} />
@@ -66,14 +72,18 @@ export default function ActivityDetailPage({
                 aria-hidden="true"
                 className="size-2.5 shrink-0 inline-block"
               />{' '}
-              In reply to <UserName user={post?.author} />
+              {t('activity.detail.inReplyTo', {
+                user() {
+                  return <UserName user={post?.author} />
+                },
+              })}
             </p>
           ) : undefined}
           <RichText text={activity.text} />
           {activity.embed ? <Embed embed={activity.embed} quotedPost={quotedPost} /> : undefined}
         </>
       )
-      title = 'Post'
+      title = tPlain('activity.type.post')
       break
     case 'app.bsky.graph.follow':
       actions = <OpenWith uri={activity.openUri} />
@@ -83,16 +93,20 @@ export default function ActivityDetailPage({
             <Avatar className="size-10 shrink-0 bg-amber-100 text-amber-700" src={profile.avatar} />
           ) : undefined}
           <p className="text-sm text-zinc-900 dark:text-white">
-            You followed <UserName user={profile} />
+            {t('activity.detail.followed', {
+              user() {
+                return <UserName user={profile} />
+              },
+            })}
           </p>
         </div>
       )
-      title = 'Follow'
+      title = tPlain('activity.type.follow')
       break
     case 'site.standard.document':
       actions = <OpenWith uri={activity.openUri} />
       detail = <SiteStandardDocument activity={activity} />
-      title = 'Article'
+      title = tPlain('activity.type.article')
       break
     default:
       throw new Error(`Unsupported activity type: ${$type}`)
@@ -103,10 +117,13 @@ export default function ActivityDetailPage({
       <Head title={title} />
 
       <div className="mb-8 flex items-start justify-between gap-4">
-        <nav aria-label="Breadcrumb" className="text-sm text-zinc-500 dark:text-zinc-400">
+        <nav
+          aria-label={tPlain('common.breadcrumb')}
+          className="text-sm text-zinc-500 dark:text-zinc-400"
+        >
           <BackLink className="hover:text-zinc-700 dark:hover:text-zinc-300" route="activity.show">
             <ChevronLeftIcon aria-hidden="true" className="size-4 inline-block" />
-            Your activity
+            {t('sidebar.yourActivity')}
           </BackLink>
           {' / '}
           <span aria-current="page">{title}</span>
