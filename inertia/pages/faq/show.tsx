@@ -3,14 +3,17 @@ import { Head } from '@inertiajs/react'
 import MarkdownDocument from '~/components/MarkdownDocument'
 import { Container } from '~/lib/container'
 import { InertiaProps } from '~/types'
+import { useT } from '~/lib/i18n'
 
 export default function Faq(props: InertiaProps<{ faq: { question: string; answer: string }[] }>) {
+  const { tPlain, t } = useT()
+
   return (
     <>
-      <Head title="Frequently asked questions" />
+      <Head title={tPlain('faq.title')} />
       <Container className="py-16 md:py-24 px-4">
         <h1 className="mb-6 text-4xl md:text-5xl text-black dark:text-slate-200 font-semibold text-center">
-          Frequently asked questions
+          {t('faq.title')}
         </h1>
       </Container>
       <div className="bg-neutral-50 dark:bg-slate-800 min-h-dvh-minus-35">

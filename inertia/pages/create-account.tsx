@@ -7,6 +7,7 @@ import { Data } from '@generated/data'
 import { Head, usePage } from '@inertiajs/react'
 import { Link } from '~/lib/link'
 import { ExclamationTriangleIcon } from '@heroicons/react/24/solid'
+import { useT } from '~/lib/i18n'
 
 export default function CreateAccount(
   props: InertiaProps<{
@@ -14,9 +15,10 @@ export default function CreateAccount(
   }>
 ) {
   const { props: pageProps } = usePage()
+  const { tPlain, t } = useT()
   return (
     <div className="bg-neutral-50 dark:bg-slate-900 min-h-dvh-minus-35">
-      <Head title="Create account" />
+      <Head title={tPlain('createAccount.pageTitle')} />
       <Container className="py-10 md:pt-24">
         {pageProps.flash.error && (
           <Card className="w-full md:w-3/4 lg:w-1/2 m-auto px-4 py-2 mb-8 bg-gray-500! dark:bg-slate-600! text-white!">
@@ -30,21 +32,28 @@ export default function CreateAccount(
         )}
         <Card className="my-10 w-full md:w-3/4 lg:w-1/2 m-auto p-4">
           <h1 className="mx-auto max-w-4xl mb-2 text-center font-display text-3xl leading-[1.2] font-extrabold tracking-tight text-slate-900 dark:text-slate-200 sm:text-5xl">
-            Create your <span className="text-brand">Eurosky account.</span>
+            {t('createAccount.title', {
+              brand(chunks) {
+                return <span className="text-brand">{chunks}</span>
+              },
+            })}
           </h1>
-          <Text className="text-center text-slate-600">
-            Before we get started, please review and accept our terms.
-          </Text>
+          <Text className="text-center text-slate-600">{t('createAccount.subtitle')}</Text>
           <PolicyForm
             route="oauth.signup"
             terms={props.legalDocuments.terms}
             privacy={props.legalDocuments.privacy}
           />
           <Text className="text-center">
-            Already have an account?{' '}
-            <Link route="auth.login" className="text-blue-500 hover:underline">
-              Sign in
-            </Link>
+            {t('createAccount.haveAccount', {
+              signIn(chunks) {
+                return (
+                  <Link route="auth.login" className="text-blue-500 hover:underline">
+                    {chunks}
+                  </Link>
+                )
+              },
+            })}
           </Text>
         </Card>
       </Container>

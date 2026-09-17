@@ -9,14 +9,20 @@ import { ThemeToggle } from './ThemeToggle'
 import clsx from 'clsx'
 import { INVALID_HANDLE } from '@atproto/syntax'
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid'
+import { useT } from '~/lib/i18n'
 
 export default function DashboardNavbar({ className }: React.ComponentProps<'div'>) {
   const user = useAuth()
+  const { tPlain, t } = useT()
   const isHandleInvalid = user.handle === INVALID_HANDLE
 
   return (
     <Navbar className={clsx(className, 'dark:bg-slate-800/70')}>
-      <Link route="dashboard.show" aria-label="Home" className="rounded-sm md:ml-6 mt-1 mb-2">
+      <Link
+        route="dashboard.show"
+        aria-label={tPlain('nav.home')}
+        className="rounded-sm md:ml-6 mt-1 mb-2"
+      >
         <Logo />
       </Link>
       <NavbarSpacer />
@@ -36,7 +42,7 @@ export default function DashboardNavbar({ className }: React.ComponentProps<'div
 
         <Form route="oauth.logout" className="justify-stretch hidden lg:flex">
           <Button type="submit" outline className="dark:text-slate-300!">
-            Logout
+            {t('nav.logout')}
           </Button>
         </Form>
         <ThemeToggle />
