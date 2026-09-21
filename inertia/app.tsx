@@ -4,20 +4,14 @@ import { client } from './client'
 import Layout from '~/layouts/default'
 import { Data } from '@generated/data'
 import { createRoot } from 'react-dom/client'
-import { createInertiaApp, ResolvedComponent, router } from '@inertiajs/react'
+import { createInertiaApp, ResolvedComponent } from '@inertiajs/react'
 import { TuyauProvider } from '@adonisjs/inertia/react'
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
 import { I18nProvider } from '~/lib/i18n'
-import { getLocale } from '~/utils/locale'
 
 import.meta.glob(['../resources/images/og-image.png', './images/**'])
 
 const appName = import.meta.env.VITE_APP_NAME || 'Eurosky Portal'
-
-// Send locally preferred language to server.
-router.on('before', (event) => {
-  event.detail.visit.headers['X-Locale'] = getLocale()
-})
 
 createInertiaApp({
   title: (title) => (title ? `${title} - ${appName}` : appName),

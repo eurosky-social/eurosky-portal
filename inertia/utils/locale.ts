@@ -6,15 +6,9 @@ type Listener = () => undefined | void
 const listeners = new Set<Listener>()
 
 /**
- * Get the current locale right now outside of React.
- * Useful for an outgoing request header.
- *
- * @returns
- *   Locale to use.
+ * Name of the cookie storing the preferred locale.
  */
-export function getLocale(): Locale {
-  return parse(snapshot())
-}
+const cookieName = 'locale'
 
 /**
  * Parse a `useSyncExternalStore` snapshot value into a locale.
@@ -45,7 +39,7 @@ export function parse(value: string | undefined): Locale {
 export function serverSnapshot(): undefined {}
 
 /**
- * Save the preferred locale to local storage.
+ * Save the preferred locale to a cookie.
  *
  * @param locale
  *   Locale to save.
@@ -54,7 +48,7 @@ export function serverSnapshot(): undefined {}
  */
 export function setLocale(locale: Locale): undefined {
   try {
-    localStorage.setItem('language', locale)
+    document.cookie = `${cookieName}=${locale}; path=/; max-age=31536000; samesite=lax`
   } catch {
     return
   }
@@ -69,9 +63,12 @@ export function setLocale(locale: Locale): undefined {
  *   Snapshot.
  */
 export function snapshot(): string | undefined {
-  if (typeof localStorage === 'undefined') return
+  if (typeof document === 'undefined') return
   try {
-    return localStorage.getItem('language') || undefined
+    for (const entry of document.cookie.split('; ')) {
+      const [key, value] = entry.split('=')
+      if (key === cookieName) return value
+    }
   } catch {}
 }
 
