@@ -20,7 +20,7 @@ export function LanguageToggle({ className }: React.ComponentPropsWithoutRef<'di
         {locales.map((code) => (
           <DropdownItem key={code} onClick={() => setLocale(code)}>
             <span className="col-span-full flex w-full items-center justify-between gap-2">
-              {localeNames[code]}
+              <span lang={code}>{localeNames[code]}</span>
               {code === locale ? (
                 <CheckIcon aria-hidden="true" className="size-4 shrink-0" />
               ) : undefined}

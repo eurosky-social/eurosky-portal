@@ -200,15 +200,13 @@ export class AtStoreService {
    * Augment an app with remote info.
    */
   async #hydrate(localApp: LocalApp): Promise<App> {
-    return cache.getOrSet({
-      factory: async () => {
-        const listing = await this.#fetchListing(localApp.atUri)
-        return { ...listing, ...localApp }
-      },
+    const listing = await cache.getOrSet({
+      factory: () => this.#fetchListing(localApp.atUri),
       graceBackoff: '15m',
       grace: '24h',
       key: `atstore:listing:${localApp.atUri}`,
       ttl: '4h',
     })
+    return { ...listing, ...localApp }
   }
 }

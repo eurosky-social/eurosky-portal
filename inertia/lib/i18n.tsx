@@ -64,7 +64,7 @@ const catalogs: Record<Locale, () => Promise<{ default: Record<string, string> }
 
 export function I18nProvider({ children }: { children: ReactNode }) {
   const locale = parse(useSyncExternalStore(subscribe, snapshot, serverSnapshot))
-  const [messages, setMessages] = useState<Record<string, string>>({})
+  const [messages, setMessages] = useState<Record<string, string> | undefined>()
 
   useEffect(
     function (): undefined {
@@ -77,6 +77,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     function () {
       let cancelled = false
 
+      setMessages(undefined)
       catalogs[locale]().then((module) => {
         if (!cancelled) {
           setMessages(module.default)
@@ -136,11 +137,11 @@ function collectTagNames(
  * @param locale
  *   Current locale.
  * @param messages
- *   Translation messages for the current locale.
+ *   Translation messages for the current locale or `undefined` while loading.
  * @returns
  *   Translation functions.
  */
-function createT(locale: Locale, messages: Record<string, string>) {
+function createT(locale: Locale, messages: Record<string, string> | undefined) {
   const compiled = new Map<string, CompiledMessage>()
 
   return { tPlain, t }
@@ -151,11 +152,13 @@ function createT(locale: Locale, messages: Record<string, string>) {
    * @param key
    *   Message key.
    * @returns
-   *   Compiled message.
+   *   Compiled message or `undefined` while loading.
    * @throws
    *   Throws for malformed ICU syntax.
    */
-  function compile(key: string): CompiledMessage {
+  function compile(key: string): CompiledMessage | undefined {
+    if (!messages) return
+
     let message = compiled.get(key)
 
     if (!message) {
@@ -180,13 +183,15 @@ function createT(locale: Locale, messages: Record<string, string>) {
    * @param variables
    *   Variables and components.
    * @returns
-   *   Rendered and translated message.
+   *   Rendered and translated message or empty string while loading.
    */
   function tPlain(
     key: string,
     variables?: Record<string, VariableValue<PrimitiveType>> | null | undefined
   ): string {
-    const { format, names } = compile(key)
+    const message = compile(key)
+    if (!message) return ''
+    const { format, names } = message
     const defaults: Record<string, FormatXMLElementFn<PrimitiveType>> = {}
     for (const name of names) defaults[name] = identity
     // `IntlMessageFormat` collapses adjacent strings (`["Jane", "!"]`) already,
@@ -206,13 +211,15 @@ function createT(locale: Locale, messages: Record<string, string>) {
    * @param variables
    *   Variables and components.
    * @returns
-   *   Rendered and translated message.
+   *   Rendered and translated message or `undefined` while loading.
    */
   function t(
     key: string,
     variables?: Record<string, VariableValue<ReactNode>> | null | undefined
   ): ReactNode {
-    const { format } = compile(key)
+    const message = compile(key)
+    if (!message) return
+    const { format } = message
     const result = format.format(variables ?? {})
 
     // Add React keys for automatically generated elements.

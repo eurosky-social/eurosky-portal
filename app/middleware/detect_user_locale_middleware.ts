@@ -34,8 +34,8 @@ export default class DetectUserLocaleMiddleware {
     ctx.i18n = i18nManager.locale(locale || i18nManager.defaultLocale)
     ctx.containerResolver.bindValue(I18n, ctx.i18n)
     ctx.view.share({
-      description: ctx.i18n.t('meta.description'),
       locale: ctx.i18n.locale,
+      metaDescription: ctx.i18n.t('meta.description'),
     })
     return next()
   }

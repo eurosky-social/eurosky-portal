@@ -39,23 +39,23 @@ export function App({ app }: { app: Data.AppSummary }) {
             className="size-12 mb-2 bg-gray-100 ml-auto dark:bg-gray-800 outline-none!"
           />
         </div>
-        {typeof app.listing.rating === 'string' ? (
-          <div className="flex flex-row space-between gap-0.5">
-            <span className="flex items-center gap-0.5 text-sm text-amber-500">
-              <Rating value={parseFloat(app.listing.rating)} />
-              <span className="text-gray-400 dark:text-slate-500 ml-0.5">
-                ({formatNumber(app.listing.reviewCount, locale)})
+        {typeof app.listing.rating === 'string' || app.madeInEurope ? (
+          <div className="flex w-full items-center gap-2">
+            {typeof app.listing.rating === 'string' ? (
+              <span className="flex items-center gap-0.5 text-sm text-amber-500">
+                <Rating value={parseFloat(app.listing.rating)} />
+                <span className="text-gray-400 dark:text-slate-500 ml-0.5">
+                  ({formatNumber(app.listing.reviewCount, locale)})
+                </span>
               </span>
-            </span>
+            ) : undefined}
+            {app.madeInEurope ? (
+              <Badge color="blue" className="ml-auto">
+                {t('apps.madeInEurope')}
+              </Badge>
+            ) : undefined}
           </div>
         ) : undefined}
-        <div className="flex w-full items-center gap-2">
-          {app.madeInEurope ? (
-            <Badge color="blue" className="ml-auto">
-              {t('apps.madeInEurope')}
-            </Badge>
-          ) : undefined}
-        </div>
       </ClickableCard>
     </li>
   )

@@ -34,7 +34,7 @@ const nl = {
   'apps.madeInEurope': 'Gemaakt in Europa',
   'apps.openWith': 'Openen met {name}',
   'apps.rating': '{value} van de 5',
-  'apps.subheading': 'Blader door aanbevolen apps die werken met je Eurosky account.',
+  'apps.subheading': 'Bekijk de aanbevolen apps die werken met je Eurosky account.',
   'beta.giveFeedback': 'Feedback geven',
   'beta.warning': 'Eurosky Portal is momenteel in bèta. <feedback>Feedback geven</feedback>.',
   'common.breadcrumb': 'Kruimelpad',
