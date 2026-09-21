@@ -4,6 +4,7 @@ import {
   isSelectElement,
   isTagElement,
 } from '@formatjs/icu-messageformat-parser'
+import { router } from '@inertiajs/react'
 import { type FormatXMLElementFn, type PrimitiveType, IntlMessageFormat } from 'intl-messageformat'
 import type { ReactNode } from 'react'
 import {
@@ -12,6 +13,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   useSyncExternalStore,
 } from 'react'
@@ -65,10 +67,25 @@ const catalogs: Record<Locale, () => Promise<{ default: Record<string, string> }
 export function I18nProvider({ children }: { children: ReactNode }) {
   const locale = parse(useSyncExternalStore(subscribe, snapshot, serverSnapshot))
   const [messages, setMessages] = useState<Record<string, string> | undefined>()
+  const mounted = useRef(false)
 
   useEffect(
     function (): undefined {
       document.documentElement.lang = locale
+    },
+    [locale]
+  )
+
+  // Some props such as FAQ and the explore document are rendered server side
+  // in the request locale.
+  // Reload to pick up the new one but skip the initial mount.
+  useEffect(
+    function (): undefined {
+      if (mounted.current) {
+        router.reload()
+      } else {
+        mounted.current = true
+      }
     },
     [locale]
   )
