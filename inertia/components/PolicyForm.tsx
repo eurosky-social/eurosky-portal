@@ -111,7 +111,7 @@ function PolicyDetails({ header, document }: { header: ReactNode; document: stri
         <span className="flex flex-row gap-1">{header}</span>
         <ChevronDownIcon className="details-icon w-6 h-6 flex" />
       </summary>
-      <MarkdownDocument className="p-4" document={document} />
+      <MarkdownDocument className="p-4" document={document} lang="en" />
     </details>
   )
 }

@@ -21,7 +21,7 @@ export default class AppsTransformer extends BaseTransformer<{
       .sort((a, b) => a.category.localeCompare(b.category))
     const sections =
       recommended.length > 0
-        ? [{ apps: recommended, category: 'recommended' }, ...categories]
+        ? [{ apps: recommended, category: 'apps.category.recommended' }, ...categories]
         : categories
 
     return {

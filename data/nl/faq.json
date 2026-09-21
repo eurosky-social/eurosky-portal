@@ -1,0 +1,46 @@
+[
+  {
+    "question": "Wat is de Eurosky Portal?",
+    "answer": "De Eurosky Portal is jouw persoonlijke dashboard voor het beheren van je Eurosky account en het verkennen van de Atmosphere — het ecosysteem van apps en diensten gebouwd op het AT Protocol. Vanuit Portal zie je in één blik je profiel, ontdek je compatibele apps, en beheer je je account, allemaal op één plek."
+  },
+  {
+    "question": "Wat kan ik vandaag al met Portal doen?",
+    "answer": "Portal bevindt zich momenteel in de eerste release (v1). Je kunt je profiel en statistieken bekijken (berichten, volgers, volgend), aanbevolen apps die met je Eurosky account werken bekijken en ontdekken, je account beheren (verbonden apparaten, geautoriseerde apps, wachtwoord resetten), en ondersteuningsbronnen vinden zoals hulpdocumentatie, veelgestelde vragen en contactgegevens."
+  },
+  {
+    "question": "Wat is de Atmosphere?",
+    "answer": "De Atmosphere is de naam voor het groeiende ecosysteem van apps en diensten gebouwd op het AT Protocol. Je Eurosky account werkt met al deze apps. Zie het als e-mail: één account, veel apps. Je kunt Bluesky gebruiken voor microblogging, Flashes voor foto’s en video, SIFA voor professioneel netwerken, Leaflet om te bloggen, Tangled voor samenwerken aan code, en nog veel meer — allemaal met dezelfde identiteit en data."
+  },
+  {
+    "question": "Hoe werkt één account met zoveel apps?",
+    "answer": "Je Eurosky account is gebouwd op het AT Protocol, dat je identiteit en data loskoppelt van een specifieke app. Je account en inhoud staan op je eigen Personal Data Server (PDS), gehost in Europa. Wanneer je een nieuwe app gebruikt, maakt deze verbinding met je PDS; je hoeft geen nieuw account aan te maken of opnieuw te beginnen. Je identiteit, sociale connecties en data reizen met je mee."
+  },
+  {
+    "question": "Is Portal hetzelfde als Bluesky?",
+    "answer": "Nee. Bluesky is een van de vele apps die je met je Eurosky account kunt gebruiken. Portal is je accountdashboard: een centrale plek om je Eurosky identiteit te beheren, apps te ontdekken en ondersteuning te vinden. Je gebruikt Portal niet om berichten te plaatsen of feeds te bekijken; daarvoor gebruik je apps zoals Bluesky, Flashes, of Leaflet."
+  },
+  {
+    "question": "Heb ik Portal nodig om mijn Eurosky account te gebruiken?",
+    "answer": "Nee. Je kunt je Eurosky account gewoon blijven gebruiken via elke AT Protocol app (zoals Bluesky), zonder Portal ooit te bezoeken. Portal is er als handige thuisbasis wanneer je die nodig hebt."
+  },
+  {
+    "question": "Welke functies komen er nog aan?",
+    "answer": "We hebben een actieve roadmap voor Portal. Aankomende functies zijn onder andere een samenstelbare openbare profielpagina, een visuele manier om de data op je PDS te bekijken en te beheren, accountbeheer rechtstreeks binnen Portal (niet langer via externe pagina’s), een persoonlijke lijst van je verbonden apps, lokalisatie (ondersteuning voor meerdere talen), en meer. Verder in de toekomst verkennen we universele notificaties voor al je apps, end-to-end versleutelde privéberichten, clouddrive-functionaliteit voor publieke en privédata, en een signaal op je PDS-data dat aangeeft dat deze niet gebruikt mag worden voor AI-training."
+  },
+  {
+    "question": "Is mijn data veilig?",
+    "answer": "Je data wordt gehost op servers in Duitsland (Hetzner, datacenter Falkenstein), onderworpen aan de AVG en Europese wetgeving. Eurosky wordt beheerd door Stichting Modal, een Nederlandse non-profitstichting. We verkopen je data niet. De volledige Gebruiksvoorwaarden en het Privacybeleid kun je lezen via de zijbalk van Portal."
+  },
+  {
+    "question": "Hoe beheer ik mijn accountinstellingen?",
+    "answer": "Gebruik “Account beheren” in de zijbalk van Portal om verbonden apparaten en geautoriseerde apps te bekijken. Daar kun je ook je wachtwoord wijzigen. In een toekomstige Portal-release worden deze instellingen rechtstreeks binnen Portal beschikbaar."
+  },
+  {
+    "question": "Ik heb hulp nodig, waar moet ik zijn?",
+    "answer": "De zijbalk van Portal heeft links naar onze [Help-pagina](https://eurosky.tech/help/), onze [belangrijkste FAQ-pagina](https://eurosky.tech/faq/), en de [Neem contact op](https://eurosky.tech/contact/)-pagina. Je kunt ook rechtstreeks mailen naar <support@eurosky.tech>."
+  },
+  {
+    "question": "Is Portal open source?",
+    "answer": "Portal is beschikbaar onder een MIT-licentie op [`github.com/eurosky-social/eurosky-portal`](https://github.com/eurosky-social/eurosky-portal)"
+  }
+]

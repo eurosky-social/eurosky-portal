@@ -5,6 +5,7 @@ import type { SupportedCollection } from '#utils/activity'
 import { ClickableCard } from '~/lib/card'
 import { Link } from '~/lib/link'
 import { RelativeTime } from '~/lib/relative-time'
+import { useT } from '~/lib/i18n'
 
 const icons = {
   'app.bsky.feed.like': Heart,
@@ -13,17 +14,18 @@ const icons = {
   'site.standard.document': Newspaper,
 } satisfies Record<SupportedCollection, LucideIcon>
 
-const labels = {
-  'app.bsky.feed.like': 'Like',
-  'app.bsky.feed.post': 'Post',
-  'app.bsky.graph.follow': 'Follow',
-  'site.standard.document': 'Article',
+const labelKeys = {
+  'app.bsky.feed.like': 'activity.type.like',
+  'app.bsky.feed.post': 'activity.type.post',
+  'app.bsky.graph.follow': 'activity.type.follow',
+  'site.standard.document': 'activity.type.article',
 } satisfies Record<SupportedCollection, string>
 
 export function ActivityItem({ activity }: { activity: ActivityRow }) {
   const { collection, createdAt, text, uri } = activity
+  const { t } = useT()
   const Icon = icons[collection]
-  const label = labels[collection]
+  const label = t(labelKeys[collection])
   const rkey = uri.split('/').pop() ?? ''
 
   return (

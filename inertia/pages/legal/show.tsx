@@ -10,7 +10,7 @@ export default function Legal(props: InertiaProps<{ document: string; title: str
       <Head title={props.title} />
       <Container>
         <Card className="w-full md:w-3/4 m-auto p-4">
-          <MarkdownDocument document={props.document} />
+          <MarkdownDocument document={props.document} lang="en" />
         </Card>
       </Container>
     </div>

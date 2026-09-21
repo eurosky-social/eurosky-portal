@@ -1,4 +1,5 @@
 import { StarIcon } from '@heroicons/react/24/solid'
+import { useT } from '~/lib/i18n'
 
 /**
  * @param properties
@@ -10,16 +11,13 @@ import { StarIcon } from '@heroicons/react/24/solid'
  */
 export function Rating(properties: { value: number }): React.JSX.Element {
   const { value } = properties
+  const { tPlain } = useT()
   const rounded = Math.round(value * 2) / 2
   const stars = Math.floor(rounded)
+  const label = tPlain('apps.rating', { value })
 
   return (
-    <span
-      aria-label={value + ' out of 5'}
-      className="flex items-center"
-      role="img"
-      title={value + ' out of 5'}
-    >
+    <span aria-label={label} className="flex items-center" role="img" title={label}>
       {Array.from({ length: stars }, (_, index) => (
         <StarIcon className="size-3.5" key={index} />
       ))}

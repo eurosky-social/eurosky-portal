@@ -1,0 +1,13 @@
+{
+  "accountNotFound": "We konden je Atmosphere account niet vinden: {handle}",
+  "accountNotFoundWithFallback": "We konden je Atmosphere account niet vinden: {handle}. Probeer het later opnieuw, of log in via: {url}",
+  "cancelledSignup": "Je hebt het aanmaken van je account geannuleerd",
+  "deniedSignIn": "Je hebt de inlogpoging geweigerd",
+  "invalidAccount": "Voer een geldig Atmosphere account in",
+  "loginFailed": "We konden je op dit moment niet inloggen, probeer het later opnieuw.",
+  "notEurosky": "De Eurosky portal is momenteel alleen beschikbaar voor Eurosky accounts.",
+  "signupError": "Er is een fout opgetreden tijdens het aanmaken van je account",
+  "signupServerError": "We konden je account op dit moment niet aanmaken, probeer het later opnieuw.",
+  "unknownCallbackError": "Er is een onbekende fout opgetreden, probeer het later opnieuw.",
+  "unknownError": "Onbekende fout opgetreden"
+}

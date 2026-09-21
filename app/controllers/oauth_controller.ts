@@ -1,4 +1,5 @@
 import type { HttpContext } from '@adonisjs/core/http'
+import type { I18n } from '@adonisjs/i18n'
 import { Monocle } from '@monocle.sh/adonisjs-agent'
 import { OAuthCallbackError, OAuthResolverError } from '@atproto/oauth-client-node'
 import {
@@ -84,7 +85,7 @@ export default class OAuthController {
     })
 
     const input = normalizeInput(data.input)
-    const result = checkAuthInput(input)
+    const result = checkAuthInput(input, i18n)
     let resolvedValue: AtIdentifierString | UriString
 
     if (result.type === 'unresolved') {
@@ -98,16 +99,15 @@ export default class OAuthController {
         throw createFieldError(
           'input',
           result.value,
-          `We couldn't find your Atmosphere account: ${result.value}, please try again later, or try logging in with: ${oauthServerUrl}`
+          i18n.t('oauth.accountNotFoundWithFallback', {
+            handle: result.value,
+            url: oauthServerUrl,
+          })
         )
       }
 
       if (resolved.authorizationServer.toString() !== oauthServerUrl) {
-        throw createFieldError(
-          'input',
-          result.value,
-          'Currently the Eurosky portal is only available for Eurosky accounts.'
-        )
+        throw createFieldError('input', result.value, i18n.t('oauth.notEurosky'))
       }
 
       resolvedValue = resolved.did
@@ -134,7 +134,7 @@ export default class OAuthController {
       // We expect this error, which is when the handle doesn't exist:
       if (err instanceof OAuthResolverError) {
         logger.error(err, 'Failed to resolve handle')
-        throw createFieldError('input', input, `We couldn't find your Atmosphere account: ${input}`)
+        throw createFieldError('input', input, i18n.t('oauth.accountNotFound', { handle: input }))
       }
 
       Monocle.captureException(err, {
@@ -143,7 +143,7 @@ export default class OAuthController {
       })
 
       logger.error(err, 'Error starting AT Protocol OAuth flow')
-      throw createFieldError('input', input, 'Unknown error occurred')
+      throw createFieldError('input', input, i18n.t('oauth.unknownError'))
     }
   }
 
@@ -202,7 +202,7 @@ export default class OAuthController {
     return response.redirect().toRoute('home')
   }
 
-  async callback({ response, oauth, auth, request, session, logger }: HttpContext) {
+  async callback({ auth, i18n, logger, oauth, request, response, session }: HttpContext) {
     const termsAccepted = session.pull('terms_accepted', 'invalid')
     const source = session.pull('source', 'login')
     const initiatingHandle = session.pull('handle')
@@ -224,7 +224,7 @@ export default class OAuthController {
         extra: { source, value: termsAccepted },
       })
 
-      session.flash('error', 'An error occurred during signup')
+      session.flash('error', i18n.t('oauth.signupError'))
       AuthFlowCompleted.dispatch({
         ip,
         outcome: 'error',
@@ -265,7 +265,7 @@ export default class OAuthController {
         await oauth.logout(did)
 
         session.flash('errorsBag', {
-          login_failed: 'We could not log you in at this time, please try again later.',
+          login_failed: i18n.t('oauth.loginFailed'),
         })
 
         AuthFlowCompleted.dispatch({
@@ -329,9 +329,7 @@ export default class OAuthController {
         if (error === 'access_denied') {
           session.flash('errorsBag', {
             access_denied:
-              source === 'signup'
-                ? 'You cancelled creating your account'
-                : 'You denied the sign in attempt',
+              source === 'signup' ? i18n.t('oauth.cancelledSignup') : i18n.t('oauth.deniedSignIn'),
           })
 
           AuthFlowCompleted.dispatch({
@@ -349,9 +347,7 @@ export default class OAuthController {
         if (error === 'server_error') {
           session.flash('errorsBag', {
             server_error:
-              source === 'signup'
-                ? "We couldn't create your account at this time, please try again later."
-                : "We couldn't sign you in at this time, please try again later.",
+              source === 'signup' ? i18n.t('oauth.signupServerError') : i18n.t('oauth.loginFailed'),
           })
 
           Monocle.captureException(err, {
@@ -400,7 +396,7 @@ export default class OAuthController {
       }
 
       session.flash('errorsBag', {
-        error: 'An unknown error occurred, please try again later.',
+        error: i18n.t('oauth.unknownCallbackError'),
       })
 
       AuthFlowCompleted.dispatch({
@@ -459,7 +455,10 @@ interface UnresolvedInput {
  * @throws
  *   When known invalid input is used.
  */
-function checkAuthInput(value: string): AllowedIdInput | ServiceUrlInput | UnresolvedInput {
+function checkAuthInput(
+  value: string,
+  i18n: I18n
+): AllowedIdInput | ServiceUrlInput | UnresolvedInput {
   // OAuth server (example: `https://eurosky.social`).
   if (isUriString(value)) {
     // Reject early if external logins are not allowed (example:
@@ -469,11 +468,7 @@ function checkAuthInput(value: string): AllowedIdInput | ServiceUrlInput | Unres
       // We need to remove any trailing slashes to normalize:
       value.toLowerCase().replace(/\/$/, '') !== oauthServerUrl.toLowerCase().replace(/\/$/, '')
     ) {
-      throw createFieldError(
-        'input',
-        value,
-        'Currently the Eurosky portal is only available for Eurosky accounts.'
-      )
+      throw createFieldError('input', value, i18n.t('oauth.notEurosky'))
     }
 
     return { type: 'service-url', value }
@@ -481,7 +476,7 @@ function checkAuthInput(value: string): AllowedIdInput | ServiceUrlInput | Unres
 
   // Error early for non-did and non-handle.
   if (!isIdentifier(value)) {
-    throw createFieldError('input', value, 'Please enter a valid Atmosphere account')
+    throw createFieldError('input', value, i18n.t('oauth.invalidAccount'))
   }
 
   // Externals allowed, so any identifier goes (example: `"did:plc:1234..."`, `"alice.bsky.social"`).
@@ -494,11 +489,7 @@ function checkAuthInput(value: string): AllowedIdInput | ServiceUrlInput | Unres
     // We know these are not us.
     // Note that `handleDomain` is already filtered out.
     if (WELL_KNOWN_HANDLE_DOMAINS.some((serviceDomain) => value.endsWith(serviceDomain))) {
-      throw createFieldError(
-        'input',
-        value,
-        'Currently the Eurosky portal is only available for Eurosky accounts.'
-      )
+      throw createFieldError('input', value, i18n.t('oauth.notEurosky'))
     }
 
     if (value.endsWith(handleDomain)) {

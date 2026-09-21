@@ -4,9 +4,11 @@ import { type Theme } from '~/utils/darkmode'
 import { LightBulbIcon, MoonIcon } from '@heroicons/react/24/solid'
 import { Button } from '~/lib/button'
 import clsx from 'clsx'
+import { useT } from '~/lib/i18n'
 
 export function ThemeToggle({ className }: React.ComponentPropsWithoutRef<'div'>) {
   const [theme, setTheme] = useState<Theme>(ThemeUtils.getTheme())
+  const { tPlain } = useT()
 
   useEffect(() => {
     ThemeUtils.setTheme(theme)
@@ -32,9 +34,9 @@ export function ThemeToggle({ className }: React.ComponentPropsWithoutRef<'div'>
       onClick={toggleTheme}
     >
       {theme === 'dark' ? (
-        <LightBulbIcon title="Set theme to light" className="dark:text-slate-500!" />
+        <LightBulbIcon title={tPlain('theme.setLight')} className="dark:text-slate-500!" />
       ) : (
-        <MoonIcon title="Set theme to dark" className="text-neutral-400!" />
+        <MoonIcon title={tPlain('theme.setDark')} className="text-neutral-400!" />
       )}
     </Button>
   )

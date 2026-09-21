@@ -6,12 +6,15 @@ import { Dropdown, DropdownButton, DropdownItem, DropdownMenu } from '~/lib/drop
 import { useT } from '~/lib/i18n'
 
 export function LanguageToggle({ className }: React.ComponentPropsWithoutRef<'div'>) {
-  const { locale, setLocale } = useT()
+  const { locale, setLocale, tPlain } = useT()
 
   return (
     <Dropdown>
       <DropdownButton className={clsx(className, 'relative inline-flex! w-10 h-10 p-0.5!')} plain>
-        <LanguageIcon title="Choose language" className="text-neutral-400! dark:text-slate-500!" />
+        <LanguageIcon
+          title={tPlain('nav.chooseLanguage')}
+          className="text-neutral-400! dark:text-slate-500!"
+        />
       </DropdownButton>
       <DropdownMenu anchor="bottom end">
         {locales.map((code) => (

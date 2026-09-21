@@ -4,6 +4,7 @@ import type { Embed } from '#utils/embed'
 import { EmbedExternal } from '~/components/embed/EmbedExternal'
 import { EmbedImages } from '~/components/embed/EmbedImages'
 import { EmbedRecord } from '~/components/embed/EmbedRecord'
+import { useT } from '~/lib/i18n'
 
 export function Embed({
   embed,
@@ -12,6 +13,8 @@ export function Embed({
   embed: Embed
   quotedPost?: BskyAppPost | undefined
 }) {
+  const { t } = useT()
+
   switch (embed.type) {
     case 'external':
       return <EmbedExternal embed={embed} />
@@ -23,7 +26,7 @@ export function Embed({
       return (
         <div className="flex items-center gap-3 rounded-lg border border-dashed border-zinc-300 p-4 text-zinc-500 dark:border-zinc-600 dark:text-zinc-400">
           <NoSymbolIcon aria-hidden="true" className="size-6 shrink-0" />
-          <p className="text-sm">Could not display this embed</p>
+          <p className="text-sm">{t('activity.embed.notDisplayed')}</p>
         </div>
       )
   }

@@ -26,8 +26,8 @@ export function MarkdownContent({ value }: { value?: string | undefined }): Reac
       )
     case 'ready':
       if (result.tree) {
-        // Not yet translated unlike surrounding UI so mark as English.
         return (
+          // User generated content or 3rd party content.
           <div lang="en">
             {toJsxRuntime(result.tree, {
               Fragment,
