@@ -3,8 +3,7 @@ import { Container } from '~/lib/container'
 import { Button } from '~/lib/button'
 import { ErrorMessage, Field, FieldGroup, Label } from '~/lib/fieldset'
 import { Input } from '~/lib/input'
-import { Text } from '~/lib/text'
-import { Link } from '~/lib/link'
+import { Text, TextLink } from '~/lib/text'
 import Card from '~/lib/card'
 import { InertiaProps } from '~/types'
 import { Head, usePage } from '@inertiajs/react'
@@ -80,11 +79,7 @@ export default function Login({ migrationUrl }: InertiaProps<{ migrationUrl?: st
           <Text className="text-center">
             {t('login.noAccount', {
               signUp(chunks) {
-                return (
-                  <Link route="account.create" className="text-blue-500 hover:underline">
-                    {chunks}
-                  </Link>
-                )
+                return <TextLink route="account.create">{chunks}</TextLink>
               },
             })}
           </Text>

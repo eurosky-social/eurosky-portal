@@ -1,11 +1,10 @@
 import { PolicyForm } from '~/components/PolicyForm'
 import Card from '~/lib/card'
-import { Text } from '~/lib/text'
+import { Text, TextLink } from '~/lib/text'
 import { Container } from '~/lib/container'
 import { InertiaProps } from '~/types'
 import { Data } from '@generated/data'
 import { Head, usePage } from '@inertiajs/react'
-import { Link } from '~/lib/link'
 import { ExclamationTriangleIcon } from '@heroicons/react/24/solid'
 import { useT } from '~/lib/i18n'
 
@@ -47,11 +46,7 @@ export default function CreateAccount(
           <Text className="text-center">
             {t('createAccount.haveAccount', {
               signIn(chunks) {
-                return (
-                  <Link route="auth.login" className="text-blue-500 hover:underline">
-                    {chunks}
-                  </Link>
-                )
+                return <TextLink route="auth.login">{chunks}</TextLink>
               },
             })}
           </Text>

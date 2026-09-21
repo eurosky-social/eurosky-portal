@@ -1,9 +1,5 @@
-import * as Headless from '@headlessui/react'
 import clsx from 'clsx'
-import React, { forwardRef } from 'react'
-import { ButtonType, TouchTarget } from './button'
-import { Link } from './link'
-import { LinkProps } from '@adonisjs/inertia/react'
+import React from 'react'
 
 const colors = {
   red: 'bg-red-500/15 text-red-700 group-data-hover:bg-red-500/25 dark:bg-red-500/10 dark:text-red-400 dark:group-data-hover:bg-red-500/20',
@@ -53,38 +49,3 @@ export function Badge({
     />
   )
 }
-
-export const BadgeButton = forwardRef(function BadgeButton(
-  {
-    color = 'zinc',
-    className,
-    children,
-    type,
-    ...props
-  }: BadgeProps & { className?: string; children: React.ReactNode } & (
-      | ({ href?: never; route?: never } & Omit<Headless.ButtonProps, 'as' | 'className'>)
-      | (LinkProps & Omit<React.ComponentPropsWithoutRef<typeof Link>, 'className'>)
-    ),
-  ref: React.ForwardedRef<HTMLElement>
-) {
-  let classes = clsx(
-    className,
-    'group relative inline-flex rounded-md focus:not-data-focus:outline-hidden data-focus:outline-2 data-focus:outline-offset-2 data-focus:outline-blue-500'
-  )
-
-  let buttonType = (type as ButtonType) ?? ('button' as ButtonType)
-
-  return typeof props.href === 'string' || typeof props.route === 'string' ? (
-    <Link {...props} className={classes} ref={ref as React.ForwardedRef<HTMLAnchorElement>}>
-      <TouchTarget>
-        <Badge color={color}>{children}</Badge>
-      </TouchTarget>
-    </Link>
-  ) : (
-    <Headless.Button {...props} type={buttonType} className={classes} ref={ref}>
-      <TouchTarget>
-        <Badge color={color}>{children}</Badge>
-      </TouchTarget>
-    </Headless.Button>
-  )
-})

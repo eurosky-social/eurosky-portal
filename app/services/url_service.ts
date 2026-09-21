@@ -3,7 +3,7 @@ import { appUrl as rawAppUrl } from '#config/app'
 /**
  * App URL, normalized to always have a trailing slash.
  */
-export const appUrl = new URL('/', rawAppUrl).toString()
+const appUrl = new URL('/', rawAppUrl).toString()
 
 /**
  * App host (without protocol or port), as used by third parties such as Plausible.
