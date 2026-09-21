@@ -1,0 +1,46 @@
+[
+  {
+    "question": "Qu’est-ce que le Portal d’Eurosky?",
+    "answer": "Eurosky Portal est votre tableau de bord personnel pour gérer votre compte Eurosky et explorer l’Atmosphere - l’écosystème d’applications et de services construit sur l’AT Protocol. Depuis Portal, vous pouvez consulter votre profil en un coup d’œil, découvrir des applications compatibles et accéder aux outils de gestion de votre compte, le tout au même endroit."
+  },
+  {
+    "question": "Que puis-je faire dans Portal aujourd’hui?",
+    "answer": "Portal en est actuellement à sa première version (v1). Vous pouvez consulter votre profil et vos statistiques (publications, abonnés, abonnements), parcourir et découvrir des applications phares compatibles avec votre compte Eurosky, accéder à la gestion de compte (appareils connectés, applications autorisées, réinitialisation du mot de passe), et trouver des ressources d’assistance telles que la documentation d’aide, la FAQ et les informations de contact."
+  },
+  {
+    "question": "Qu’est-ce que l’Atmosphere?",
+    "answer": "L’Atmosphere est le nom donné à l’écosystème grandissant d’applications et de services construits sur l’AT Protocol. Votre compte Eurosky fonctionne avec toutes ces applications. Pensez-y comme à l’e-mail : un seul compte, plusieurs applications. Vous pouvez utiliser Bluesky pour le microblogging, Flashes pour la photo et la vidéo, SIFA pour le réseau professionnel, Leaflet pour bloguer, Tangled pour collaborer sur du code, et bien d’autres encore — toutes avec la même identité et les mêmes données."
+  },
+  {
+    "question": "Comment un seul compte peut-il fonctionner avec autant d’applications?",
+    "answer": "Votre compte Eurosky est construit sur l’AT Protocol, qui sépare votre identité et vos données de toute application en particulier. Votre compte et votre contenu vivent sur votre propre Personal Data Server (PDS), hébergé en Europe. Lorsque vous utilisez une nouvelle application, celle-ci se connecte à votre PDS ; vous n’avez pas besoin de créer un nouveau compte ni de repartir de zéro. Votre identité, vos connexions sociales et vos données vous suivent partout."
+  },
+  {
+    "question": "Portal est-il la même chose que Bluesky?",
+    "answer": "Non. Bluesky est l’une des nombreuses applications que vous pouvez utiliser avec votre compte Eurosky. Portal est le tableau de bord de votre compte : un endroit central pour gérer votre identité Eurosky, découvrir des applications et accéder à l’assistance. Vous n’utilisez pas Portal pour publier ou parcourir des fils sociaux ; pour cela, vous utilisez des applications comme Bluesky, Flashes ou Leaflet."
+  },
+  {
+    "question": "Ai-je besoin de Portal pour utiliser mon compte Eurosky?",
+    "answer": "Non. Vous pouvez continuer à utiliser votre compte Eurosky directement via n’importe quelle application AT Protocol (comme Bluesky) sans jamais visiter Portal. Portal est là comme point de repère pratique lorsque vous en avez besoin."
+  },
+  {
+    "question": "Quelles fonctionnalités arrivent prochainement?",
+    "answer": "Nous avons une feuille de route active pour Portal. Les fonctionnalités à venir incluent une page de profil public personnalisable, un moyen visuel de parcourir et de gérer les données stockées sur votre PDS, une gestion de compte directement dans Portal (fini les redirections vers des pages externes), une liste personnelle de vos applications connectées, la localisation (prise en charge de plusieurs langues), et plus encore. À plus long terme, nous explorons des notifications universelles pour toutes vos applications, une messagerie privée chiffrée de bout en bout, une fonctionnalité de stockage cloud pour vos données publiques et privées, et un signal sur les données de votre PDS indiquant qu’elles ne doivent pas être utilisées pour l’entraînement de l’IA."
+  },
+  {
+    "question": "Mes données sont-elles en sécurité?",
+    "answer": "Vos données sont hébergées sur des serveurs en Allemagne (Hetzner, centre de données de Falkenstein), soumis au RGPD et au droit européen. Eurosky est géré par Stichting Modal, une fondation à but non lucratif néerlandaise. Nous ne vendons pas vos données. Vous pouvez consulter l’intégralité des Conditions d’utilisation et de la Politique de confidentialité depuis la barre latérale de Portal."
+  },
+  {
+    "question": "Comment gérer les paramètres de mon compte?",
+    "answer": "Depuis la barre latérale de Portal, utilisez « Gérer le compte » pour consulter les appareils connectés et les applications autorisées. Vous pouvez également y changer votre mot de passe. Dans une future version de Portal, ces paramètres seront disponibles directement dans Portal lui-même."
+  },
+  {
+    "question": "J’ai besoin d’aide, où dois-je aller?",
+    "answer": "La barre latérale de Portal contient des liens vers notre [page d’aide](https://eurosky.tech/help/), notre [page FAQ principale](https://eurosky.tech/faq/), et la page [Nous contacter](https://eurosky.tech/contact/). Vous pouvez également envoyer un e-mail directement à <support@eurosky.tech>."
+  },
+  {
+    "question": "Portal est-il open source?",
+    "answer": "Portal est disponible sous licence MIT sur [`github.com/eurosky-social/eurosky-portal`](https://github.com/eurosky-social/eurosky-portal)"
+  }
+]

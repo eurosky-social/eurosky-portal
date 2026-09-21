@@ -13,14 +13,16 @@ export const defaultLocale: Locale = 'en'
  * in their respective languages.
  */
 export const localeNames = {
+  de: 'Deutsch',
   en: 'English',
+  fr: 'Français',
   nl: 'Nederlands',
 } satisfies Record<Locale, string>
 
 /**
  * List of supported locales.
  */
-export const locales = ['en', 'nl'] as const
+export const locales = ['de', 'en', 'fr', 'nl'] as const
 
 /**
  * Check if something is a known locale.

@@ -1,0 +1,13 @@
+{
+  "accountNotFound": "Nous n'avons pas trouvé votre compte Atmosphere : {handle}",
+  "accountNotFoundWithFallback": "Nous n'avons pas trouvé votre compte Atmosphere : {handle}, veuillez réessayer plus tard, ou essayez de vous connecter avec : {url}",
+  "cancelledSignup": "Vous avez annulé la création de votre compte",
+  "deniedSignIn": "Vous avez refusé la tentative de connexion",
+  "invalidAccount": "Veuillez saisir un compte Atmosphere valide",
+  "loginFailed": "Nous n'avons pas pu vous connecter pour le moment, veuillez réessayer plus tard.",
+  "notEurosky": "Le portail Eurosky n'est actuellement disponible que pour les comptes Eurosky.",
+  "signupError": "Une erreur s'est produite lors de l'inscription",
+  "signupServerError": "Nous n'avons pas pu créer votre compte pour le moment, veuillez réessayer plus tard.",
+  "unknownCallbackError": "Une erreur inconnue s'est produite, veuillez réessayer plus tard.",
+  "unknownError": "Une erreur inconnue s'est produite"
+}
