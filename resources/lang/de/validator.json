@@ -1,0 +1,17 @@
+{
+  "shared": {
+    "messages": {
+      "accepted": "Das Feld {field} muss akzeptiert werden.",
+      "at-handle": "Bitte gib ein gültiges Atmosphere-Konto ein, zum Beispiel name{domain}",
+      "enum": "Das ausgewählte Feld {field} ist ungültig.",
+      "max": "Das Feld {field} darf nicht größer als {max} sein.",
+      "min": "Das Feld {field} muss mindestens {min} sein.",
+      "notIn": "Das ausgewählte Feld {field} ist ungültig.",
+      "regex": "Das Format des Felds {field} ist ungültig.",
+      "required": "Das Feld {field} ist erforderlich.",
+      "terms": {
+        "required": "Du musst den Nutzungsbedingungen und der Datenschutzerklärung zustimmen, um fortzufahren."
+      }
+    }
+  }
+}
