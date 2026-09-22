@@ -7,10 +7,12 @@ import { Data } from '@generated/data'
 import { Head, usePage } from '@inertiajs/react'
 import { ExclamationTriangleIcon } from '@heroicons/react/24/solid'
 import { useT } from '~/lib/i18n'
+import Notice from '~/lib/notice'
 
 export default function CreateAccount(
   props: InertiaProps<{
     legalDocuments: Data.LegalDocuments
+    migrationUrl?: string
   }>
 ) {
   const { props: pageProps } = usePage()
@@ -37,6 +39,17 @@ export default function CreateAccount(
               },
             })}
           </h1>
+          {props.migrationUrl && (
+            <Notice
+              action={
+                <a href={props.migrationUrl} className="text-brand hover:underline">
+                  {tPlain('createAccount.migrationAlert.cta')}
+                </a>
+              }
+              text={tPlain('createAccount.migrationAlert.text')}
+              title={tPlain('createAccount.migrationAlert.title')}
+            />
+          )}
           <Text className="text-center text-slate-600">{t('createAccount.subtitle')}</Text>
           <PolicyForm
             route="oauth.signup"

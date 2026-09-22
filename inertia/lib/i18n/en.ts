@@ -40,7 +40,11 @@ const en = {
   'common.breadcrumb': 'Breadcrumb',
   'common.learnMore': 'Learn more',
   'common.someone': 'someone',
-  'createAccount.haveAccount': 'Already have an account? <signIn>Sign in</signIn>',
+  'createAccount.haveAccount': 'Already have a Eurosky account? <signIn>Sign in</signIn>',
+  'createAccount.migrationAlert.cta': 'Migrate',
+  'createAccount.migrationAlert.text':
+    'Don’t create a new account — you can’t merge it with an existing one later. Bring your handle, posts, and followers over with the migration tool instead.',
+  'createAccount.migrationAlert.title': 'Already have a Bluesky account?',
   'createAccount.pageTitle': 'Create account',
   'createAccount.subtitle': 'Before we get started, please review and accept our terms.',
   'createAccount.title': 'Create your <brand>Eurosky account.</brand>',

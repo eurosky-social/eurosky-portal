@@ -4,6 +4,7 @@ import TermsAccepted from '#events/terms_accepted'
 import WelcomeDismissed from '#events/welcome_dismissed'
 import Account from '#models/account'
 import legalService from '#services/legal_service'
+import env from '#start/env'
 import LegalDocumentsTransformer from '#transformers/legal_documents_transformer'
 import { termsRequestValidator } from '#validators/legal'
 
@@ -13,6 +14,7 @@ export default class RegistrationController {
 
     return inertia.render('create-account', {
       legalDocuments: inertia.always(LegalDocumentsTransformer.transform(documents)),
+      migrationUrl: env.get('MIGRATION_SERVICE'),
     })
   }
 

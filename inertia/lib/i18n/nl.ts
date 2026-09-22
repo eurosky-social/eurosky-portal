@@ -40,7 +40,11 @@ const nl = {
   'common.breadcrumb': 'Kruimelpad',
   'common.learnMore': 'Meer informatie',
   'common.someone': 'iemand',
-  'createAccount.haveAccount': 'Heb je al een account? <signIn>Inloggen</signIn>',
+  'createAccount.haveAccount': 'Heb je al een Eurosky account? <signIn>Inloggen</signIn>',
+  'createAccount.migrationAlert.cta': 'Migreer',
+  'createAccount.migrationAlert.text':
+    'Maak geen nieuw account aan — je kunt dit later niet meer samenvoegen met een bestaand account. Neem je handle, berichten en volgers mee met de migratietool.',
+  'createAccount.migrationAlert.title': 'Heb je al een Bluesky account?',
   'createAccount.pageTitle': 'Account aanmaken',
   'createAccount.subtitle': 'Voor we beginnen, bekijk en accepteer je onze voorwaarden.',
   'createAccount.title': 'Maak je <brand>Eurosky account aan.</brand>',
