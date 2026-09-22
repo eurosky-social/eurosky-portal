@@ -17,16 +17,3 @@ Zie je PDS als je digitale thuis, en apps als verschillende kamers waar je binne
 _Let op: elke Atmosphere-app heeft eigen gebruiksvoorwaarden en een eigen privacybeleid waarmee je akkoord moet gaan._
 
 Bezoek een willekeurige Atmosphere app en log in met je Eurosky account. Bij de meeste apps wordt je gevraagd je account in te voeren in de vorm `gebruiker.eurosky.social`, waarna je naar eurosky.social wordt gebracht om je wachtwoord in te voeren. Een Atmosphere account wordt soms ook aangeduid als AT Protocol, ATProto, Atmosphere, internetaccount, internethandle. Dit betekent allemaal hetzelfde.
-
-### Bluesky gebruiken
-
-Er is één uitzondering op het bovenstaande, en dat is Bluesky, waarbij je een paar extra stappen moet doorlopen om in te loggen:
-
-1. Wanneer je naar Bluesky gaat, zie je dit scherm. Klik op inloggen. Klik op de volgende pagina op je account (dit staat uitgelogd weergegeven)\
-   ![Het welkomstscherm van de website bsky.app](/static/explore/step-1.webp)
-2. Klik op de volgende pagina op de bewerkknop bij het veld “Hosting provider”.\
-   ![Het inlogscherm van bsky.app met een gele cirkel om de bewerkknop van het veld Hosting provider, waarop je moet klikken](/static/explore/step-2.webp)
-3. Selecteer “Custom” en voer `eurosky.social` in bij het veld Server address\
-   ![Het dialoogvenster dat verschijnt na het klikken op de bewerkknop van “Hosting provider”, waar je “Custom” moet selecteren uit de tabs en `eurosky.social` moet invoeren](/static/explore/step-3.webp)
-4. Voer je gebruikersnaam in de vorm gebruiker.eurosky.social (of het e-mailadres van je account) en je wachtwoord in\
-   ![Na het klikken op “done” in het dialoogvenster zie je de Hosting provider vermeld als `eurosky.social`, waarna je je gebruikersnaam en wachtwoord moet invoeren](/static/explore/step-4.webp)

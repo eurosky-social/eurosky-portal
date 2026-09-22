@@ -17,16 +17,3 @@ Think of your PDS as your digital home, and apps as different rooms you can walk
 _Please note that each Atmosphere app has separate terms of service and privacy policies that you need to agree to._
 
 Just visit any Atmosphere app and sign in with your Eurosky account. For most apps, you’ll be asked to enter your account in the format `user.eurosky.social`, and then you’ll be taken to eurosky.social to enter your password. Sometimes an Atmosphere account is referred to as AT Protocol/ATProto/Atmosphere/Internet account/handle. These all mean the same thing.
-
-### Using Bluesky
-
-There is one exception to the above, and that’s Bluesky, which requires a few extra steps when signing in:
-
-1. When you go to Bluesky, you will see this. Click sign in. On the next page click your account (it will show as logged out)\
-   ![The welcome screen for the website bsky.app](/static/explore/step-1.webp)
-2. On the next page, click on the edit button in the “Hosting provider” field.\
-   ![The sign in screen for bsky.app with a yellow circle around the edit button for the Hosting provider field, which is what you need to click](/static/explore/step-2.webp)
-3. Select “Custom” and enter `eurosky.social` in the Server address field\
-   ![The dialog that shows after clicking the “Hosting provider” edit button, where you need to select "Custom" from the tabs and enter "eurosky.social"](/static/explore/step-3.webp)
-4. Enter your username in the format `user.eurosky.social` (or your account email address) and your password\
-   ![After clicking “done” in the dialog, you’ll see the Hosting provider listed as `eurosky.social`, and then you need to enter your username and password](/static/explore/step-4.webp)
