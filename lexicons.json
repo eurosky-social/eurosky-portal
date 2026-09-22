@@ -7,6 +7,8 @@
     "app.bsky.feed.post",
     "app.bsky.graph.follow",
     "com.atproto.repo.describeRepo",
+    "com.atproto.sync.getBlob",
+    "com.atproto.sync.listBlobs",
     "fyi.atstore.directory.getListing",
     "pub.leaflet.content",
     "site.standard.document"
@@ -107,6 +109,14 @@
     "com.atproto.repo.strongRef": {
       "uri": "at://did:plc:6msi3pj7krzih5qxqtryxlzw/com.atproto.lexicon.schema/com.atproto.repo.strongRef",
       "cid": "bafyreifrkdbnkvfjujntdaeigolnrjj3srrs53tfixjhmacclps72qlov4"
+    },
+    "com.atproto.sync.getBlob": {
+      "uri": "at://did:plc:6msi3pj7krzih5qxqtryxlzw/com.atproto.lexicon.schema/com.atproto.sync.getBlob",
+      "cid": "bafyreigievymssvpqn7v5gb6q7hrlepcyzy7xko5rnfrk2ywcjcfbd3574"
+    },
+    "com.atproto.sync.listBlobs": {
+      "uri": "at://did:plc:6msi3pj7krzih5qxqtryxlzw/com.atproto.lexicon.schema/com.atproto.sync.listBlobs",
+      "cid": "bafyreidjsbhbe5rstmx5tjbbjjrznqr2ehlqkdklvlnhlcndhdjycnuc4a"
     },
     "fyi.atstore.directory.getListing": {
       "uri": "at://did:plc:dvy6bdnofdfc4php4s5b457d/com.atproto.lexicon.schema/fyi.atstore.directory.getListing",

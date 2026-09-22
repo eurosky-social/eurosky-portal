@@ -1,0 +1,81 @@
+{
+  "$type": "com.atproto.lexicon.schema",
+  "lexicon": 1,
+  "id": "social.eurosky.portal.sync.listBlobDetails",
+  "defs": {
+    "main": {
+      "type": "query",
+      "description": "List blob metadata for an account, including CID, mime type, size, and creation timestamp. Supports optional category filtering.",
+      "parameters": {
+        "type": "params",
+        "required": ["did"],
+        "properties": {
+          "category": {
+            "type": "string",
+            "description": "Optional category filter. Allowed values: image, other, video.",
+            "knownValues": ["image", "other", "video"]
+          },
+          "cursor": {
+            "type": "string",
+            "description": "Pagination cursor scoped to the active query (did + category + ordering). Changing filters invalidates an existing cursor."
+          },
+          "did": {
+            "type": "string",
+            "format": "did",
+            "description": "The DID of the repo."
+          },
+          "limit": {
+            "type": "integer",
+            "default": 500,
+            "minimum": 1,
+            "maximum": 1000
+          }
+        }
+      },
+      "output": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "required": ["blobs", "did"],
+          "properties": {
+            "blobs": {
+              "type": "array",
+              "items": {
+                "type": "ref",
+                "ref": "#blob"
+              }
+            },
+            "cursor": {
+              "type": "string"
+            },
+            "did": {
+              "type": "string",
+              "format": "did"
+            }
+          }
+        }
+      }
+    },
+    "blob": {
+      "type": "object",
+      "required": ["cid", "createdAt", "size"],
+      "properties": {
+        "cid": {
+          "type": "string",
+          "format": "cid"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "datetime"
+        },
+        "mimeType": {
+          "type": "string"
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}

@@ -50,6 +50,21 @@ export class ActivityRecordSchema extends BaseModel {
   declare uri: string
 }
 
+export class BlobSchema extends BaseModel {
+  static $columns = ['cid', 'createdAt', 'creator', 'mimeType', 'size'] as const
+  $columns = BlobSchema.$columns
+  @column({ isPrimary: true })
+  declare cid: string
+  @column()
+  declare createdAt: string
+  @column()
+  declare creator: string
+  @column()
+  declare mimeType: string | null
+  @column()
+  declare size: number
+}
+
 export class CacheSchema extends BaseModel {
   static $columns = ['expiresAt', 'key', 'value'] as const
   $columns = CacheSchema.$columns

@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "module": "nodenext",
+    "noUncheckedIndexedAccess": true,
+    "outDir": "dist",
+    "rootDir": "../..",
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "esnext",
+    "types": ["node"]
+  },
+  "include": [
+    "../../shared/**/*.ts",
+    "../../app/lexicons/social/eurosky/portal/sync/**/*.ts",
+    "src/**/*.ts"
+  ]
+}

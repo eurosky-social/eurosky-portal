@@ -1,0 +1,60 @@
+{
+  "$type": "com.atproto.lexicon.schema",
+  "lexicon": 1,
+  "id": "social.eurosky.portal.sync.getStorageBreakdown",
+  "defs": {
+    "main": {
+      "type": "query",
+      "description": "Get aggregated storage totals for an account grouped by coarse blob category.",
+      "parameters": {
+        "type": "params",
+        "required": ["did"],
+        "properties": {
+          "did": {
+            "type": "string",
+            "format": "did",
+            "description": "The DID of the repo."
+          }
+        }
+      },
+      "output": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "required": ["categories", "did"],
+          "properties": {
+            "categories": {
+              "type": "array",
+              "items": {
+                "type": "ref",
+                "ref": "#category"
+              }
+            },
+            "did": {
+              "type": "string",
+              "format": "did"
+            }
+          }
+        }
+      }
+    },
+    "category": {
+      "type": "object",
+      "required": ["bytes", "files", "category"],
+      "properties": {
+        "bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "files": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "category": {
+          "type": "string",
+          "knownValues": ["image", "other", "video"]
+        }
+      }
+    }
+  }
+}

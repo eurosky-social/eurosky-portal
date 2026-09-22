@@ -17,6 +17,7 @@ export type ScannedRoutes = {
     'activity.detail': { paramsTuple: [ParamValue,ParamValue]; params: {'collection': ParamValue,'rkey': ParamValue} }
     'account.onboarding': { paramsTuple?: []; params?: {} }
     'account.store_acceptance': { paramsTuple?: []; params?: {} }
+    'storage.show': { paramsTuple?: []; params?: {} }
     'account.dismiss_welcome': { paramsTuple?: []; params?: {} }
     'discover.apps': { paramsTuple?: []; params?: {} }
     'discover.app': { paramsTuple: [ParamValue]; params: {'rkey': ParamValue} }
@@ -35,6 +36,7 @@ export type ScannedRoutes = {
     'activity.show': { paramsTuple?: []; params?: {} }
     'activity.detail': { paramsTuple: [ParamValue,ParamValue]; params: {'collection': ParamValue,'rkey': ParamValue} }
     'account.onboarding': { paramsTuple?: []; params?: {} }
+    'storage.show': { paramsTuple?: []; params?: {} }
     'discover.apps': { paramsTuple?: []; params?: {} }
     'discover.app': { paramsTuple: [ParamValue]; params: {'rkey': ParamValue} }
     'legal.show': { paramsTuple: [ParamValue]; params: {'document': ParamValue} }
@@ -52,6 +54,7 @@ export type ScannedRoutes = {
     'activity.show': { paramsTuple?: []; params?: {} }
     'activity.detail': { paramsTuple: [ParamValue,ParamValue]; params: {'collection': ParamValue,'rkey': ParamValue} }
     'account.onboarding': { paramsTuple?: []; params?: {} }
+    'storage.show': { paramsTuple?: []; params?: {} }
     'discover.apps': { paramsTuple?: []; params?: {} }
     'discover.app': { paramsTuple: [ParamValue]; params: {'rkey': ParamValue} }
     'legal.show': { paramsTuple: [ParamValue]; params: {'document': ParamValue} }
