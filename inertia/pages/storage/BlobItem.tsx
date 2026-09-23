@@ -1,10 +1,14 @@
-import { useEffect, useState } from 'react'
 import { ArrowDownTrayIcon, ArrowsPointingOutIcon } from '@heroicons/react/24/solid'
+import { type ReactNode, useEffect, useState } from 'react'
+import { toast } from 'sonner'
+import { type StorageCategory } from '#shared/storage'
+import type { BlobLocator } from '#utils/blob'
+import { BlobImage } from '~/components/BlobImage'
 import { Button } from '~/lib/button'
 import { useT } from '~/lib/i18n'
-import { Code } from '~/lib/text'
-import { displayByteSize } from './bytes'
-import { fileCategoryFromMimeType } from './category'
+import { toBlobPdsUrl } from '~/utils/blob'
+import { formatByteSize } from '~/utils/bytes'
+import { formatMimeType, mimeTypeExtension } from '~/utils/mime'
 import type { StorageBlob } from './show'
 
 /**
@@ -22,6 +26,11 @@ interface BlobItemProperties {
   blob: StorageBlob
 
   /**
+   * Category.
+   */
+  category: StorageCategory
+
+  /**
    * DID.
    */
   did: string
@@ -34,12 +43,12 @@ interface Cell {
   /**
    * Key.
    */
-  key: string
+  key: ReactNode
 
   /**
    * Value.
    */
-  value: React.ReactNode
+  value: ReactNode
 }
 
 /**
@@ -53,33 +62,9 @@ const defaultDeferThreshold = 2 * 1024 * 1024
 const reducedDataDeferThreshold = 256 * 1024
 
 /**
- * MIME types to file extensions; needed to make files useful after downloading
- * and showing in finder or so.
+ * Video element for capability checks.
  */
-const mediaTypeExtensions = new Map([
-  ['image/avif', 'avif'],
-  ['image/gif', 'gif'],
-  ['image/jpeg', 'jpg'],
-  ['video/mp4', 'mp4'],
-  ['video/ogg', 'ogv'],
-  ['image/png', 'png'],
-  ['video/webm', 'webm'],
-  ['image/webp', 'webp'],
-])
-
-/**
- * MIME types to labels for humans.
- */
-const supportedMediaTypeLabels = new Map([
-  ['image/avif', 'AV1 Image File Format (AVIF)'],
-  ['image/gif', 'Graphics Interchange Format (GIF)'],
-  ['image/jpeg', 'JPEG Image'],
-  ['video/mp4', 'MPEG-4 Video (MP4)'],
-  ['video/ogg', 'Ogg Video'],
-  ['image/png', 'Portable Network Graphics (PNG)'],
-  ['video/webm', 'WebM Video'],
-  ['image/webp', 'WebP Image'],
-])
+const videoElement = typeof document !== 'undefined' ? document.createElement('video') : undefined
 
 /**
  * Show a blob.
@@ -89,27 +74,18 @@ const supportedMediaTypeLabels = new Map([
  * @returns
  *   Element.
  */
-export default function BlobItem(properties: BlobItemProperties): React.ReactNode {
-  const { authorizationServer, blob, did } = properties
-  const { tPlain } = useT()
+export default function BlobItem(properties: BlobItemProperties): ReactNode {
+  const { authorizationServer, blob, category, did } = properties
+  const { locale, t, tPlain } = useT()
   const [downloading, setDownloading] = useState<boolean>(false)
   const [opening, setOpening] = useState<boolean>(false)
   const [reduceData, setReduceData] = useState<boolean>(
+    // Assume less data is preferred.
     typeof window === 'undefined'
-      ? // Assume less data is preferred.
-        true
+      ? true
       : window.matchMedia('(prefers-reduced-data: reduce)').matches
   )
   const [requested, setRequested] = useState<boolean>(false)
-
-  useEffect(
-    function () {
-      setDownloading(false)
-      setOpening(false)
-      setRequested(false)
-    },
-    [blob]
-  )
 
   useEffect(function () {
     if (typeof window === 'undefined') return
@@ -134,40 +110,48 @@ export default function BlobItem(properties: BlobItemProperties): React.ReactNod
   )
   const cells: Array<Cell> = []
 
-  const url = new URL('/xrpc/com.atproto.sync.getBlob', authorizationServer)
-  url.searchParams.set('cid', blob.cid)
-  url.searchParams.set('did', did)
+  const locator: BlobLocator = {
+    cid: blob.cid,
+    did: did as BlobLocator['did'],
+    pds: authorizationServer,
+  }
+  const url = toBlobPdsUrl(locator)
 
   const threshold = reduceData ? reducedDataDeferThreshold : defaultDeferThreshold
-  const category = fileCategoryFromMimeType(blob.mimeType)
 
-  if (category === 'image' || category === 'video') {
+  if (category === 'image') {
+    value = (
+      <BlobImage
+        alt=""
+        blob={locator}
+        className="mb-2 aspect-square w-full rounded-md object-cover"
+        decoding="async"
+        loading="lazy"
+      />
+    )
+  } else if (
+    category === 'video' &&
+    videoElement &&
+    blob.mimeType &&
+    videoElement.canPlayType(blob.mimeType)
+  ) {
     // Defer loading for large media.
     if (blob.size >= threshold && !requested) {
       value = (
         <div className="mb-2 aspect-square w-full rounded-md border border-zinc-200 bg-zinc-50 p-3 dark:border-white/10 dark:bg-zinc-900/40 flex flex-col items-center justify-center gap-2">
           <Button
-            aria-label={tPlain('storage.preview.loadLargeAria', { mimeType: blob.mimeType })}
+            aria-label={tPlain('storage.preview.loadLargeAria', {
+              mimeType: formatMimeType(tPlain, blob.mimeType),
+            })}
             className="dark:border-slate-600!"
             onClick={function () {
               setRequested(true)
             }}
             outline
           >
-            {tPlain('storage.preview.loadLarge', { mimeType: blob.mimeType })}
+            {t('storage.preview.loadLarge', { mimeType: formatMimeType(t, blob.mimeType) })}
           </Button>
         </div>
-      )
-    } else if (category === 'image') {
-      value = (
-        <img
-          alt=""
-          className="mb-2 aspect-square w-full rounded-md object-cover"
-          decoding="async"
-          fetchPriority={requested ? 'auto' : 'low'}
-          loading={requested ? 'eager' : 'lazy'}
-          src={String(url)}
-        />
       )
     } else {
       value = (
@@ -175,21 +159,24 @@ export default function BlobItem(properties: BlobItemProperties): React.ReactNod
           className="mb-2 aspect-square w-full rounded-md object-cover"
           controls
           preload={requested ? 'auto' : 'metadata'}
-          src={String(url)}
+          src={url}
         />
       )
     }
   } else {
     value = (
       <div className="mb-2 aspect-square w-full rounded-md border border-zinc-200 bg-zinc-50 p-3 dark:border-white/10 dark:bg-zinc-900/40 flex flex-col items-center justify-center gap-2">
-        {tPlain('storage.preview.notAvailable')}
+        {t('storage.preview.notAvailable')}
       </div>
     )
   }
 
   cells.push(
-    { key: tPlain('storage.field.size'), value: displayByteSize(blob.size) },
-    { key: tPlain('storage.field.type'), value: displayFileType(tPlain, blob.mimeType) }
+    { key: t('storage.field.size'), value: formatByteSize(blob.size, locale) },
+    {
+      key: t('storage.field.type'),
+      value: blob.mimeType ? formatMimeType(t, blob.mimeType) : t('mimeType.unknown'),
+    }
   )
 
   return (
@@ -203,7 +190,9 @@ export default function BlobItem(properties: BlobItemProperties): React.ReactNod
             setOpening(true)
 
             try {
-              await openBlob(String(url))
+              await openBlob(url)
+            } catch {
+              toast.error(tPlain('storage.open.error'))
             } finally {
               setOpening(false)
             }
@@ -211,7 +200,7 @@ export default function BlobItem(properties: BlobItemProperties): React.ReactNod
           type="button"
         >
           <ArrowsPointingOutIcon aria-hidden="true" className="size-4" data-slot="icon" />
-          {opening ? tPlain('storage.open.actionBusy') : tPlain('storage.open.action')}
+          {opening ? t('storage.open.actionBusy') : t('storage.open.action')}
         </button>
         <button
           aria-label={tPlain('storage.download.aria')}
@@ -221,7 +210,9 @@ export default function BlobItem(properties: BlobItemProperties): React.ReactNod
             setDownloading(true)
 
             try {
-              await downloadBlob(String(url), displayFilename(blob.cid, blob.mimeType))
+              await downloadBlob(url, displayFilename(blob.cid, blob.mimeType))
+            } catch {
+              toast.error(tPlain('storage.download.error'))
             } finally {
               setDownloading(false)
             }
@@ -229,14 +220,14 @@ export default function BlobItem(properties: BlobItemProperties): React.ReactNod
           type="button"
         >
           <ArrowDownTrayIcon aria-hidden="true" className="size-4" data-slot="icon" />
-          {downloading ? tPlain('storage.download.actionBusy') : tPlain('storage.download.action')}
+          {downloading ? t('storage.download.actionBusy') : t('storage.download.action')}
         </button>
       </div>
       {value}
       {cells.length > 0 ? (
         <dl>
-          {cells.map(({ key, value }) => (
-            <div className="grid grid-cols-1 gap-1 py-1 md:grid-cols-4" key={key}>
+          {cells.map(({ key, value }, index) => (
+            <div className="grid grid-cols-1 gap-1 py-1 md:grid-cols-4" key={index}>
               <dt className="text-sm font-medium text-zinc-600 dark:text-zinc-300">{key}</dt>
               <dd className="col-span-3 break-all text-sm text-zinc-900 dark:text-zinc-100">
                 {value}
@@ -250,24 +241,6 @@ export default function BlobItem(properties: BlobItemProperties): React.ReactNod
 }
 
 /**
- * Display a mime type.
- *
- * @param tPlain
- *   Plain translation function.
- * @param type
- *   Value from `content-type` header.
- * @returns
- *   Human-friendly file type.
- */
-function displayFileType(
-  tPlain: ReturnType<typeof useT>['tPlain'],
-  type?: string | undefined
-): React.ReactNode {
-  const label = type ? supportedMediaTypeLabels.get(type) : undefined
-  return label || (type ? <Code>{type}</Code> : tPlain('storage.field.typeUnknown'))
-}
-
-/**
  * Make a file name for humans; specifically for downloading.
  *
  * @param cid
@@ -278,7 +251,7 @@ function displayFileType(
  *   File name.
  */
 function displayFilename(cid: string, type?: string | undefined): string {
-  const extension = type ? mediaTypeExtensions.get(type) : undefined
+  const extension = type ? mimeTypeExtension(type) : undefined
   // Shared prefix so that things are downloaded next to each other and that
   // there is *some* explanation where they came from.
   // `24` is a balance between colisions and readability; also note that the

@@ -170,9 +170,9 @@ export interface Registry {
       body: {}
       paramsTuple: []
       params: {}
-      query: {}
+      query: ExtractQueryForGet<InferInput<(typeof import('#validators/storage').storageQueryValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/storage_controller').default['show']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/storage_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/storage_controller').default['show']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'account.dismiss_welcome': {

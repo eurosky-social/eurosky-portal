@@ -1,6 +1,3 @@
-packages:
-  - service/blob-api
-
 allowBuilds:
   '@swc/core': true
   # No longer needs builds:

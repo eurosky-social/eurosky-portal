@@ -1,3 +1,5 @@
+import type { Locale } from '#shared/locale'
+
 /**
  * This file matches the size of blobs (in skeets) on `pdsls.dev`,
  * which uses IEC.
@@ -18,18 +20,16 @@ const units: Array<{ label: string; unit: string }> = [
 ]
 
 /**
- * Display byte size to humans.
+ * Format a byte size for display.
  *
  * @param size
  *   Size in bytes.
+ * @param locale
+ *   Locale to format the number with.
  * @returns
  *   Size for humans (example: `297.3 KiB`).
  */
-export function displayByteSize(size: number): string {
-  if (!Number.isFinite(size) || size < 0) {
-    return 'Unknown'
-  }
-
+export function formatByteSize(size: number, locale: Locale): string {
   let value = size
   let index = 0
 
@@ -39,7 +39,7 @@ export function displayByteSize(size: number): string {
   }
 
   const { unit, label } = units[index]
-  return new Intl.NumberFormat(undefined, {
+  return new Intl.NumberFormat(locale, {
     maximumFractionDigits: index ? 1 : 0,
     minimumFractionDigits: 0,
     style: 'unit',

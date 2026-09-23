@@ -27,8 +27,6 @@ declare module '@adonisjs/inertia/types' {
     'login': ExtractProps<(typeof import('../../inertia/pages/login.tsx'))['default']>
     'onboarding': ExtractProps<(typeof import('../../inertia/pages/onboarding.tsx'))['default']>
     'storage/BlobItem': ExtractProps<(typeof import('../../inertia/pages/storage/BlobItem.tsx'))['default']>
-    'storage/bytes': ExtractProps<(typeof import('../../inertia/pages/storage/bytes.ts'))['default']>
-    'storage/category': ExtractProps<(typeof import('../../inertia/pages/storage/category.ts'))['default']>
     'storage/show': ExtractProps<(typeof import('../../inertia/pages/storage/show.tsx'))['default']>
   }
 }

@@ -9,7 +9,7 @@ import { DateTime } from 'luxon'
 import type { l } from '@atproto/lex'
 
 export class AccountSchema extends BaseModel {
-  static $columns = ['createdAt', 'did', 'handle', 'lastActiveAt', 'lastActivitySyncAt', 'termsAcceptedAt', 'updatedAt', 'welcomeDismissed'] as const
+  static $columns = ['createdAt', 'did', 'handle', 'lastActiveAt', 'lastActivitySyncAt', 'lastStorageFullSyncAt', 'lastStorageSyncAt', 'lastStorageSyncRev', 'termsAcceptedAt', 'updatedAt', 'welcomeDismissed'] as const
   $columns = AccountSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime | null
@@ -21,6 +21,12 @@ export class AccountSchema extends BaseModel {
   declare lastActiveAt: DateTime | null
   @column.dateTime()
   declare lastActivitySyncAt: DateTime | null
+  @column.dateTime()
+  declare lastStorageFullSyncAt: DateTime | null
+  @column.dateTime()
+  declare lastStorageSyncAt: DateTime | null
+  @column()
+  declare lastStorageSyncRev: string | null
   @column.dateTime()
   declare termsAcceptedAt: DateTime | null
   @column.dateTime({ autoCreate: true, autoUpdate: true })
@@ -51,14 +57,18 @@ export class ActivityRecordSchema extends BaseModel {
 }
 
 export class BlobSchema extends BaseModel {
-  static $columns = ['cid', 'createdAt', 'creator', 'mimeType', 'size'] as const
+  static $columns = ['category', 'cid', 'createdAt', 'creator', 'id', 'mimeType', 'size'] as const
   $columns = BlobSchema.$columns
-  @column({ isPrimary: true })
-  declare cid: string
   @column()
-  declare createdAt: string
+  declare category: string
+  @column()
+  declare cid: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
   @column()
   declare creator: string
+  @column({ isPrimary: true })
+  declare id: number
   @column()
   declare mimeType: string | null
   @column()

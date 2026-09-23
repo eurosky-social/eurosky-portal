@@ -4,20 +4,22 @@
 
 import { l } from '@atproto/lex'
 
-const $nsid = 'com.atproto.sync.getBlob'
+const $nsid = 'com.atproto.sync.getLatestCommit'
 
 type $nsid = typeof $nsid
 
 export { $nsid }
 
 export const $params = /*#__PURE__*/ l.params({
-  cid: /*#__PURE__*/ l.string({ format: 'cid' }),
   did: /*#__PURE__*/ l.string({ format: 'did' }),
 })
 
 export type $Params = l.InferOutput<typeof $params>
 
-export const $output = /*#__PURE__*/ l.payload('*/*')
+export const $output = /*#__PURE__*/ l.jsonPayload({
+  cid: /*#__PURE__*/ l.string({ format: 'cid' }),
+  rev: /*#__PURE__*/ l.string({ format: 'tid' }),
+})
 
 export type $Output<B = l.BinaryData> = l.InferPayload<typeof $output, B>
 export type $OutputBody<B = l.BinaryData> = l.InferPayloadBody<
@@ -25,9 +27,8 @@ export type $OutputBody<B = l.BinaryData> = l.InferPayloadBody<
   B
 >
 
-/** Get a blob associated with a given account. Returns the full blob as originally uploaded. Does not require auth; implemented by PDS. */
+/** Get the current commit CID & revision of the specified repo. Does not require auth. */
 const main = /*#__PURE__*/ l.query($nsid, $params, $output, [
-  'BlobNotFound',
   'RepoNotFound',
   'RepoTakendown',
   'RepoSuspended',

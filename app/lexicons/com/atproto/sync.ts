@@ -3,4 +3,5 @@
  */
 
 export * as getBlob from './sync/getBlob.js'
+export * as getLatestCommit from './sync/getLatestCommit.js'
 export * as listBlobs from './sync/listBlobs.js'

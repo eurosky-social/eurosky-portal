@@ -6,34 +6,47 @@ import { l } from '@atproto/lex'
 
 const $nsid = 'com.atproto.sync.listBlobs'
 
+type $nsid = typeof $nsid
+
 export { $nsid }
 
-/** List blob CIDs for an account, since some repo revision. Does not require auth; implemented by PDS. */
-const main = l.query(
-  $nsid,
-  l.params({
-    did: l.string({ format: 'did' }),
-    limit: l.optional(
-      l.withDefault(l.integer({ maximum: 1000, minimum: 1 }), 500),
+export const $params = /*#__PURE__*/ l.params({
+  did: /*#__PURE__*/ l.string({ format: 'did' }),
+  limit: /*#__PURE__*/ l.optional(
+    /*#__PURE__*/ l.withDefault(
+      /*#__PURE__*/ l.integer({ maximum: 1000, minimum: 1 }),
+      500,
     ),
-    since: l.optional(l.string({ format: 'tid' })),
-    cursor: l.optional(l.string()),
-  }),
-  l.jsonPayload({
-    cids: l.array(l.string({ format: 'cid' })),
-    cursor: l.optional(l.string()),
-  }),
-  ['RepoNotFound', 'RepoTakendown', 'RepoSuspended', 'RepoDeactivated'],
-)
-export { main }
+  ),
+  since: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'tid' })),
+  cursor: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string()),
+})
 
-export type $Params = l.InferMethodParams<typeof main>
-export type $Output<B = l.BinaryData> = l.InferMethodOutput<typeof main, B>
-export type $OutputBody<B = l.BinaryData> = l.InferMethodOutputBody<
-  typeof main,
+export type $Params = l.InferOutput<typeof $params>
+
+export const $output = /*#__PURE__*/ l.jsonPayload({
+  cids: /*#__PURE__*/ l.array(/*#__PURE__*/ l.string({ format: 'cid' })),
+  cursor: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string()),
+})
+
+export type $Output<B = l.BinaryData> = l.InferPayload<typeof $output, B>
+export type $OutputBody<B = l.BinaryData> = l.InferPayloadBody<
+  typeof $output,
   B
 >
 
-export const $lxm = main.nsid,
-  $params = main.parameters,
-  $output = main.output
+/** List blob CIDs for an account, since some repo revision. Does not require auth; implemented by PDS. */
+const main = /*#__PURE__*/ l.query($nsid, $params, $output, [
+  'RepoNotFound',
+  'RepoTakendown',
+  'RepoSuspended',
+  'RepoDeactivated',
+])
+
+export { main }
+
+const $lxm = $nsid
+
+type $lxm = typeof $lxm
+
+export { $lxm }

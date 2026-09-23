@@ -8,6 +8,7 @@
     "app.bsky.graph.follow",
     "com.atproto.repo.describeRepo",
     "com.atproto.sync.getBlob",
+    "com.atproto.sync.getLatestCommit",
     "com.atproto.sync.listBlobs",
     "fyi.atstore.directory.getListing",
     "pub.leaflet.content",
@@ -113,6 +114,10 @@
     "com.atproto.sync.getBlob": {
       "uri": "at://did:plc:6msi3pj7krzih5qxqtryxlzw/com.atproto.lexicon.schema/com.atproto.sync.getBlob",
       "cid": "bafyreigievymssvpqn7v5gb6q7hrlepcyzy7xko5rnfrk2ywcjcfbd3574"
+    },
+    "com.atproto.sync.getLatestCommit": {
+      "uri": "at://did:plc:6msi3pj7krzih5qxqtryxlzw/com.atproto.lexicon.schema/com.atproto.sync.getLatestCommit",
+      "cid": "bafyreifewzvfus7z6rnmtv74lpulhldvikqmhzepwqdlaqmhllgyg4oejq"
     },
     "com.atproto.sync.listBlobs": {
       "uri": "at://did:plc:6msi3pj7krzih5qxqtryxlzw/com.atproto.lexicon.schema/com.atproto.sync.listBlobs",

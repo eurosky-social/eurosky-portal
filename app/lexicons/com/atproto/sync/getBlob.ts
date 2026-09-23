@@ -3,4 +3,4 @@
  */
 
 export * from './getBlob.defs.js'
-export * as $defs from './getBlob.defs.js'
+export { main as default } from './getBlob.defs.js'

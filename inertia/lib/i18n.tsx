@@ -22,14 +22,20 @@ import { parse, serverSnapshot, setLocale, snapshot, subscribe } from '~/utils/l
 
 type VariableValue<T> = FormatXMLElementFn<T> | PrimitiveType | T
 
+export type TPlain = (
+  key: string,
+  variables?: Record<string, VariableValue<PrimitiveType>> | null | undefined
+) => string
+export type T = (
+  key: string,
+  variables?: Record<string, VariableValue<ReactNode>> | null | undefined
+) => ReactNode
+
 interface I18nContextValue {
   locale: Locale
   setLocale(locale: Locale): undefined
-  tPlain(
-    key: string,
-    variables?: Record<string, VariableValue<PrimitiveType>> | null | undefined
-  ): string
-  t(key: string, variables?: Record<string, VariableValue<ReactNode>> | null | undefined): ReactNode
+  tPlain: TPlain
+  t: T
 }
 
 /**
