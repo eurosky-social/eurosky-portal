@@ -119,7 +119,7 @@ export default class OAuthController {
     session.put('handle', input)
 
     try {
-      const authorizationUrl = await oauth.authorize(resolvedValue)
+      const authorizationUrl = await oauth.authorize(resolvedValue, { ui_locales: i18n.locale })
 
       AuthFlowStarted.dispatch({
         ip: request.ip(),
@@ -147,7 +147,7 @@ export default class OAuthController {
     }
   }
 
-  async signup({ request, inertia, oauth, session, logger }: HttpContext) {
+  async signup({ i18n, inertia, logger, oauth, request, session }: HttpContext) {
     await request.validateUsing(signupRequestValidator)
 
     session.put('source', 'signup')
@@ -164,7 +164,7 @@ export default class OAuthController {
     // }
 
     try {
-      const authorizationUrl = await oauth.register(oauthServerUrl)
+      const authorizationUrl = await oauth.register(oauthServerUrl, { ui_locales: i18n.locale })
 
       AuthFlowStarted.dispatch({
         ip: request.ip(),
