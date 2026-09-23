@@ -298,7 +298,7 @@ export class ActivityService {
     if (cursor) {
       if (cursor.createdAt) {
         recordsQuery.whereRaw(
-          'created_at < ? or created_at is null or (created_at = ? and uri <= ?)',
+          '(created_at < ? or created_at is null or (created_at = ? and uri <= ?))',
           [cursor.createdAt, cursor.createdAt, cursor.uri]
         )
       } else {
