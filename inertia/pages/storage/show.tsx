@@ -2,7 +2,7 @@ import * as Headless from '@headlessui/react'
 import { Head, router } from '@inertiajs/react'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
-import { type StorageCategory, storageCategories } from '#shared/storage'
+import { type StorageCategory, type StorageTab, storageCategories } from '#shared/storage'
 import { urlFor } from '~/client'
 import { Badge } from '~/lib/badge'
 import { Button } from '~/lib/button'
@@ -18,6 +18,11 @@ import BlobItem from './BlobItem'
  * Blob metadata exposed by the storage page backend.
  */
 export type StorageBlob = {
+  /**
+   * Category.
+   */
+  category: StorageCategory
+
   /**
    * Blob CID.
    */
@@ -70,9 +75,9 @@ type StoragePageReady = {
   breakdown: Array<Breakdown>
 
   /**
-   * Category.
+   * Tab.
    */
-  category: StorageCategory
+  category: StorageTab
 
   /**
    * User DID.
@@ -85,9 +90,9 @@ type StoragePageReady = {
   hasMore: boolean
 
   /**
-   * Pagination cursor (scoped to category).
+   * Pagination cursor.
    */
-  snapshot: string | undefined
+  snapshot: string | null
 
   /**
    * Kind.
@@ -129,13 +134,9 @@ type StoragePageProperties = StoragePageReady | StoragePageSyncing
 const blobsPerPage = 48
 
 /**
- * Categories to translation keys.
+ * Tabs in display order.
  */
-const categoryMessageKeys: Record<StorageCategory, string> = {
-  image: 'storage.category.image',
-  other: 'storage.category.other',
-  video: 'storage.category.video',
-}
+const storageTabs: ReadonlyArray<StorageTab> = ['all', ...storageCategories]
 
 /**
  * Render the storage page.
@@ -228,10 +229,10 @@ function BlobsSection(properties: {
   authorizationServer: string
   blobs: ReadonlyArray<StorageBlob>
   breakdown: ReadonlyArray<Breakdown>
-  category: StorageCategory
+  category: StorageTab
   did: string
   hasMore: boolean
-  snapshot: string | undefined
+  snapshot: string | null
   total: number
 }): React.ReactNode {
   const { authorizationServer, blobs, breakdown, category, did, hasMore, snapshot, total } =
@@ -306,37 +307,43 @@ function StorageBrowser(properties: {
   authorizationServer: string
   blobs: ReadonlyArray<StorageBlob>
   breakdown: ReadonlyArray<Breakdown>
-  category: StorageCategory
+  category: StorageTab
   did: string
   hasMore: boolean
-  snapshot: string | undefined
+  snapshot: string | null
   total: number
 }): React.ReactNode {
   const { authorizationServer, blobs, breakdown, category, did, hasMore, snapshot, total } =
     properties
   const { t, tPlain } = useT()
+
+  let totalFiles = 0
+  for (const row of breakdown) totalFiles += row.files
+
   return (
     <>
       <Headless.TabGroup
         onChange={function (index) {
-          const tab = storageCategories[index]
-          if (tab) switchTab(tab)
+          switchTab(storageTabs[index])
         }}
-        selectedIndex={storageCategories.indexOf(category)}
+        selectedIndex={storageTabs.indexOf(category)}
       >
         <Headless.TabList className="mt-4 flex flex-wrap gap-2">
-          {storageCategories.map(function (tab) {
-            const count = breakdown.find((row) => row.category === tab)?.files ?? 0
+          {storageTabs.map(function (tab) {
+            const count =
+              tab === 'all'
+                ? totalFiles
+                : (breakdown.find((row) => row.category === tab)?.files ?? 0)
             return (
               <Headless.Tab
                 aria-label={tPlain('storage.files.tabAria', {
-                  category: tPlain(categoryMessageKeys[tab]),
+                  category: tPlain(`storage.category.${tab}`),
                   count,
                 })}
                 className="group inline-flex items-center gap-2 rounded-md border border-zinc-300 px-3 py-1.5 text-sm font-medium text-zinc-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 data-selected:border-blue-600 data-selected:bg-blue-50 data-selected:text-blue-700 dark:border-zinc-700 dark:text-zinc-200 dark:data-selected:border-blue-400 dark:data-selected:bg-blue-950/30 dark:data-selected:text-blue-200 dark:focus-visible:ring-blue-300/40"
                 key={tab}
               >
-                <span>{t(categoryMessageKeys[tab])}</span>
+                <span>{t(`storage.category.${tab}`)}</span>
                 <Badge className="min-w-6 justify-center rounded-full bg-zinc-200 px-2 py-0.5 text-xs font-semibold text-zinc-700 group-data-selected:bg-blue-600 group-data-selected:text-white dark:bg-zinc-700 dark:text-zinc-100 dark:group-data-selected:bg-blue-400 dark:group-data-selected:text-blue-950">
                   {count}
                 </Badge>
@@ -346,7 +353,7 @@ function StorageBrowser(properties: {
         </Headless.TabList>
 
         <Headless.TabPanels>
-          {storageCategories.map(function (tab) {
+          {storageTabs.map(function (tab) {
             const visible = tab === category ? blobs : []
 
             return (
@@ -359,7 +366,7 @@ function StorageBrowser(properties: {
                       return (
                         <BlobItem
                           authorizationServer={authorizationServer}
-                          category={tab}
+                          category={blob.category}
                           blob={blob}
                           did={did}
                           key={blob.cid}
@@ -377,14 +384,14 @@ function StorageBrowser(properties: {
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
         <Text aria-live="polite" className="text-sm text-zinc-600 dark:text-zinc-300">
           {t('storage.files.showing', {
-            category: t(categoryMessageKeys[category]),
+            category: t(`storage.category.${category}`),
             total,
             visible: blobs.length,
           })}
         </Text>
         <Button
           aria-label={tPlain('storage.files.showMoreAria', {
-            category: tPlain(categoryMessageKeys[category]),
+            category: tPlain(`storage.category.${category}`),
             count: total,
           })}
           className="disabled:cursor-not-allowed data-disabled:cursor-not-allowed"
@@ -401,7 +408,7 @@ function StorageBrowser(properties: {
   function loadMore(): undefined {
     router.get(
       urlFor('storage.show'),
-      { category, limit: blobs.length + blobsPerPage, snapshot },
+      { category, limit: blobs.length + blobsPerPage, snapshot: snapshot ?? undefined },
       {
         onError: onPaginationError,
         only: ['blobs', 'category', 'hasMore', 'snapshot', 'total'],
@@ -411,7 +418,7 @@ function StorageBrowser(properties: {
     )
   }
 
-  function switchTab(tab: StorageCategory): undefined {
+  function switchTab(tab: StorageTab): undefined {
     if (tab === category) return
     router.get(
       urlFor('storage.show'),
@@ -463,7 +470,7 @@ function StorageBreakdown(properties: { breakdown: ReadonlyArray<Breakdown> }): 
         aria-label={breakdown
           .map(
             ({ bytes, category }) =>
-              `${tPlain(categoryMessageKeys[category])}: ${formatByteSize(bytes, locale)}`
+              `${tPlain(`storage.category.${category ?? 'all'}`)}: ${formatByteSize(bytes, locale)}`
           )
           .join(', ')}
         className="flex h-2.5 w-full overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-700"
@@ -489,7 +496,7 @@ function StorageBreakdown(properties: { breakdown: ReadonlyArray<Breakdown> }): 
               <span className={`size-2 shrink-0 rounded-full ${categoryColor(category)}`} />
               <span className="text-sm text-zinc-600 dark:text-zinc-300">
                 <span className="font-medium text-zinc-900 dark:text-zinc-100">
-                  {tPlain(categoryMessageKeys[category])}
+                  {tPlain(`storage.category.${category ?? 'all'}`)}
                 </span>
                 {' — '}
                 <span className="tabular-nums">{formatByteSize(bytes, locale)}</span>

@@ -136,6 +136,7 @@ const en = {
   'sidebar.yourActivity': 'Your activity',
   'storage.breakdown.title': 'Breakdown',
   'storage.breakdown.total': '{size} total',
+  'storage.category.all': 'All',
   'storage.category.image': 'Photos',
   'storage.category.other': 'Other',
   'storage.category.video': 'Videos',

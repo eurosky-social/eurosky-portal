@@ -136,6 +136,7 @@ const nl = {
   'sidebar.yourActivity': 'Je activiteiten',
   'storage.breakdown.title': 'Verdeling',
   'storage.breakdown.total': '{size} totaal',
+  'storage.category.all': 'Alles',
   'storage.category.image': 'Foto’s',
   'storage.category.other': 'Overig',
   'storage.category.video': 'Video’s',

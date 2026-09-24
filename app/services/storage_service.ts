@@ -8,9 +8,7 @@ import Account from '#models/account'
 import Blob from '#models/blob'
 import { SlingshotService } from '#services/slingshot_service'
 import { normalizeMimeType, mediaType } from '#shared/mime'
-import { type StorageCategory, isStorageCategory, storageCategories } from '#shared/storage'
-
-const defaultCategory = storageCategories[0]
+import { type StorageCategory, type StorageTab, isStorageCategory } from '#shared/storage'
 
 /**
  * Default (and per-page increment) blobs to return per category;
@@ -55,9 +53,9 @@ interface BlobSnapshotCursor {
  */
 export interface GetStorageOptions {
   /**
-   * Category (file browser tab) to return a page of blobs for.
+   * Category or `all` (default: `all`).
    */
-  category?: StorageCategory | undefined
+  category?: StorageTab | undefined
 
   /**
    * DID.
@@ -65,7 +63,7 @@ export interface GetStorageOptions {
   did: DidString
 
   /**
-   * Total blobs (for `category`) to return.
+   * Total blobs to return.
    */
   limit?: number | undefined
 
@@ -81,7 +79,7 @@ export interface GetStorageOptions {
 export type GetStorageReadyResult = {
   blobs: Array<StorageBlobRow>
   breakdown: Array<StorageBreakdownRow>
-  category: StorageCategory
+  category: StorageTab
   hasMore: boolean
   snapshot: string | undefined
   state: 'ready'
@@ -102,6 +100,7 @@ export type GetStorageResult = GetStorageReadyResult | GetStorageSyncingResult
  * Blob.
  */
 export type StorageBlobRow = {
+  category: StorageCategory
   cid: string
   mimeType: string | undefined
   size: number
@@ -267,7 +266,7 @@ export class StorageService {
    *   Promise that resolves to the result.
    */
   async getStorage(options: GetStorageOptions): Promise<GetStorageResult> {
-    const { category = defaultCategory, did, limit = defaultLimit, snapshot } = options
+    const { category = 'all', did, limit = defaultLimit, snapshot } = options
     const account = await Account.findOrFail(did)
 
     // Not done yet.
@@ -283,7 +282,11 @@ export class StorageService {
 
     const cursor = snapshot ? decodeSnapshot(snapshot) : undefined
 
-    const baseQuery = () => Blob.query().where('creator', did).where('category', category)
+    const baseQuery = () => {
+      const query = Blob.query().where('creator', did)
+      if (category !== 'all') query.where('category', category)
+      return query
+    }
     // We don’t have dates (`createdAt` here is just when it was synced into
     // this database), so the only meaningful sort right now is file size.
     const blobsQuery = baseQuery().orderBy('size', 'desc').orderBy('cid', 'desc').limit(limit)
@@ -323,6 +326,7 @@ export class StorageService {
 
     return {
       blobs: rows.map((row) => ({
+        category: isStorageCategory(row.category) ? row.category : 'other',
         cid: row.cid,
         mimeType: row.mimeType ?? undefined,
         size: row.size,
@@ -336,7 +340,10 @@ export class StorageService {
           ? encodeSnapshot({ cid: first.cid, size: first.size })
           : undefined,
       state: 'ready',
-      total: breakdown.find((row) => row.category === category)?.files ?? 0,
+      total:
+        category === 'all'
+          ? breakdown.reduce((sum, row) => sum + row.files, 0)
+          : (breakdown.find((row) => row.category === category)?.files ?? 0),
     }
   }
 

@@ -3,9 +3,9 @@ import { storageCategories } from '#shared/storage'
 
 export const storageQueryValidator = vine.create({
   /**
-   * Category (file browser tab) to return a page of blobs for.
+   * Tab.
    */
-  category: vine.enum(storageCategories).optional(),
+  category: vine.enum(['all', ...storageCategories] as const).optional(),
 
   /**
    * Blobs to return.

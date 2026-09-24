@@ -25,7 +25,8 @@ export default class StorageController {
       category: inertia.always(result.category),
       did,
       hasMore: inertia.always(result.hasMore),
-      snapshot: inertia.always(result.snapshot),
+      // `undefined` is dropped by `JSON.stringify` so use `null`.
+      snapshot: inertia.always(result.snapshot ?? null),
       state: inertia.always(result.state),
       total: inertia.always(result.total),
     }
