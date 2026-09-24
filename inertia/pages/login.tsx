@@ -9,6 +9,7 @@ import { InertiaProps } from '~/types'
 import { Head, usePage } from '@inertiajs/react'
 import { ExclamationTriangleIcon } from '@heroicons/react/24/solid'
 import { useT } from '~/lib/i18n'
+import Notice from '~/lib/notice'
 
 export default function Login({ migrationUrl }: InertiaProps<{ migrationUrl?: string }>) {
   const { props: pageProps } = usePage()
@@ -16,7 +17,20 @@ export default function Login({ migrationUrl }: InertiaProps<{ migrationUrl?: st
   return (
     <div className="bg-neutral-50 dark:bg-slate-900 min-h-dvh-minus-35">
       <Head title={tPlain('nav.signIn')} />
-      <Container className="pt-10 md:pt-24">
+      <Container className="pt-6 md:pt-12">
+        {migrationUrl && (
+          <div className="w-full md:w-3/4 lg:w-1/2 m-auto">
+            <Notice
+              action={
+                <a href={migrationUrl} className="text-brand hover:underline">
+                  {tPlain('migrationAlert.cta')}
+                </a>
+              }
+              text={tPlain('migrationAlert.text')}
+              title={tPlain('migrationAlert.title')}
+            />
+          </div>
+        )}
         {pageProps.flash.error && (
           <Card className="w-full md:w-3/4 lg:w-1/2 m-auto px-4 py-2 mb-8 bg-gray-500! dark:bg-slate-600! text-white!">
             <div className="flex flex-row gap-2 items-center-safe">
@@ -84,24 +98,6 @@ export default function Login({ migrationUrl }: InertiaProps<{ migrationUrl?: st
             })}
           </Text>
         </Card>
-        {migrationUrl && (
-          <Card
-            as="a"
-            href={migrationUrl}
-            className="w-full md:w-3/4 lg:w-1/2 m-auto p-4 bg-black! text-white! dark:bg-brand! dark:text-black! flex flex-row gap-4"
-          >
-            <h1 className="mb-2 text-2xl/9 font-medium">{t('login.migration.heading')}</h1>
-            <div className="flex items-center">
-              <Button
-                as="span"
-                color="brand"
-                className="text-black! dark:bg-black dark:text-white! text-nowrap"
-              >
-                {t('login.migration.cta')}
-              </Button>
-            </div>
-          </Card>
-        )}
       </Container>
     </div>
   )
