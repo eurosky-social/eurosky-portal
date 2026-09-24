@@ -14,16 +14,17 @@ import {
 } from '~/lib/sidebar'
 import { SidebarLayout } from '~/lib/sidebar-layout'
 import {
-  ClockIcon,
-  HomeIcon,
-  QuestionMarkCircleIcon,
-  ChatBubbleOvalLeftEllipsisIcon,
-  DocumentTextIcon,
-  Cog6ToothIcon,
-  GlobeAltIcon,
   ArrowTopRightOnSquareIcon,
+  ChatBubbleOvalLeftEllipsisIcon,
+  CircleStackIcon,
+  ClockIcon,
+  Cog6ToothIcon,
+  DocumentTextIcon,
+  GlobeAltIcon,
+  HomeIcon,
   LifebuoyIcon,
   LockClosedIcon,
+  QuestionMarkCircleIcon,
 } from '@heroicons/react/24/solid'
 import { useAuth } from '~/utils/use_auth'
 import { Form } from '@adonisjs/inertia/react'
@@ -64,6 +65,10 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
                   <SidebarItem route="activity.show" current={url.startsWith('/activity')}>
                     <ClockIcon />
                     <SidebarLabel>{t('sidebar.yourActivity')}</SidebarLabel>
+                  </SidebarItem>
+                  <SidebarItem route="files.show" current={url == '/files'}>
+                    <CircleStackIcon />
+                    <SidebarLabel>{t('sidebar.yourFiles')}</SidebarLabel>
                   </SidebarItem>
                   <SidebarItem href={manageUrl} target="_blank" as={'a'}>
                     <Cog6ToothIcon />

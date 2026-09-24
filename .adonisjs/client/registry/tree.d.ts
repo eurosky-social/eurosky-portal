@@ -28,6 +28,9 @@ export interface ApiDefinition {
     show: typeof routes['activity.show']
     detail: typeof routes['activity.detail']
   }
+  files: {
+    show: typeof routes['files.show']
+  }
   discover: {
     apps: typeof routes['discover.apps']
     app: typeof routes['discover.app']

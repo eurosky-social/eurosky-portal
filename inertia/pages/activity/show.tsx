@@ -17,11 +17,33 @@ const pageSize = 20
 export default function Activity(result: InertiaProps<GetRecordsResult>) {
   const { t } = useT()
 
-  useEffect(() => {
-    if (result.state !== 'syncing') return
-    const timeout = setTimeout(() => router.reload(), 5_000)
-    return () => clearTimeout(timeout)
-  }, [result.state])
+  useEffect(
+    function () {
+      if (result.state !== 'syncing') return
+
+      let cancelled = false
+
+      poll()
+
+      return cancel
+
+      function cancel() {
+        cancelled = true
+      }
+
+      function poll() {
+        setTimeout(function () {
+          if (cancelled) return
+          router.reload({
+            onFinish() {
+              if (!cancelled) poll()
+            },
+          })
+        }, 5_000)
+      }
+    },
+    [result.state]
+  )
 
   return (
     <div className="flex flex-col gap-y-6">
