@@ -20,7 +20,20 @@ export default function CreateAccount(
   return (
     <div className="bg-neutral-50 dark:bg-slate-900 min-h-dvh-minus-35">
       <Head title={tPlain('createAccount.pageTitle')} />
-      <Container className="py-10 md:pt-24">
+      <Container className="pt-6 md:pt-12">
+        {props.migrationUrl && (
+          <div className="w-full md:w-3/4 lg:w-1/2 m-auto">
+            <Notice
+              action={
+                <a href={props.migrationUrl} className="text-brand hover:underline">
+                  {tPlain('migrationAlert.cta')}
+                </a>
+              }
+              text={tPlain('migrationAlert.text')}
+              title={tPlain('migrationAlert.title')}
+            />
+          </div>
+        )}
         {pageProps.flash.error && (
           <Card className="w-full md:w-3/4 lg:w-1/2 m-auto px-4 py-2 mb-8 bg-gray-500! dark:bg-slate-600! text-white!">
             <div className="flex flex-row gap-2 items-center-safe">
@@ -31,7 +44,7 @@ export default function CreateAccount(
             </div>
           </Card>
         )}
-        <Card className="my-10 w-full md:w-3/4 lg:w-1/2 m-auto p-4">
+        <Card className="w-full md:w-3/4 lg:w-1/2 m-auto p-4 mb-8">
           <h1 className="mx-auto max-w-4xl mb-2 text-center font-display text-3xl leading-[1.2] font-extrabold tracking-tight text-slate-900 dark:text-slate-200 sm:text-5xl">
             {t('createAccount.title', {
               brand(chunks) {
@@ -39,17 +52,6 @@ export default function CreateAccount(
               },
             })}
           </h1>
-          {props.migrationUrl && (
-            <Notice
-              action={
-                <a href={props.migrationUrl} className="text-brand hover:underline">
-                  {tPlain('createAccount.migrationAlert.cta')}
-                </a>
-              }
-              text={tPlain('createAccount.migrationAlert.text')}
-              title={tPlain('createAccount.migrationAlert.title')}
-            />
-          )}
           <Text className="text-center text-slate-600">{t('createAccount.subtitle')}</Text>
           <PolicyForm
             route="oauth.signup"
