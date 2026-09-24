@@ -163,16 +163,16 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/account_controller').default['storeAcceptance']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
-  'storage.show': {
+  'files.show': {
     methods: ["GET","HEAD"]
-    pattern: '/storage'
+    pattern: '/files'
     types: {
       body: {}
       paramsTuple: []
       params: {}
-      query: ExtractQueryForGet<InferInput<(typeof import('#validators/storage').storageQueryValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/storage_controller').default['show']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/storage_controller').default['show']>>> | { status: 422; response: { errors: SimpleError[] } }
+      query: ExtractQueryForGet<InferInput<(typeof import('#validators/files').filesQueryValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/files_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/files_controller').default['show']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'account.dismiss_welcome': {

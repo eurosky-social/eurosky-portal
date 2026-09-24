@@ -1,7 +1,7 @@
 import vine from '@vinejs/vine'
 import { storageCategories } from '#shared/storage'
 
-export const storageQueryValidator = vine.create({
+export const filesQueryValidator = vine.create({
   /**
    * Tab.
    */

@@ -66,9 +66,9 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
                     <ClockIcon />
                     <SidebarLabel>{t('sidebar.yourActivity')}</SidebarLabel>
                   </SidebarItem>
-                  <SidebarItem route="storage.show" current={url == '/storage'}>
+                  <SidebarItem route="files.show" current={url == '/files'}>
                     <CircleStackIcon />
-                    <SidebarLabel>{t('sidebar.storage')}</SidebarLabel>
+                    <SidebarLabel>{t('sidebar.yourFiles')}</SidebarLabel>
                   </SidebarItem>
                   <SidebarItem href={manageUrl} target="_blank" as={'a'}>
                     <Cog6ToothIcon />

@@ -15,7 +15,7 @@ import { formatByteSize } from '~/utils/bytes'
 import BlobItem from './BlobItem'
 
 /**
- * Blob metadata exposed by the storage page backend.
+ * Blob metadata exposed by the files page backend.
  */
 export type StorageBlob = {
   /**
@@ -63,7 +63,7 @@ type Breakdown = {
  * Ready.
  * Has to be a `type` for `Inertia`.
  */
-type StoragePageReady = {
+type FilesPageReady = {
   /**
    * Blobs for `category`.
    */
@@ -109,7 +109,7 @@ type StoragePageReady = {
  * Syncing.
  * Has to be a `type` for `Inertia`.
  */
-type StoragePageSyncing = {
+type FilesPageSyncing = {
   /**
    * User DID.
    */
@@ -124,7 +124,7 @@ type StoragePageSyncing = {
 /**
  * Properties.
  */
-type StoragePageProperties = StoragePageReady | StoragePageSyncing
+type FilesPageProperties = FilesPageReady | FilesPageSyncing
 
 /**
  * Blobs to load per page.
@@ -139,14 +139,14 @@ const blobsPerPage = 48
 const storageTabs: ReadonlyArray<StorageTab> = ['all', ...storageCategories]
 
 /**
- * Render the storage page.
+ * Render the files page.
  *
  * @param properties
  *   Properties.
  * @returns
  *   Element.
  */
-export default function StoragePage(properties: InertiaProps<StoragePageProperties>) {
+export default function FilesPage(properties: InertiaProps<FilesPageProperties>) {
   const { authorizationServer, did, state } = properties
   const { t, tPlain } = useT()
 
@@ -185,16 +185,16 @@ export default function StoragePage(properties: InertiaProps<StoragePageProperti
 
   return (
     <>
-      <Head title={tPlain('storage.title')} />
+      <Head title={tPlain('files.title')} />
       <div className="space-y-6">
         <div className="space-y-1">
-          <Heading level={1}>{t('storage.title')}</Heading>
-          <Text className="text-sm text-zinc-600 dark:text-zinc-300">{t('storage.subtitle')}</Text>
+          <Heading level={1}>{t('files.title')}</Heading>
+          <Text className="text-sm text-zinc-600 dark:text-zinc-300">{t('files.subtitle')}</Text>
         </div>
         {state === 'syncing' ? (
           <Card className="p-5 md:p-6">
             <Text aria-live="polite" role="status">
-              {t('storage.syncing')}
+              {t('files.syncing')}
             </Text>
           </Card>
         ) : (
@@ -245,22 +245,22 @@ function BlobsSection(properties: {
   return (
     <>
       <Card className="p-5 md:p-6">
-        <StorageBreakdown breakdown={breakdown} />
+        <FilesBreakdown breakdown={breakdown} />
       </Card>
       <Card className="p-5 md:p-6">
         <div className="flex items-baseline justify-between gap-2">
-          <Subheading level={2}>{t('storage.files.heading')}</Subheading>
+          <Subheading level={2}>{t('files.heading')}</Subheading>
           <span
-            aria-label={tPlain('storage.files.countAria', { count: totalFiles })}
+            aria-label={tPlain('files.countAria', { count: totalFiles })}
             className="text-sm tabular-nums text-zinc-900 dark:text-zinc-100"
           >
-            {t('storage.files.count', { count: totalFiles })}
+            {t('files.count', { count: totalFiles })}
           </span>
         </div>
         {breakdown.length === 0 ? (
-          <Text className="mt-4">{t('storage.files.empty')}</Text>
+          <Text className="mt-4">{t('files.empty')}</Text>
         ) : (
-          <StorageBrowser
+          <FilesBrowser
             authorizationServer={authorizationServer}
             blobs={blobs}
             breakdown={breakdown}
@@ -287,23 +287,23 @@ function CollectionsSection(): React.ReactNode {
 
   return (
     <Card className="border border-dashed border-zinc-300 bg-zinc-50 p-5 md:p-6 dark:border-zinc-700 dark:bg-transparent">
-      <Subheading level={2}>{t('storage.more.title')}</Subheading>
+      <Subheading level={2}>{t('files.more.title')}</Subheading>
       <Text className="mt-1 text-sm text-zinc-600 dark:text-zinc-300">
-        {t('storage.more.subtitle')}
+        {t('files.more.subtitle')}
       </Text>
     </Card>
   )
 }
 
 /**
- * Render the tabbed storage browser for files.
+ * Render the tabbed file browser.
  *
  * @param properties
  *   Properties.
  * @returns
  *   Element.
  */
-function StorageBrowser(properties: {
+function FilesBrowser(properties: {
   authorizationServer: string
   blobs: ReadonlyArray<StorageBlob>
   breakdown: ReadonlyArray<Breakdown>
@@ -336,14 +336,14 @@ function StorageBrowser(properties: {
                 : (breakdown.find((row) => row.category === tab)?.files ?? 0)
             return (
               <Headless.Tab
-                aria-label={tPlain('storage.files.tabAria', {
-                  category: tPlain(`storage.category.${tab}`),
+                aria-label={tPlain('files.tabAria', {
+                  category: tPlain(`files.category.${tab}`),
                   count,
                 })}
                 className="group inline-flex items-center gap-2 rounded-md border border-zinc-300 px-3 py-1.5 text-sm font-medium text-zinc-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 data-selected:border-blue-600 data-selected:bg-blue-50 data-selected:text-blue-700 dark:border-zinc-700 dark:text-zinc-200 dark:data-selected:border-blue-400 dark:data-selected:bg-blue-950/30 dark:data-selected:text-blue-200 dark:focus-visible:ring-blue-300/40"
                 key={tab}
               >
-                <span>{t(`storage.category.${tab}`)}</span>
+                <span>{t(`files.category.${tab}`)}</span>
                 <Badge className="min-w-6 justify-center rounded-full bg-zinc-200 px-2 py-0.5 text-xs font-semibold text-zinc-700 group-data-selected:bg-blue-600 group-data-selected:text-white dark:bg-zinc-700 dark:text-zinc-100 dark:group-data-selected:bg-blue-400 dark:group-data-selected:text-blue-950">
                   {count}
                 </Badge>
@@ -359,7 +359,7 @@ function StorageBrowser(properties: {
             return (
               <Headless.TabPanel className="focus:outline-none" key={tab}>
                 {visible.length === 0 ? (
-                  <Text className="mt-4">{t('storage.files.emptyCategory')}</Text>
+                  <Text className="mt-4">{t('files.emptyCategory')}</Text>
                 ) : (
                   <ul className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
                     {visible.map(function (blob) {
@@ -383,15 +383,15 @@ function StorageBrowser(properties: {
 
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
         <Text aria-live="polite" className="text-sm text-zinc-600 dark:text-zinc-300">
-          {t('storage.files.showing', {
-            category: t(`storage.category.${category}`),
+          {t('files.showing', {
+            category: t(`files.category.${category}`),
             total,
             visible: blobs.length,
           })}
         </Text>
         <Button
-          aria-label={tPlain('storage.files.showMoreAria', {
-            category: tPlain(`storage.category.${category}`),
+          aria-label={tPlain('files.showMoreAria', {
+            category: tPlain(`files.category.${category}`),
             count: total,
           })}
           className="disabled:cursor-not-allowed data-disabled:cursor-not-allowed"
@@ -399,7 +399,7 @@ function StorageBrowser(properties: {
           onClick={loadMore}
           outline
         >
-          {t('storage.files.showMore')}
+          {t('files.showMore')}
         </Button>
       </div>
     </>
@@ -407,7 +407,7 @@ function StorageBrowser(properties: {
 
   function loadMore(): undefined {
     router.get(
-      urlFor('storage.show'),
+      urlFor('files.show'),
       { category, limit: blobs.length + blobsPerPage, snapshot: snapshot ?? undefined },
       {
         onError: onPaginationError,
@@ -421,7 +421,7 @@ function StorageBrowser(properties: {
   function switchTab(tab: StorageTab): undefined {
     if (tab === category) return
     router.get(
-      urlFor('storage.show'),
+      urlFor('files.show'),
       { category: tab },
       {
         onError: onPaginationError,
@@ -433,7 +433,7 @@ function StorageBrowser(properties: {
   }
 
   function onPaginationError(): undefined {
-    toast.error(tPlain('storage.files.loadError'))
+    toast.error(tPlain('files.loadError'))
   }
 }
 
@@ -445,7 +445,7 @@ function StorageBrowser(properties: {
  * @returns
  *   Element.
  */
-function StorageBreakdown(properties: { breakdown: ReadonlyArray<Breakdown> }): React.ReactNode {
+function FilesBreakdown(properties: { breakdown: ReadonlyArray<Breakdown> }): React.ReactNode {
   const { breakdown } = properties
   const { locale, t, tPlain } = useT()
   let totalSize = 0
@@ -457,12 +457,12 @@ function StorageBreakdown(properties: { breakdown: ReadonlyArray<Breakdown> }): 
   return (
     <div>
       <div className="mb-4 flex items-baseline justify-between gap-2">
-        <Subheading level={2}>{t('storage.breakdown.title')}</Subheading>
+        <Subheading level={2}>{t('files.breakdown.title')}</Subheading>
         <span
           aria-label={formatByteSize(totalSize, locale)}
           className="text-sm tabular-nums text-zinc-900 dark:text-zinc-100"
         >
-          {t('storage.breakdown.total', { size: formatByteSize(totalSize, locale) })}
+          {t('files.breakdown.total', { size: formatByteSize(totalSize, locale) })}
         </span>
       </div>
 
@@ -470,7 +470,7 @@ function StorageBreakdown(properties: { breakdown: ReadonlyArray<Breakdown> }): 
         aria-label={breakdown
           .map(
             ({ bytes, category }) =>
-              `${tPlain(`storage.category.${category ?? 'all'}`)}: ${formatByteSize(bytes, locale)}`
+              `${tPlain(`files.category.${category}`)}: ${formatByteSize(bytes, locale)}`
           )
           .join(', ')}
         className="flex h-2.5 w-full overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-700"
@@ -496,7 +496,7 @@ function StorageBreakdown(properties: { breakdown: ReadonlyArray<Breakdown> }): 
               <span className={`size-2 shrink-0 rounded-full ${categoryColor(category)}`} />
               <span className="text-sm text-zinc-600 dark:text-zinc-300">
                 <span className="font-medium text-zinc-900 dark:text-zinc-100">
-                  {tPlain(`storage.category.${category ?? 'all'}`)}
+                  {tPlain(`files.category.${category}`)}
                 </span>
                 {' — '}
                 <span className="tabular-nums">{formatByteSize(bytes, locale)}</span>

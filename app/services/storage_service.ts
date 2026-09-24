@@ -12,7 +12,7 @@ import { type StorageCategory, type StorageTab, isStorageCategory } from '#share
 
 /**
  * Default (and per-page increment) blobs to return per category;
- * matches the grid sizing in `inertia/pages/storage/show.tsx`.
+ * matches the grid sizing in `inertia/pages/files/show.tsx`.
  */
 const defaultLimit = 48
 

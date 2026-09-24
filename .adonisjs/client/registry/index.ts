@@ -84,11 +84,11 @@ const routes = {
     tokens: [{"old":"/onboarding","type":0,"val":"onboarding","end":""}],
     types: placeholder as Registry['account.store_acceptance']['types'],
   },
-  'storage.show': {
+  'files.show': {
     methods: ["GET","HEAD"],
-    pattern: '/storage',
-    tokens: [{"old":"/storage","type":0,"val":"storage","end":""}],
-    types: placeholder as Registry['storage.show']['types'],
+    pattern: '/files',
+    tokens: [{"old":"/files","type":0,"val":"files","end":""}],
+    types: placeholder as Registry['files.show']['types'],
   },
   'account.dismiss_welcome': {
     methods: ["POST"],

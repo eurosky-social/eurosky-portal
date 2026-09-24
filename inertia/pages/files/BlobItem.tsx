@@ -140,7 +140,7 @@ export default function BlobItem(properties: BlobItemProperties): ReactNode {
       value = (
         <div className="mb-2 aspect-square w-full rounded-md border border-zinc-200 bg-zinc-50 p-3 dark:border-white/10 dark:bg-zinc-900/40 flex flex-col items-center justify-center gap-2">
           <Button
-            aria-label={tPlain('storage.preview.loadLargeAria', {
+            aria-label={tPlain('files.preview.loadLargeAria', {
               mimeType: formatMimeType(tPlain, blob.mimeType),
             })}
             className="dark:border-slate-600!"
@@ -149,7 +149,7 @@ export default function BlobItem(properties: BlobItemProperties): ReactNode {
             }}
             outline
           >
-            {t('storage.preview.loadLarge', { mimeType: formatMimeType(t, blob.mimeType) })}
+            {t('files.preview.loadLarge', { mimeType: formatMimeType(t, blob.mimeType) })}
           </Button>
         </div>
       )
@@ -166,15 +166,15 @@ export default function BlobItem(properties: BlobItemProperties): ReactNode {
   } else {
     value = (
       <div className="mb-2 aspect-square w-full rounded-md border border-zinc-200 bg-zinc-50 p-3 dark:border-white/10 dark:bg-zinc-900/40 flex flex-col items-center justify-center gap-2">
-        {t('storage.preview.notAvailable')}
+        {t('files.preview.notAvailable')}
       </div>
     )
   }
 
   cells.push(
-    { key: t('storage.field.size'), value: formatByteSize(blob.size, locale) },
+    { key: t('files.field.size'), value: formatByteSize(blob.size, locale) },
     {
-      key: t('storage.field.type'),
+      key: t('files.field.type'),
       value: blob.mimeType ? formatMimeType(t, blob.mimeType) : t('mimeType.unknown'),
     }
   )
@@ -183,7 +183,7 @@ export default function BlobItem(properties: BlobItemProperties): ReactNode {
     <li className="group relative rounded-lg border border-zinc-200 p-3 dark:border-white/10">
       <div className="absolute top-5 right-5 z-10 inline-flex items-center gap-2 transition-opacity duration-200 sm:pointer-events-none sm:opacity-0 sm:group-hover:pointer-events-auto sm:group-hover:opacity-100 sm:group-focus-within:pointer-events-auto sm:group-focus-within:opacity-100">
         <button
-          aria-label={tPlain('storage.open.aria')}
+          aria-label={tPlain('files.open.aria')}
           className="inline-flex items-center gap-1 rounded-md border border-zinc-300 bg-white/90 px-2 py-1 text-xs font-medium text-zinc-900 shadow-sm backdrop-blur-sm transition-colors hover:bg-white active:bg-zinc-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 disabled:cursor-not-allowed disabled:opacity-60 dark:border-zinc-700 dark:bg-zinc-900/90 dark:text-zinc-100 dark:hover:bg-zinc-800 dark:active:bg-zinc-700 dark:focus-visible:ring-blue-300/40"
           disabled={opening}
           onClick={async function () {
@@ -192,7 +192,7 @@ export default function BlobItem(properties: BlobItemProperties): ReactNode {
             try {
               await openBlob(url)
             } catch {
-              toast.error(tPlain('storage.open.error'))
+              toast.error(tPlain('files.open.error'))
             } finally {
               setOpening(false)
             }
@@ -200,10 +200,10 @@ export default function BlobItem(properties: BlobItemProperties): ReactNode {
           type="button"
         >
           <ArrowsPointingOutIcon aria-hidden="true" className="size-4" data-slot="icon" />
-          {opening ? t('storage.open.actionBusy') : t('storage.open.action')}
+          {opening ? t('files.open.actionBusy') : t('files.open.action')}
         </button>
         <button
-          aria-label={tPlain('storage.download.aria')}
+          aria-label={tPlain('files.download.aria')}
           className="inline-flex items-center gap-1 rounded-md border border-zinc-300 bg-white/90 px-2 py-1 text-xs font-medium text-zinc-900 shadow-sm backdrop-blur-sm transition-colors hover:bg-white active:bg-zinc-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 disabled:cursor-not-allowed disabled:opacity-60 dark:border-zinc-700 dark:bg-zinc-900/90 dark:text-zinc-100 dark:hover:bg-zinc-800 dark:active:bg-zinc-700 dark:focus-visible:ring-blue-300/40"
           disabled={downloading}
           onClick={async function () {
@@ -212,7 +212,7 @@ export default function BlobItem(properties: BlobItemProperties): ReactNode {
             try {
               await downloadBlob(url, displayFilename(blob.cid, blob.mimeType))
             } catch {
-              toast.error(tPlain('storage.download.error'))
+              toast.error(tPlain('files.download.error'))
             } finally {
               setDownloading(false)
             }
@@ -220,7 +220,7 @@ export default function BlobItem(properties: BlobItemProperties): ReactNode {
           type="button"
         >
           <ArrowDownTrayIcon aria-hidden="true" className="size-4" data-slot="icon" />
-          {downloading ? t('storage.download.actionBusy') : t('storage.download.action')}
+          {downloading ? t('files.download.actionBusy') : t('files.download.action')}
         </button>
       </div>
       {value}
