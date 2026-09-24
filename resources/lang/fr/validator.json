@@ -1,0 +1,17 @@
+{
+  "shared": {
+    "messages": {
+      "accepted": "Le champ {field} doit être accepté.",
+      "at-handle": "Veuillez saisir un compte Atmosphere valide, par exemple nom{domain}",
+      "enum": "Le champ {field} sélectionné n’est pas valide.",
+      "max": "Le champ {field} ne doit pas dépasser {max}.",
+      "min": "Le champ {field} doit contenir au moins {min}.",
+      "notIn": "Le champ {field} sélectionné n’est pas valide.",
+      "regex": "Le format du champ {field} n’est pas valide.",
+      "required": "Le champ {field} est requis.",
+      "terms": {
+        "required": "Vous devez accepter les conditions d’utilisation et la politique de confidentialité pour continuer."
+      }
+    }
+  }
+}
