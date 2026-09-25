@@ -6,12 +6,11 @@ import ReactDOMServer from 'react-dom/server'
 import { createInertiaApp, ResolvedComponent } from '@inertiajs/react'
 import { TuyauProvider } from '@adonisjs/inertia/react'
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
-
-const appName = import.meta.env.VITE_APP_NAME || 'Eurosky Portal'
+import { brand } from '#shared/brand'
 
 export default function render(page: any) {
   return createInertiaApp({
-    title: (title) => (title ? `${title} - ${appName}` : appName),
+    title: (title) => (title ? `${title} - ${brand.appTitle}` : brand.appTitle),
     page,
     render: ReactDOMServer.renderToString,
     resolve: (name) => {

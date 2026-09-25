@@ -18,6 +18,7 @@ import {
   useSyncExternalStore,
 } from 'react'
 import type { Locale } from '#shared/locale'
+import { brand } from '#shared/brand'
 import { parse, serverSnapshot, setLocale, snapshot, subscribe } from '~/utils/locale'
 
 type VariableValue<T> = FormatXMLElementFn<T> | PrimitiveType | T
@@ -213,7 +214,14 @@ function createT(locale: Locale, messages: Record<string, string> | undefined) {
     for (const name of names) defaults[name] = identity
     // `IntlMessageFormat` collapses adjacent strings (`["Jane", "!"]`) already,
     // so no arrays of strings.
-    return String(format.format({ ...defaults, ...variables }))
+    return String(
+      format.format({
+        ...defaults,
+        appBrand: brand.name,
+        appTitle: brand.appTitle,
+        ...variables,
+      })
+    )
   }
 
   /**
@@ -237,7 +245,12 @@ function createT(locale: Locale, messages: Record<string, string> | undefined) {
     const message = compile(key)
     if (!message) return
     const { format } = message
-    const result = format.format(variables ?? {})
+    const values: Record<string, VariableValue<ReactNode>> = {
+      appBrand: brand.name,
+      appTitle: brand.appTitle,
+      ...variables,
+    }
+    const result = format.format(values)
 
     // Add React keys for automatically generated elements.
     if (Array.isArray(result)) {

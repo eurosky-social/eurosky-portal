@@ -22,6 +22,7 @@ import { SlingshotService } from '#services/slingshot_service'
 import { loginRequestValidator, signupRequestValidator } from '#validators/oauth'
 import { createFieldError } from '#utils/errors'
 import { getHandleDomain } from '#utils/oauth'
+import { brand } from '#shared/brand'
 
 const oauthServerUrl = env.get('OAUTH_SERVICE')
 const allowExternalLogins = env.get('ALLOW_EXTERNAL_LOGINS', false)
@@ -107,7 +108,14 @@ export default class OAuthController {
       }
 
       if (resolved.authorizationServer.toString() !== oauthServerUrl) {
-        throw createFieldError('input', result.value, i18n.t('oauth.notEurosky'))
+        throw createFieldError(
+          'input',
+          result.value,
+          i18n.t('oauth.unsupportedAccount', {
+            appBrand: brand.name,
+            appTitle: brand.appTitle,
+          })
+        )
       }
 
       resolvedValue = resolved.did
@@ -468,7 +476,14 @@ function checkAuthInput(
       // We need to remove any trailing slashes to normalize:
       value.toLowerCase().replace(/\/$/, '') !== oauthServerUrl.toLowerCase().replace(/\/$/, '')
     ) {
-      throw createFieldError('input', value, i18n.t('oauth.notEurosky'))
+      throw createFieldError(
+        'input',
+        value,
+        i18n.t('oauth.unsupportedAccount', {
+          appBrand: brand.name,
+          appTitle: brand.appTitle,
+        })
+      )
     }
 
     return { type: 'service-url', value }
@@ -489,7 +504,14 @@ function checkAuthInput(
     // We know these are not us.
     // Note that `handleDomain` is already filtered out.
     if (WELL_KNOWN_HANDLE_DOMAINS.some((serviceDomain) => value.endsWith(serviceDomain))) {
-      throw createFieldError('input', value, i18n.t('oauth.notEurosky'))
+      throw createFieldError(
+        'input',
+        value,
+        i18n.t('oauth.unsupportedAccount', {
+          appBrand: brand.name,
+          appTitle: brand.appTitle,
+        })
+      )
     }
 
     if (value.endsWith(handleDomain)) {
