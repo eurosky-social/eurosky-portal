@@ -5,7 +5,10 @@ import Card from '~/lib/card'
 import { InertiaProps } from '~/types'
 import { useT } from '~/lib/i18n'
 
-export default function ApplicationsPage({ sections }: InertiaProps<Data.Apps>) {
+export default function ApplicationsPage({
+  favorites,
+  sections,
+}: InertiaProps<Data.Apps & { favorites: Array<string> | undefined }>) {
   const { tPlain, t } = useT()
 
   return (
@@ -15,7 +18,7 @@ export default function ApplicationsPage({ sections }: InertiaProps<Data.Apps>) 
         {t('sidebar.applications')}
       </h2>
       <p className="mb-4 text-sm/6 text-gray-500 dark:text-gray-300">{t('apps.subheading')}</p>
-      <Apps sections={sections} />
+      <Apps favorites={favorites} sections={sections} />
     </Card>
   )
 }

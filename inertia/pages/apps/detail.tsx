@@ -2,6 +2,7 @@ import { Data } from '@generated/data'
 import { ChevronLeftIcon } from '@heroicons/react/20/solid'
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid'
 import { Head } from '@inertiajs/react'
+import { FavoriteButton } from '~/components/FavoriteButton'
 import { MarkdownContent } from '~/components/MarkdownContent'
 import { Rating } from '~/components/Rating'
 import { Avatar } from '~/lib/avatar'
@@ -14,7 +15,10 @@ import { InertiaProps } from '~/types'
 import { useT } from '~/lib/i18n'
 import { formatNumber } from '~/utils/number'
 
-export default function AppDetailPage({ app }: InertiaProps<{ app: Data.App }>) {
+export default function AppDetailPage({
+  app,
+  favorite,
+}: InertiaProps<{ app: Data.App; favorite: boolean | undefined }>) {
   const { locale, tPlain, t } = useT()
   const { externalUrl, listing, madeInEurope } = app
   const {
@@ -41,19 +45,24 @@ export default function AppDetailPage({ app }: InertiaProps<{ app: Data.App }>) 
     <Card className="p-6 sm:p-8">
       <Head title={name} />
 
-      <nav
-        aria-label={tPlain('common.breadcrumb')}
-        className="text-sm text-zinc-500 dark:text-zinc-400 mb-8"
-      >
-        <BackLink className="hover:text-zinc-700 dark:hover:text-zinc-300" route="discover.apps">
-          <ChevronLeftIcon aria-hidden="true" className="size-4 inline-block" />
-          {t('sidebar.applications')}
-        </BackLink>
-        {' / '}
-        <span aria-current="page" lang="en">
-          {name}
-        </span>
-      </nav>
+      <div className="mb-8 flex items-start justify-between gap-4">
+        <nav
+          aria-label={tPlain('common.breadcrumb')}
+          className="text-sm text-zinc-500 dark:text-zinc-400"
+        >
+          <BackLink className="hover:text-zinc-700 dark:hover:text-zinc-300" route="discover.apps">
+            <ChevronLeftIcon aria-hidden="true" className="size-4 inline-block" />
+            {t('sidebar.applications')}
+          </BackLink>
+          {' / '}
+          <span aria-current="page" lang="en">
+            {name}
+          </span>
+        </nav>
+        {typeof favorite === 'boolean' ? (
+          <FavoriteButton favorite={favorite} name={name} rkey={app.rkey} />
+        ) : undefined}
+      </div>
 
       <div className="grid gap-8 sm:grid-cols-[1fr_2fr]">
         <div className="space-y-4">

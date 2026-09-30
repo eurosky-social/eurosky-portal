@@ -23,7 +23,10 @@ router
 router
   .group(() => {
     router.get('/dashboard', [controllers.Dashboard, 'show'])
+    router.get('/dashboard/apps', [controllers.Dashboard, 'apps'])
     router.on('/dashboard/explore').redirectToPath('/explore/learn-more')
+    router.post('/apps/:rkey/favorite', [controllers.Discover, 'favorite'])
+    router.delete('/apps/:rkey/favorite', [controllers.Discover, 'unfavorite'])
     router.get('/explore/learn-more', [controllers.Explore, 'learnMore'])
     router.get('/activity', [controllers.Activity, 'show'])
     router.get('/activity/:collection/:rkey', [controllers.Activity, 'detail'])

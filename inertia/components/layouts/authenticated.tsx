@@ -24,6 +24,7 @@ import {
   ArrowTopRightOnSquareIcon,
   LifebuoyIcon,
   LockClosedIcon,
+  StarIcon,
 } from '@heroicons/react/24/solid'
 import { useAuth } from '~/utils/use_auth'
 import { Form } from '@adonisjs/inertia/react'
@@ -64,6 +65,10 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
                   <SidebarItem route="activity.show" current={url.startsWith('/activity')}>
                     <ClockIcon />
                     <SidebarLabel>{t('sidebar.yourActivity')}</SidebarLabel>
+                  </SidebarItem>
+                  <SidebarItem route="dashboard.apps" current={url.startsWith('/dashboard/apps')}>
+                    <StarIcon />
+                    <SidebarLabel>{t('sidebar.yourApps')}</SidebarLabel>
                   </SidebarItem>
                   <SidebarItem href={manageUrl} target="_blank" as={'a'}>
                     <Cog6ToothIcon />

@@ -2,7 +2,9 @@ import type { HttpContext } from '@adonisjs/core/http'
 import logger from '@adonisjs/core/services/logger'
 import ActivityFeedViewed from '#events/activity_feed_viewed'
 import activityService from '#services/activity_service'
+import { AtStoreService } from '#services/atstore_service'
 import { type BskyAppPost, type BskyAppProfile, BskyAppService } from '#services/bsky_app_service'
+import { FavoriteService } from '#services/favorite_service'
 import {
   type ActivityDetail,
   default as ActivityTransformer,
@@ -48,7 +50,8 @@ export default class ActivityController {
   }
 
   async detail({ auth, inertia, request, response }: HttpContext) {
-    const { did } = await auth.getUserOrFail()
+    const user = auth.getUserOrFail()
+    const { did } = user
 
     const validated = await request.validateUsing(activityDetailValidator).catch(() => undefined)
     if (!validated) return response.notFound()
@@ -58,8 +61,12 @@ export default class ActivityController {
     if (!record) return response.notFound()
     const { pds, uri, value } = record
     const activity = new ActivityTransformer(value, { did, pds, uri }).toObject()
-    const related = await this.#fetchRelated(activity)
-    return inertia.render('activity/detail', { activity, ...related })
+    const [related, favorites] = await Promise.all([
+      this.#fetchRelated(activity),
+      new FavoriteService().getFavorites(user),
+    ])
+    const launcherApps = await new AtStoreService().getLauncherApps(favorites)
+    return inertia.render('activity/detail', { activity, launcherApps, ...related })
   }
 
   // Fetch what is interacted with.

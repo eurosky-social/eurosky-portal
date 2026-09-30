@@ -103,6 +103,42 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/dashboard_controller').default['show']>>>
     }
   }
+  'dashboard.apps': {
+    methods: ["GET","HEAD"]
+    pattern: '/dashboard/apps'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/dashboard_controller').default['apps']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/dashboard_controller').default['apps']>>>
+    }
+  }
+  'discover.favorite': {
+    methods: ["POST"]
+    pattern: '/apps/:rkey/favorite'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { rkey: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/discover_controller').default['favorite']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/discover_controller').default['favorite']>>>
+    }
+  }
+  'discover.unfavorite': {
+    methods: ["DELETE"]
+    pattern: '/apps/:rkey/favorite'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { rkey: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/discover_controller').default['unfavorite']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/discover_controller').default['unfavorite']>>>
+    }
+  }
   'explore.learn_more': {
     methods: ["GET","HEAD"]
     pattern: '/explore/learn-more'

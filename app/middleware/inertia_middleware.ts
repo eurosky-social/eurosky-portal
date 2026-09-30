@@ -40,6 +40,15 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
     }
 
     /**
+     * Something changed that makes pages in history stale
+     * (such as favorites);
+     * Clear them.
+     */
+    if (session?.flashMessages.get('clearHistory')) {
+      ctx.inertia.clearHistory()
+    }
+
+    /**
      * Fetching the first error from the flash messages
      */
     const errorsBag = session?.flashMessages.get('errorsBag') ?? {}

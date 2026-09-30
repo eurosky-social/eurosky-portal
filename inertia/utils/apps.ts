@@ -1,17 +1,5 @@
-import {
-  type AtUriParts,
-  type AtUriString,
-  AtUri,
-  ifAtIdentifierString,
-  parseAtUriString,
-} from '@atproto/syntax'
-
-/**
- * Hashtag.
- */
-export interface AtTagUriParts {
-  tag: string
-}
+import { type AtUriParts, type AtUriString, AtUri, parseAtUriString } from '@atproto/syntax'
+import { type AtTagUriParts, apps } from '#shared/apps'
 
 /**
  * BlueSky hashtags don’t have a real `at://` URI representation,
@@ -20,130 +8,23 @@ export interface AtTagUriParts {
  */
 export type AtTagUriString = `${typeof atTag}${string}`
 
-type Choice = [name: string, url: string]
-type FromAtUri = (parts: AtUriParts | AtTagUriParts) => string | undefined
+type Choice = [atUri: AtUriString, url: string]
 type Listener = () => undefined | void
-type ToAtUri = (url: URL) => AtUriParts | AtTagUriParts | undefined
 
 const atTag = 'at-tag://'
-const listeners = new Set<Listener>()
-const localStorageKey = 'preferred-apps'
 
 /**
- * List of supported apps and their URL transformation functions.
+ * App to use when there is no recent pick or favorite.
+ * Mu!
  */
-const apps: ReadonlyArray<[name: string, fromAtUri: FromAtUri, toAtUri: ToAtUri]> = [
-  [
-    'Bluesky',
-    (parts) => {
-      if ('tag' in parts) return `https://bsky.app/hashtag/${encodeURIComponent(parts.tag)}`
-      const base = `https://bsky.app/profile/${parts.authority}`
-      if (!parts.collection) return base
-      if (parts.collection === 'app.bsky.feed.post' && parts.rkey) {
-        return `${base}/post/${parts.rkey}`
-      }
-    },
-    (url) => {
-      if (url.hostname !== 'bsky.app') return
+const defaultApp = 'at://did:plc:izttpdp3l6vss5crelt5kcux/fyi.atstore.listing.detail/3mqmb7emiusy5'
+const listeners = new Set<Listener>()
 
-      const hashtagMatch = /^\/hashtag\/([^/]+)\/?$/.exec(url.pathname)
-      if (hashtagMatch) {
-        try {
-          return { tag: decodeURIComponent(hashtagMatch[1]) }
-        } catch {
-          return
-        }
-      }
-
-      const profileMatch = /^\/profile\/([^/]+)(?:\/post\/([^/]+))?\/?$/.exec(url.pathname)
-      if (!profileMatch) return
-      const [, rawAuthority, rkey] = profileMatch
-      const authority = rawAuthority ? ifAtIdentifierString(rawAuthority) : undefined
-      if (!authority) return
-      if (rkey) return { authority, collection: 'app.bsky.feed.post', rkey }
-      return { authority }
-    },
-  ],
-  [
-    'Leaflet',
-    (parts) => {
-      if ('tag' in parts) return
-      // Leaflet has user links, but we don’t return them.
-      // `https://leaflet.pub/p/${parts.authority}`
-      if (!parts.collection) return
-      if (parts.collection === 'site.standard.document' && parts.rkey)
-        return `https://leaflet.pub/p/${parts.authority}/${parts.rkey}`
-    },
-    (url) => {
-      if (url.hostname !== 'leaflet.pub') return
-      const match = /^\/p\/([^/]+)(?:\/([^/]+))?\/?$/.exec(url.pathname)
-      if (!match) return
-      const [, rawAuthority, rkey] = match
-      const authority = rawAuthority ? ifAtIdentifierString(rawAuthority) : undefined
-      if (!authority) return
-      if (rkey) return { authority, collection: 'site.standard.document', rkey }
-      return { authority }
-    },
-  ],
-  [
-    'Mu',
-    (parts) => {
-      if ('tag' in parts) return `https://mu.social/hashtag/${encodeURIComponent(parts.tag)}`
-      const base = `https://mu.social/profile/${parts.authority}`
-      if (!parts.collection) return base
-      if (parts.collection === 'app.bsky.feed.post' && parts.rkey)
-        return `${base}/post/${parts.rkey}`
-    },
-    (url) => {
-      if (url.hostname !== 'mu.social') return
-
-      const hashtagMatch = /^\/hashtag\/([^/]+)\/?$/.exec(url.pathname)
-      if (hashtagMatch) {
-        try {
-          return { tag: decodeURIComponent(hashtagMatch[1]) }
-        } catch {
-          return
-        }
-      }
-
-      const profileMatch = /^\/profile\/([^/]+)(?:\/post\/([^/]+))?\/?$/.exec(url.pathname)
-      if (!profileMatch) return
-      const [, rawAuthority, rkey] = profileMatch
-      const authority = rawAuthority ? ifAtIdentifierString(rawAuthority) : undefined
-      if (!authority) return
-      if (rkey) return { authority, collection: 'app.bsky.feed.post', rkey }
-      return { authority }
-    },
-  ],
-  [
-    'Standard reader',
-    (parts) => {
-      if ('tag' in parts) return
-      // Leaflet has user links, but we don’t return them.
-      // `https://standard-reader.app/u/${parts.authority}`
-      if (!parts.collection) return
-      if (parts.collection === 'site.standard.document' && parts.rkey)
-        return `https://standard-reader.app/a/${parts.authority}/${parts.rkey}`
-    },
-    (url) => {
-      if (url.hostname !== 'standard-reader.app') return
-
-      const profile = /^\/u\/([^/]+)\/?$/.exec(url.pathname)
-      const profileAuthority = profile?.[1] ? ifAtIdentifierString(profile[1]) : undefined
-      if (profileAuthority) return { authority: profileAuthority }
-
-      const article = /^\/a\/([^/]+)\/([^/]+)\/?$/.exec(url.pathname)
-      const articleAuthority = article ? ifAtIdentifierString(article[1]) : undefined
-      if (article && articleAuthority) {
-        return {
-          authority: articleAuthority,
-          collection: 'site.standard.document',
-          rkey: article[2],
-        }
-      }
-    },
-  ],
-]
+/**
+ * Recent picks, as URIs of apps (atstore listings);
+ * unknown values (such as app names, which were used before) are ignored.
+ */
+const localStorageKey = 'preferred-apps'
 
 /**
  * Find apps that can open a given `at://` URI.
@@ -151,7 +32,7 @@ const apps: ReadonlyArray<[name: string, fromAtUri: FromAtUri, toAtUri: ToAtUri]
  * @param atUri
  *   `at://` URI (example `at://did` or `at://did/collection/rkey`).
  * @returns
- *   App names and web URLs.
+ *   URIs of apps (atstore listings) and web URLs.
  */
 export function find(atUri: AtTagUriString | AtUriString): Array<Choice> {
   const result: Array<Choice> = []
@@ -171,9 +52,10 @@ export function find(atUri: AtTagUriString | AtUriString): Array<Choice> {
 
   if (!parts) return result
 
-  for (const [name, fromAtUri] of apps) {
-    const url = fromAtUri(parts)
-    if (url) result.push([name, url])
+  for (const app of apps) {
+    if (!app.launcher) continue
+    const url = app.launcher.fromAtUri(parts)
+    if (url) result.push([app.atUri, url])
   }
 
   return result
@@ -198,32 +80,37 @@ function parse(value: string | null): ReadonlyArray<unknown> {
     } catch {}
   }
 
-  // Prefer Mu :)
-  return ['Mu']
+  return []
 }
 
 /**
  * Get the preferred choice from a list of choices.
  *
+ * Recent picks come first, then favorites, then {@linkcode defaultApp}.
+ *
  * @param choices
  *   List of choices.
  * @param value
  *   Snapshot value (from `useSyncExternalStore`).
+ * @param favorites
+ *   URIs of favorited apps (atstore listings).
  * @returns
  *   Preferred choice.
  */
 export function preferred(
   choices: ReadonlyArray<Choice>,
-  value: string | null
+  value: string | null,
+  favorites: ReadonlyArray<string> = []
 ): Choice | undefined {
-  const preferredApps = parse(value)
-
-  for (const app of preferredApps) {
-    const choice = choices.find(([name]) => name === app)
+  for (const app of parse(value)) {
+    const choice = choices.find(([appUri]) => appUri === app)
     if (choice) return choice
   }
 
-  return choices.at(0)
+  const favorite = choices.find(([appUri]) => favorites.includes(appUri))
+  if (favorite) return favorite
+
+  return choices.find(([appUri]) => appUri === defaultApp) ?? choices.at(0)
 }
 
 /**
@@ -232,17 +119,17 @@ export function preferred(
  * Saves a unique list of newest preferred apps,
  * capped to a reasonable size.
  *
- * @param name
- *   Name of app.
+ * @param appUri
+ *   URI of app (atstore listing).
  * @param value
  *   Current snapshot value (from `useSyncExternalStore`).
  * @returns
  *   Nothing.
  */
-export function prefer(name: string, value: string | null): undefined {
+export function prefer(appUri: AtUriString, value: string | null): undefined {
   if (typeof localStorage === 'undefined') return
 
-  const preferredApps = [...new Set([name, ...parse(value)])]
+  const preferredApps = [...new Set([appUri, ...parse(value)])]
   if (preferredApps.length > 20) preferredApps.length = 20
 
   try {
@@ -313,8 +200,9 @@ export function toUri(href: string): AtTagUriString | AtUriString | undefined {
   if (!url) return
   if (url.protocol !== 'http:' && url.protocol !== 'https:') return
 
-  for (const [, , toAtUri] of apps) {
-    const parts = toAtUri(url)
+  for (const app of apps) {
+    if (!app.launcher) continue
+    const parts = app.launcher.toAtUri(url)
     if (parts) {
       return 'tag' in parts
         ? `at-tag://${encodeURIComponent(parts.tag)}`

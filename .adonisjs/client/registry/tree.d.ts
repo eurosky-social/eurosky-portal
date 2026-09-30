@@ -20,6 +20,13 @@ export interface ApiDefinition {
   }
   dashboard: {
     show: typeof routes['dashboard.show']
+    apps: typeof routes['dashboard.apps']
+  }
+  discover: {
+    favorite: typeof routes['discover.favorite']
+    unfavorite: typeof routes['discover.unfavorite']
+    apps: typeof routes['discover.apps']
+    app: typeof routes['discover.app']
   }
   explore: {
     learnMore: typeof routes['explore.learn_more']
@@ -27,10 +34,6 @@ export interface ApiDefinition {
   activity: {
     show: typeof routes['activity.show']
     detail: typeof routes['activity.detail']
-  }
-  discover: {
-    apps: typeof routes['discover.apps']
-    app: typeof routes['discover.app']
   }
   legal: {
     show: typeof routes['legal.show']

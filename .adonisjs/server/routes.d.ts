@@ -12,6 +12,9 @@ export type ScannedRoutes = {
     'account.create': { paramsTuple?: []; params?: {} }
     'auth.login': { paramsTuple?: []; params?: {} }
     'dashboard.show': { paramsTuple?: []; params?: {} }
+    'dashboard.apps': { paramsTuple?: []; params?: {} }
+    'discover.favorite': { paramsTuple: [ParamValue]; params: {'rkey': ParamValue} }
+    'discover.unfavorite': { paramsTuple: [ParamValue]; params: {'rkey': ParamValue} }
     'explore.learn_more': { paramsTuple?: []; params?: {} }
     'activity.show': { paramsTuple?: []; params?: {} }
     'activity.detail': { paramsTuple: [ParamValue,ParamValue]; params: {'collection': ParamValue,'rkey': ParamValue} }
@@ -31,6 +34,7 @@ export type ScannedRoutes = {
     'account.create': { paramsTuple?: []; params?: {} }
     'auth.login': { paramsTuple?: []; params?: {} }
     'dashboard.show': { paramsTuple?: []; params?: {} }
+    'dashboard.apps': { paramsTuple?: []; params?: {} }
     'explore.learn_more': { paramsTuple?: []; params?: {} }
     'activity.show': { paramsTuple?: []; params?: {} }
     'activity.detail': { paramsTuple: [ParamValue,ParamValue]; params: {'collection': ParamValue,'rkey': ParamValue} }
@@ -48,6 +52,7 @@ export type ScannedRoutes = {
     'account.create': { paramsTuple?: []; params?: {} }
     'auth.login': { paramsTuple?: []; params?: {} }
     'dashboard.show': { paramsTuple?: []; params?: {} }
+    'dashboard.apps': { paramsTuple?: []; params?: {} }
     'explore.learn_more': { paramsTuple?: []; params?: {} }
     'activity.show': { paramsTuple?: []; params?: {} }
     'activity.detail': { paramsTuple: [ParamValue,ParamValue]; params: {'collection': ParamValue,'rkey': ParamValue} }
@@ -63,8 +68,12 @@ export type ScannedRoutes = {
     'oauth.logout': { paramsTuple?: []; params?: {} }
     'oauth.login': { paramsTuple?: []; params?: {} }
     'oauth.signup': { paramsTuple?: []; params?: {} }
+    'discover.favorite': { paramsTuple: [ParamValue]; params: {'rkey': ParamValue} }
     'account.store_acceptance': { paramsTuple?: []; params?: {} }
     'account.dismiss_welcome': { paramsTuple?: []; params?: {} }
+  }
+  DELETE: {
+    'discover.unfavorite': { paramsTuple: [ParamValue]; params: {'rkey': ParamValue} }
   }
 }
 declare module '@adonisjs/core/types/http' {

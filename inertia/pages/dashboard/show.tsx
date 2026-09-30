@@ -21,12 +21,16 @@ export default function Dashboard({
   activities,
   activityState,
   apps,
+  appsKind,
+  favorites,
   profile,
   showWelcomeMessage,
 }: InertiaProps<{
   activities: ActivityRow[]
   activityState: GetRecordsResult['state']
   apps: Data.AppSummary[]
+  appsKind: 'featured' | 'yours'
+  favorites: Array<string>
   profile: Data.Profile | undefined
   showWelcomeMessage: boolean
 }>) {
@@ -194,17 +198,24 @@ export default function Dashboard({
 
       <div className="pt-4">
         <h2 className="text-xl font-medium text-neutral-500 dark:text-slate-200">
-          {t('dashboard.featuredApps.heading')}
+          {t(appsKind === 'yours' ? 'sidebar.yourApps' : 'dashboard.featuredApps.heading')}
         </h2>
         <p className="text-base text-neutral-400 dark:text-slate-400 mb-6">
-          {t('dashboard.featuredApps.text')}
+          {t(appsKind === 'yours' ? 'dashboard.yourApps.text' : 'dashboard.featuredApps.text')}
         </p>
 
-        <AppGrid apps={apps} />
+        <AppGrid apps={apps} favorites={favorites} />
 
         <div className="mt-1 flex justify-center">
-          <Button route="discover.apps" className="w-full sm:w-auto dark:bg-slate-700!">
-            {t('dashboard.featuredApps.browseMore')}
+          <Button
+            route={appsKind === 'yours' ? 'dashboard.apps' : 'discover.apps'}
+            className="w-full sm:w-auto dark:bg-slate-700!"
+          >
+            {t(
+              appsKind === 'yours'
+                ? 'dashboard.yourApps.viewAll'
+                : 'dashboard.featuredApps.browseMore'
+            )}
           </Button>
         </div>
       </div>

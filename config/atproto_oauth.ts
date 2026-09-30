@@ -4,6 +4,7 @@ import {
   lucidStateStore,
 } from '@thisismissem/adonisjs-atproto-oauth'
 import env from '#start/env'
+import { favoriteScope, loginScopes } from '#utils/oauth'
 
 export default defineConfig({
   publicUrl: env.get('APP_URL'),
@@ -12,11 +13,10 @@ export default defineConfig({
     client_id: env.get('ATPROTO_OAUTH_CLIENT_ID'),
     client_name: 'Eurosky Portal',
     client_uri: new URL('/', env.get('APP_URL')).toString(),
-    // See: https://atproto.com/guides/scopes
-    scope: [
-      'atproto',
-      'rpc:app.bsky.actor.getProfile?aud=did:web:api.bsky.app%23bsky_appview',
-    ].join(' '),
+    // All scopes ever requested;
+    // logging in only asks for `loginScopes`,
+    // more are requested when needed.
+    scope: [...loginScopes, favoriteScope].join(' '),
     // logo_uri: 'https://my-app.com/logo.png',
     tos_uri: new URL('/legal/terms', env.get('APP_URL')).toString(),
     policy_uri: new URL('/legal/privacy', env.get('APP_URL')).toString(),

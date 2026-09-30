@@ -19,6 +19,7 @@ const nl = {
   'activity.underConstruction.text':
     'Je activiteitenoverzicht is nog in ontwikkeling. Sommige activiteiten kunnen ontbreken. We voegen binnenkort meer activiteiten toe.',
   'activity.underConstruction.title': 'In ontwikkeling',
+  'apps.addFavoriteNamed': 'Voeg {name} aan je apps toe',
   'apps.category.bookmark': 'Bladwijzers',
   'apps.category.development': 'Ontwikkeling',
   'apps.category.events': 'Evenementen',
@@ -29,11 +30,15 @@ const nl = {
   'apps.category.reviews': 'Recensies',
   'apps.category.social': 'Sociaal',
   'apps.chooseAppToOpen': 'Kies een app om dit mee te openen',
+  'apps.detail.addFavorite': 'Aan je apps toevoegen',
   'apps.detail.explore': 'Verkennen',
+  'apps.detail.removeFavorite': 'Uit je apps verwijderen',
   'apps.detail.seeAllReviews': 'Bekijk alle beoordelingen',
+  'apps.favorited': 'Favoriet',
   'apps.madeInEurope': 'Gemaakt in Europa',
   'apps.openWith': 'Openen met {name}',
   'apps.rating': '{value} van de 5',
+  'apps.removeFavoriteNamed': 'Verwijder {name} uit je apps',
   'apps.subheading': 'Bekijk de aanbevolen apps die werken met je Eurosky account.',
   'beta.giveFeedback': 'Feedback geven',
   'beta.warning': 'Eurosky Portal is momenteel in bèta. <feedback>Feedback geven</feedback>.',
@@ -69,6 +74,8 @@ const nl = {
   'dashboard.welcome.heading': 'Welkom in de Atmosphere',
   'dashboard.welcome.text':
     'Eurosky is jouw Europese thuis in de Atmosphere – een wereldwijd netwerk van sociale apps en diensten.',
+  'dashboard.yourApps.text': 'Je favoriete apps.',
+  'dashboard.yourApps.viewAll': 'Bekijk al je apps',
   'errors.notFound.title': 'Pagina niet gevonden',
   'errors.serverError.heading': 'Er is iets misgegaan',
   'errors.serverError.title': 'Serverfout',
@@ -122,8 +129,18 @@ const nl = {
   'sidebar.support': 'Ondersteuning',
   'sidebar.termsOfService': 'Gebruiksvoorwaarden',
   'sidebar.yourActivity': 'Je activiteiten',
+  'sidebar.yourApps': 'Je apps',
   'theme.setDark': 'Stel thema in op donker',
   'theme.setLight': 'Stel thema in op licht',
+  'yourApps.access.heading': 'Controleer welke apps toegang hebben',
+  'yourApps.access.link': 'App-toegang beheren',
+  'yourApps.access.text':
+    'Deze lijst toont alleen apps die je zelf hebt gemarkeerd. Ga naar je accountinstellingen om te zien welke apps toegang hebben tot je account, en om toegang in te trekken.',
+  'yourApps.browse': 'Applicaties bekijken',
+  'yourApps.empty':
+    'Je hebt nog geen apps toegevoegd. Open een applicatie en kies “Aan je apps toevoegen”.',
+  'yourApps.subheading':
+    'Je favoriete apps. We slaan deze op in je openbare data op Eurosky en dat betekent dat ze ook verschijnen op plaatsen zoals atstore.fyi.',
 } satisfies Record<string, string>
 
 export default nl

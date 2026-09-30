@@ -1,6 +1,7 @@
 import { ArrowTurnDownRightIcon, ChevronLeftIcon } from '@heroicons/react/20/solid'
 import { Head } from '@inertiajs/react'
 import type { ReactNode } from 'react'
+import type { LauncherApp } from '#services/atstore_service'
 import type { BskyAppPost, BskyAppProfile } from '#services/bsky_app_service'
 import type { ActivityDetail } from '#transformers/activity_transformer'
 import { Embed } from '~/components/Embed'
@@ -22,6 +23,7 @@ export default function ActivityDetailPage({
   quotedPost,
 }: InertiaProps<{
   activity: ActivityDetail
+  launcherApps: Array<LauncherApp>
   post?: BskyAppPost | undefined
   profile?: BskyAppProfile | undefined
   quotedPost?: BskyAppPost | undefined

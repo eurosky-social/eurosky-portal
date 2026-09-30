@@ -54,6 +54,24 @@ const routes = {
     tokens: [{"old":"/dashboard","type":0,"val":"dashboard","end":""}],
     types: placeholder as Registry['dashboard.show']['types'],
   },
+  'dashboard.apps': {
+    methods: ["GET","HEAD"],
+    pattern: '/dashboard/apps',
+    tokens: [{"old":"/dashboard/apps","type":0,"val":"dashboard","end":""},{"old":"/dashboard/apps","type":0,"val":"apps","end":""}],
+    types: placeholder as Registry['dashboard.apps']['types'],
+  },
+  'discover.favorite': {
+    methods: ["POST"],
+    pattern: '/apps/:rkey/favorite',
+    tokens: [{"old":"/apps/:rkey/favorite","type":0,"val":"apps","end":""},{"old":"/apps/:rkey/favorite","type":1,"val":"rkey","end":""},{"old":"/apps/:rkey/favorite","type":0,"val":"favorite","end":""}],
+    types: placeholder as Registry['discover.favorite']['types'],
+  },
+  'discover.unfavorite': {
+    methods: ["DELETE"],
+    pattern: '/apps/:rkey/favorite',
+    tokens: [{"old":"/apps/:rkey/favorite","type":0,"val":"apps","end":""},{"old":"/apps/:rkey/favorite","type":1,"val":"rkey","end":""},{"old":"/apps/:rkey/favorite","type":0,"val":"favorite","end":""}],
+    types: placeholder as Registry['discover.unfavorite']['types'],
+  },
   'explore.learn_more': {
     methods: ["GET","HEAD"],
     pattern: '/explore/learn-more',

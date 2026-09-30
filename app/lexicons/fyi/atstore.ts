@@ -3,3 +3,4 @@
  */
 
 export * as directory from './atstore/directory.js'
+export * as listing from './atstore/listing.js'

@@ -1,12 +1,9 @@
-import { readFile } from 'node:fs/promises'
-import app from '@adonisjs/core/services/app'
 import cache from '@adonisjs/cache/services/main'
 import logger from '@adonisjs/core/services/logger'
-import { xrpcSafe } from '@atproto/lex'
+import { type AtUriString, xrpcSafe } from '@atproto/lex'
 import { AtUri, asAtUriString } from '@atproto/syntax'
-import type { Infer } from '@vinejs/vine/types'
-import vine from '@vinejs/vine'
 import * as lexicon from '#lexicons'
+import { type CatalogApp, apps } from '#shared/apps'
 
 type ListingCardGet = lexicon.fyi.atstore.directory.getListing.ListingCardGet
 
@@ -42,52 +39,34 @@ type AtStoreListing = Pick<
 >
 
 /**
- * The fields that we add onto `atstore.fyi`.
- * These are defined in `data/apps.json`.
- *
- * Look at the existing data to add more.
- * Then search the atstore for an app.
- * For example, `https://atstore.fyi/xrpc/fyi.atstore.directory.searchListings?q=sifa`
- * for `sifa`.
- * Use the `at://…` url you see there as the `atUri` in `data/apps.json`.
+ * App from our catalog (`shared/apps.ts`), augmented with remote info.
  */
-const localAppSchema = vine.object({
-  /**
-   * Human-readable label for the entry; not used other than to make logs more
-   * readable.
-   */
-  '#': vine.string().optional(),
+export interface App extends AtStoreListingDetail, CatalogApp {}
 
+/**
+ * What the “open with” launcher needs to know about a catalog app.
+ */
+export type LauncherApp = {
   /**
-   * URI to atstore.
+   * URI of the atstore listing.
    */
-  'atUri': vine.string().startsWith('at://'),
-
-  /**
-   * Category slug (example: `getting-started`).
-   */
-  'category': vine.string().trim().minLength(1),
+  atUri: AtUriString
 
   /**
-   * Apps to show “outside” of the `apps` page.
+   * Whether the user favorited it.
    */
-  'featured': vine.boolean().optional(),
+  favorite: boolean
 
   /**
-   * Stamp of approval.
+   * Icon.
    */
-  'madeInEurope': vine.boolean().optional(),
+  iconUrl: string | null
 
   /**
-   * Custom category: apps recommended by eurosky.
+   * Name.
    */
-  'recommended': vine.boolean().optional(),
-})
-
-const localAppsValidator = vine.create(vine.array(localAppSchema))
-
-type LocalApp = Infer<typeof localAppSchema>
-export interface App extends AtStoreListingDetail, LocalApp {}
+  name: string
+}
 
 export class AtStoreService {
   /**
@@ -99,23 +78,43 @@ export class AtStoreService {
    * Get all local apps and augment with remote info.
    */
   async getApps(): Promise<ReadonlyArray<App>> {
-    return this.#hydrateAll(await this.#getLocalApps())
+    return this.#hydrateAll(apps)
   }
 
   /**
    * Get local apps flagged as `featured` and augmented with remote info.
    */
   async getFeaturedApps(): Promise<ReadonlyArray<App>> {
-    const local = await this.#getLocalApps()
-    return this.#hydrateAll(local.filter((a) => a.featured))
+    return this.#hydrateAll(apps.filter((a) => a.featured))
+  }
+
+  /**
+   * Get apps the “open with” launcher can use.
+   *
+   * @param favorites
+   *   URIs of favorited apps.
+   * @returns
+   *   Apps.
+   */
+  async getLauncherApps(favorites: ReadonlyArray<string>): Promise<Array<LauncherApp>> {
+    const favoriteSet = new Set<string>(favorites)
+    const hydrated = await this.getApps()
+
+    return hydrated
+      .filter((app) => app.launcher)
+      .map((app) => ({
+        atUri: app.atUri,
+        favorite: favoriteSet.has(app.atUri),
+        iconUrl: app.listing.iconUrl,
+        name: app.listing.name,
+      }))
   }
 
   /**
    * Get an app by record key.
    */
   async getApp(rkey: string): Promise<App | undefined> {
-    const local = await this.#getLocalApps()
-    const localApp = local.find((a) => new AtUri(a.atUri).rkey === rkey)
+    const localApp = apps.find((a) => new AtUri(a.atUri).rkey === rkey)
     if (!localApp) return
     return this.#hydrate(localApp)
   }
@@ -168,19 +167,11 @@ export class AtStoreService {
   }
 
   /**
-   * Read and validate local apps from `data/apps.json`.
-   */
-  async #getLocalApps(): Promise<ReadonlyArray<LocalApp>> {
-    const filePath = app.makePath('data', 'apps.json')
-    return localAppsValidator.validate(JSON.parse(await readFile(filePath, 'utf8')))
-  }
-
-  /**
    * Augment apps with remote info.
    *
    * Skips and logs any that fail.
    */
-  async #hydrateAll(local: ReadonlyArray<LocalApp>): Promise<ReadonlyArray<App>> {
+  async #hydrateAll(local: ReadonlyArray<CatalogApp>): Promise<ReadonlyArray<App>> {
     const list = await Promise.allSettled(local.map((localApp) => this.#hydrate(localApp)))
 
     return list
@@ -188,9 +179,7 @@ export class AtStoreService {
         if (result.status === 'fulfilled') {
           return result.value
         } else {
-          const localApp = local[index]
-          const label = localApp['#'] ?? localApp.atUri
-          logger.warn({ err: result.reason }, `Failed to fetch listing \`${label}\``)
+          logger.warn({ err: result.reason }, `Failed to fetch listing \`${local[index].atUri}\``)
         }
       })
       .filter((a): a is App => a !== undefined)
@@ -199,7 +188,7 @@ export class AtStoreService {
   /**
    * Augment an app with remote info.
    */
-  async #hydrate(localApp: LocalApp): Promise<App> {
+  async #hydrate(localApp: CatalogApp): Promise<App> {
     const listing = await cache.getOrSet({
       factory: () => this.#fetchListing(localApp.atUri),
       graceBackoff: '15m',

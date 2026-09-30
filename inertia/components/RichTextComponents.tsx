@@ -1,6 +1,8 @@
+import { usePage } from '@inertiajs/react'
 import type { ExtraProps } from 'hast-util-to-jsx-runtime'
 import { useSyncExternalStore } from 'react'
 import { BlobImage } from '~/components/BlobImage'
+import type { LauncherApp } from '#services/atstore_service'
 import { find, preferred, serverSnapshot, snapshot, subscribe, toUri } from '~/utils/apps'
 
 type ImageProperties = React.JSX.IntrinsicElements['img'] & ExtraProps
@@ -9,11 +11,13 @@ export function a(properties: React.JSX.IntrinsicElements['a'] & ExtraProps) {
   const { node, ...rest } = properties
 
   const value = useSyncExternalStore(subscribe, snapshot, serverSnapshot)
+  const { props } = usePage<{ launcherApps?: Array<LauncherApp> }>()
+  const favorites = (props.launcherApps ?? []).filter((app) => app.favorite).map((app) => app.atUri)
 
   // Normalize URLs into `at://` URIs, and then use the preferred app to launch those.
   let href = rest.href
   const atUri = href ? toUri(href) : undefined
-  const choice = atUri ? preferred(find(atUri), value) : undefined
+  const choice = atUri ? preferred(find(atUri), value, favorites) : undefined
   if (choice) href = choice[1]
 
   return (

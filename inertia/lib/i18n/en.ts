@@ -19,6 +19,7 @@ const en = {
   'activity.underConstruction.text':
     'Your activity feed is currently in development. Some of your activity may be missing. We will add more activity soon.',
   'activity.underConstruction.title': 'Under construction',
+  'apps.addFavoriteNamed': 'Add {name} to your apps',
   'apps.category.bookmark': 'Bookmark',
   'apps.category.development': 'Development',
   'apps.category.events': 'Events',
@@ -29,11 +30,15 @@ const en = {
   'apps.category.reviews': 'Reviews',
   'apps.category.social': 'Social',
   'apps.chooseAppToOpen': 'Choose an app to open this with',
+  'apps.detail.addFavorite': 'Add to your apps',
   'apps.detail.explore': 'Explore',
+  'apps.detail.removeFavorite': 'Remove from your apps',
   'apps.detail.seeAllReviews': 'See all reviews',
+  'apps.favorited': 'Favorite',
   'apps.madeInEurope': 'Made in Europe',
   'apps.openWith': 'Open with {name}',
   'apps.rating': '{value} out of 5',
+  'apps.removeFavoriteNamed': 'Remove {name} from your apps',
   'apps.subheading': 'Browse featured apps that work with your Eurosky account.',
   'beta.giveFeedback': 'Give feedback',
   'beta.warning': 'Eurosky Portal is currently in beta. <feedback>Give feedback</feedback>.',
@@ -69,6 +74,8 @@ const en = {
   'dashboard.welcome.heading': 'Welcome to the Atmosphere',
   'dashboard.welcome.text':
     'Eurosky is your European home on the Atmosphere – a global network of social apps and services.',
+  'dashboard.yourApps.text': 'Your favorite apps.',
+  'dashboard.yourApps.viewAll': 'View all your apps',
   'errors.notFound.title': 'Page not found',
   'errors.serverError.heading': 'Something went wrong',
   'errors.serverError.title': 'Server error',
@@ -122,8 +129,18 @@ const en = {
   'sidebar.support': 'Support',
   'sidebar.termsOfService': 'Terms of service',
   'sidebar.yourActivity': 'Your activity',
+  'sidebar.yourApps': 'Your apps',
   'theme.setDark': 'Set theme to dark',
   'theme.setLight': 'Set theme to light',
+  'yourApps.access.heading': 'Check what apps can access',
+  'yourApps.access.link': 'Manage app access',
+  'yourApps.access.text':
+    'This list only shows apps you marked yourself. To see which apps can access your account, and to revoke access, go to your account settings.',
+  'yourApps.browse': 'Browse applications',
+  'yourApps.empty':
+    'You have not added any apps yet. Open an application and choose “Add to your apps”.',
+  'yourApps.subheading':
+    'Your favorite apps. We save these in your public data on Eurosky and that means they also show up in places like atstore.fyi.',
 } satisfies Record<string, string>
 
 export default en

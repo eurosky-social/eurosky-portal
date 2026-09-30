@@ -17,11 +17,12 @@ import AuthFlowCompleted from '#events/auth_flow_completed'
 import AuthFlowStarted from '#events/auth_flow_started'
 import AuthLoggedOut from '#events/auth_logged_out'
 import activityService from '#services/activity_service'
+import { type FavoriteIntent, FavoriteService } from '#services/favorite_service'
 import jetstreamService from '#services/jetstream_service'
 import { SlingshotService } from '#services/slingshot_service'
 import { loginRequestValidator, signupRequestValidator } from '#validators/oauth'
 import { createFieldError } from '#utils/errors'
-import { getHandleDomain } from '#utils/oauth'
+import { getHandleDomain, loginScopes } from '#utils/oauth'
 
 const oauthServerUrl = env.get('OAUTH_SERVICE')
 const allowExternalLogins = env.get('ALLOW_EXTERNAL_LOGINS', false)
@@ -115,11 +116,16 @@ export default class OAuthController {
       resolvedValue = result.value
     }
 
+    // Drop stale favorite flows.
+    session.forget('favorite_intent')
     session.put('source', 'login')
     session.put('handle', input)
 
     try {
-      const authorizationUrl = await oauth.authorize(resolvedValue, { ui_locales: i18n.locale })
+      const authorizationUrl = await oauth.authorize(resolvedValue, {
+        scope: loginScopes.join(' '),
+        ui_locales: i18n.locale,
+      })
 
       AuthFlowStarted.dispatch({
         ip: request.ip(),
@@ -150,6 +156,8 @@ export default class OAuthController {
   async signup({ i18n, inertia, logger, oauth, request, session }: HttpContext) {
     await request.validateUsing(signupRequestValidator)
 
+    // Drop stale favorite flows.
+    session.forget('favorite_intent')
     session.put('source', 'signup')
     session.put('terms_accepted', DateTime.now().toISO())
 
@@ -164,7 +172,10 @@ export default class OAuthController {
     // }
 
     try {
-      const authorizationUrl = await oauth.register(oauthServerUrl, { ui_locales: i18n.locale })
+      const authorizationUrl = await oauth.register(oauthServerUrl, {
+        scope: loginScopes.join(' '),
+        ui_locales: i18n.locale,
+      })
 
       AuthFlowStarted.dispatch({
         ip: request.ip(),
@@ -202,7 +213,60 @@ export default class OAuthController {
     return response.redirect().toRoute('home')
   }
 
-  async callback({ auth, i18n, logger, oauth, request, response, session }: HttpContext) {
+  async callback(ctx: HttpContext) {
+    const favoriteIntent: FavoriteIntent | undefined = ctx.session.pull('favorite_intent')
+    return favoriteIntent ? this.#favoriteCallback(ctx, favoriteIntent) : this.#loginCallback(ctx)
+  }
+
+  /**
+   * Finish favoriting after asking for more scopes,
+   * whether granted or not.
+   *
+   * See `DiscoverController`.
+   */
+  async #favoriteCallback(
+    { i18n, logger, oauth, response, session }: HttpContext,
+    intent: FavoriteIntent
+  ) {
+    try {
+      const { user } = await oauth.handleCallback()
+
+      // Another account was chosen, which is now logged in,
+      // have to log out of the other account.
+      if (user.did !== intent.did) {
+        await oauth.logout(user.did)
+        session.flash('errorsBag', { favorite: i18n.t('apps.favoriteOtherAccount') })
+        return response.redirect().toIntended('/apps')
+      }
+
+      await new FavoriteService()[intent.action](user, intent.subject)
+      // Pages showing favorites are now stale in history.
+      session.flash('clearHistory', true)
+    } catch (err) {
+      const denied =
+        err instanceof OAuthCallbackError &&
+        err.params.get('error')?.toLowerCase() === 'access_denied'
+
+      if (!denied) {
+        logger.error({ err }, 'favorites: cannot finish %s after oauth', intent.action)
+        Monocle.captureException(err, {
+          extra: { action: intent.action, subject: intent.subject },
+          tags: { component: 'favorites' },
+        })
+      }
+
+      session.flash('errorsBag', {
+        favorite: i18n.t(denied ? 'apps.favoriteDenied' : 'apps.favoriteFailed'),
+      })
+    }
+
+    return response.redirect().toIntended('/apps')
+  }
+
+  /**
+   * Finish logging in or signing up.
+   */
+  async #loginCallback({ auth, i18n, logger, oauth, request, response, session }: HttpContext) {
     const termsAccepted = session.pull('terms_accepted', 'invalid')
     const source = session.pull('source', 'login')
     const initiatingHandle = session.pull('handle')
