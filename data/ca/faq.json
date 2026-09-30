@@ -1,0 +1,47 @@
+[
+  {
+    "question": "Què és el Portal de Eurosky?",
+    "answer": "El Portal de Eurosky és el tauler de control personal per a gestionar el compte de Eurosky i explorar l'Atmosphere: l'ecosistema d'aplicacions i serveis construït sobre l'AT Protocol. Mitjançant el Portal, podeu veure el perfil d'un cop d'ull, descobrir aplicacions compatibles i accedir a eines de gestió del compte, tot en un sol lloc."
+  },
+  {
+    "question": "Què puc fer avui mateix al Portal?",
+    "answer": "El Portal es troba actualment en la seva primera versió (v1). Podeu consultar el vostre perfil i les estadístiques (publicacions, comptes seguits i seguidors), navegar i descobrir una selecció d'aplicacions que funcionen amb el compte de Eurosky, accedir a la gestió del compte (dispositius connectats, aplicacions autoritzades, restabliment de la contrasenya) i trobar recursos de suport com ara documentació d'ajuda, preguntes freqüents i informació de contacte."
+  },
+  {
+    "question": "Què és l'Atmosphere?",
+    "answer": "L'Atmosphere és el nom de l'ecosistema creixent d'aplicacions i serveis basats en l'AT Protocol. El compte de Eurosky funciona amb tots aquests serveis. Imagineu-vos-ho com el correu electrònic: un sol compte, moltes aplicacions. Podeu utilitzar Bluesky per a microblog, Flashes per a fotos i vídeos, SIFA per a xarxes professionals, Leaflet per escriure un blog, Tangled per a col·laborar en codi i molt més, tot amb la mateixa identitat i les mateixes dades."
+  },
+  {
+    "question": "Com funciona un sol compte amb tantes aplicacions?",
+    "answer": "El compte de Eurosky es basa en l'AT Protocol, el qual separa la identitat i les dades de qualsevol aplicació individual. El compte i els continguts s'allotgen al vostre propi Servidor de Dades Personals (PDS), ubicat a Europa. Quan utilitzeu una aplicació nova, aquesta es connecta al vostre PDS; no us cal crear cap compte nou ni començar de zero. La vostra identitat, les vostres connexions socials i les vostres dades viatgen amb vós."
+  },
+  {
+    "question": "El Portal és el mateix que Bluesky?",
+    "answer": "No. Bluesky és una de les moltes aplicacions que podeu utilitzar amb el compte de Eurosky. El Portal és el tauler de control del compte: un lloc centralitzat per a gestionar la identitat de Eurosky, descobrir aplicacions i accedir al suport tècnic. No utilitzareu el Portal per a publicar contingut o navegar per filtres socials; per a això s'utilitzen aplicacions com Bluesky, Flashes o Leaflet."
+  },
+  {
+    "question": "Cal utilitzar el Portal per a fer servir el compte de Eurosky?",
+    "answer": "No. Podeu continuar utilitzant el compte de Eurosky directament des de qualsevol aplicació de l'AT Protocol (com ara Bluesky) sense necessitat de visitar mai el Portal. El Portal és simplement un punt central pràctic quan el necessiteu."
+  },
+  {
+    "question": "Quines característiques s'afegiran pròximament?",
+    "answer": "Tenim un pla de desenvolupament actiu per al Portal. Les característiques planificades inclouen una pàgina de perfil públic personalitzable, una eina visual per a explorar i gestionar les dades emmagatzemades al PDS, gestió del compte directament des del Portal (sense redireccions a pàgines externes), una llista personal de les aplicacions connectades, localització (suport per a múltiples idiomes) i molt més. A més llarg termini, estem estudiant la notificació universal per a totes les aplicacions, missatgeria privada xifrada d'extrem a extrem, funcionalitat d'emmagatzematge al núvol per a dades públiques i privades, així com un senyal a les dades del PDS per a indicar que no s'han d'utilitzar per a l'entrenament d'IA."
+  },
+  {
+    "question": "Les meves dades estan segures?",
+    "answer": "Les vostres dades s'allotgen en servidors a Alemanya (Hetzner, centre de dades de Falkenstein) i estan subjectes al RGPD i a la legislació europea. Eurosky està gestionat per la Stichting Modal, una fundació neerlandesa sense ànim de lucre. No venem les vostres dades. Podeu consultar les condicions d'ús completes i la política de privadesa a la barra lateral del Portal."
+  },
+  {
+    "question": "Com puc gestionar la configuració del compte?",
+    "answer": "Des de la barra lateral del Portal, utilitzeu l'opció «Gestiona el compte» per a veure els dispositius connectats i les aplicacions autoritzades. Des d'allà també podeu canviar la contrasenya. En una versió futura del Portal, aquests paràmetres d'ajust estaran disponibles directament des del mateix Portal."
+  },
+
+  {
+    "question": "Necessito ajuda, on puc anar?",
+    "answer": "La barra lateral del Portal inclou enllaços a la [pàgina d'ajuda](https://eurosky.tech/help/), a la [pàgina de PMF](https://eurosky.tech/faq/), i a la pàgina de [contacte](https://eurosky.tech/contact/). També podeu enviar un correu electrònic directament a <support@eurosky.tech>."
+  },
+  {
+    "question": "El Portal és de codi obert?",
+    "answer": "El Portal està disponible sota la llicència MIT a [`github.com/eurosky-social/eurosky-portal`](https://github.com/eurosky-social/eurosky-portal)."
+  }
+]
