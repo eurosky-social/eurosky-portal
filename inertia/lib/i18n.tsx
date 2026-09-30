@@ -56,6 +56,9 @@ const I18nContext = createContext<I18nContextValue | undefined>(undefined)
  * Lazy load translation messages for each locale.
  */
 const catalogs: Record<Locale, () => Promise<{ default: Record<string, string> }>> = {
+  ca() {
+    return import('./i18n/ca')
+  },
   de() {
     return import('./i18n/de')
   },
