@@ -42,10 +42,6 @@ const fr = {
   'common.learnMore': 'En savoir plus',
   'common.someone': 'quelqu’un',
   'createAccount.haveAccount': 'Vous avez déjà un compte? <signIn>Se connecter</signIn>',
-  'createAccount.migrationAlert.cta': 'Migrer',
-  'createAccount.migrationAlert.text':
-    'Ne créez pas de nouveau compte – vous ne pourrez pas le fusionner plus tard avec un compte existant. Utilisez plutôt l’outil de migration pour transférer votre identifiant, vos publications et vos abonnés.',
-  'createAccount.migrationAlert.title': 'Vous avez déjà un compte Bluesky?',
   'createAccount.pageTitle': 'Créer un compte',
   'createAccount.subtitle': 'Avant de commencer, veuillez consulter et accepter nos conditions.',
   'createAccount.title': 'Créez votre <brand>compte Eurosky.</brand>',
@@ -89,13 +85,14 @@ const fr = {
   'home.subheading': 'De nouvelles applications sont créées en permanence !',
   'login.continue': 'Continuer →',
   'login.handleLabel': 'Votre identifiant Atmosphere',
-  'login.migration.cta': 'Migrer maintenant',
-  'login.migration.heading':
-    'Si vous êtes sur Bluesky, vous pouvez déplacer votre compte dès aujourd’hui.',
   'login.noAccount': 'Vous n’avez pas de compte? <signUp>Inscrivez-vous</signUp>',
   'login.subtitle': 'Saisissez votre identifiant ci-dessous pour vous connecter à votre compte',
   'login.title': 'Connectez-vous à votre <brand>compte Eurosky.</brand>',
   'markdown.error': 'Ce contenu n’a pas pu être affiché.',
+  'migrationAlert.cta': 'Migrer',
+  'migrationAlert.text':
+    'Transférez votre identifiant, vos publications et vos abonnés vers Eurosky avec l’outil de migration. Un nouveau compte ne pourra pas être fusionné plus tard avec un compte existant.',
+  'migrationAlert.title': 'Vous avez déjà un compte Bluesky?',
   'nav.about': 'À propos',
   'nav.apps': 'Applications',
   'nav.chooseLanguage': 'Choisir la langue',

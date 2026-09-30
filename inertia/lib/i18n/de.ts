@@ -42,10 +42,6 @@ const de = {
   'common.learnMore': 'Mehr erfahren',
   'common.someone': 'jemand',
   'createAccount.haveAccount': 'Du hast bereits ein Konto? <signIn>Anmelden</signIn>',
-  'createAccount.migrationAlert.cta': 'Migrieren',
-  'createAccount.migrationAlert.text':
-    'Erstelle kein neues Konto – du kannst es später nicht mit einem bestehenden zusammenführen. Nimm stattdessen deinen Handle, deine Beiträge und deine Follower mit dem Migrationstool mit.',
-  'createAccount.migrationAlert.title': 'Du hast bereits ein Bluesky-Konto?',
   'createAccount.pageTitle': 'Konto erstellen',
   'createAccount.subtitle':
     'Bevor wir beginnen, lies dir bitte unsere Bedingungen durch und akzeptiere sie.',
@@ -90,12 +86,14 @@ const de = {
   'home.subheading': 'Es entstehen ständig neue Apps!',
   'login.continue': 'Weiter →',
   'login.handleLabel': 'Dein Atmosphere-Handle',
-  'login.migration.cta': 'Jetzt migrieren',
-  'login.migration.heading': 'Wenn du bei Bluesky bist, kannst du dein Konto noch heute umziehen.',
   'login.noAccount': 'Du hast noch kein Konto? <signUp>Registrieren</signUp>',
   'login.subtitle': 'Gib unten deinen Handle ein, um dich bei deinem Konto anzumelden',
   'login.title': 'Melde dich bei deinem <brand>Eurosky-Konto</brand> an.',
   'markdown.error': 'Dieser Inhalt konnte nicht angezeigt werden.',
+  'migrationAlert.cta': 'Migrieren',
+  'migrationAlert.text':
+    'Nimm deinen Handle, deine Beiträge und deine Follower mit dem Migrationstool zu Eurosky mit. Ein neues Konto kann später nicht mit einem bestehenden zusammengeführt werden.',
+  'migrationAlert.title': 'Du hast bereits ein Bluesky-Konto?',
   'nav.about': 'Über uns',
   'nav.apps': 'Apps',
   'nav.chooseLanguage': 'Sprache wählen',
