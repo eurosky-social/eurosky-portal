@@ -13,6 +13,7 @@ export const defaultLocale: Locale = 'en'
  * in their respective languages.
  */
 export const localeNames = {
+  ca: 'Català',
   de: 'Deutsch',
   en: 'English',
   fr: 'Français',
@@ -22,7 +23,7 @@ export const localeNames = {
 /**
  * List of supported locales.
  */
-export const locales = ['de', 'en', 'fr', 'nl'] as const
+export const locales = ['ca', 'de', 'en', 'fr', 'nl'] as const
 
 /**
  * Check if something is a known locale.
