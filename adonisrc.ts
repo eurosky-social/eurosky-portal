@@ -44,7 +44,7 @@ export default defineConfig({
   |
   */
   providers: [
-    () => import('@monocle.sh/adonisjs-agent/monocle_provider'),
+    () => import('@adonisjs/otel/otel_provider'),
     () => import('@adonisjs/core/providers/app_provider'),
     () => import('@adonisjs/core/providers/hash_provider'),
     {

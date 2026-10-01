@@ -2,10 +2,10 @@ import '@inertiajs/core'
 import type { InferSharedProps } from '@adonisjs/inertia/types'
 import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
-import { Monocle } from '@monocle.sh/adonisjs-agent'
 import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
 import Account from '#models/account'
 import AccountTransformer from '#transformers/account_transformer'
+import { captureMessage } from '#utils/telemetry'
 
 export default class InertiaMiddleware extends BaseInertiaMiddleware {
   async share(ctx: HttpContext) {
@@ -27,7 +27,7 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
       // we’re in a weird place.
       // Best to log out.
       if (!account) {
-        Monocle.captureMessage('Auth session referenced an account with no matching row', {
+        captureMessage('Auth session referenced an account with no matching row', {
           extra: { did: auth.user.did },
           level: 'warning',
           tags: { component: 'inertia', type: 'stale_session_account' },

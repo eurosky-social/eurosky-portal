@@ -3,7 +3,7 @@ import logger from '@adonisjs/core/services/logger'
 
 import * as lexicon from '#lexicons'
 import Account from '#models/account'
-import { Monocle } from '@monocle.sh/adonisjs-agent'
+import { captureException } from '#utils/telemetry'
 
 export type Profile = lexicon.app.bsky.actor.defs.ProfileViewDetailed
 
@@ -25,7 +25,7 @@ AtprotoUser.macro(
       })
       .catch(async (error) => {
         logger.error(error)
-        Monocle.captureException(error, {
+        captureException(error, {
           tags: { component: 'atprotouser' },
           extra: { actor: this.did },
         })

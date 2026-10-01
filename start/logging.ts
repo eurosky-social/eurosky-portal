@@ -1,7 +1,8 @@
 import emitter from '@adonisjs/core/services/emitter'
 import logger from '@adonisjs/core/services/logger'
-import env from '#start/env'
 import app from '@adonisjs/core/services/app'
+import env from '#start/env'
+import { redactCallbackParams } from '#utils/oauth'
 
 const NS_PER_SEC = 1e9
 const MS_PER_SEC = 1e6
@@ -9,7 +10,7 @@ const MS_PER_SEC = 1e6
 emitter.on('http:server_ready', () => {
   logger.info(`Server available at: ${env.get('APP_URL')}`)
   logger.info(`Plausible analytics: ${env.get('PLAUSIBLE_ENABLED') ? 'enabled' : 'disabled'}`)
-  logger.info(`Monocle observability: ${env.get('MONOCLE_API_KEY') ? 'enabled' : 'disabled'}`)
+  logger.info(`OpenTelemetry: ${env.get('OTEL_ENABLED') ? 'enabled' : 'disabled'}`)
 })
 
 const ignoredUrlPrefixes = [
@@ -46,7 +47,8 @@ emitter.on('http:request_completed', ({ ctx, duration }) => {
 
   let location
   if (!app.inProduction && responseStatus >= 300 && responseStatus < 400) {
-    location = response.getHeader('Location')
+    const header = response.getHeader('Location')
+    if (typeof header === 'string') location = redactCallbackParams(header)
   }
 
   ctx.logger.info(

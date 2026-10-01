@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon'
 import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
-import { Monocle } from '@monocle.sh/adonisjs-agent'
+import { setUser } from '@adonisjs/otel/helpers'
 import logger from '@adonisjs/core/services/logger'
 import Account from '#models/account'
 import jetstreamService from '#services/jetstream_service'
@@ -19,7 +19,7 @@ export default class SilentAuthMiddleware {
     if (ctx.auth.user) {
       const { did } = ctx.auth.user
 
-      Monocle.setUser({ did, id: did })
+      setUser({ did, id: did })
 
       // Any request is proof this account is not dormant.
       jetstreamService.addDid(did)
