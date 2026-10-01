@@ -19,6 +19,7 @@ const fr = {
   'activity.underConstruction.text':
     'Votre fil d’activité est actuellement en développement. Certaines activités peuvent manquer. Nous en ajouterons prochainement.',
   'activity.underConstruction.title': 'En construction',
+  'apps.addFavoriteNamed': 'Ajouter {name} à vos applications',
   'apps.category.bookmark': 'Signets',
   'apps.category.development': 'Développement',
   'apps.category.events': 'Événements',
@@ -29,11 +30,15 @@ const fr = {
   'apps.category.reviews': 'Avis',
   'apps.category.social': 'Social',
   'apps.chooseAppToOpen': 'Choisissez une application pour ouvrir ceci',
+  'apps.detail.addFavorite': 'Ajouter à vos applications',
   'apps.detail.explore': 'Explorer',
+  'apps.detail.removeFavorite': 'Retirer de vos applications',
   'apps.detail.seeAllReviews': 'Voir tous les avis',
+  'apps.favorited': 'Favori',
   'apps.madeInEurope': 'Fabriqué en Europe',
   'apps.openWith': 'Ouvrir avec {name}',
   'apps.rating': '{value} sur 5',
+  'apps.removeFavoriteNamed': 'Retirer {name} de vos applications',
   'apps.subheading': 'Parcourez les applications phares compatibles avec votre compte Eurosky.',
   'beta.giveFeedback': 'Donner votre avis',
   'beta.warning':
@@ -71,6 +76,8 @@ const fr = {
   'dashboard.welcome.heading': 'Bienvenue dans l’Atmosphere',
   'dashboard.welcome.text':
     'Eurosky est votre foyer européen sur l’Atmosphere – un réseau mondial d’applications et de services sociaux.',
+  'dashboard.yourApps.text': 'Vos applications favorites.',
+  'dashboard.yourApps.viewAll': 'Voir toutes vos applications',
   'errors.notFound.title': 'Page introuvable',
   'errors.serverError.heading': 'Une erreur s’est produite',
   'errors.serverError.title': 'Erreur serveur',
@@ -126,8 +133,18 @@ const fr = {
   'sidebar.support': 'Assistance',
   'sidebar.termsOfService': 'Conditions d’utilisation',
   'sidebar.yourActivity': 'Votre activité',
+  'sidebar.yourApps': 'Vos applications',
   'theme.setDark': 'Passer au thème sombre',
   'theme.setLight': 'Passer au thème clair',
+  'yourApps.access.heading': 'Vérifiez ce à quoi les applications ont accès',
+  'yourApps.access.link': 'Gérer l’accès des applications',
+  'yourApps.access.text':
+    'Cette liste n’affiche que les applications que vous avez marquées vous-même. Pour voir quelles applications ont accès à votre compte, et pour révoquer cet accès, rendez-vous dans les paramètres de votre compte.',
+  'yourApps.browse': 'Parcourir les applications',
+  'yourApps.empty':
+    'Vous n’avez encore ajouté aucune application. Ouvrez une application et choisissez « Ajouter à vos applications ».',
+  'yourApps.subheading':
+    'Vos applications favorites. Nous les enregistrons dans vos données publiques sur Eurosky, elles apparaissent donc aussi sur des sites comme atstore.fyi.',
 } satisfies Record<string, string>
 
 export default fr
