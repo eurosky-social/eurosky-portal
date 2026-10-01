@@ -1,4 +1,4 @@
-const en = {
+const ca = {
   'activity.article.by': 'De {contributors}',
   'activity.article.published': 'Publicat: {date, date, medium} a les {date, time, short}',
   'activity.article.tags': 'Etiquetes: {tags}',
