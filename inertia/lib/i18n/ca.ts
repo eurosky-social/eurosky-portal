@@ -19,6 +19,7 @@ const ca = {
   'activity.underConstruction.text':
     'L’historial d’activitat es troba en desenvolupament. És possible que hi falti part de la vostra activitat. Aviat n’afegirem més.',
   'activity.underConstruction.title': 'En construcció',
+  'apps.addFavoriteNamed': 'Afegiu {name} a les vostres aplicacions',
   'apps.category.bookmark': 'Afegeix a marcadors',
   'apps.category.development': 'Desenvolupament',
   'apps.category.events': 'Esdeveniments',
@@ -30,10 +31,14 @@ const ca = {
   'apps.category.social': 'Social',
   'apps.chooseAppToOpen': 'Trieu una aplicació per a obrir-ho',
   'apps.detail.explore': 'Explora',
+  'apps.detail.addFavorite': 'Afegiu a les vostres aplicacions',
+  'apps.detail.removeFavorite': 'Elimineu de les vostres aplicacions',
   'apps.detail.seeAllReviews': 'Totes les ressenyes',
+  'apps.favorited': 'Preferida',
   'apps.madeInEurope': 'Fet a Europa',
   'apps.openWith': 'Obre amb {name}',
   'apps.rating': '{value} de 5',
+  'apps.removeFavoriteNamed': 'Elimineu {name} de les vostres aplicacions',
   'apps.subheading': 'Exploreu les aplicacions destacades que funcionen amb el compte d’Eurosky.',
   'beta.giveFeedback': 'Envia comentaris',
   'beta.warning': 'L’Eurosky Portal està actualment en fase beta. <feedback>Envia comentaris</feedback>.',
@@ -69,6 +74,8 @@ const ca = {
   'dashboard.welcome.heading': 'Us donem la benvinguda a l’Atmosphere',
   'dashboard.welcome.text':
     'Eurosky és la vostra llar europea a l’Atmosphere, una xarxa global d’aplicacions i serveis socials.',
+  'dashboard.yourApps.text': 'Les vostres aplicacions preferides.',
+  'dashboard.yourApps.viewAll': 'Vegeu totes les aplicacions',
   'errors.notFound.title': 'No s’ha trobat la pàgina',
   'errors.serverError.heading': 'S’ha produït un error',
   'errors.serverError.title': 'Error del servidor',
@@ -122,8 +129,18 @@ const ca = {
   'sidebar.support': 'Suport',
   'sidebar.termsOfService': 'Condicions d’ús',
   'sidebar.yourActivity': 'La vostra activitat',
+  'sidebar.yourApps': 'Les vostres aplicacions',
   'theme.setDark': 'Estableix el tema fosc',
   'theme.setLight': 'Estableix el tema clar',
+  'yourApps.access.heading': 'Comprova quines aplicacions tenen accés',
+  'yourApps.access.link': 'Gestiona l’accés de les aplicacions',
+  'yourApps.access.text':
+    'Aquesta llista només mostra les aplicacions que heu marcat. Per a veure quines aplicacions tenen accés al compte i revocar-ne l’accés, aneu a la configuració del compte.',
+  'yourApps.browse': 'Navega per les aplicacions',
+  'yourApps.empty':
+    'Encara no s’ha afegit cap aplicació. Cal obrir una aplicació i seleccionar «Afegeix a les aplicacions».',
+  'yourApps.subheading':
+    'Les vostres aplicacions preferides. Guardem aquesta informació a les vostres dades públiques d’Eurosky, per la qual cosa també es mostrarà en llocs com atstore.fyi.',
 } satisfies Record<string, string>
 
 export default ca
