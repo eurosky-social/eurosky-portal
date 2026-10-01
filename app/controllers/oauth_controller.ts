@@ -1,6 +1,5 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import type { I18n } from '@adonisjs/i18n'
-import { Monocle } from '@monocle.sh/adonisjs-agent'
 import { OAuthCallbackError, OAuthResolverError } from '@atproto/oauth-client-node'
 import {
   isUriString,
@@ -23,6 +22,7 @@ import { SlingshotService } from '#services/slingshot_service'
 import { loginRequestValidator, signupRequestValidator } from '#validators/oauth'
 import { createFieldError } from '#utils/errors'
 import { getHandleDomain, loginScopes } from '#utils/oauth'
+import { captureException, captureMessage } from '#utils/telemetry'
 
 const oauthServerUrl = env.get('OAUTH_SERVICE')
 const allowExternalLogins = env.get('ALLOW_EXTERNAL_LOGINS', false)
@@ -143,7 +143,7 @@ export default class OAuthController {
         throw createFieldError('input', input, i18n.t('oauth.accountNotFound', { handle: input }))
       }
 
-      Monocle.captureException(err, {
+      captureException(err, {
         tags: { component: 'oauth' },
         extra: { source: 'login', input },
       })
@@ -187,7 +187,7 @@ export default class OAuthController {
 
       inertia.location(authorizationUrl)
     } catch (err) {
-      Monocle.captureException(err, {
+      captureException(err, {
         tags: { component: 'oauth' },
         extra: { source: 'signup' },
       })
@@ -249,7 +249,7 @@ export default class OAuthController {
 
       if (!denied) {
         logger.error({ err }, 'favorites: cannot finish %s after oauth', intent.action)
-        Monocle.captureException(err, {
+        captureException(err, {
           extra: { action: intent.action, subject: intent.subject },
           tags: { component: 'favorites' },
         })
@@ -282,7 +282,7 @@ export default class OAuthController {
     // to cancel the flow:
     const termsAcceptedOn = DateTime.fromISO(termsAccepted)
     if (source === 'signup' && !termsAcceptedOn.isValid) {
-      Monocle.captureMessage('Invalid datetime for terms accepted from session cookie', {
+      captureMessage('Invalid datetime for terms accepted from session cookie', {
         level: 'warning',
         tags: { component: 'oauth', type: 'invalid_signup_date' },
         extra: { source, value: termsAccepted },
@@ -414,7 +414,7 @@ export default class OAuthController {
               source === 'signup' ? i18n.t('oauth.signupServerError') : i18n.t('oauth.loginFailed'),
           })
 
-          Monocle.captureException(err, {
+          captureException(err, {
             tags: { component: 'oauth', type: 'server_error' },
             extra: {
               source,
@@ -435,7 +435,7 @@ export default class OAuthController {
         }
 
         // Capture all other OAuthCallbackErrors, including the `error` parameter if available:
-        Monocle.captureException(err, {
+        captureException(err, {
           tags: {
             component: 'oauth',
             type: error && KNOWN_OAUTH_ERRORS.includes(error) ? error : 'unknown_error',
@@ -450,7 +450,7 @@ export default class OAuthController {
         // Handle OAuth failing
         logger.error(err, 'Unknown error completing OAuth callback')
 
-        Monocle.captureException(err, {
+        captureException(err, {
           tags: { component: 'oauth', type: 'unknown' },
           extra: {
             source,

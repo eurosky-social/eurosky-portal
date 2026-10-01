@@ -1,6 +1,5 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import { asAtUriString } from '@atproto/syntax'
-import { Monocle } from '@monocle.sh/adonisjs-agent'
 import { AtStoreService } from '#services/atstore_service'
 import {
   type FavoriteAction,
@@ -11,6 +10,7 @@ import {
 import AppsTransformer from '#transformers/apps_transformer'
 import AppTransformer from '#transformers/app_transformer'
 import { favoriteScope, loginScopes } from '#utils/oauth'
+import { captureException } from '#utils/telemetry'
 
 export default class DiscoverController {
   async apps({ auth, inertia }: HttpContext) {
@@ -91,7 +91,7 @@ export default class DiscoverController {
       }
 
       logger.error({ err }, 'favorites: cannot %s `%s`', action, subject)
-      Monocle.captureException(err, {
+      captureException(err, {
         extra: { action, subject },
         tags: { component: 'favorites' },
       })

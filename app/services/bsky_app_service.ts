@@ -1,8 +1,8 @@
 import logger from '@adonisjs/core/services/logger'
 import cache from '@adonisjs/cache/services/main'
 import { type AtUriString, type l, xrpcSafe } from '@atproto/lex'
-import { Monocle } from '@monocle.sh/adonisjs-agent'
 import * as lexicon from '#lexicons'
+import { captureException } from '#utils/telemetry'
 
 export type BskyAppProfile = Pick<
   lexicon.app.bsky.actor.defs.ProfileViewDetailed,
@@ -62,7 +62,7 @@ export class BskyAppService {
 
     if (!result.success) {
       logger.error(result, 'Invalid response from Bluesky App')
-      Monocle.captureException(result, {
+      captureException(result, {
         extra: { did },
         tags: { component: 'bsky_app_service' },
       })
@@ -81,7 +81,7 @@ export class BskyAppService {
 
     if (!result.success) {
       logger.error(result, 'Invalid response from Bluesky App')
-      Monocle.captureException(result, {
+      captureException(result, {
         extra: { uri },
         tags: { component: 'bsky_app_service' },
       })
