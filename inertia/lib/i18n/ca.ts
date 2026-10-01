@@ -41,7 +41,8 @@ const ca = {
   'apps.removeFavoriteNamed': 'Elimineu {name} de les vostres aplicacions',
   'apps.subheading': 'Exploreu les aplicacions destacades que funcionen amb el compte d’Eurosky.',
   'beta.giveFeedback': 'Envia comentaris',
-  'beta.warning': 'L’Eurosky Portal està actualment en fase beta. <feedback>Envia comentaris</feedback>.',
+  'beta.warning': 
+    'L’Eurosky Portal està actualment en fase beta. <feedback>Envia comentaris</feedback>.',
   'common.breadcrumb': 'Camí de navegació',
   'common.learnMore': 'Més informació',
   'common.someone': 'algú',
@@ -52,14 +53,16 @@ const ca = {
   'dashboard.activity.empty': 'Encara no hi ha res aquí; potser voleu fer una publicació a Mu?',
   'dashboard.activity.heading': 'Activitat recent',
   'dashboard.activity.subheading': 'La vostra activitat recent.',
-  'dashboard.activity.syncing': 'S’està sincronitzant la vostra activitat, això pot trigar una estona…',
+  'dashboard.activity.syncing': 
+    'S’està sincronitzant la vostra activitat, això pot trigar una estona…',
   'dashboard.activity.viewAll': 'Visualitza tota l’activitat',
   'dashboard.explore.heading': 'Exploreu l’ecosistema',
   'dashboard.explore.text':
     'El compte d’Eurosky funciona amb desenes d’aplicacions. Exploreu les aplicacions destacades que trobareu a continuació i feu-ne clic a una per a començar.',
   'dashboard.featuredApps.browseMore': 'Exploreu més aplicacions',
   'dashboard.featuredApps.heading': 'Aplicacions destacades',
-  'dashboard.featuredApps.text': 'El vostre compte d’Eurosky és compatible amb totes aquestes aplicacions.',
+  'dashboard.featuredApps.text': 
+    'El vostre compte d’Eurosky és compatible amb totes aquestes aplicacions.',
   'dashboard.greeting.plain': 'Us donem la benvinguda',
   'dashboard.greeting.withName': 'Us donem la benvinguda, {name}!',
   'dashboard.invalidHandle.text':
@@ -91,7 +94,8 @@ const ca = {
   'login.continue': 'Continua →',
   'login.handleLabel': 'El vostre nom d’usuari de l’Atmosphere',
   'login.noAccount': 'No teniu cap compte? Crea’n un<signUp>Sign up</signUp>',
-  'login.subtitle': 'Introduïu el vostre nom d’usuari a continuació per a iniciar la sessió al compte',
+  'login.subtitle': 
+    'Introduïu el vostre nom d’usuari a continuació per a iniciar la sessió al compte',
   'login.title': 'Inicieu la sessió al <brand>compte d’Eurosky.</brand>',
   'markdown.error': 'No s’ha pogut mostrar aquest contingut.',
   'migrationAlert.cta': 'Migra',
@@ -109,7 +113,8 @@ const ca = {
   'nav.signIn': 'Inicia la sessió',
   'onboarding.alternative':
     'Alternativament, podeu <logout>tancar la sessió</logout> i no utilitzar el portal d’Eurosky.',
-  'onboarding.notice.bothUpdated': 'S’han actualitzat les nostres condicions d’ús i la política de privadesa',
+  'onboarding.notice.bothUpdated': 
+    'S’han actualitzat les nostres condicions d’ús i la política de privadesa',
   'onboarding.notice.privacyUpdated': 'S’ha actualitzat la nostra política de privadesa',
   'onboarding.notice.termsUpdated': 'S’han actualitzat les nostres condicions d’ús',
   'onboarding.notice.text': 'Accepteu els canvis per a continuar utilitzant el portal d’Eurosky',
