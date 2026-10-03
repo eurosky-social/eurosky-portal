@@ -1,0 +1,17 @@
+{
+  "shared": {
+    "messages": {
+      "accepted": "El camp {field} s’ha d’acceptar.",
+      "at-handle": "Introduïu un compte d’Atmosphere vàlid, com ara nomdusuari{domain}",
+      "enum": "El {field} seleccionat no és vàlid.",
+      "max": "El camp {field} no pot ser superior a {max}.",
+      "min": "El camp {field} ha de ser com a mínim de {min}.",
+      "notIn": "El {field} seleccionat no és vàlid.",
+      "regex": "El format del camp {field} no és vàlid.",
+      "required": "El camp {field} és obligatori.",
+      "terms": {
+        "required": "Heu d’acceptar els termes del servei i la política de privadesa per a continuar."
+      }
+    }
+  }
+}
