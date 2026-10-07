@@ -46,7 +46,7 @@ const de = {
   'common.breadcrumb': 'Brotkrümelnavigation',
   'common.learnMore': 'Mehr erfahren',
   'common.someone': 'jemand',
-  'createAccount.haveAccount': 'Du hast bereits ein Konto? <signIn>Anmelden</signIn>',
+  'createAccount.haveAccount': 'Du hast bereits ein {orgName}-Konto? <signIn>Anmelden</signIn>',
   'createAccount.pageTitle': 'Konto erstellen',
   'createAccount.subtitle':
     'Bevor wir beginnen, lies dir bitte unsere Bedingungen durch und akzeptiere sie.',

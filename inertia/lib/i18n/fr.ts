@@ -46,7 +46,7 @@ const fr = {
   'common.breadcrumb': 'Fil d’Ariane',
   'common.learnMore': 'En savoir plus',
   'common.someone': 'quelqu’un',
-  'createAccount.haveAccount': 'Vous avez déjà un compte? <signIn>Se connecter</signIn>',
+  'createAccount.haveAccount': 'Vous avez déjà un compte {orgName}? <signIn>Se connecter</signIn>',
   'createAccount.pageTitle': 'Créer un compte',
   'createAccount.subtitle': 'Avant de commencer, veuillez consulter et accepter nos conditions.',
   'createAccount.title': 'Créez votre <brand>compte {orgName}.</brand>',
