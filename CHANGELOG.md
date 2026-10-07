@@ -1,5 +1,11 @@
 # eurosky-portal
 
+## 1.8.1
+
+### Patch Changes
+
+- [#268](https://github.com/eurosky-social/eurosky-portal/pull/268) [`74293fa`](https://github.com/eurosky-social/eurosky-portal/commit/74293fa92a170a94f11cdccdff6d27ad2617cb79) Thanks [@wooorm](https://github.com/wooorm)! - Add branding config
+
 ## 1.8.0
 
 ### Minor Changes
