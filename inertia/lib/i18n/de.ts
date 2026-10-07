@@ -39,10 +39,10 @@ const de = {
   'apps.openWith': 'Mit {name} öffnen',
   'apps.rating': '{value} von 5',
   'apps.removeFavoriteNamed': 'Entferne {name} aus deinen Apps',
-  'apps.subheading': 'Entdecke ausgewählte Apps, die mit deinem Eurosky-Konto funktionieren.',
+  'apps.subheading': 'Entdecke ausgewählte Apps, die mit deinem {orgName}-Konto funktionieren.',
   'beta.giveFeedback': 'Feedback geben',
   'beta.warning':
-    'Eurosky Portal befindet sich derzeit in der Betaphase. <feedback>Feedback geben</feedback>.',
+    '{productTitle} befindet sich derzeit in der Betaphase. <feedback>Feedback geben</feedback>.',
   'common.breadcrumb': 'Brotkrümelnavigation',
   'common.learnMore': 'Mehr erfahren',
   'common.someone': 'jemand',
@@ -50,7 +50,7 @@ const de = {
   'createAccount.pageTitle': 'Konto erstellen',
   'createAccount.subtitle':
     'Bevor wir beginnen, lies dir bitte unsere Bedingungen durch und akzeptiere sie.',
-  'createAccount.title': 'Erstelle dein <brand>Eurosky-Konto.</brand>',
+  'createAccount.title': 'Erstelle dein <brand>{orgName}-Konto.</brand>',
   'dashboard.activity.empty': 'Hier ist noch nichts los – vielleicht einen Beitrag auf Mu posten?',
   'dashboard.activity.heading': 'Neueste Aktivität',
   'dashboard.activity.subheading': 'Deine neueste Aktivität.',
@@ -59,10 +59,10 @@ const de = {
   'dashboard.activity.viewAll': 'Alle Aktivitäten ansehen',
   'dashboard.explore.heading': 'Das Ökosystem entdecken',
   'dashboard.explore.text':
-    'Dein Eurosky-Konto funktioniert mit Dutzenden von Apps. Sieh dir unten die ausgewählten Apps an und klicke auf eine, um loszulegen.',
+    'Dein {orgName}-Konto funktioniert mit Dutzenden von Apps. Sieh dir unten die ausgewählten Apps an und klicke auf eine, um loszulegen.',
   'dashboard.featuredApps.browseMore': 'Weitere Apps entdecken',
   'dashboard.featuredApps.heading': 'Ausgewählte Anwendungen',
-  'dashboard.featuredApps.text': 'Dein Eurosky-Konto funktioniert mit all diesen Apps.',
+  'dashboard.featuredApps.text': 'Dein {orgName}-Konto funktioniert mit all diesen Apps.',
   'dashboard.greeting.plain': 'Willkommen zurück!',
   'dashboard.greeting.withName': 'Willkommen zurück, {name}!',
   'dashboard.invalidHandle.text':
@@ -76,7 +76,7 @@ const de = {
     'Dein Handle lautet <strong>{handle}</strong>, damit meldest du dich überall in der Atmosphere an.',
   'dashboard.welcome.heading': 'Willkommen in der Atmosphere',
   'dashboard.welcome.text':
-    'Eurosky ist dein europäisches Zuhause in der Atmosphere – einem globalen Netzwerk aus sozialen Apps und Diensten.',
+    '{orgName} ist dein europäisches Zuhause in der Atmosphere – einem globalen Netzwerk aus sozialen Apps und Diensten.',
   'dashboard.yourApps.text': 'Deine Lieblings-Apps.',
   'dashboard.yourApps.viewAll': 'Alle deine Apps ansehen',
   'errors.notFound.title': 'Seite nicht gefunden',
@@ -88,18 +88,18 @@ const de = {
   'hero.createAccount': 'Erstelle dein Konto →',
   'hero.dataPromise': 'Deine Daten gehören dir. Wir werden sie niemals verkaufen.',
   'hero.subtitle': 'Ein Konto. Dutzende Apps. Keine Abhängigkeit.',
-  'hero.title': 'Eurosky: dein Zugang zur <brand>Atmosphere.</brand>',
+  'hero.title': '{orgName}: dein Zugang zur <brand>Atmosphere.</brand>',
   'home.heading': 'Eine App für alles',
   'home.subheading': 'Es entstehen ständig neue Apps!',
   'login.continue': 'Weiter →',
   'login.handleLabel': 'Dein Atmosphere-Handle',
   'login.noAccount': 'Du hast noch kein Konto? <signUp>Registrieren</signUp>',
   'login.subtitle': 'Gib unten deinen Handle ein, um dich bei deinem Konto anzumelden',
-  'login.title': 'Melde dich bei deinem <brand>Eurosky-Konto</brand> an.',
+  'login.title': 'Melde dich bei deinem <brand>{orgName}-Konto</brand> an.',
   'markdown.error': 'Dieser Inhalt konnte nicht angezeigt werden.',
   'migrationAlert.cta': 'Migrieren',
   'migrationAlert.text':
-    'Nimm deinen Handle, deine Beiträge und deine Follower mit dem Migrationstool zu Eurosky mit. Ein neues Konto kann später nicht mit einem bestehenden zusammengeführt werden.',
+    'Nimm deinen Handle, deine Beiträge und deine Follower mit dem Migrationstool zu {orgName} mit. Ein neues Konto kann später nicht mit einem bestehenden zusammengeführt werden.',
   'migrationAlert.title': 'Du hast bereits ein Bluesky-Konto?',
   'nav.about': 'Über uns',
   'nav.apps': 'Apps',
@@ -111,15 +111,15 @@ const de = {
   'nav.privacy': 'Datenschutz',
   'nav.signIn': 'Anmelden',
   'onboarding.alternative':
-    'Alternativ kannst du dich auch <logout>abmelden</logout> und Eurosky Portal nicht nutzen.',
+    'Alternativ kannst du dich auch <logout>abmelden</logout> und {productTitle} nicht nutzen.',
   'onboarding.notice.bothUpdated':
     'Unsere Nutzungsbedingungen und Datenschutzerklärung wurden aktualisiert',
   'onboarding.notice.privacyUpdated': 'Unsere Datenschutzerklärung wurde aktualisiert',
   'onboarding.notice.termsUpdated': 'Unsere Nutzungsbedingungen wurden aktualisiert',
   'onboarding.notice.text':
-    'Bitte akzeptiere die Änderungen, um Eurosky Portal weiterhin zu nutzen',
+    'Bitte akzeptiere die Änderungen, um {productTitle} weiterhin zu nutzen',
   'onboarding.pageTitle': 'Nutzungsbedingungen akzeptieren',
-  'onboarding.title': 'Willkommen bei <brand>Eurosky</brand>.',
+  'onboarding.title': 'Willkommen bei <brand>{orgName}</brand>.',
   'policy.accept':
     'Ich stimme den <terms>Nutzungsbedingungen</terms> und der <privacy>Datenschutzerklärung</privacy> zu',
   'sidebar.applications': 'Anwendungen',
@@ -145,7 +145,7 @@ const de = {
   'yourApps.empty':
     'Du hast noch keine Apps hinzugefügt. Öffne eine Anwendung und wähle „Zu deinen Apps hinzufügen“.',
   'yourApps.subheading':
-    'Deine Lieblings-Apps. Wir speichern sie in deinen öffentlichen Daten bei Eurosky, deshalb erscheinen sie auch an Orten wie atstore.fyi.',
+    'Deine Lieblings-Apps. Wir speichern sie in deinen öffentlichen Daten bei {orgName}, deshalb erscheinen sie auch an Orten wie atstore.fyi.',
 } satisfies Record<string, string>
 
 export default de

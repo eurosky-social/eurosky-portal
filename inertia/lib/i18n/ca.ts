@@ -39,17 +39,17 @@ const ca = {
   'apps.openWith': 'Obre amb {name}',
   'apps.rating': '{value} de 5',
   'apps.removeFavoriteNamed': 'Elimineu {name} de les vostres aplicacions',
-  'apps.subheading': 'Exploreu les aplicacions destacades que funcionen amb el compte d’Eurosky.',
+  'apps.subheading': 'Exploreu les aplicacions destacades que funcionen amb el compte {orgName}.',
   'beta.giveFeedback': 'Envia comentaris',
   'beta.warning':
-    'L’Eurosky Portal està actualment en fase beta. <feedback>Envia comentaris</feedback>.',
+    '{productTitle} està actualment en fase beta. <feedback>Envia comentaris</feedback>.',
   'common.breadcrumb': 'Camí de navegació',
   'common.learnMore': 'Més informació',
   'common.someone': 'algú',
-  'createAccount.haveAccount': 'Ja teniu un compte d’Eurosky? <signIn>Inicia la sessió</signIn>',
+  'createAccount.haveAccount': 'Ja teniu un compte {orgName}? <signIn>Inicia la sessió</signIn>',
   'createAccount.pageTitle': 'Creeu un compte',
   'createAccount.subtitle': 'Abans de començar, reviseu i accepteu les nostres condicions.',
-  'createAccount.title': 'Creeu el <brand>compte d’Eurosky.</brand>',
+  'createAccount.title': 'Creeu el <brand>compte {orgName}.</brand>',
   'dashboard.activity.empty': 'Encara no hi ha res aquí; potser voleu fer una publicació a Mu?',
   'dashboard.activity.heading': 'Activitat recent',
   'dashboard.activity.subheading': 'La vostra activitat recent.',
@@ -58,11 +58,11 @@ const ca = {
   'dashboard.activity.viewAll': 'Visualitza tota l’activitat',
   'dashboard.explore.heading': 'Exploreu l’ecosistema',
   'dashboard.explore.text':
-    'El compte d’Eurosky funciona amb desenes d’aplicacions. Exploreu les aplicacions destacades que trobareu a continuació i feu-ne clic a una per a començar.',
+    'El compte {orgName} funciona amb desenes d’aplicacions. Exploreu les aplicacions destacades que trobareu a continuació i feu-ne clic a una per a començar.',
   'dashboard.featuredApps.browseMore': 'Exploreu més aplicacions',
   'dashboard.featuredApps.heading': 'Aplicacions destacades',
   'dashboard.featuredApps.text':
-    'El vostre compte d’Eurosky és compatible amb totes aquestes aplicacions.',
+    'El vostre compte {orgName} és compatible amb totes aquestes aplicacions.',
   'dashboard.greeting.plain': 'Us donem la benvinguda',
   'dashboard.greeting.withName': 'Us donem la benvinguda, {name}!',
   'dashboard.invalidHandle.text':
@@ -76,7 +76,7 @@ const ca = {
     'El vostre nom d’usuari és <strong>{handle}</strong>, ; el farieu servir per iniciar la sessió a tot l’Atmosphere.',
   'dashboard.welcome.heading': 'Us donem la benvinguda a l’Atmosphere',
   'dashboard.welcome.text':
-    'Eurosky és la vostra llar europea a l’Atmosphere, una xarxa global d’aplicacions i serveis socials.',
+    '{orgName} és la vostra llar europea a l’Atmosphere, una xarxa global d’aplicacions i serveis socials.',
   'dashboard.yourApps.text': 'Les vostres aplicacions preferides.',
   'dashboard.yourApps.viewAll': 'Vegeu totes les aplicacions',
   'errors.notFound.title': 'No s’ha trobat la pàgina',
@@ -88,7 +88,7 @@ const ca = {
   'hero.createAccount': 'Creeu el vostre compte →',
   'hero.dataPromise': 'Les vostres dades són vostres. Mai no les vendrem.',
   'hero.subtitle': 'Un sol compte. Desenes d’aplicacions. Sense lligams.',
-  'hero.title': 'Eurosky: El vostre portal cap a <brand>l’Atmosphere.</brand>',
+  'hero.title': '{orgName}: El vostre portal cap a <brand>l’Atmosphere.</brand>',
   'home.heading': 'Una aplicació per a tot',
   'home.subheading': 'Sempre s’estan creant aplicacions noves',
   'login.continue': 'Continua →',
@@ -96,11 +96,11 @@ const ca = {
   'login.noAccount': 'No teniu cap compte? Crea’n un<signUp>Sign up</signUp>',
   'login.subtitle':
     'Introduïu el vostre nom d’usuari a continuació per a iniciar la sessió al compte',
-  'login.title': 'Inicieu la sessió al <brand>compte d’Eurosky.</brand>',
+  'login.title': 'Inicieu la sessió al <brand>compte {orgName}.</brand>',
   'markdown.error': 'No s’ha pogut mostrar aquest contingut.',
   'migrationAlert.cta': 'Migra',
   'migrationAlert.text':
-    'Porteu el vostre nom d’usuari, les publicacions i els seguidors a Eurosky amb l’eina de migració. Un compte nou no es podrà fusionar més endavant amb un d’existent.',
+    'Porteu el vostre nom d’usuari, les publicacions i els seguidors a {orgName} amb l’eina de migració. Un compte nou no es podrà fusionar més endavant amb un d’existent.',
   'migrationAlert.title': 'Ja teniu un compte de Bluesky?',
   'nav.about': 'Quant a',
   'nav.apps': 'Aplicacions',
@@ -112,14 +112,14 @@ const ca = {
   'nav.privacy': 'Privadesa',
   'nav.signIn': 'Inicia la sessió',
   'onboarding.alternative':
-    'Alternativament, podeu <logout>tancar la sessió</logout> i no utilitzar el portal d’Eurosky.',
+    'Alternativament, podeu <logout>tancar la sessió</logout> i no utilitzar {productTitle}.',
   'onboarding.notice.bothUpdated':
     'S’han actualitzat les nostres condicions d’ús i la política de privadesa',
   'onboarding.notice.privacyUpdated': 'S’ha actualitzat la nostra política de privadesa',
   'onboarding.notice.termsUpdated': 'S’han actualitzat les nostres condicions d’ús',
-  'onboarding.notice.text': 'Accepteu els canvis per a continuar utilitzant el portal d’Eurosky',
+  'onboarding.notice.text': 'Accepteu els canvis per a continuar utilitzant {productTitle}',
   'onboarding.pageTitle': 'Acepto les condicions d’ús',
-  'onboarding.title': 'Us donem la benvinguda <brand>Eurosky</brand>.',
+  'onboarding.title': 'Us donem la benvinguda <brand>{orgName}</brand>.',
   'policy.accept':
     'Acepto les <terms>condicions d’ús</terms> i la <privacy>política de privadesa</privacy>',
   'sidebar.applications': 'Aplicacions',
@@ -145,7 +145,7 @@ const ca = {
   'yourApps.empty':
     'Encara no s’ha afegit cap aplicació. Cal obrir una aplicació i seleccionar «Afegeix a les aplicacions».',
   'yourApps.subheading':
-    'Les vostres aplicacions preferides. Guardem aquesta informació a les vostres dades públiques d’Eurosky, per la qual cosa també es mostrarà en llocs com atstore.fyi.',
+    'Les vostres aplicacions preferides. Guardem aquesta informació a les vostres dades públiques a {orgName}, per la qual cosa també es mostrarà en llocs com atstore.fyi.',
 } satisfies Record<string, string>
 
 export default ca

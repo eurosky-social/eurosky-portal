@@ -39,17 +39,17 @@ const fr = {
   'apps.openWith': 'Ouvrir avec {name}',
   'apps.rating': '{value} sur 5',
   'apps.removeFavoriteNamed': 'Retirer {name} de vos applications',
-  'apps.subheading': 'Parcourez les applications phares compatibles avec votre compte Eurosky.',
+  'apps.subheading': 'Parcourez les applications phares compatibles avec votre compte {orgName}.',
   'beta.giveFeedback': 'Donner votre avis',
   'beta.warning':
-    'Eurosky Portal est actuellement en bêta. <feedback>Donnez votre avis</feedback>.',
+    '{productTitle} est actuellement en bêta. <feedback>Donnez votre avis</feedback>.',
   'common.breadcrumb': 'Fil d’Ariane',
   'common.learnMore': 'En savoir plus',
   'common.someone': 'quelqu’un',
   'createAccount.haveAccount': 'Vous avez déjà un compte? <signIn>Se connecter</signIn>',
   'createAccount.pageTitle': 'Créer un compte',
   'createAccount.subtitle': 'Avant de commencer, veuillez consulter et accepter nos conditions.',
-  'createAccount.title': 'Créez votre <brand>compte Eurosky.</brand>',
+  'createAccount.title': 'Créez votre <brand>compte {orgName}.</brand>',
   'dashboard.activity.empty': 'Rien ici pour l’instant ; pourquoi ne pas publier sur Mu?',
   'dashboard.activity.heading': 'Activité récente',
   'dashboard.activity.subheading': 'Votre dernière activité.',
@@ -58,10 +58,10 @@ const fr = {
   'dashboard.activity.viewAll': 'Voir toute l’activité',
   'dashboard.explore.heading': 'Explorer l’écosystème',
   'dashboard.explore.text':
-    'Votre compte Eurosky fonctionne avec des dizaines d’applications. Parcourez les applications phares ci-dessous et cliquez sur une application pour commencer.',
+    'Votre compte {orgName} fonctionne avec des dizaines d’applications. Parcourez les applications phares ci-dessous et cliquez sur une application pour commencer.',
   'dashboard.featuredApps.browseMore': 'Voir plus d’applications',
   'dashboard.featuredApps.heading': 'Applications phares',
-  'dashboard.featuredApps.text': 'Votre compte Eurosky fonctionne avec toutes ces applications.',
+  'dashboard.featuredApps.text': 'Votre compte {orgName} fonctionne avec toutes ces applications.',
   'dashboard.greeting.plain': 'Bon retour !',
   'dashboard.greeting.withName': 'Bon retour, {name} !',
   'dashboard.invalidHandle.text':
@@ -75,7 +75,7 @@ const fr = {
     'Votre identifiant est <strong>{handle}</strong>, il vous permet de vous connecter partout dans l’Atmosphere.',
   'dashboard.welcome.heading': 'Bienvenue dans l’Atmosphere',
   'dashboard.welcome.text':
-    'Eurosky est votre foyer européen sur l’Atmosphere – un réseau mondial d’applications et de services sociaux.',
+    '{orgName} est votre foyer européen sur l’Atmosphere – un réseau mondial d’applications et de services sociaux.',
   'dashboard.yourApps.text': 'Vos applications favorites.',
   'dashboard.yourApps.viewAll': 'Voir toutes vos applications',
   'errors.notFound.title': 'Page introuvable',
@@ -87,18 +87,18 @@ const fr = {
   'hero.createAccount': 'Créez votre compte →',
   'hero.dataPromise': 'Vos données vous appartiennent. Nous ne les vendrons jamais.',
   'hero.subtitle': 'Un seul compte. Des dizaines d’applications. Aucune dépendance.',
-  'hero.title': 'Eurosky : votre portail vers <brand>l’Atmosphere.</brand>',
+  'hero.title': '{orgName} : votre portail vers <brand>l’Atmosphere.</brand>',
   'home.heading': 'Une application pour tout',
   'home.subheading': 'De nouvelles applications sont créées en permanence !',
   'login.continue': 'Continuer →',
   'login.handleLabel': 'Votre identifiant Atmosphere',
   'login.noAccount': 'Vous n’avez pas de compte? <signUp>Inscrivez-vous</signUp>',
   'login.subtitle': 'Saisissez votre identifiant ci-dessous pour vous connecter à votre compte',
-  'login.title': 'Connectez-vous à votre <brand>compte Eurosky.</brand>',
+  'login.title': 'Connectez-vous à votre <brand>compte {orgName}.</brand>',
   'markdown.error': 'Ce contenu n’a pas pu être affiché.',
   'migrationAlert.cta': 'Migrer',
   'migrationAlert.text':
-    'Transférez votre identifiant, vos publications et vos abonnés vers Eurosky avec l’outil de migration. Un nouveau compte ne pourra pas être fusionné plus tard avec un compte existant.',
+    'Transférez votre identifiant, vos publications et vos abonnés vers {orgName} avec l’outil de migration. Un nouveau compte ne pourra pas être fusionné plus tard avec un compte existant.',
   'migrationAlert.title': 'Vous avez déjà un compte Bluesky?',
   'nav.about': 'À propos',
   'nav.apps': 'Applications',
@@ -110,15 +110,15 @@ const fr = {
   'nav.privacy': 'Confidentialité',
   'nav.signIn': 'Se connecter',
   'onboarding.alternative':
-    'Vous pouvez aussi <logout>vous déconnecter</logout> et ne pas utiliser Eurosky Portal.',
+    'Vous pouvez aussi <logout>vous déconnecter</logout> et ne pas utiliser {productTitle}.',
   'onboarding.notice.bothUpdated':
     'Nos conditions d’utilisation et notre politique de confidentialité ont été mises à jour',
   'onboarding.notice.privacyUpdated': 'Notre politique de confidentialité a été mise à jour',
   'onboarding.notice.termsUpdated': 'Nos conditions d’utilisation ont été mises à jour',
   'onboarding.notice.text':
-    'Veuillez accepter les modifications pour continuer à utiliser Eurosky Portal',
+    'Veuillez accepter les modifications pour continuer à utiliser {productTitle}',
   'onboarding.pageTitle': 'Accepter les conditions générales',
-  'onboarding.title': 'Bienvenue sur <brand>Eurosky</brand>.',
+  'onboarding.title': 'Bienvenue sur <brand>{orgName}</brand>.',
   'policy.accept':
     'J’accepte les <terms>conditions d’utilisation</terms> et la <privacy>politique de confidentialité</privacy>',
   'sidebar.applications': 'Applications',
@@ -144,7 +144,7 @@ const fr = {
   'yourApps.empty':
     'Vous n’avez encore ajouté aucune application. Ouvrez une application et choisissez « Ajouter à vos applications ».',
   'yourApps.subheading':
-    'Vos applications favorites. Nous les enregistrons dans vos données publiques sur Eurosky, elles apparaissent donc aussi sur des sites comme atstore.fyi.',
+    'Vos applications favorites. Nous les enregistrons dans vos données publiques sur {orgName}, elles apparaissent donc aussi sur des sites comme atstore.fyi.',
 } satisfies Record<string, string>
 
 export default fr

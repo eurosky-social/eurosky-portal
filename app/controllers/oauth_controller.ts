@@ -115,7 +115,7 @@ export default class OAuthController {
       }
 
       if (resolved.authorizationServer.toString() !== oauthServerUrl) {
-        throw createFieldError('input', result.value, i18n.t('oauth.notEurosky'))
+        throw createFieldError('input', result.value, i18n.t('oauth.unsupportedAccount'))
       }
 
       resolvedValue = resolved.did
@@ -539,7 +539,7 @@ function checkAuthInput(
       // We need to remove any trailing slashes to normalize:
       value.toLowerCase().replace(/\/$/, '') !== oauthServerUrl.toLowerCase().replace(/\/$/, '')
     ) {
-      throw createFieldError('input', value, i18n.t('oauth.notEurosky'))
+      throw createFieldError('input', value, i18n.t('oauth.unsupportedAccount'))
     }
 
     return { type: 'service-url', value }
@@ -560,7 +560,7 @@ function checkAuthInput(
     // We know these are not us.
     // Note that `handleDomains` are already filtered out.
     if (WELL_KNOWN_HANDLE_DOMAINS.some((serviceDomain) => value.endsWith(serviceDomain))) {
-      throw createFieldError('input', value, i18n.t('oauth.notEurosky'))
+      throw createFieldError('input', value, i18n.t('oauth.unsupportedAccount'))
     }
 
     if (handleDomains.some((domain) => value.endsWith(domain))) {

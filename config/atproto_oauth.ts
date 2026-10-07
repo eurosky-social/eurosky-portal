@@ -3,6 +3,7 @@ import {
   lucidSessionStore,
   lucidStateStore,
 } from '@thisismissem/adonisjs-atproto-oauth'
+import { brand } from '#shared/brand'
 import env from '#start/env'
 import { favoriteScope, loginScopes } from '#utils/oauth'
 
@@ -11,7 +12,7 @@ export default defineConfig({
   metadata: {
     // If ATPROTO_OAUTH_CLIENT_ID is set, the client metadata will be fetched from that URL:
     client_id: env.get('ATPROTO_OAUTH_CLIENT_ID'),
-    client_name: 'Eurosky Portal',
+    client_name: brand.productTitle,
     client_uri: new URL('/', env.get('APP_URL')).toString(),
     // All scopes ever requested;
     // logging in only asks for `loginScopes`,
