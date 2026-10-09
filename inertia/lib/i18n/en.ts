@@ -29,6 +29,7 @@ const en = {
   'apps.category.recommended': 'Recommended',
   'apps.category.reviews': 'Reviews',
   'apps.category.social': 'Social',
+  'apps.category.sport': 'Sport',
   'apps.chooseAppToOpen': 'Choose an app to open this with',
   'apps.detail.addFavorite': 'Add to your apps',
   'apps.detail.explore': 'Explore',
