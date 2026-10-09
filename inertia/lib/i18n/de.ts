@@ -29,6 +29,7 @@ const de = {
   'apps.category.recommended': 'Empfohlen',
   'apps.category.reviews': 'Bewertungen',
   'apps.category.social': 'Soziales',
+  'apps.category.sport': 'Sport',
   'apps.chooseAppToOpen': 'Wähle eine App, um dies zu öffnen',
   'apps.detail.addFavorite': 'Zu deinen Apps hinzufügen',
   'apps.detail.explore': 'Entdecken',

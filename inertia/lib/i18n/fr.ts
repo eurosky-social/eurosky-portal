@@ -29,6 +29,7 @@ const fr = {
   'apps.category.recommended': 'Recommandé',
   'apps.category.reviews': 'Avis',
   'apps.category.social': 'Social',
+  'apps.category.sport': 'Sport',
   'apps.chooseAppToOpen': 'Choisissez une application pour ouvrir ceci',
   'apps.detail.addFavorite': 'Ajouter à vos applications',
   'apps.detail.explore': 'Explorer',

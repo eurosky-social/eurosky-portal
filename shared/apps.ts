@@ -184,6 +184,12 @@ export const apps: ReadonlyArray<CatalogApp> = [
     category: 'apps.category.photoVideo',
     recommended: true,
   },
+  // Kimbia
+  {
+    atUri: 'at://did:plc:gktrthagvfvzkotyr3n2foox/fyi.atstore.listing.detail/3mtpahouumsbs',
+    category: 'apps.category.sport',
+    madeInEurope: true,
+  },
   // kipclip
   {
     atUri: 'at://did:plc:3zzkrrjtsmo7nnwnvhex3auj/fyi.atstore.listing.detail/3mkip5bumt2p5',
