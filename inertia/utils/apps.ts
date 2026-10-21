@@ -206,7 +206,9 @@ export function toUri(href: string): AtTagUriString | AtUriString | undefined {
     if (parts) {
       return 'tag' in parts
         ? `at-tag://${encodeURIComponent(parts.tag)}`
-        : AtUri.make(parts.authority, parts.collection, parts.rkey).toString()
+        : parts.collection
+          ? AtUri.make(parts.authority, parts.collection, parts.rkey).toString()
+          : AtUri.make(parts.authority).toString()
     }
   }
 }
