@@ -29,6 +29,7 @@ const ca = {
   'apps.category.recommended': 'Recomanacions',
   'apps.category.reviews': 'Ressenyes',
   'apps.category.social': 'Social',
+  'apps.category.sport': 'Esport',
   'apps.chooseAppToOpen': 'Trieu una aplicació per a obrir-ho',
   'apps.detail.explore': 'Explora',
   'apps.detail.addFavorite': 'Afegiu a les vostres aplicacions',

@@ -29,6 +29,7 @@ const nl = {
   'apps.category.recommended': 'Aanbevolen',
   'apps.category.reviews': 'Recensies',
   'apps.category.social': 'Sociaal',
+  'apps.category.sport': 'Sport',
   'apps.chooseAppToOpen': 'Kies een app om dit mee te openen',
   'apps.detail.addFavorite': 'Aan je apps toevoegen',
   'apps.detail.explore': 'Verkennen',
