@@ -92,7 +92,7 @@ resources/
   lang/           Server-side translations (one folder per locale)
   views/          Edge templates (the Inertia root layout)
 service/          Example production deployment (Docker Compose, Caddy, systemd)
-shared/           Code used by both server and front end (app catalog, locales)
+shared/           Code used by both server and front end (app catalog, brand, locales)
 start/            Boot files: routes, env validation, middleware kernel, auto-migration
 ```
 
@@ -117,7 +117,7 @@ A request hits a route in [`start/routes.ts`](start/routes.ts) (OAuth routes are
 | `pnpm changeset`  | Add a changeset describing your change (see below)     |
 | `node ace list`   | List all Ace commands, including project-specific ones |
 
-Editor setup: the repo includes an [`.editorconfig`](.editorconfig) and VS Code settings. Use the workspace TypeScript version and enable ESLint and Prettier integration.
+Editor setup: the repo includes an [`.editorconfig`](.editorconfig). Use the workspace TypeScript version and enable ESLint and Prettier integration.
 
 ## Common tasks
 
@@ -134,13 +134,15 @@ Create a migration with `node ace make:migration <name>`, run `pnpm db:migrate`,
 
 ### Translations
 
-Strings live in two places, and every locale must define the same keys:
+Strings live in these places, and every locale must define the same keys:
 
 - **Front end:** `inertia/lib/i18n/<locale>.ts`
 - **Server side** (validation messages, flash errors and similar): `resources/lang/<locale>/*.json`
-- Longer content such as the FAQ is in `data/<locale>/`.
+- Longer content, the FAQ and explore page, is in `data/<locale>/` (`faq.json`, `explore.md`).
 
-English (`en`) is the reference locale. When you add a key, add it to every locale; if you can't translate it, copy the English text and mention it in your pull request so a translator can follow up. `pnpm i18n:check` runs in CI and fails if keys are missing.
+English (`en`) is the reference locale. When you add a key, add it to every locale; if you can't translate it, copy the English text and mention it in your pull request so a translator can follow up. `pnpm i18n:check` runs in CI and fails if keys are missing from the front end or server side translations; it does not check `data/`.
+
+To add a new locale, also add it to `locales` and `localeNames` in [`shared/locale.ts`](shared/locale.ts), and to `catalogs` in [`inertia/lib/i18n.tsx`](inertia/lib/i18n.tsx).
 
 ### AT Protocol lexicons
 
@@ -166,14 +168,14 @@ Every push and pull request runs the [`checks` workflow](.github/workflows/check
 pnpm i18n:check && pnpm lint && pnpm format:check && pnpm typecheck
 ```
 
-There is currently little automated test coverage. Tests use [Japa](https://japa.dev) (configured in `tests/bootstrap.ts`), and contributions that add tests, especially around the OAuth and activity flows, are very welcome. Until coverage improves, describe in your pull request how you tested the change manually.
+There are currently no automated tests. Tests use [Japa](https://japa.dev) (configured in `tests/bootstrap.ts`), and contributions that add tests, especially around the OAuth and activity flows, are very welcome. Until coverage improves, describe in your pull request how you tested the change manually.
 
 ## Submitting a pull request
 
 1. **Fork** the repository (or create a branch if you have write access) and branch from `main`.
 2. **Keep it focused.** One logical change per pull request is easier to review and revert.
 3. **Write clear commits.** Short imperative subject lines (for example "Add French translation", "Fix duplicate migration messages").
-4. **Add a changeset** for any user-visible change: run `pnpm changeset`, choose a `patch`, `minor` or `major` bump, and write a one-line summary. This becomes the entry in [CHANGELOG.md](CHANGELOG.md). Pure refactors, CI or documentation changes can skip this.
+4. **Add a changeset** for any user-visible change: run `pnpm changeset`, choose a `patch`, `minor` or `major` bump, and write a short summary. This becomes the entry in [CHANGELOG.md](CHANGELOG.md). Pure refactors, CI changes and dependency updates can skip this.
 5. **Run the checks** above and make sure they pass.
 6. **Open the pull request** against `main`, describing what changed, why, and how you tested it. Add screenshots for UI changes, and link related issues.
 7. **Review.** A maintainer will review and may ask for changes. Once approved and green, a maintainer merges it.

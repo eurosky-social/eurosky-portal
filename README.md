@@ -43,11 +43,11 @@ flowchart LR
     haul -->|create account, import, activate| pds
     haul -->|update DID to point at new PDS| plc
     pds -->|commits| jet
-    jet -->|live activity for signed-in users| portal
+    jet -->|live activity for recently active accounts| portal
     portal -->|read records, resolve identities, app listings| ext
 ```
 
-### How the three components fit together
+### How it fits together
 
 **1. New accounts: Portal → PDS.** When someone chooses "Create account", the Portal starts an AT Protocol OAuth flow against the configured PDS (`OAUTH_SERVICE`) using the PDS's registration endpoint. The account itself, including the password and handle, is created on the PDS. The Portal never sees the password. Once the person is redirected back, the Portal records the account's DID, handle and the time the terms were accepted in its own small database.
 
@@ -55,7 +55,7 @@ flowchart LR
 
 **3. Signing in: Portal ↔ PDS.** Sign-in is AT Protocol OAuth (with granular scopes) using [`@thisismissem/adonisjs-atproto-oauth`](https://github.com/thisismissem/adonisjs-atproto-oauth). The Portal resolves the handle or DID, checks that its authorization server is the configured Eurosky PDS (unless `ALLOW_EXTERNAL_LOGINS=true`), and redirects the person to the PDS to approve. OAuth session tokens are stored server-side in the Portal's database; the browser only holds an encrypted session cookie. By default the Portal asks for the minimum scopes; extra scopes (for example writing an app "favorite" record) are requested step by step when a feature needs them.
 
-**4. Showing activity: PDS → Jetstream → Portal.** The Portal shows a person's recent posts, likes, follows and long-form documents. On first sign-in a background job backfills recent records by reading them directly from the person's PDS (located via the Slingshot identity resolver). After that, the Portal subscribes to a Jetstream firehose and mirrors new commits for signed-in users. Only a bounded preview of recent records is cached; the PDS remains the source of truth.
+**4. Showing activity: PDS → Jetstream → Portal.** The Portal shows a person's recent posts, likes, follows and long-form documents. On first sign-in a background job backfills recent records by reading them directly from the person's PDS (located via the Slingshot identity resolver). After that, the Portal subscribes to a Jetstream firehose and mirrors new commits for recently active accounts. Only a bounded preview of recent records is cached; the PDS remains the source of truth.
 
 **5. App discovery.** The apps directory is a curated list in [`shared/apps.ts`](shared/apps.ts). Names, icons and descriptions are fetched from [atstore](https://atstore.fyi), and favorites are written as `fyi.atstore.listing.favorite` records into the person's own repository on their PDS.
 
@@ -64,7 +64,7 @@ flowchart LR
 The Portal is a single [AdonisJS](https://adonisjs.com) application with a React front end rendered through [Inertia](https://inertiajs.com) (server-side rendering included). It runs as one process and one container:
 
 - **HTTP server**: routes in [`start/routes.ts`](start/routes.ts), controllers in [`app/controllers`](app/controllers).
-- **Database**: SQLite (via Lucid and `better-sqlite3`) for accounts, OAuth state and sessions, cached activity, the cache store and the job queue. Migrations live in [`database/migrations`](database/migrations).
+- **Database**: SQLite (via Lucid and `better-sqlite3`) for accounts, OAuth states and sessions, cached activity, the cache store and the job queue. Migrations live in [`database/migrations`](database/migrations).
 - **Background work**: the queue worker ([`providers/queue_worker_provider.ts`](providers/queue_worker_provider.ts)) and the Jetstream subscriber ([`providers/jetstream_provider.ts`](providers/jetstream_provider.ts)) start inside the web process.
 - **Front end**: pages and components in [`inertia/`](inertia), built with Vite and Tailwind CSS.
 - **Lexicons**: AT Protocol schemas the Portal uses are pinned in [`lexicons.json`](lexicons.json) and compiled into typed clients in [`app/lexicons`](app/lexicons).
@@ -115,7 +115,9 @@ Configuration is read from environment variables and validated at start-up in [`
 | `APP_KEY`                       | yes      | Secret used to encrypt cookies and sessions. Generate with `node ace generate:key` or `openssl rand -hex 32`.                                                        |
 | `APP_URL`                       | yes      | Public URL of the Portal. Must match the URL in the browser for OAuth to work.                                                                                       |
 | `APP_ENV`                       | yes      | `development`, `staging` or `production`.                                                                                                                            |
-| `HOST`, `PORT`                  | yes      | Address the server listens on (default port `4075`).                                                                                                                 |
+| `NODE_ENV`                      | yes      | `development`, `production` or `test`.                                                                                                                               |
+| `LOG_LEVEL`                     | yes      | Log level, such as `info` or `debug`.                                                                                                                                |
+| `HOST`, `PORT`                  | yes      | Address the server listens on (`.env.example` uses `127.0.0.1` and `4075`).                                                                                          |
 | `OAUTH_SERVICE`                 | yes      | URL of the PDS / OAuth authorization server accounts are created on and signed in to.                                                                                |
 | `MIGRATION_SERVICE`             | no       | URL of an EU-HAUL instance. When set, sign-up and sign-in pages offer migration for existing accounts.                                                               |
 | `ALLOW_EXTERNAL_LOGINS`         | no       | When `true`, accounts hosted on any PDS may sign in. Defaults to `false` (only `OAUTH_SERVICE` accounts).                                                            |
@@ -125,9 +127,10 @@ Configuration is read from environment variables and validated at start-up in [`
 | `ATPROTO_OAUTH_JWT_PRIVATE_KEY` | no       | Private key for running as a confidential OAuth client.                                                                                                              |
 | `DATABASE_PATH`                 | no       | SQLite file path. Defaults to `tmp/db.sqlite3`.                                                                                                                      |
 | `DATABASE_AUTOMIGRATE`          | no       | Run pending migrations on start-up. Used in the Docker image.                                                                                                        |
-| `SESSION_DRIVER`                | yes      | `cookie` (default), `memory` or `database`.                                                                                                                          |
+| `SESSION_DRIVER`                | yes      | `cookie` (as in `.env.example`), `memory` or `database`.                                                                                                             |
 | `OTEL_ENABLED`                  | no       | Enable OpenTelemetry. Configure the exporter with the standard `OTEL_EXPORTER_OTLP_*` variables.                                                                     |
 | `PLAUSIBLE_ENABLED`             | no       | Send privacy-friendly analytics events to Plausible.                                                                                                                 |
+| `VITE_ALIAS_HOSTS`              | no       | Comma-separated hosts the Vite dev server accepts besides the default (`localhost`).                                                                                 |
 
 ## Contributing
 
