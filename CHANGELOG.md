@@ -1,5 +1,11 @@
 # eurosky-portal
 
+## 1.8.2
+
+### Patch Changes
+
+- [#270](https://github.com/eurosky-social/eurosky-portal/pull/270) [`501fc10`](https://github.com/eurosky-social/eurosky-portal/commit/501fc10fb5d3e2b46fddb3a5f45e528919134113) Thanks [@jycouet](https://github.com/jycouet)! - Add Kimbia to apps
+
 ## 1.8.1
 
 ### Patch Changes
