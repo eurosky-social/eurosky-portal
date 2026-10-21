@@ -1,5 +1,22 @@
 # eurosky-portal
 
+## 1.8.1
+
+### Patch Changes
+
+- [#272](https://github.com/eurosky-social/eurosky-portal/pull/272) [`6355ba1`](https://github.com/eurosky-social/eurosky-portal/commit/6355ba1f6db10e265880f81d72ff4356f7fd6b00) Thanks [@wooorm](https://github.com/wooorm)! - Add Catalan ([#262](https://github.com/eurosky-social/eurosky-portal/issues/262), by @marcarmengou)
+
+- [#275](https://github.com/eurosky-social/eurosky-portal/pull/275) [`74f42b3`](https://github.com/eurosky-social/eurosky-portal/commit/74f42b3649bc5899145bf2cb36c298c9103bd539) Thanks [@wooorm](https://github.com/wooorm)! - Refactor to improve some docs
+
+- [#274](https://github.com/eurosky-social/eurosky-portal/pull/274) [`894b0dd`](https://github.com/eurosky-social/eurosky-portal/commit/894b0dde48efc4769c8cb05b8ce3779f17e3da9b) Thanks [@wooorm](https://github.com/wooorm)! - Fix logins with `username@eurosky.social`
+
+  An `@` before a configured handle domain is now turned into a `.`,
+  as intended; previously that input was rejected.
+
+- [#273](https://github.com/eurosky-social/eurosky-portal/pull/273) [`7d86d87`](https://github.com/eurosky-social/eurosky-portal/commit/7d86d875a32902cd80497e25d8d2f675125e5ae1) Thanks [@wooorm](https://github.com/wooorm)! - Fix `pnpm fetch` and `pnpm install` using different caches
+
+- [#268](https://github.com/eurosky-social/eurosky-portal/pull/268) [`74293fa`](https://github.com/eurosky-social/eurosky-portal/commit/74293fa92a170a94f11cdccdff6d27ad2617cb79) Thanks [@wooorm](https://github.com/wooorm)! - Add branding config
+
 ## 1.8.0
 
 ### Minor Changes
