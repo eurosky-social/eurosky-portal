@@ -19,21 +19,25 @@ export const loginRequestValidator = vine.create({
           return value
         }
 
-        // Append handle domain if only a username was entered:
-        if (!value.includes('.') && handleDomain) {
-          value += handleDomain
+        // Remove leading @ signs
+        if (newValue.startsWith('@')) {
+          newValue = newValue.slice(1)
         }
 
-        // Remove leading @ signs
-        if (value.startsWith('@')) {
-          newValue = value.slice(1)
+        // Append handle domain if only a username was entered:
+        if (!newValue.includes('.') && !newValue.includes('@') && handleDomain) {
+          newValue += handleDomain
         }
 
         // Remove @ signs separating username from handle domain component:
         // e.g., username@eurosky.social, but only if it's a handle domain
         // so username@gmail.com won't be converted to username.gmail.com
-        if (newValue.includes('@') && handleDomains.some((domain) => newValue.endsWith(domain))) {
-          newValue = newValue.replace('@', '.')
+        // (domains start with a dot, so `.eurosky.social` > `@eurosky.social`).
+        const atDomain = handleDomains.find((domain) =>
+          newValue.toLowerCase().endsWith('@' + domain.slice(1))
+        )
+        if (atDomain) {
+          newValue = newValue.slice(0, -atDomain.length) + atDomain
         }
 
         return newValue
