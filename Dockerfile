@@ -45,7 +45,7 @@ COPY package.json pnpm-*.yaml ./
 
 # Configure Corepack
 RUN corepack enable
-RUN --mount=type=cache,target=/pnpm/store pnpm fetch
+RUN --mount=id=pnpm,target=/pnpm/store,type=cache pnpm fetch
 
 FROM base-deps AS production-deps
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --prod --offline
