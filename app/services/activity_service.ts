@@ -448,15 +448,24 @@ export class ActivityService {
       if (records.length === 0) break
       seen += records.length
 
+      const prefix = `at://${did}/${collection}/`
       const update: Array<Partial<ActivityRecordSchema>> = []
       const remove: Array<string> = []
 
       for (const record of records) {
         const { cid, uri, value } = record
+        const rkey = uri.startsWith(prefix) ? uri.slice(prefix.length) : undefined
+
+        // Skip records that do not belong to the expected collection or repo.
+        // Shouldn’t happen, just to be safe.
+        if (!rkey || rkey.includes('/')) {
+          logger.warn({ collection, did, uri }, 'activity: foreign record uri, dropping')
+          continue
+        }
+
         const activity = toValue(collection, value)
         if (activity) {
           const { createdAt, text } = toPreview(activity)
-          const rkey = uri.split('/').pop()!
           update.push({ cid, collection, createdAt, did, indexedAt, rkey, text, uri })
         } else {
           remove.push(uri)
@@ -464,7 +473,9 @@ export class ActivityService {
       }
 
       if (update.length > 0) await ActivityRecord.updateOrCreateMany('uri', update)
-      if (remove.length > 0) await ActivityRecord.query().whereIn('uri', remove).delete()
+      if (remove.length > 0) {
+        await ActivityRecord.query().where('did', did).whereIn('uri', remove).delete()
+      }
 
       cursor = result.body.cursor
     } while (cursor && seen < maxActivitiesPerUser)
