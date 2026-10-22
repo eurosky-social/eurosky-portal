@@ -12,7 +12,7 @@ interface Options {
 }
 
 export default class BackfillJob extends Job<Options> {
-  static options = {
+  static override options = {
     retry: { backoff: exponentialBackoff(), maxRetries: 2 },
   }
 
@@ -41,7 +41,7 @@ export default class BackfillJob extends Job<Options> {
     })
   }
 
-  async failed(err: Error): Promise<undefined> {
+  override async failed(err: Error): Promise<undefined> {
     const { did, ip, userAgent } = this.payload
     logger.warn({ did, err }, 'activity: cannot backfill user')
 

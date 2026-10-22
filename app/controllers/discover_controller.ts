@@ -10,7 +10,9 @@ import {
 import AppsTransformer from '#transformers/apps_transformer'
 import AppTransformer from '#transformers/app_transformer'
 import { createState, favoriteScope, loginScopes } from '#utils/oauth'
+import { flashSessionValue, putSessionValue } from '#utils/session'
 import { captureException } from '#utils/telemetry'
+import { appValidator } from '#validators/apps'
 
 export default class DiscoverController {
   async apps({ auth, inertia }: HttpContext) {
@@ -27,7 +29,8 @@ export default class DiscoverController {
     })
   }
 
-  async app({ auth, inertia, params, response }: HttpContext) {
+  async app({ auth, inertia, request, response }: HttpContext) {
+    const { params } = await request.validateUsing(appValidator)
     const atstore = new AtStoreService()
     const app = await atstore.getApp(params.rkey)
 
@@ -59,10 +62,11 @@ export default class DiscoverController {
    * asks for {@linkcode favoriteScope} if needed.
    */
   async #toggle(
-    { auth, i18n, inertia, logger, oauth, params, response, session }: HttpContext,
+    { auth, i18n, inertia, logger, oauth, request, response, session }: HttpContext,
     action: FavoriteAction
   ) {
     const user = auth.getUserOrFail()
+    const { params } = await request.validateUsing(appValidator)
     const atstore = new AtStoreService()
     const app = await atstore.getApp(params.rkey)
 
@@ -75,11 +79,11 @@ export default class DiscoverController {
     try {
       await new FavoriteService()[action](user, subject)
       // Pages showing favorites are now stale in history.
-      session.flash('clearHistory', true)
+      flashSessionValue(session, 'clearHistory', true)
     } catch (err) {
       if (isScopeMissingError(err)) {
         const intent: FavoriteIntent = { action, did: user.did, subject }
-        session.put('favorite_intent', intent)
+        putSessionValue(session, 'favorite_intent', intent)
         session.setIntendedUrl(response.redirect().getPreviousUrl('/apps'))
 
         const authorizationUrl = await oauth.authorize(user.did, {
@@ -96,7 +100,7 @@ export default class DiscoverController {
         extra: { action, subject },
         tags: { component: 'favorites' },
       })
-      session.flash('errorsBag', { favorite: i18n.t('apps.favoriteFailed') })
+      flashSessionValue(session, 'errorsBag', { favorite: i18n.t('apps.favoriteFailed') })
     }
 
     return response.redirect().back()

@@ -1,9 +1,10 @@
 import { Form, FormRouteProps } from '@adonisjs/inertia/react'
 import { ChevronDownIcon, DocumentTextIcon, LockClosedIcon } from '@heroicons/react/24/solid'
+import type { Root } from 'hast'
 import { toJsxRuntime } from 'hast-util-to-jsx-runtime'
-import type { Nodes } from 'hast'
 import { Fragment, jsx, jsxs } from 'react/jsx-runtime'
 import type { ReactNode } from 'react'
+import type { Jsonify } from '#shared/json'
 import { Button } from '~/lib/button'
 import { Checkbox, CheckboxField } from '~/lib/checkbox'
 import { Label } from '~/lib/fieldset'
@@ -15,8 +16,8 @@ import { useT } from '~/lib/i18n'
 
 type Routes = keyof typeof routes
 type PolicyFormProps<Route extends Routes> = {
-  terms: unknown
-  privacy: unknown
+  terms: Jsonify<Root>
+  privacy: Jsonify<Root>
 } & Pick<FormRouteProps<Route>, 'route'>
 
 export function PolicyForm({ route, terms, privacy }: PolicyFormProps<Routes>) {
@@ -103,7 +104,7 @@ export function PolicyForm({ route, terms, privacy }: PolicyFormProps<Routes>) {
   )
 }
 
-function PolicyDetails({ header, document }: { header: ReactNode; document: unknown }) {
+function PolicyDetails({ header, document }: { header: ReactNode; document: Jsonify<Root> }) {
   return (
     <details
       name="policy"
@@ -114,7 +115,7 @@ function PolicyDetails({ header, document }: { header: ReactNode; document: unkn
         <ChevronDownIcon className="details-icon w-6 h-6 flex" />
       </summary>
       <div className="markdown-document dark:text-slate-200 text-grey-800 p-4" lang="en">
-        {toJsxRuntime(document as Nodes, { Fragment, jsx, jsxs })}
+        {toJsxRuntime(document, { Fragment, jsx, jsxs })}
       </div>
     </details>
   )

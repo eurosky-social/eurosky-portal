@@ -114,10 +114,10 @@ export const apps: ReadonlyArray<CatalogApp> = [
       toAtUri: (url) => {
         if (url.hostname !== 'bsky.app') return
 
-        const hashtagMatch = /^\/hashtag\/([^/]+)\/?$/.exec(url.pathname)
-        if (hashtagMatch) {
+        const [, rawTag] = /^\/hashtag\/([^/]+)\/?$/.exec(url.pathname) ?? []
+        if (rawTag) {
           try {
-            return { tag: decodeURIComponent(hashtagMatch[1]) }
+            return { tag: decodeURIComponent(rawTag) }
           } catch {
             return
           }
@@ -246,10 +246,10 @@ export const apps: ReadonlyArray<CatalogApp> = [
       toAtUri: (url) => {
         if (url.hostname !== 'mu.social') return
 
-        const hashtagMatch = /^\/hashtag\/([^/]+)\/?$/.exec(url.pathname)
-        if (hashtagMatch) {
+        const [, rawTag] = /^\/hashtag\/([^/]+)\/?$/.exec(url.pathname) ?? []
+        if (rawTag) {
           try {
-            return { tag: decodeURIComponent(hashtagMatch[1]) }
+            return { tag: decodeURIComponent(rawTag) }
           } catch {
             return
           }

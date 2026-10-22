@@ -21,7 +21,7 @@ export default class ActivityController {
   #bskyApp = new BskyAppService()
 
   async show({ auth, inertia, request }: HttpContext) {
-    const { did } = await auth.getUserOrFail()
+    const { did } = auth.getUserOrFail()
     const { limit, snapshot } = await request.validateUsing(activityQueryValidator)
     const ip = request.ip()
     const userAgent = request.header('user-agent')

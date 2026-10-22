@@ -1,6 +1,7 @@
 import string from '@adonisjs/core/helpers/string'
 import type { Session } from '@adonisjs/session'
 import env from '#start/env'
+import { putSessionValue } from '#utils/session'
 
 /**
  * Query parameters of the OAuth callback that must not end up in logs or
@@ -22,7 +23,7 @@ const callbackParams = ['code', 'iss', 'response', 'state']
  */
 export function createState(session: Session): string {
   const state = string.random(32)
-  session.put('oauth_state', state)
+  putSessionValue(session, 'oauth_state', state)
   return state
 }
 

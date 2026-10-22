@@ -22,7 +22,7 @@ export default class DashboardController {
 
   async show({ auth, inertia, request }: HttpContext) {
     const atstore = new AtStoreService()
-    const user = await auth.getUserOrFail()
+    const user = auth.getUserOrFail()
     const favorites = await new FavoriteService().getFavorites(user)
     const favoriteApps = await getFavoriteApps(favorites)
     const apps = favoriteApps.length > 0 ? favoriteApps : await atstore.getFeaturedApps()

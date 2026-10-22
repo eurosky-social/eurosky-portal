@@ -22,6 +22,12 @@ import { SlingshotService } from '#services/slingshot_service'
 import { loginRequestValidator, signupRequestValidator } from '#validators/oauth'
 import { createFieldError } from '#utils/errors'
 import { createState, getHandleDomains, loginScopes } from '#utils/oauth'
+import {
+  flashSessionValue,
+  forgetSessionValue,
+  pullSessionValue,
+  putSessionValue,
+} from '#utils/session'
 import { captureException, captureMessage } from '#utils/telemetry'
 
 const oauthServerUrl = env.get('OAUTH_SERVICE')
@@ -124,9 +130,9 @@ export default class OAuthController {
     }
 
     // Drop stale favorite flows.
-    session.forget('favorite_intent')
-    session.put('source', 'login')
-    session.put('handle', input)
+    forgetSessionValue(session, 'favorite_intent')
+    putSessionValue(session, 'source', 'login')
+    putSessionValue(session, 'handle', input)
 
     try {
       const authorizationUrl = await oauth.authorize(resolvedValue, {
@@ -165,9 +171,9 @@ export default class OAuthController {
     await request.validateUsing(signupRequestValidator)
 
     // Drop stale favorite flows.
-    session.forget('favorite_intent')
-    session.put('source', 'signup')
-    session.put('terms_accepted', DateTime.now().toISO())
+    forgetSessionValue(session, 'favorite_intent')
+    putSessionValue(session, 'source', 'signup')
+    putSessionValue(session, 'terms_accepted', DateTime.now().toISO())
 
     // This only makes sense when accepting user input for the oauthServerUrl,
     // which was what we originally had for sign-up, but that isn't the case in
@@ -223,8 +229,8 @@ export default class OAuthController {
   }
 
   async callback(ctx: HttpContext) {
-    const favoriteIntent: FavoriteIntent | undefined = ctx.session.pull('favorite_intent')
-    const oauthState: string | undefined = ctx.session.pull('oauth_state')
+    const favoriteIntent = pullSessionValue(ctx.session, 'favorite_intent')
+    const oauthState = pullSessionValue(ctx.session, 'oauth_state')
     return favoriteIntent
       ? this.#favoriteCallback(ctx, favoriteIntent, oauthState)
       : this.#loginCallback(ctx, oauthState)
@@ -251,13 +257,13 @@ export default class OAuthController {
       // Another account was chosen.
       // It is not logged in here.
       if (user.did !== intent.did) {
-        session.flash('errorsBag', { favorite: i18n.t('apps.favoriteOtherAccount') })
+        flashSessionValue(session, 'errorsBag', { favorite: i18n.t('apps.favoriteOtherAccount') })
         return response.redirect().toIntended('/apps')
       }
 
       await new FavoriteService()[intent.action](user, intent.subject)
       // Pages showing favorites are now stale in history.
-      session.flash('clearHistory', true)
+      flashSessionValue(session, 'clearHistory', true)
     } catch (err) {
       const denied =
         err instanceof OAuthCallbackError &&
@@ -271,7 +277,7 @@ export default class OAuthController {
         })
       }
 
-      session.flash('errorsBag', {
+      flashSessionValue(session, 'errorsBag', {
         favorite: i18n.t(denied ? 'apps.favoriteDenied' : 'apps.favoriteFailed'),
       })
     }
@@ -286,9 +292,9 @@ export default class OAuthController {
     { auth, i18n, logger, oauth, request, response, session }: HttpContext,
     oauthState: string | undefined
   ) {
-    const termsAccepted = session.pull('terms_accepted', 'invalid')
-    const source = session.pull('source', 'login')
-    const initiatingHandle = session.pull('handle')
+    const termsAccepted = pullSessionValue(session, 'terms_accepted') ?? 'invalid'
+    const source = pullSessionValue(session, 'source') ?? 'login'
+    const initiatingHandle = pullSessionValue(session, 'handle')
     const ip = request.ip()
     const userAgent = request.header('user-agent')
 
@@ -302,7 +308,7 @@ export default class OAuthController {
         extra: { source, value: termsAccepted },
       })
 
-      session.flash('error', i18n.t('oauth.signupError'))
+      flashSessionValue(session, 'errorsBag', { signup_failed: i18n.t('oauth.signupError') })
       AuthFlowCompleted.dispatch({
         ip,
         outcome: 'error',
@@ -327,7 +333,7 @@ export default class OAuthController {
 
       const resolved = await oauth
         .resolveIdentity(did, AbortSignal.timeout(resolveIdentityTimeout))
-        .catch((error) => {
+        .catch((error: unknown) => {
           // Timeout.
           if (error instanceof DOMException && error.name === 'AbortError') {
             return
@@ -349,7 +355,7 @@ export default class OAuthController {
       if (!existingAccount && !resolved) {
         await oauth.logout(did)
 
-        session.flash('errorsBag', {
+        flashSessionValue(session, 'errorsBag', {
           login_failed: i18n.t('oauth.loginFailed'),
         })
 
@@ -412,7 +418,7 @@ export default class OAuthController {
         // If the user denied the authorization request, or it timed out, this
         // doesn't need an explicit capture:
         if (error === 'access_denied') {
-          session.flash('errorsBag', {
+          flashSessionValue(session, 'errorsBag', {
             access_denied:
               source === 'signup' ? i18n.t('oauth.cancelledSignup') : i18n.t('oauth.deniedSignIn'),
           })
@@ -430,7 +436,7 @@ export default class OAuthController {
 
         // We do want to capture information about the OAuth server failing:
         if (error === 'server_error') {
-          session.flash('errorsBag', {
+          flashSessionValue(session, 'errorsBag', {
             server_error:
               source === 'signup' ? i18n.t('oauth.signupServerError') : i18n.t('oauth.loginFailed'),
           })
@@ -480,7 +486,7 @@ export default class OAuthController {
         })
       }
 
-      session.flash('errorsBag', {
+      flashSessionValue(session, 'errorsBag', {
         error: i18n.t('oauth.unknownCallbackError'),
       })
 

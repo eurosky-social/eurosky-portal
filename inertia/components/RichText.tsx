@@ -1,12 +1,11 @@
+import type { Root } from 'hast'
 import { toJsxRuntime } from 'hast-util-to-jsx-runtime'
-import type { ElementContent, Root } from 'hast'
 import { Fragment, jsx, jsxs } from 'react/jsx-runtime'
 import type { AppBskyFeedPostDetail } from '#transformers/activity_transformer'
 import * as components from './RichTextComponents'
 
 export function RichText({ text }: { text: AppBskyFeedPostDetail['text'] }) {
-  // Cast because inertia fails on TS `interface`s.
-  const root: Root = { type: 'root', children: text as unknown as Array<ElementContent> }
+  const root: Root = { type: 'root', children: text }
 
   return (
     <div className="whitespace-pre-wrap text-base text-zinc-900 dark:text-white">

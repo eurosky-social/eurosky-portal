@@ -11,14 +11,14 @@ async function sleep(duration: number) {
 }
 
 export default class PortalBackfillHandles extends BaseCommand {
-  static commandName = 'portal:backfill-handles'
-  static description = 'Tool to backfill handles on the Account model'
+  static override commandName = 'portal:backfill-handles'
+  static override description = 'Tool to backfill handles on the Account model'
 
-  static options: CommandOptions = {
+  static override options: CommandOptions = {
     startApp: true,
   }
 
-  async run() {
+  override async run() {
     const { default: Account } = await import('#models/account')
     const { SlingshotService } = await import('#services/slingshot_service')
     const slingshot = new SlingshotService()
@@ -43,7 +43,7 @@ export default class PortalBackfillHandles extends BaseCommand {
 
       await Promise.all(
         result.all().map(async (account) => {
-          const resolved = await slingshot.resolveMiniDoc(account.did).catch((error) => {
+          const resolved = await slingshot.resolveMiniDoc(account.did).catch((error: unknown) => {
             this.logger.error(`Unable to resolve handle for ${account.did}: ${error}`)
             return undefined
           })

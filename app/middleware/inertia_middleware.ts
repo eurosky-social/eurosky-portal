@@ -5,6 +5,7 @@ import type { NextFn } from '@adonisjs/core/types/http'
 import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
 import Account from '#models/account'
 import AccountTransformer from '#transformers/account_transformer'
+import { getFlashedSessionValue } from '#utils/session'
 import { captureMessage } from '#utils/telemetry'
 
 export default class InertiaMiddleware extends BaseInertiaMiddleware {
@@ -44,15 +45,15 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
      * (such as favorites);
      * Clear them.
      */
-    if (session?.flashMessages.get('clearHistory')) {
+    if (session && getFlashedSessionValue(session, 'clearHistory')) {
       ctx.inertia.clearHistory()
     }
 
     /**
      * Fetching the first error from the flash messages
      */
-    const errorsBag = session?.flashMessages.get('errorsBag') ?? {}
-    const error: string | undefined = Object.keys(errorsBag)
+    const errorsBag = (session && getFlashedSessionValue(session, 'errorsBag')) ?? {}
+    const error = Object.keys(errorsBag)
       .filter((code) => code !== 'E_VALIDATION_ERROR')
       .map((code) => errorsBag[code])[0]
 

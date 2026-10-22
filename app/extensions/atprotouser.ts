@@ -23,7 +23,7 @@ AtprotoUser.macro(
         params: { actor: this.did },
         signal: options.signal,
       })
-      .catch(async (error) => {
+      .catch(async (error: unknown) => {
         logger.error(error)
         captureException(error, {
           tags: { component: 'atprotouser' },
@@ -32,7 +32,7 @@ AtprotoUser.macro(
         return undefined
       })
 
-    if (!response || !response.success) {
+    if (!response) {
       return undefined
     }
 

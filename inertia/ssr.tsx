@@ -3,12 +3,13 @@ import { ReactElement } from 'react'
 import Layout from '~/layouts/default'
 import { Data } from '@generated/data'
 import ReactDOMServer from 'react-dom/server'
+import type { Page } from '@inertiajs/core'
 import { createInertiaApp, ResolvedComponent } from '@inertiajs/react'
 import { TuyauProvider } from '@adonisjs/inertia/react'
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
 import { brand } from '#shared/brand'
 
-export default function render(page: any) {
+export default function render(page: Page) {
   return createInertiaApp({
     title: (title) => (title ? `${title} - ${brand.productTitle}` : brand.productTitle),
     page,

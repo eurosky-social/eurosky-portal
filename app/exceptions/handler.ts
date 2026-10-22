@@ -8,45 +8,49 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    * Controls whether errors should be reported to logging systems
    * When disabled, errors are handled but not logged or reported
    */
-  protected reportErrors = true
+  protected override reportErrors = true
 
   /**
    * In debug mode, the exception handler will display verbose errors
    * with pretty printed stack traces.
    */
-  protected debug = !app.inProduction
+  protected override debug = !app.inProduction
 
   /**
    * Status pages are used to display a custom HTML pages for certain error
    * codes. You might want to enable them in production only, but feel
    * free to enable them in development as well.
    */
-  protected renderStatusPages = app.inProduction
+  protected override renderStatusPages = app.inProduction
 
   /**
    * HTTP status codes that should not be reported.
    * These are typically client errors that don't indicate
    * problems with your application.
    */
-  protected ignoreStatuses = [401, 403, 404, 422, 429]
+  protected override ignoreStatuses = [401, 403, 404, 422, 429]
 
   /**
    * Error codes that should not be reported.
    * These are application-specific error codes for
    * expected error conditions.
    */
-  protected ignoreCodes = ['E_ROUTE_NOT_FOUND', 'E_VALIDATION_ERROR', 'E_UNAUTHORIZED_ACCESS']
+  protected override ignoreCodes = [
+    'E_ROUTE_NOT_FOUND',
+    'E_VALIDATION_ERROR',
+    'E_UNAUTHORIZED_ACCESS',
+  ]
 
   /**
    * Status pages is a collection of error code range and a callback
    * to return the HTML contents to send as a response.
    */
-  protected statusPages: Record<StatusPageRange, StatusPageRenderer> = {
+  protected override statusPages: Record<StatusPageRange, StatusPageRenderer> = {
     '404': (_, { inertia }) => inertia.render('errors/not_found', {}),
     '500..599': (_, { inertia }) => inertia.render('errors/server_error', {}),
   }
 
-  protected context(ctx: HttpContext) {
+  protected override context(ctx: HttpContext) {
     return {
       /**
        * Include the unique request ID for tracking
@@ -72,7 +76,7 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    * The method is used for handling errors and returning
    * response to the client
    */
-  async handle(error: unknown, ctx: HttpContext) {
+  override async handle(error: unknown, ctx: HttpContext) {
     return super.handle(error, ctx)
   }
 
@@ -82,7 +86,7 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    *
    * @note You should not attempt to send a response from this method.
    */
-  async report(error: unknown, ctx: HttpContext) {
+  override async report(error: unknown, ctx: HttpContext) {
     const httpError = this.toHttpError(error)
 
     // Only log errors in development:

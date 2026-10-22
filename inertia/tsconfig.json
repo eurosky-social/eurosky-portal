@@ -3,10 +3,14 @@
   "compilerOptions": {
     "module": "ESNext",
     "jsx": "react-jsx",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noUncheckedIndexedAccess": true,
     "paths": {
       "~/*": ["./*"],
       "@generated/*": ["../.adonisjs/client/*"]
-    }
+    },
+    "strict": true
   },
   "include": [
     "./**/*.ts",

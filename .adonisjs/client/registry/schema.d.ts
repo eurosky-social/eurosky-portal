@@ -248,10 +248,10 @@ export interface Registry {
       body: {}
       paramsTuple: [ParamValue]
       params: { rkey: ParamValue }
-      query: {}
+      query: ExtractQueryForGet<InferInput<(typeof import('#validators/apps').appValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/discover_controller').default['app']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/discover_controller').default['app']>>>
-      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/discover_controller').default['app']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/discover_controller').default['app']>>> | { status: 422; response: { errors: SimpleError[] } }
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/discover_controller').default['app']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'legal.show': {
