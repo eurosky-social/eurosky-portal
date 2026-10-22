@@ -3,14 +3,8 @@
   "defs": {
     "main": {
       "type": "object",
-      "required": [
-        "tex"
-      ],
-      "properties": {
-        "tex": {
-          "type": "string"
-        }
-      }
+      "required": ["tex"],
+      "properties": { "tex": { "type": "string" } }
     }
   },
   "$type": "com.atproto.lexicon.schema",

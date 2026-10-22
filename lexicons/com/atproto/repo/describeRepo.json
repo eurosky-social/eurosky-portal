@@ -14,24 +14,15 @@
             "handleIsCorrect"
           ],
           "properties": {
-            "did": {
-              "type": "string",
-              "format": "did"
-            },
+            "did": { "type": "string", "format": "did" },
             "didDoc": {
               "type": "unknown",
               "description": "The complete DID document for this account."
             },
-            "handle": {
-              "type": "string",
-              "format": "handle"
-            },
+            "handle": { "type": "string", "format": "handle" },
             "collections": {
               "type": "array",
-              "items": {
-                "type": "string",
-                "format": "nsid"
-              },
+              "items": { "type": "string", "format": "nsid" },
               "description": "List of all the collections (NSIDs) for which this repo contains at least one record."
             },
             "handleIsCorrect": {
@@ -44,9 +35,7 @@
       },
       "parameters": {
         "type": "params",
-        "required": [
-          "repo"
-        ],
+        "required": ["repo"],
         "properties": {
           "repo": {
             "type": "string",

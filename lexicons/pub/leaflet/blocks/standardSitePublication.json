@@ -3,20 +3,11 @@
   "defs": {
     "main": {
       "type": "object",
-      "required": [
-        "uri"
-      ],
+      "required": ["uri"],
       "properties": {
-        "cid": {
-          "type": "string"
-        },
-        "uri": {
-          "type": "string",
-          "format": "at-uri"
-        },
-        "showPublicationTheme": {
-          "type": "boolean"
-        }
+        "cid": { "type": "string" },
+        "uri": { "type": "string", "format": "at-uri" },
+        "showPublicationTheme": { "type": "boolean" }
       }
     }
   },

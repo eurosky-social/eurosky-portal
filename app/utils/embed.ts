@@ -1,9 +1,10 @@
-import { type AtUriString, type BlobRef, isBlobRef } from '@atproto/lex'
+import type { AtUriString, BlobRef } from '@atproto/lex'
 import * as lexicon from '#lexicons'
 import { type BlobLocator, type Context, toBlobLocator } from '#utils/blob'
 
 type LexiconEmbed = NonNullable<lexicon.app.bsky.feed.post.Main['embed']>
 type LexiconExternal = lexicon.app.bsky.embed.external.Main
+type LexiconGallery = lexicon.app.bsky.embed.gallery.Main
 type LexiconMedia = LexiconRecordWithMedia['media']
 type LexiconImages = lexicon.app.bsky.embed.images.Main
 type LexiconRecord = lexicon.app.bsky.embed.record.Main
@@ -83,6 +84,18 @@ function externalToEmbed(value: LexiconExternal, context: Context): External {
   }
 }
 
+function galleryToEmbed(value: LexiconGallery, context: Context): Images {
+  const images: Array<Image> = []
+
+  for (const item of value.items) {
+    if (lexicon.app.bsky.embed.gallery.image.isTypeOf(item)) {
+      images.push(toImage(item, context))
+    }
+  }
+
+  return { images, type: 'images' }
+}
+
 function imagesToEmbed(value: LexiconImages, context: Context): Images {
   return {
     images: value.images.map((image) => toImage(image, context)),
@@ -103,39 +116,8 @@ function mediaToEmbed(value: LexiconMedia, context: Context): Media {
     return videoToEmbed()
   }
 
-  // Ducktype the shape of `app.bsky.embed.gallery` which is not yet published:
-  // <https://github.com/bluesky-social/atproto/discussions/5032>.
-  if (value.$type === 'app.bsky.embed.gallery' && 'items' in value && Array.isArray(value.items)) {
-    const items = value.items as ReadonlyArray<unknown>
-    const images: Array<Image> = []
-    for (const item of items) {
-      if (
-        item &&
-        typeof item === 'object' &&
-        'alt' in item &&
-        typeof item.alt === 'string' &&
-        'image' in item &&
-        isBlobRef(item.image)
-      ) {
-        let aspectRatio: AspectRatio | undefined
-
-        if (
-          'aspectRatio' in item &&
-          typeof item.aspectRatio === 'object' &&
-          item.aspectRatio !== null &&
-          'height' in item.aspectRatio &&
-          'width' in item.aspectRatio
-        ) {
-          const { height, width } = item.aspectRatio
-          if (typeof height === 'number' && typeof width === 'number') {
-            aspectRatio = { height, width }
-          }
-        }
-
-        images.push(toImage({ alt: item.alt, aspectRatio, image: item.image }, context))
-      }
-    }
-    return { images, type: 'images' }
+  if (lexicon.app.bsky.embed.gallery.main.isTypeOf(value)) {
+    return galleryToEmbed(value, context)
   }
 
   return unknownToEmbed()

@@ -4,21 +4,12 @@
     "main": {
       "type": "query",
       "errors": [
-        {
-          "name": "ListingNotFound"
-        },
-        {
-          "name": "InvalidParams"
-        },
-        {
-          "name": "AmbiguousResolution"
-        }
+        { "name": "ListingNotFound" },
+        { "name": "InvalidParams" },
+        { "name": "AmbiguousResolution" }
       ],
       "output": {
-        "schema": {
-          "ref": "#listingDetailResponse",
-          "type": "ref"
-        },
+        "schema": { "ref": "#listingDetailResponse", "type": "ref" },
         "encoding": "application/json"
       },
       "parameters": {
@@ -72,89 +63,38 @@
           "maxLength": 2560,
           "description": "AT URI of the fyi.atstore.listing.detail record."
         },
-        "name": {
-          "type": "string",
-          "maxLength": 640
-        },
+        "name": { "type": "string", "maxLength": 640 },
         "accent": {
           "type": "string",
           "maxLength": 16,
-          "knownValues": [
-            "blue",
-            "pink",
-            "purple",
-            "green"
-          ]
+          "knownValues": ["blue", "pink", "purple", "green"]
         },
-        "rating": {
-          "type": "string",
-          "maxLength": 16
-        },
+        "rating": { "type": "string", "maxLength": 16 },
         "appTags": {
           "type": "array",
-          "items": {
-            "type": "string",
-            "maxLength": 256
-          }
+          "items": { "type": "string", "maxLength": 256 }
         },
-        "iconUrl": {
-          "type": "string",
-          "maxLength": 8192
-        },
-        "tagline": {
-          "type": "string",
-          "maxLength": 2000
-        },
-        "category": {
-          "type": "string",
-          "maxLength": 640
-        },
-        "priceLabel": {
-          "type": "string",
-          "maxLength": 32
-        },
-        "description": {
-          "type": "string",
-          "maxLength": 20000
-        },
-        "reviewCount": {
-          "type": "integer"
-        },
-        "categorySlug": {
-          "type": "string",
-          "maxLength": 512
-        },
-        "heroImageUrl": {
-          "type": "string",
-          "maxLength": 8192
-        },
+        "iconUrl": { "type": "string", "maxLength": 8192 },
+        "tagline": { "type": "string", "maxLength": 2000 },
+        "category": { "type": "string", "maxLength": 640 },
+        "priceLabel": { "type": "string", "maxLength": 32 },
+        "description": { "type": "string", "maxLength": 20000 },
+        "reviewCount": { "type": "integer" },
+        "categorySlug": { "type": "string", "maxLength": 512 },
+        "heroImageUrl": { "type": "string", "maxLength": 8192 },
         "categorySlugs": {
           "type": "array",
-          "items": {
-            "type": "string",
-            "maxLength": 512
-          }
+          "items": { "type": "string", "maxLength": 512 }
         },
-        "productAccountHandle": {
-          "type": "string",
-          "maxLength": 512
-        }
+        "productAccountHandle": { "type": "string", "maxLength": 512 }
       }
     },
     "listingLinkRow": {
       "type": "object",
-      "required": [
-        "uri"
-      ],
+      "required": ["uri"],
       "properties": {
-        "uri": {
-          "type": "string",
-          "maxLength": 2048
-        },
-        "label": {
-          "type": "string",
-          "maxLength": 640
-        }
+        "uri": { "type": "string", "maxLength": 2048 },
+        "label": { "type": "string", "maxLength": 640 }
       }
     },
     "listingDetailResponse": {
@@ -184,57 +124,22 @@
       "properties": {
         "links": {
           "type": "array",
-          "items": {
-            "ref": "#listingLinkRow",
-            "type": "ref"
-          }
+          "items": { "ref": "#listingLinkRow", "type": "ref" }
         },
-        "listing": {
-          "ref": "#listingCardGet",
-          "type": "ref"
-        },
-        "repoDid": {
-          "type": "string",
-          "maxLength": 2048
-        },
-        "createdAt": {
-          "type": "string",
-          "maxLength": 64
-        },
-        "sourceUrl": {
-          "type": "string",
-          "maxLength": 8192
-        },
-        "updatedAt": {
-          "type": "string",
-          "maxLength": 64
-        },
-        "externalUrl": {
-          "type": "string",
-          "maxLength": 2048
-        },
+        "listing": { "ref": "#listingCardGet", "type": "ref" },
+        "repoDid": { "type": "string", "maxLength": 2048 },
+        "createdAt": { "type": "string", "maxLength": 64 },
+        "sourceUrl": { "type": "string", "maxLength": 8192 },
+        "updatedAt": { "type": "string", "maxLength": 64 },
+        "externalUrl": { "type": "string", "maxLength": 2048 },
         "screenshots": {
           "type": "array",
-          "items": {
-            "type": "string",
-            "maxLength": 4096
-          }
+          "items": { "type": "string", "maxLength": 4096 }
         },
-        "sourceTagline": {
-          "type": "string",
-          "maxLength": 20000
-        },
-        "isStoreManaged": {
-          "type": "boolean"
-        },
-        "productAccountDid": {
-          "type": "string",
-          "maxLength": 2048
-        },
-        "sourceFullDescription": {
-          "type": "string",
-          "maxLength": 20000
-        }
+        "sourceTagline": { "type": "string", "maxLength": 20000 },
+        "isStoreManaged": { "type": "boolean" },
+        "productAccountDid": { "type": "string", "maxLength": 2048 },
+        "sourceFullDescription": { "type": "string", "maxLength": 20000 }
       }
     }
   },

@@ -13,6 +13,7 @@ export { $nsid }
 
 type Main = {
   $type?: 'pub.leaflet.blocks.bskyPost'
+  view?: 'full' | 'media' | l.UnknownString
   postRef: RepoStrongRef.Main
   clientHost?: string
 }
@@ -23,6 +24,9 @@ const main = /*#__PURE__*/ l.typedObject<Main>(
   $nsid,
   'main',
   /*#__PURE__*/ l.object({
+    view: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string<{ knownValues: ['full', 'media'] }>(),
+    ),
     postRef: /*#__PURE__*/ l.ref<RepoStrongRef.Main>(
       (() => RepoStrongRef.main) as any,
     ),

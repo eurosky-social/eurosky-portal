@@ -5,6 +5,7 @@
 import { l } from '@atproto/lex'
 import * as EmbedImages from '../embed/images.defs.js'
 import * as EmbedVideo from '../embed/video.defs.js'
+import * as EmbedGallery from '../embed/gallery.defs.js'
 import * as EmbedExternal from '../embed/external.defs.js'
 import * as EmbedRecord from '../embed/record.defs.js'
 import * as EmbedRecordWithMedia from '../embed/recordWithMedia.defs.js'
@@ -34,6 +35,7 @@ type Main = {
   embed?:
     | l.$Typed<EmbedImages.Main>
     | l.$Typed<EmbedVideo.Main>
+    | l.$Typed<EmbedGallery.Main>
     | l.$Typed<EmbedExternal.Main>
     | l.$Typed<EmbedRecord.Main>
     | l.$Typed<EmbedRecordWithMedia.Main>
@@ -88,6 +90,9 @@ const main = /*#__PURE__*/ l.record<'tid', Main>(
           ),
           /*#__PURE__*/ l.typedRef<EmbedVideo.Main>(
             (() => EmbedVideo.main) as any,
+          ),
+          /*#__PURE__*/ l.typedRef<EmbedGallery.Main>(
+            (() => EmbedGallery.main) as any,
           ),
           /*#__PURE__*/ l.typedRef<EmbedExternal.Main>(
             (() => EmbedExternal.main) as any,

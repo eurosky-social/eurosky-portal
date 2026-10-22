@@ -3,6 +3,10 @@
  */
 
 import { l } from '@atproto/lex'
+import * as RepoStrongRef from '../../../com/atproto/repo/strongRef.defs.js'
+import * as LabelDefs from '../../../com/atproto/label/defs.defs.js'
+import * as ActorDefs from '../actor/defs.defs.js'
+import * as EmbedDefs from './defs.defs.js'
 
 const $nsid = 'app.bsky.embed.external'
 
@@ -58,12 +62,40 @@ const view = /*#__PURE__*/ l.typedObject<View>(
 
 export { view }
 
+/** RGB color definition, inspired by site.standard.theme.color#rgb */
+type ColorRGB = {
+  $type?: 'app.bsky.embed.external#colorRGB'
+  b: number
+  g: number
+  r: number
+}
+
+export type { ColorRGB as ColorRgb }
+
+/** RGB color definition, inspired by site.standard.theme.color#rgb */
+const colorRGB = /*#__PURE__*/ l.typedObject<ColorRGB>(
+  $nsid,
+  'colorRGB',
+  /*#__PURE__*/ l.object({
+    b: /*#__PURE__*/ l.integer({ maximum: 255, minimum: 0 }),
+    g: /*#__PURE__*/ l.integer({ maximum: 255, minimum: 0 }),
+    r: /*#__PURE__*/ l.integer({ maximum: 255, minimum: 0 }),
+  }),
+)
+
+export { colorRGB }
+
 type External = {
   $type?: 'app.bsky.embed.external#external'
   uri: l.UriString
   thumb?: l.BlobRef
   title: string
   description: string
+
+  /**
+   * StrongRefs (uri+cid) of the Atmosphere records that backed this view.
+   */
+  associatedRefs?: RepoStrongRef.Main[]
 }
 
 export type { External }
@@ -78,17 +110,214 @@ const external = /*#__PURE__*/ l.typedObject<External>(
     ),
     title: /*#__PURE__*/ l.string(),
     description: /*#__PURE__*/ l.string(),
+    associatedRefs: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<RepoStrongRef.Main>(
+          (() => RepoStrongRef.main) as any,
+        ),
+      ),
+    ),
   }),
 )
 
 export { external }
+
+type ViewArticle = {
+  $type?: 'app.bsky.embed.external#viewArticle'
+  uri: l.UriString
+  image?: l.UriString
+  title: string
+  labels?: LabelDefs.Label[]
+
+  /**
+   * Available profile previews. Selected deterministically by DID; not a ranking.
+   */
+  likers?: ActorDefs.ProfileViewBasic[]
+  createdAt?: l.DatetimeString
+  likeCount?: number
+  publisher?: ViewArticlePublication
+  updatedAt?: l.DatetimeString
+  description: string
+  readingTime?: number
+  associatedRefs?: RepoStrongRef.Main[]
+  associatedProfiles?: ActorDefs.ProfileViewBasic[]
+}
+
+export type { ViewArticle }
+
+const viewArticle = /*#__PURE__*/ l.typedObject<ViewArticle>(
+  $nsid,
+  'viewArticle',
+  /*#__PURE__*/ l.object({
+    uri: /*#__PURE__*/ l.string({ format: 'uri' }),
+    image: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'uri' })),
+    title: /*#__PURE__*/ l.string(),
+    labels: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any),
+      ),
+    ),
+    likers: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<ActorDefs.ProfileViewBasic>(
+          (() => ActorDefs.profileViewBasic) as any,
+        ),
+        { maxLength: 3 },
+      ),
+    ),
+    createdAt: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'datetime' }),
+    ),
+    likeCount: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.integer({ minimum: 0 }),
+    ),
+    publisher: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<ViewArticlePublication>(
+        (() => viewArticlePublication) as any,
+      ),
+    ),
+    updatedAt: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'datetime' }),
+    ),
+    description: /*#__PURE__*/ l.string(),
+    readingTime: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.integer({ minimum: 1 }),
+    ),
+    associatedRefs: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<RepoStrongRef.Main>(
+          (() => RepoStrongRef.main) as any,
+        ),
+      ),
+    ),
+    associatedProfiles: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<ActorDefs.ProfileViewBasic>(
+          (() => ActorDefs.profileViewBasic) as any,
+        ),
+      ),
+    ),
+  }),
+)
+
+export { viewArticle }
+
+type ViewGallery = {
+  $type?: 'app.bsky.embed.external#viewGallery'
+  uri: l.UriString
+
+  /**
+   * The media items in the gallery. Each item may be of a different type, but all types must be supported by the client.
+   */
+  items: (l.$Typed<ViewGalleryImage> | l.Unknown$TypedObject)[]
+  title: string
+  labels?: LabelDefs.Label[]
+
+  /**
+   * Available profile previews. Selected deterministically by DID; not a ranking.
+   */
+  likers?: ActorDefs.ProfileViewBasic[]
+  createdAt?: l.DatetimeString
+  likeCount?: number
+  updatedAt?: l.DatetimeString
+  description: string
+  associatedRefs?: RepoStrongRef.Main[]
+  associatedProfiles?: ActorDefs.ProfileViewBasic[]
+}
+
+export type { ViewGallery }
+
+const viewGallery = /*#__PURE__*/ l.typedObject<ViewGallery>(
+  $nsid,
+  'viewGallery',
+  /*#__PURE__*/ l.object({
+    uri: /*#__PURE__*/ l.string({ format: 'uri' }),
+    items: /*#__PURE__*/ l.array(
+      /*#__PURE__*/ l.typedUnion(
+        [
+          /*#__PURE__*/ l.typedRef<ViewGalleryImage>(
+            (() => viewGalleryImage) as any,
+          ),
+        ],
+        false,
+      ),
+    ),
+    title: /*#__PURE__*/ l.string(),
+    labels: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any),
+      ),
+    ),
+    likers: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<ActorDefs.ProfileViewBasic>(
+          (() => ActorDefs.profileViewBasic) as any,
+        ),
+        { maxLength: 3 },
+      ),
+    ),
+    createdAt: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'datetime' }),
+    ),
+    likeCount: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.integer({ minimum: 0 }),
+    ),
+    updatedAt: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'datetime' }),
+    ),
+    description: /*#__PURE__*/ l.string(),
+    associatedRefs: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<RepoStrongRef.Main>(
+          (() => RepoStrongRef.main) as any,
+        ),
+      ),
+    ),
+    associatedProfiles: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<ActorDefs.ProfileViewBasic>(
+          (() => ActorDefs.profileViewBasic) as any,
+        ),
+      ),
+    ),
+  }),
+)
+
+export { viewGallery }
 
 type ViewExternal = {
   $type?: 'app.bsky.embed.external#viewExternal'
   uri: l.UriString
   thumb?: l.UriString
   title: string
+  labels?: LabelDefs.Label[]
+  source?: ViewExternalSource
+
+  /**
+   * When the external content was created, if available. Example: a publication date, for an article.
+   */
+  createdAt?: l.DatetimeString
+
+  /**
+   * When the external content was updated, if available.
+   */
+  updatedAt?: l.DatetimeString
   description: string
+
+  /**
+   * Estimated reading time in minutes, if applicable and available.
+   */
+  readingTime?: number
+
+  /**
+   * StrongRefs (uri+cid) of the Atmosphere records that backed this view.
+   */
+  associatedRefs?: RepoStrongRef.Main[]
+
+  /**
+   * Profiles of the owners of the Atmosphere records that backed this view.
+   */
+  associatedProfiles?: ActorDefs.ProfileViewBasic[]
 }
 
 export type { ViewExternal }
@@ -100,8 +329,339 @@ const viewExternal = /*#__PURE__*/ l.typedObject<ViewExternal>(
     uri: /*#__PURE__*/ l.string({ format: 'uri' }),
     thumb: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'uri' })),
     title: /*#__PURE__*/ l.string(),
+    labels: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any),
+      ),
+    ),
+    source: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<ViewExternalSource>(
+        (() => viewExternalSource) as any,
+      ),
+    ),
+    createdAt: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'datetime' }),
+    ),
+    updatedAt: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'datetime' }),
+    ),
     description: /*#__PURE__*/ l.string(),
+    readingTime: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
+    associatedRefs: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<RepoStrongRef.Main>(
+          (() => RepoStrongRef.main) as any,
+        ),
+      ),
+    ),
+    associatedProfiles: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<ActorDefs.ProfileViewBasic>(
+          (() => ActorDefs.profileViewBasic) as any,
+        ),
+      ),
+    ),
   }),
 )
 
 export { viewExternal }
+
+type ViewLivestream = {
+  $type?: 'app.bsky.embed.external#viewLivestream'
+  uri: l.UriString
+  image?: l.UriString
+  title: string
+
+  /**
+   * True if the livestream is currently active at the time this view is served, false if it has ended.
+   */
+  active: boolean
+  labels?: LabelDefs.Label[]
+  endedAt?: l.DatetimeString
+  createdAt?: l.DatetimeString
+  startedAt?: l.DatetimeString
+  updatedAt?: l.DatetimeString
+  description: string
+  associatedRefs?: RepoStrongRef.Main[]
+  associatedProfiles?: ActorDefs.ProfileViewBasic[]
+}
+
+export type { ViewLivestream }
+
+const viewLivestream = /*#__PURE__*/ l.typedObject<ViewLivestream>(
+  $nsid,
+  'viewLivestream',
+  /*#__PURE__*/ l.object({
+    uri: /*#__PURE__*/ l.string({ format: 'uri' }),
+    image: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'uri' })),
+    title: /*#__PURE__*/ l.string(),
+    active: /*#__PURE__*/ l.boolean(),
+    labels: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any),
+      ),
+    ),
+    endedAt: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'datetime' }),
+    ),
+    createdAt: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'datetime' }),
+    ),
+    startedAt: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'datetime' }),
+    ),
+    updatedAt: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'datetime' }),
+    ),
+    description: /*#__PURE__*/ l.string(),
+    associatedRefs: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<RepoStrongRef.Main>(
+          (() => RepoStrongRef.main) as any,
+        ),
+      ),
+    ),
+    associatedProfiles: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<ActorDefs.ProfileViewBasic>(
+          (() => ActorDefs.profileViewBasic) as any,
+        ),
+      ),
+    ),
+  }),
+)
+
+export { viewLivestream }
+
+type ViewGalleryImage = {
+  $type?: 'app.bsky.embed.external#viewGalleryImage'
+
+  /**
+   * Alt text description of the image, for accessibility.
+   */
+  alt?: string
+
+  /**
+   * Fully-qualified URL where a large version of the image can be fetched. May or may not be the exact original blob. For example, CDN location provided by the App View.
+   */
+  fullsize: l.UriString
+
+  /**
+   * Fully-qualified URL where a thumbnail of the image can be fetched. For example, CDN location provided by the App View.
+   */
+  thumbnail: l.UriString
+  aspectRatio?: EmbedDefs.AspectRatio
+}
+
+export type { ViewGalleryImage }
+
+const viewGalleryImage = /*#__PURE__*/ l.typedObject<ViewGalleryImage>(
+  $nsid,
+  'viewGalleryImage',
+  /*#__PURE__*/ l.object({
+    alt: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string()),
+    fullsize: /*#__PURE__*/ l.string({ format: 'uri' }),
+    thumbnail: /*#__PURE__*/ l.string({ format: 'uri' }),
+    aspectRatio: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<EmbedDefs.AspectRatio>(
+        (() => EmbedDefs.aspectRatio) as any,
+      ),
+    ),
+  }),
+)
+
+export { viewGalleryImage }
+
+/** The source of an external embed, such as a standard.site publication. */
+type ViewExternalSource = {
+  $type?: 'app.bsky.embed.external#viewExternalSource'
+
+  /**
+   * URI of the source, if available. Example: the https:// URL of a site.standard.publication record.
+   */
+  uri: l.UriString
+
+  /**
+   * Fully-qualified URL where an icon representing the source can be fetched. For example, CDN location provided by the App View.
+   */
+  icon?: l.UriString
+  theme?: ViewExternalSourceTheme
+  title: string
+  description?: string
+}
+
+export type { ViewExternalSource }
+
+/** The source of an external embed, such as a standard.site publication. */
+const viewExternalSource = /*#__PURE__*/ l.typedObject<ViewExternalSource>(
+  $nsid,
+  'viewExternalSource',
+  /*#__PURE__*/ l.object({
+    uri: /*#__PURE__*/ l.string({ format: 'uri' }),
+    icon: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'uri' })),
+    theme: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<ViewExternalSourceTheme>(
+        (() => viewExternalSourceTheme) as any,
+      ),
+    ),
+    title: /*#__PURE__*/ l.string(),
+    description: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string()),
+  }),
+)
+
+export { viewExternalSource }
+
+type ViewArticlePublication = {
+  $type?: 'app.bsky.embed.external#viewArticlePublication'
+  uri: l.UriString
+  logo?: l.UriString
+  image?: l.UriString
+  theme?: ViewArticlePublicationTheme
+  title: string
+  labels?: LabelDefs.Label[]
+  createdAt?: l.DatetimeString
+  updatedAt?: l.DatetimeString
+  description: string
+
+  /**
+   * Available profile previews. Selected deterministically by DID; not a ranking.
+   */
+  subscribers?: ActorDefs.ProfileViewBasic[]
+  associatedRefs?: RepoStrongRef.Main[]
+  subscriptionCount?: number
+  associatedProfiles?: ActorDefs.ProfileViewBasic[]
+}
+
+export type { ViewArticlePublication }
+
+const viewArticlePublication =
+  /*#__PURE__*/ l.typedObject<ViewArticlePublication>(
+    $nsid,
+    'viewArticlePublication',
+    /*#__PURE__*/ l.object({
+      uri: /*#__PURE__*/ l.string({ format: 'uri' }),
+      logo: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'uri' })),
+      image: /*#__PURE__*/ l.optional(
+        /*#__PURE__*/ l.string({ format: 'uri' }),
+      ),
+      theme: /*#__PURE__*/ l.optional(
+        /*#__PURE__*/ l.ref<ViewArticlePublicationTheme>(
+          (() => viewArticlePublicationTheme) as any,
+        ),
+      ),
+      title: /*#__PURE__*/ l.string(),
+      labels: /*#__PURE__*/ l.optional(
+        /*#__PURE__*/ l.array(
+          /*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any),
+        ),
+      ),
+      createdAt: /*#__PURE__*/ l.optional(
+        /*#__PURE__*/ l.string({ format: 'datetime' }),
+      ),
+      updatedAt: /*#__PURE__*/ l.optional(
+        /*#__PURE__*/ l.string({ format: 'datetime' }),
+      ),
+      description: /*#__PURE__*/ l.string(),
+      subscribers: /*#__PURE__*/ l.optional(
+        /*#__PURE__*/ l.array(
+          /*#__PURE__*/ l.ref<ActorDefs.ProfileViewBasic>(
+            (() => ActorDefs.profileViewBasic) as any,
+          ),
+          { maxLength: 3 },
+        ),
+      ),
+      associatedRefs: /*#__PURE__*/ l.optional(
+        /*#__PURE__*/ l.array(
+          /*#__PURE__*/ l.ref<RepoStrongRef.Main>(
+            (() => RepoStrongRef.main) as any,
+          ),
+        ),
+      ),
+      subscriptionCount: /*#__PURE__*/ l.optional(
+        /*#__PURE__*/ l.integer({ minimum: 0 }),
+      ),
+      associatedProfiles: /*#__PURE__*/ l.optional(
+        /*#__PURE__*/ l.array(
+          /*#__PURE__*/ l.ref<ActorDefs.ProfileViewBasic>(
+            (() => ActorDefs.profileViewBasic) as any,
+          ),
+        ),
+      ),
+    }),
+  )
+
+export { viewArticlePublication }
+
+/** The theme colors of an external source, such as a site.standard.publication. These colors may be used when rendering an embed from that source. */
+type ViewExternalSourceTheme = {
+  $type?: 'app.bsky.embed.external#viewExternalSourceTheme'
+  accentRGB?: ColorRGB
+  backgroundRGB?: ColorRGB
+  foregroundRGB?: ColorRGB
+  accentForegroundRGB?: ColorRGB
+}
+
+export type { ViewExternalSourceTheme }
+
+/** The theme colors of an external source, such as a site.standard.publication. These colors may be used when rendering an embed from that source. */
+const viewExternalSourceTheme =
+  /*#__PURE__*/ l.typedObject<ViewExternalSourceTheme>(
+    $nsid,
+    'viewExternalSourceTheme',
+    /*#__PURE__*/ l.object({
+      accentRGB: /*#__PURE__*/ l.optional(
+        /*#__PURE__*/ l.ref<ColorRGB>((() => colorRGB) as any),
+      ),
+      backgroundRGB: /*#__PURE__*/ l.optional(
+        /*#__PURE__*/ l.ref<ColorRGB>((() => colorRGB) as any),
+      ),
+      foregroundRGB: /*#__PURE__*/ l.optional(
+        /*#__PURE__*/ l.ref<ColorRGB>((() => colorRGB) as any),
+      ),
+      accentForegroundRGB: /*#__PURE__*/ l.optional(
+        /*#__PURE__*/ l.ref<ColorRGB>((() => colorRGB) as any),
+      ),
+    }),
+  )
+
+export { viewExternalSourceTheme }
+
+type ViewArticlePublicationTheme = {
+  $type?: 'app.bsky.embed.external#viewArticlePublicationTheme'
+
+  /**
+   * Hex color string, if available. Example: '#ffffff'.
+   */
+  accent?: string
+
+  /**
+   * Hex color string, if available. Example: '#ffffff'.
+   */
+  background?: string
+
+  /**
+   * Hex color string, if available. Example: '#ffffff'.
+   */
+  foreground?: string
+
+  /**
+   * Hex color string, if available. Example: '#ffffff'.
+   */
+  accentForeground?: string
+}
+
+export type { ViewArticlePublicationTheme }
+
+const viewArticlePublicationTheme =
+  /*#__PURE__*/ l.typedObject<ViewArticlePublicationTheme>(
+    $nsid,
+    'viewArticlePublicationTheme',
+    /*#__PURE__*/ l.object({
+      accent: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string()),
+      background: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string()),
+      foreground: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string()),
+      accentForeground: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string()),
+    }),
+  )
+
+export { viewArticlePublicationTheme }

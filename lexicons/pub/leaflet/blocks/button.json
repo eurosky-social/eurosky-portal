@@ -3,18 +3,10 @@
   "defs": {
     "main": {
       "type": "object",
-      "required": [
-        "text",
-        "url"
-      ],
+      "required": ["text", "url"],
       "properties": {
-        "url": {
-          "type": "string",
-          "format": "uri"
-        },
-        "text": {
-          "type": "string"
-        }
+        "url": { "type": "string", "format": "uri" },
+        "text": { "type": "string" }
       }
     }
   },

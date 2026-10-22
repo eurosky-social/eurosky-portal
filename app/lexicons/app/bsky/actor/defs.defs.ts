@@ -3,8 +3,8 @@
  */
 
 import { l } from '@atproto/lex'
-import * as LabelDefs from '../../../com/atproto/label/defs.defs.js'
 import * as EmbedExternal from '../embed/external.defs.js'
+import * as LabelDefs from '../../../com/atproto/label/defs.defs.js'
 import * as GraphDefs from '../graph/defs.defs.js'
 import * as NotificationDefs from '../notification/defs.defs.js'
 import * as RepoStrongRef from '../../../com/atproto/repo/strongRef.defs.js'
@@ -335,6 +335,10 @@ export { profileView }
 /** Metadata about the requesting account's relationship with the subject account. Only has meaningful content for authed requests. */
 type ViewerState = {
   $type?: 'app.bsky.actor.defs#viewerState'
+
+  /**
+   * Whether the account is fully muted, directly or via a mutelist. False when the mute is scoped to specific kinds; see mutedOnlyReposts and mutedOnlyQuoteposts.
+   */
   muted?: boolean
   blocking?: l.AtUriString
   blockedBy?: boolean
@@ -347,6 +351,16 @@ type ViewerState = {
    * This property is present only in selected cases, as an optimization.
    */
   knownFollowers?: KnownFollowers
+
+  /**
+   * Whether the account's reposts are muted. Scoped mutes are exclusive with muted: this can be true while muted is false. If muted is true, this will be false.
+   */
+  mutedOnlyReposts?: boolean
+
+  /**
+   * Whether the account's quote posts are muted. Scoped mutes are exclusive with muted: this can be true while muted is false. If muted is true, this will be false.
+   */
+  mutedOnlyQuoteposts?: boolean
 
   /**
    * This property is present only in selected cases, as an optimization.
@@ -385,6 +399,8 @@ const viewerState = /*#__PURE__*/ l.typedObject<ViewerState>(
     knownFollowers: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.ref<KnownFollowers>((() => knownFollowers) as any),
     ),
+    mutedOnlyReposts: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
+    mutedOnlyQuoteposts: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
     activitySubscription: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.ref<NotificationDefs.ActivitySubscription>(
         (() => NotificationDefs.activitySubscription) as any,
@@ -474,6 +490,11 @@ type InterestsPref = {
    * A list of tags which describe the account owner's interests gathered during onboarding.
    */
   tags: string[]
+
+  /**
+   * The timestamp when the account owner last updated their interests.
+   */
+  updatedAt?: l.DatetimeString
 }
 
 export type { InterestsPref }
@@ -485,6 +506,9 @@ const interestsPref = /*#__PURE__*/ l.typedObject<InterestsPref>(
     tags: /*#__PURE__*/ l.array(
       /*#__PURE__*/ l.string({ maxLength: 640, maxGraphemes: 64 }),
       { maxLength: 100 },
+    ),
+    updatedAt: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'datetime' }),
     ),
   }),
 )
@@ -668,6 +692,51 @@ const mutedWordTarget = /*#__PURE__*/ l.string<{
 
 export { mutedWordTarget }
 
+type ProfileLinkView = {
+  $type?: 'app.bsky.actor.defs#profileLinkView'
+  cid: l.CidString
+
+  /**
+   * The app.bsky.actor.link record, e.g. for reporting the link.
+   */
+  uri: l.AtUriString
+
+  /**
+   * The link destination.
+   */
+  url: l.UriString
+
+  /**
+   * Image URL for the destination site's icon.
+   */
+  icon?: l.UriString
+  title?: string
+  labels?: LabelDefs.Label[]
+}
+
+export type { ProfileLinkView }
+
+const profileLinkView = /*#__PURE__*/ l.typedObject<ProfileLinkView>(
+  $nsid,
+  'profileLinkView',
+  /*#__PURE__*/ l.object({
+    cid: /*#__PURE__*/ l.string({ format: 'cid' }),
+    uri: /*#__PURE__*/ l.string({ format: 'at-uri' }),
+    url: /*#__PURE__*/ l.string({ format: 'uri' }),
+    icon: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'uri' })),
+    title: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ maxLength: 320, maxGraphemes: 40 }),
+    ),
+    labels: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any),
+      ),
+    ),
+  }),
+)
+
+export { profileLinkView }
+
 type AdultContentPref = {
   $type?: 'app.bsky.actor.defs#adultContentPref'
   enabled: boolean
@@ -695,6 +764,11 @@ type BskyAppStatePref = {
   nuxs?: Nux[]
 
   /**
+   * Indicates if the user is participating in the beta features program.
+   */
+  isBetaUser?: boolean
+
+  /**
    * An array of tokens which identify nudges (modals, popups, tours, highlight dots) that should be shown to the user.
    */
   queuedNudges?: string[]
@@ -713,6 +787,7 @@ const bskyAppStatePref = /*#__PURE__*/ l.typedObject<BskyAppStatePref>(
         maxLength: 100,
       }),
     ),
+    isBetaUser: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
     queuedNudges: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.array(/*#__PURE__*/ l.string({ maxLength: 100 }), {
         maxLength: 1000,
@@ -858,6 +933,16 @@ type VerificationView = {
    * Timestamp when the verification was created.
    */
   createdAt: l.DatetimeString
+
+  /**
+   * The handle of the issuer.
+   */
+  issuerHandle?: l.HandleString
+
+  /**
+   * The display name of the issuer.
+   */
+  issuerDisplayName?: string
 }
 
 export type { VerificationView }
@@ -871,6 +956,10 @@ const verificationView = /*#__PURE__*/ l.typedObject<VerificationView>(
     issuer: /*#__PURE__*/ l.string({ format: 'did' }),
     isValid: /*#__PURE__*/ l.boolean(),
     createdAt: /*#__PURE__*/ l.string({ format: 'datetime' }),
+    issuerHandle: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'handle' }),
+    ),
+    issuerDisplayName: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string()),
   }),
 )
 
@@ -1014,6 +1103,11 @@ type ProfileViewDetailed = {
    * Debug information for internal development
    */
   debug?: l.LexMap
+
+  /**
+   * The profile's links, in display order. Links that were taken down or don't resolve are left out.
+   */
+  links?: ProfileLinkView[]
   avatar?: l.UriString
   banner?: l.UriString
   handle: l.HandleString
@@ -1043,6 +1137,11 @@ const profileViewDetailed = /*#__PURE__*/ l.typedObject<ProfileViewDetailed>(
   /*#__PURE__*/ l.object({
     did: /*#__PURE__*/ l.string({ format: 'did' }),
     debug: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.lexMap()),
+    links: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(
+        /*#__PURE__*/ l.ref<ProfileLinkView>((() => profileLinkView) as any),
+      ),
+    ),
     avatar: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'uri' })),
     banner: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'uri' })),
     handle: /*#__PURE__*/ l.string({ format: 'handle' }),
@@ -1150,6 +1249,7 @@ export { liveEventPreferences }
 type ProfileAssociatedChat = {
   $type?: 'app.bsky.actor.defs#profileAssociatedChat'
   allowIncoming: 'all' | 'none' | 'following' | l.UnknownString
+  allowGroupInvites?: 'all' | 'none' | 'following' | l.UnknownString
 }
 
 export type { ProfileAssociatedChat }
@@ -1162,6 +1262,9 @@ const profileAssociatedChat =
       allowIncoming: /*#__PURE__*/ l.string<{
         knownValues: ['all', 'none', 'following']
       }>(),
+      allowGroupInvites: /*#__PURE__*/ l.optional(
+        /*#__PURE__*/ l.string<{ knownValues: ['all', 'none', 'following'] }>(),
+      ),
     }),
   )
 

@@ -17,11 +17,11 @@ type Main = {
    * Gap between images in pixels.
    */
   gap?: number
-  format?: 'grid' | 'carousel' | 'strip' | l.UnknownString
+  format?: 'grid' | 'carousel' | 'strip' | 'masonry' | l.UnknownString
   images: Image[]
 
   /**
-   * Max width per image in grid view (px); drives how many columns fit.
+   * Max width per image in grid and masonry views (px); drives how many columns fit.
    */
   maxWidth?: number
 }
@@ -34,7 +34,9 @@ const main = /*#__PURE__*/ l.typedObject<Main>(
   /*#__PURE__*/ l.object({
     gap: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
     format: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string<{ knownValues: ['grid', 'carousel', 'strip'] }>(),
+      /*#__PURE__*/ l.string<{
+        knownValues: ['grid', 'carousel', 'strip', 'masonry']
+      }>(),
     ),
     images: /*#__PURE__*/ l.array(
       /*#__PURE__*/ l.ref<Image>((() => image) as any),

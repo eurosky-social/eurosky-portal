@@ -119,6 +119,11 @@ type ListItemView = {
   $type?: 'app.bsky.graph.defs#listItemView'
   uri: l.AtUriString
   subject: ActorDefs.ProfileView
+
+  /**
+   * Set to true when the subject has opted out of appearing in the reference list. Only set when the viewer owns the list.
+   */
+  subjectOptedOut?: true
 }
 
 export type { ListItemView }
@@ -131,6 +136,7 @@ const listItemView = /*#__PURE__*/ l.typedObject<ListItemView>(
     subject: /*#__PURE__*/ l.ref<ActorDefs.ProfileView>(
       (() => ActorDefs.profileView) as any,
     ),
+    subjectOptedOut: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.literal(true)),
   }),
 )
 
@@ -284,6 +290,11 @@ type ListViewerState = {
   $type?: 'app.bsky.graph.defs#listViewerState'
   muted?: boolean
   blocked?: l.AtUriString
+
+  /**
+   * The authenticated viewer's app.bsky.graph.referencelistoptout record URI for this reference list. Only set for reference lists. A client can delete this record to undo the opt-out.
+   */
+  referenceListOptOut?: l.AtUriString
 }
 
 export type { ListViewerState }
@@ -294,6 +305,9 @@ const listViewerState = /*#__PURE__*/ l.typedObject<ListViewerState>(
   /*#__PURE__*/ l.object({
     muted: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
     blocked: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'at-uri' }),
+    ),
+    referenceListOptOut: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.string({ format: 'at-uri' }),
     ),
   }),

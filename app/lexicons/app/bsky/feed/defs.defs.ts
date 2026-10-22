@@ -5,6 +5,7 @@
 import { l } from '@atproto/lex'
 import * as EmbedImages from '../embed/images.defs.js'
 import * as EmbedVideo from '../embed/video.defs.js'
+import * as EmbedGallery from '../embed/gallery.defs.js'
 import * as EmbedExternal from '../embed/external.defs.js'
 import * as EmbedRecord from '../embed/record.defs.js'
 import * as EmbedRecordWithMedia from '../embed/recordWithMedia.defs.js'
@@ -31,6 +32,7 @@ type PostView = {
   embed?:
     | l.$Typed<EmbedImages.View>
     | l.$Typed<EmbedVideo.View>
+    | l.$Typed<EmbedGallery.View>
     | l.$Typed<EmbedExternal.View>
     | l.$Typed<EmbedRecord.View>
     | l.$Typed<EmbedRecordWithMedia.View>
@@ -65,6 +67,9 @@ const postView = /*#__PURE__*/ l.typedObject<PostView>(
           ),
           /*#__PURE__*/ l.typedRef<EmbedVideo.View>(
             (() => EmbedVideo.view) as any,
+          ),
+          /*#__PURE__*/ l.typedRef<EmbedGallery.View>(
+            (() => EmbedGallery.view) as any,
           ),
           /*#__PURE__*/ l.typedRef<EmbedExternal.View>(
             (() => EmbedExternal.view) as any,
@@ -254,6 +259,32 @@ const interaction = /*#__PURE__*/ l.typedObject<Interaction>(
 
 export { interaction }
 
+/** The post's likers whom you also follow */
+type KnownLikers = {
+  $type?: 'app.bsky.feed.defs#knownLikers'
+  count: number
+  actors: ActorDefs.ProfileViewBasic[]
+}
+
+export type { KnownLikers }
+
+/** The post's likers whom you also follow */
+const knownLikers = /*#__PURE__*/ l.typedObject<KnownLikers>(
+  $nsid,
+  'knownLikers',
+  /*#__PURE__*/ l.object({
+    count: /*#__PURE__*/ l.integer(),
+    actors: /*#__PURE__*/ l.array(
+      /*#__PURE__*/ l.ref<ActorDefs.ProfileViewBasic>(
+        (() => ActorDefs.profileViewBasic) as any,
+      ),
+      { maxLength: 5, minLength: 0 },
+    ),
+  }),
+)
+
+export { knownLikers }
+
 /** Request that less content like the given feed item be shown in the feed */
 const requestLess = /*#__PURE__*/ l.token($nsid, 'requestLess')
 
@@ -287,6 +318,11 @@ type ViewerState = {
   pinned?: boolean
   repost?: l.AtUriString
   bookmarked?: boolean
+
+  /**
+   * This property is present only in selected cases, as an optimization.
+   */
+  knownLikers?: KnownLikers
   threadMuted?: boolean
   replyDisabled?: boolean
   embeddingDisabled?: boolean
@@ -307,6 +343,9 @@ const viewerState = /*#__PURE__*/ l.typedObject<ViewerState>(
       /*#__PURE__*/ l.string({ format: 'at-uri' }),
     ),
     bookmarked: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
+    knownLikers: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<KnownLikers>((() => knownLikers) as any),
+    ),
     threadMuted: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
     replyDisabled: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
     embeddingDisabled: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
@@ -330,6 +369,16 @@ type FeedViewPost = {
    * Context provided by feed generator that may be passed back alongside interactions.
    */
   feedContext?: string
+
+  /**
+   * The total number of posts in the contiguous OP thread that this post belongs to. Only present when this post is part of the OP thread.
+   */
+  opThreadPostCount?: number
+
+  /**
+   * The 1-indexed position of this post within the contiguous OP thread. Only present when this post is part of the OP thread.
+   */
+  opThreadPostIndex?: number
 }
 
 export type { FeedViewPost }
@@ -355,6 +404,8 @@ const feedViewPost = /*#__PURE__*/ l.typedObject<FeedViewPost>(
     feedContext: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.string({ maxLength: 2000 }),
     ),
+    opThreadPostCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
+    opThreadPostIndex: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
   }),
 )
 

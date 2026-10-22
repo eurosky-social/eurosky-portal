@@ -3,24 +3,17 @@
   "defs": {
     "main": {
       "type": "object",
-      "required": [
-        "children"
-      ],
+      "required": ["children"],
       "properties": {
         "children": {
           "type": "array",
-          "items": {
-            "ref": "#listItem",
-            "type": "ref"
-          }
+          "items": { "ref": "#listItem", "type": "ref" }
         }
       }
     },
     "listItem": {
       "type": "object",
-      "required": [
-        "content"
-      ],
+      "required": ["content"],
       "properties": {
         "checked": {
           "type": "boolean",
@@ -36,10 +29,7 @@
         },
         "children": {
           "type": "array",
-          "items": {
-            "ref": "#listItem",
-            "type": "ref"
-          },
+          "items": { "ref": "#listItem", "type": "ref" },
           "description": "Nested unordered list items. Mutually exclusive with orderedListChildren; if both are present, children takes precedence."
         },
         "orderedListChildren": {

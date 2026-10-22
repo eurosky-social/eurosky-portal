@@ -3,20 +3,13 @@
   "defs": {
     "main": {
       "type": "object",
-      "required": [
-        "plaintext"
-      ],
+      "required": ["plaintext"],
       "properties": {
         "facets": {
           "type": "array",
-          "items": {
-            "ref": "pub.leaflet.richtext.facet",
-            "type": "ref"
-          }
+          "items": { "ref": "pub.leaflet.richtext.facet", "type": "ref" }
         },
-        "plaintext": {
-          "type": "string"
-        }
+        "plaintext": { "type": "string" }
       }
     }
   },

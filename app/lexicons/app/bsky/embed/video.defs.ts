@@ -20,7 +20,7 @@ type Main = {
   alt?: string
 
   /**
-   * The mp4 video file. May be up to 100mb, formerly limited to 50mb.
+   * The mp4 video file. May be up to 300mb, formerly limited to 100mb.
    */
   video: l.BlobRef
   captions?: Caption[]
@@ -38,10 +38,8 @@ const main = /*#__PURE__*/ l.typedObject<Main>(
   $nsid,
   'main',
   /*#__PURE__*/ l.object({
-    alt: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ maxLength: 10000, maxGraphemes: 1000 }),
-    ),
-    video: /*#__PURE__*/ l.blob({ accept: ['video/mp4'], maxSize: 100000000 }),
+    alt: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string()),
+    video: /*#__PURE__*/ l.blob({ accept: ['video/mp4'], maxSize: 300000000 }),
     captions: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.array(
         /*#__PURE__*/ l.ref<Caption>((() => caption) as any),
@@ -99,9 +97,7 @@ const view = /*#__PURE__*/ l.typedObject<View>(
   $nsid,
   'view',
   /*#__PURE__*/ l.object({
-    alt: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string({ maxLength: 10000, maxGraphemes: 1000 }),
-    ),
+    alt: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string()),
     cid: /*#__PURE__*/ l.string({ format: 'cid' }),
     playlist: /*#__PURE__*/ l.string({ format: 'uri' }),
     thumbnail: /*#__PURE__*/ l.optional(

@@ -31,6 +31,10 @@ export { preference }
 
 type Preferences = {
   $type?: 'app.bsky.notification.defs#preferences'
+
+  /**
+   * @deprecated use chat.bsky.notification preferences instead. This will only return a default value.
+   */
   chat: ChatPreference
   like: FilterablePreference
   quote: FilterablePreference
@@ -100,6 +104,7 @@ const recordDeleted = /*#__PURE__*/ l.typedObject<RecordDeleted>(
 
 export { recordDeleted }
 
+/** @deprecated use chat.bsky.notification preferences instead. This will only return a default value. */
 type ChatPreference = {
   $type?: 'app.bsky.notification.defs#chatPreference'
   push: boolean
@@ -108,6 +113,7 @@ type ChatPreference = {
 
 export type { ChatPreference }
 
+/** @deprecated use chat.bsky.notification preferences instead. This will only return a default value. */
 const chatPreference = /*#__PURE__*/ l.typedObject<ChatPreference>(
   $nsid,
   'chatPreference',

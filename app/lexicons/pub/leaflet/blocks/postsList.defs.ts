@@ -12,13 +12,26 @@ export { $nsid }
 
 type Main = {
   $type?: 'pub.leaflet.blocks.postsList'
-  view?: 'small' | 'medium' | l.UnknownString
+  view?: 'small' | 'medium' | 'chapter' | l.UnknownString
 
   /**
    * Show at most this many posts.
    */
   limit?: number
+  readerSort?: boolean
   filterByTags?: string[]
+  readerSearch?: boolean
+
+  /**
+   * In the chapter view, show the number of pages under each chapter.
+   */
+  showPageCount?: boolean
+
+  /**
+   * Show reader-facing controls above the list. The readerSearch / readerTagFilter / readerSort flags pick which ones; each defaults to true when this is set.
+   */
+  readerControls?: boolean
+  readerTagFilter?: boolean
   highlightFirstPost?: boolean
 }
 
@@ -29,12 +42,19 @@ const main = /*#__PURE__*/ l.typedObject<Main>(
   'main',
   /*#__PURE__*/ l.object({
     view: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string<{ knownValues: ['small', 'medium'] }>(),
+      /*#__PURE__*/ l.string<{ knownValues: ['small', 'medium', 'chapter'] }>(),
     ),
     limit: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer({ minimum: 1 })),
+    readerSort: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
     filterByTags: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.array(/*#__PURE__*/ l.string()),
     ),
+    readerSearch: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
+    showPageCount: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.withDefault(/*#__PURE__*/ l.boolean(), true),
+    ),
+    readerControls: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
+    readerTagFilter: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
     highlightFirstPost: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
   }),
 )

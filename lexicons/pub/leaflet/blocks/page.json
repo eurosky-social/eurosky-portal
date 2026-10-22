@@ -3,13 +3,10 @@
   "defs": {
     "main": {
       "type": "object",
-      "required": [
-        "id"
-      ],
+      "required": ["id"],
       "properties": {
-        "id": {
-          "type": "string"
-        }
+        "id": { "type": "string" },
+        "display": { "type": "string", "knownValues": ["full", "compact"] }
       }
     }
   },

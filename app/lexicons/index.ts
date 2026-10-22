@@ -3,8 +3,7 @@
  */
 
 export * as app from './app.js'
-export * as com from './com.js'
 export * as fyi from './fyi.js'
 export * as pub from './pub.js'
 export * as site from './site.js'
-export * as tools from './tools.js'
+export * as com from './com.js'

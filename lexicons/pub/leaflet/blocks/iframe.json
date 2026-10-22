@@ -3,38 +3,22 @@
   "defs": {
     "main": {
       "type": "object",
-      "required": [
-        "url"
-      ],
       "properties": {
-        "url": {
+        "url": { "type": "string", "format": "uri" },
+        "html": {
           "type": "string",
-          "format": "uri"
+          "description": "DEPRECATED — use pub.leaflet.blocks.html instead. Inline HTML rendered via the iframe's srcdoc attribute. Takes precedence over url."
         },
-        "height": {
-          "type": "integer",
-          "maximum": 1600,
-          "minimum": 16
-        },
-        "aspectRatio": {
-          "ref": "#aspectRatio",
-          "type": "ref"
-        }
+        "height": { "type": "integer", "maximum": 1600, "minimum": 16 },
+        "aspectRatio": { "ref": "#aspectRatio", "type": "ref" }
       }
     },
     "aspectRatio": {
       "type": "object",
-      "required": [
-        "width",
-        "height"
-      ],
+      "required": ["width", "height"],
       "properties": {
-        "width": {
-          "type": "integer"
-        },
-        "height": {
-          "type": "integer"
-        }
+        "width": { "type": "integer" },
+        "height": { "type": "integer" }
       }
     }
   },

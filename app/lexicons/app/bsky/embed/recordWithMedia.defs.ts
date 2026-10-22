@@ -5,6 +5,7 @@
 import { l } from '@atproto/lex'
 import * as EmbedImages from './images.defs.js'
 import * as EmbedVideo from './video.defs.js'
+import * as EmbedGallery from './gallery.defs.js'
 import * as EmbedExternal from './external.defs.js'
 import * as EmbedRecord from './record.defs.js'
 
@@ -19,6 +20,7 @@ type Main = {
   media:
     | l.$Typed<EmbedImages.Main>
     | l.$Typed<EmbedVideo.Main>
+    | l.$Typed<EmbedGallery.Main>
     | l.$Typed<EmbedExternal.Main>
     | l.Unknown$TypedObject
   record: EmbedRecord.Main
@@ -37,6 +39,9 @@ const main = /*#__PURE__*/ l.typedObject<Main>(
         ),
         /*#__PURE__*/ l.typedRef<EmbedVideo.Main>(
           (() => EmbedVideo.main) as any,
+        ),
+        /*#__PURE__*/ l.typedRef<EmbedGallery.Main>(
+          (() => EmbedGallery.main) as any,
         ),
         /*#__PURE__*/ l.typedRef<EmbedExternal.Main>(
           (() => EmbedExternal.main) as any,
@@ -75,6 +80,7 @@ type View = {
   media:
     | l.$Typed<EmbedImages.View>
     | l.$Typed<EmbedVideo.View>
+    | l.$Typed<EmbedGallery.View>
     | l.$Typed<EmbedExternal.View>
     | l.Unknown$TypedObject
   record: EmbedRecord.View
@@ -93,6 +99,9 @@ const view = /*#__PURE__*/ l.typedObject<View>(
         ),
         /*#__PURE__*/ l.typedRef<EmbedVideo.View>(
           (() => EmbedVideo.view) as any,
+        ),
+        /*#__PURE__*/ l.typedRef<EmbedGallery.View>(
+          (() => EmbedGallery.view) as any,
         ),
         /*#__PURE__*/ l.typedRef<EmbedExternal.View>(
           (() => EmbedExternal.view) as any,
