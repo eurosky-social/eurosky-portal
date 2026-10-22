@@ -21,7 +21,7 @@ import jetstreamService from '#services/jetstream_service'
 import { SlingshotService } from '#services/slingshot_service'
 import { loginRequestValidator, signupRequestValidator } from '#validators/oauth'
 import { createFieldError } from '#utils/errors'
-import { getHandleDomains, loginScopes } from '#utils/oauth'
+import { createState, getHandleDomains, loginScopes } from '#utils/oauth'
 import { captureException, captureMessage } from '#utils/telemetry'
 
 const oauthServerUrl = env.get('OAUTH_SERVICE')
@@ -131,6 +131,7 @@ export default class OAuthController {
     try {
       const authorizationUrl = await oauth.authorize(resolvedValue, {
         scope: loginScopes.join(' '),
+        state: createState(session),
         ui_locales: i18n.locale,
       })
 
@@ -181,6 +182,7 @@ export default class OAuthController {
     try {
       const authorizationUrl = await oauth.register(oauthServerUrl, {
         scope: loginScopes.join(' '),
+        state: createState(session),
         ui_locales: i18n.locale,
       })
 
@@ -222,7 +224,10 @@ export default class OAuthController {
 
   async callback(ctx: HttpContext) {
     const favoriteIntent: FavoriteIntent | undefined = ctx.session.pull('favorite_intent')
-    return favoriteIntent ? this.#favoriteCallback(ctx, favoriteIntent) : this.#loginCallback(ctx)
+    const oauthState: string | undefined = ctx.session.pull('oauth_state')
+    return favoriteIntent
+      ? this.#favoriteCallback(ctx, favoriteIntent, oauthState)
+      : this.#loginCallback(ctx, oauthState)
   }
 
   /**
@@ -233,15 +238,19 @@ export default class OAuthController {
    */
   async #favoriteCallback(
     { i18n, logger, oauth, response, session }: HttpContext,
-    intent: FavoriteIntent
+    intent: FavoriteIntent,
+    oauthState: string | undefined
   ) {
     try {
-      const { user } = await oauth.handleCallback()
+      const { state, user } = await oauth.handleCallback()
 
-      // Another account was chosen, which is now logged in,
-      // have to log out of the other account.
+      if (!oauthState || oauthState !== state) {
+        throw new Error('OAuth state does not match this session')
+      }
+
+      // Another account was chosen.
+      // It is not logged in here.
       if (user.did !== intent.did) {
-        await oauth.logout(user.did)
         session.flash('errorsBag', { favorite: i18n.t('apps.favoriteOtherAccount') })
         return response.redirect().toIntended('/apps')
       }
@@ -273,17 +282,15 @@ export default class OAuthController {
   /**
    * Finish logging in or signing up.
    */
-  async #loginCallback({ auth, i18n, logger, oauth, request, response, session }: HttpContext) {
+  async #loginCallback(
+    { auth, i18n, logger, oauth, request, response, session }: HttpContext,
+    oauthState: string | undefined
+  ) {
     const termsAccepted = session.pull('terms_accepted', 'invalid')
     const source = session.pull('source', 'login')
     const initiatingHandle = session.pull('handle')
     const ip = request.ip()
     const userAgent = request.header('user-agent')
-
-    session.regenerate()
-
-    // Force logout first:
-    await auth.use('web').logout()
 
     // If we're from signup, but don't have a valid termsAccepted date, we want
     // to cancel the flow:
@@ -308,8 +315,15 @@ export default class OAuthController {
     }
 
     try {
-      const result = await oauth.handleCallback()
-      const did = result.user.did
+      const { state, user } = await oauth.handleCallback()
+      const { did } = user
+
+      if (!oauthState || oauthState !== state) {
+        throw new Error('OAuth state does not match this session')
+      }
+
+      session.regenerate()
+      await auth.use('web').logout()
 
       const resolved = await oauth
         .resolveIdentity(did, AbortSignal.timeout(resolveIdentityTimeout))
@@ -323,7 +337,7 @@ export default class OAuthController {
 
           // They *did* complete oauth flow, so this is probably an invalid handle.
           if (error instanceof OAuthResolverError) {
-            return { did: did, handle: INVALID_HANDLE as HandleString }
+            return { did, handle: INVALID_HANDLE as HandleString }
           }
 
           throw error
@@ -354,19 +368,19 @@ export default class OAuthController {
       // that they accepted terms:
       if (source === 'signup' && !existingAccount && resolved) {
         await Account.create({
-          did: result.user.did,
+          did,
           handle: resolved.handle,
           lastActiveAt: DateTime.now(),
           termsAcceptedAt: termsAcceptedOn,
         })
-        activityService.dispatchBackfill(result.user.did, ip, userAgent)
+        activityService.dispatchBackfill(did, ip, userAgent)
       } else if (resolved) {
         const account = await Account.updateOrCreate(
           { did },
           { did, handle: resolved.handle, lastActiveAt: DateTime.now() }
         )
         if (!account.lastActivitySyncAt) {
-          activityService.dispatchBackfill(result.user.did, ip, userAgent)
+          activityService.dispatchBackfill(did, ip, userAgent)
         }
       } else if (existingAccount) {
         await existingAccount.merge({ lastActiveAt: DateTime.now() }).save()
@@ -377,7 +391,7 @@ export default class OAuthController {
       // Every account must be watched (this is a no-op if already watched):
       jetstreamService.addDid(did)
 
-      await auth.use('web').login(result.user)
+      await auth.use('web').login(user)
 
       AuthFlowCompleted.dispatch({
         ip,

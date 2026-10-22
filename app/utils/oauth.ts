@@ -1,3 +1,5 @@
+import string from '@adonisjs/core/helpers/string'
+import type { Session } from '@adonisjs/session'
 import env from '#start/env'
 
 /**
@@ -9,20 +11,26 @@ import env from '#start/env'
 const callbackParams = ['code', 'iss', 'response', 'state']
 
 /**
+ * Tie a new OAuth flow from a browser to this session.
+ *
+ * @param session
+ *   Session object.
+ * @returns
+ *   Opaque string, to be used in the OAuth flow;
+ *   pass it as the `state` option of `oauth.authorize` or `oauth.register`,
+ *   it then comes back as `state` from `oauth.handleCallback`.
+ */
+export function createState(session: Session): string {
+  const state = string.random(32)
+  session.put('oauth_state', state)
+  return state
+}
+
+/**
  * Scope to favorite apps on atstore;
  * requested when needed.
  */
 export const favoriteScope = 'repo:fyi.atstore.listing.favorite?action=create&action=delete'
-
-/**
- * Scopes requested when logging in.
- *
- * See: https://atproto.com/guides/scopes
- */
-export const loginScopes = [
-  'atproto',
-  'rpc:app.bsky.actor.getProfile?aud=did:web:api.bsky.app%23bsky_appview',
-]
 
 /**
  * Get the configured handle domains, each with a leading dot.
@@ -38,6 +46,16 @@ export function getHandleDomains(): string[] {
   })
   return [...new Set(domains)]
 }
+
+/**
+ * Scopes requested when logging in.
+ *
+ * See: https://atproto.com/guides/scopes
+ */
+export const loginScopes = [
+  'atproto',
+  'rpc:app.bsky.actor.getProfile?aud=did:web:api.bsky.app%23bsky_appview',
+]
 
 /**
  * Redact OAuth callback parameters in a URL, path, or bare query string.

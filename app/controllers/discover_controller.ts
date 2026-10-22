@@ -9,7 +9,7 @@ import {
 } from '#services/favorite_service'
 import AppsTransformer from '#transformers/apps_transformer'
 import AppTransformer from '#transformers/app_transformer'
-import { favoriteScope, loginScopes } from '#utils/oauth'
+import { createState, favoriteScope, loginScopes } from '#utils/oauth'
 import { captureException } from '#utils/telemetry'
 
 export default class DiscoverController {
@@ -84,6 +84,7 @@ export default class DiscoverController {
 
         const authorizationUrl = await oauth.authorize(user.did, {
           scope: [...loginScopes, favoriteScope].join(' '),
+          state: createState(session),
           ui_locales: i18n.locale,
         })
 
