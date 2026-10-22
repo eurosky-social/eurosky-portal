@@ -444,7 +444,7 @@ export class ActivityService {
         })
       )
 
-      const records = result.body?.records ?? []
+      const records = result.body.records
       if (records.length === 0) break
       seen += records.length
 

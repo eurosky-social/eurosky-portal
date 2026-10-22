@@ -24,7 +24,7 @@ const cookieName = 'locale'
 export function parse(value: string | undefined): Locale {
   if (isLocale(value)) return value
 
-  if (typeof navigator === 'undefined' || !navigator.languages) return defaultLocale
+  if (typeof navigator === 'undefined') return defaultLocale
 
   const match = lookup([...locales], [...navigator.languages])
   return isLocale(match) ? match : defaultLocale

@@ -5,9 +5,9 @@ import type { WebUri } from '@atproto/oauth-client-node'
 import vine from '@vinejs/vine'
 
 export class SlingshotResolveError extends Exception {
-  static code = 'E_SLINGSHOT_RESOLVE_ERROR'
-  static status = 500
-  static message = 'Unable to resolve identity with slingshot'
+  static override code = 'E_SLINGSHOT_RESOLVE_ERROR'
+  static override status = 500
+  static override message = 'Unable to resolve identity with slingshot'
 }
 
 const resolveMiniDocValidator = vine.create({

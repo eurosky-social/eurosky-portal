@@ -7,11 +7,11 @@ import { KnexQueueSchemaService } from '@adonisjs/queue/drivers/knex_adapter'
  * Both steps do nothing on tables that are already up to date.
  */
 export default class extends BaseSchema {
-  async up() {
+  override async up() {
     const schemaService = new KnexQueueSchemaService(this.db.getWriteClient())
     await schemaService.addDedupColumns()
     await schemaService.migrateScheduleDates()
   }
 
-  async down() {}
+  override async down() {}
 }

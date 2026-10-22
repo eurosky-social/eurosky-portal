@@ -1,8 +1,7 @@
 import clsx from 'clsx'
-import { JSXElementConstructor, createElement } from 'react'
-export type ReactTag = keyof React.JSX.IntrinsicElements | JSXElementConstructor<any>
+import { type ElementType, createElement } from 'react'
 
-export default function Card<As extends ReactTag = 'div'>({
+export default function Card<As extends ElementType = 'div'>({
   className,
   as: asElement,
   children,
@@ -21,7 +20,7 @@ export default function Card<As extends ReactTag = 'div'>({
   )
 }
 
-export function ClickableCard<As extends ReactTag = 'a'>({
+export function ClickableCard<As extends ElementType = 'a'>({
   className,
   as: asElement,
   children,

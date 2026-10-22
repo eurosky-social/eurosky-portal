@@ -31,10 +31,10 @@ const serverSideBase = new URL('../resources/lang/', import.meta.url)
  * * server side: `resources/lang/$locale/$namespace.json`, w/ optional nesting
  */
 export default class I18nCheck extends BaseCommand {
-  static commandName = 'i18n:check'
-  static description = 'Check that translation catalogs are complete and consistent'
+  static override commandName = 'i18n:check'
+  static override description = 'Check that translation catalogs are complete and consistent'
 
-  static options: CommandOptions = {
+  static override options: CommandOptions = {
     startApp: false,
   }
 
@@ -70,7 +70,7 @@ export default class I18nCheck extends BaseCommand {
         }
       }
 
-      for (const key of baseKeys) {
+      for (const [key, baseMessage] of Object.entries(base)) {
         const message = catalog[key]
 
         if (message === undefined) {
@@ -81,7 +81,7 @@ export default class I18nCheck extends BaseCommand {
           continue
         }
 
-        ok = this.checkMessage(label, locale, key, base[key], message) && ok
+        ok = this.checkMessage(label, locale, key, baseMessage, message) && ok
       }
     }
 
@@ -100,7 +100,9 @@ export default class I18nCheck extends BaseCommand {
 
     for (const locale of locales) {
       try {
-        const module = await import(new URL(`${locale}.js`, clientSideBase).href)
+        const module: { default: Record<string, string> } = await import(
+          new URL(`${locale}.js`, clientSideBase).href
+        )
         catalogs.set(locale, module.default)
       } catch {
         this.logger.error(`[client] missing locale catalog (\`inertia/lib/i18n/${locale}.ts\`)`)
@@ -267,7 +269,7 @@ export default class I18nCheck extends BaseCommand {
   /**
    * Check i18n.
    */
-  async run(): Promise<undefined> {
+  override async run(): Promise<undefined> {
     const clientOk = await this.checkClientCatalogs()
     const serverOk = await this.checkServerCatalogs()
 

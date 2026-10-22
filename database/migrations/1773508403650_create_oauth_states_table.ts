@@ -3,7 +3,7 @@ import { BaseSchema } from '@adonisjs/lucid/schema'
 export default class extends BaseSchema {
   protected tableName = 'oauth_states'
 
-  async up() {
+  override async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.text('key').primary()
       table.text('value').notNullable()
@@ -12,7 +12,7 @@ export default class extends BaseSchema {
     })
   }
 
-  async down() {
+  override async down() {
     this.schema.dropTable(this.tableName)
   }
 }

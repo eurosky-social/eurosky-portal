@@ -197,15 +197,17 @@ export class JetstreamService {
 
       if (this.#eventsSinceLastSave >= cursorSaveInterval) {
         this.#eventsSinceLastSave = 0
-        this.#saveCursor().catch((err) => logger.warn({ err }, 'jetstream: cannot save cursor'))
+        this.#saveCursor().catch((err: unknown) =>
+          logger.warn({ err }, 'jetstream: cannot save cursor')
+        )
       }
 
       if (message.kind === 'commit' && message.commit) {
-        this.#handleCommit(message.did, message.commit).catch((err) => {
+        this.#handleCommit(message.did, message.commit).catch((err: unknown) => {
           logger.warn({ err }, 'jetstream: cannot handle commit')
         })
       } else if (message.kind === 'account' && message.account) {
-        this.#handleAccount(message.did, message.account).catch((err) => {
+        this.#handleAccount(message.did, message.account).catch((err: unknown) => {
           logger.warn({ err }, 'jetstream: cannot handle account')
         })
       }
@@ -217,7 +219,9 @@ export class JetstreamService {
 
     socket.onclose = () => {
       this.#socket = undefined
-      this.#saveCursor().catch((err) => logger.warn({ err }, 'jetstream: cannot save cursor'))
+      this.#saveCursor().catch((err: unknown) =>
+        logger.warn({ err }, 'jetstream: cannot save cursor')
+      )
       logger.info('jetstream: reconnecting to `%s` (%dms)', jetstreamUrl, reconnectDelay)
       this.#reconnectTimeout = setTimeout(() => this.#connect(), reconnectDelay)
     }

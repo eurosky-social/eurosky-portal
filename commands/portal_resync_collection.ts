@@ -15,17 +15,18 @@ async function sleep(duration: number) {
  * Use this when changing `toPreview` (in `app/utils/activity.ts`).
  */
 export default class PortalResyncCollection extends BaseCommand {
-  static commandName = 'portal:resync-collection'
-  static description = 'Tool that backfills a collection to refresh derived activity fields'
+  static override commandName = 'portal:resync-collection'
+  static override description =
+    'Tool that backfills a collection to refresh derived activity fields'
 
-  static options: CommandOptions = {
+  static override options: CommandOptions = {
     startApp: true,
   }
 
   @args.string({ description: 'Collection NSID to resync (example: `app.bsky.feed.post`)' })
   declare collection: string
 
-  async run() {
+  override async run() {
     const { default: Account } = await import('#models/account')
     const { default: activityService } = await import('#services/activity_service')
     const { toSqlDateTime } = await import('#utils/database')

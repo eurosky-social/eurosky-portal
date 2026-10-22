@@ -2,7 +2,8 @@ export const themes = ['system', 'dark', 'light'] as const
 export type Theme = (typeof themes)[number]
 
 export function isSystemTheme() {
-  return !localStorage.getItem('theme') || localStorage.theme === 'system'
+  const stored = localStorage.getItem('theme')
+  return !stored || stored === 'system'
 }
 
 export function prefersDark() {
@@ -10,12 +11,10 @@ export function prefersDark() {
 }
 
 export function getTheme(): Theme {
-  let theme = localStorage.theme
+  const stored = localStorage.getItem('theme')
+  const theme = themes.find((d) => d === stored) ?? 'system'
 
-  if (!themes.includes(theme)) {
-    localStorage.theme = 'system'
-    theme = 'system'
-  }
+  if (theme !== stored) localStorage.setItem('theme', theme)
 
   if (theme === 'system') {
     return prefersDark() ? 'dark' : 'light'
@@ -36,7 +35,7 @@ export function setTheme(theme: Theme) {
 
 // Listen for system preference changes
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-  if (!localStorage.getItem('theme') || localStorage.theme === 'system') {
+  if (isSystemTheme()) {
     document.documentElement.classList.toggle('dark', e.matches)
   }
 })

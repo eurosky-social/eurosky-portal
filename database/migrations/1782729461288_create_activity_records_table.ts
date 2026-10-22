@@ -1,7 +1,7 @@
 import { BaseSchema } from '@adonisjs/lucid/schema'
 
 export default class extends BaseSchema {
-  async up() {
+  override async up() {
     this.schema.createTable('activity_records', (table) => {
       table.text('uri').notNullable().primary()
       table.text('did').notNullable().references('did').inTable('accounts').onDelete('CASCADE')
@@ -29,7 +29,7 @@ export default class extends BaseSchema {
     })
   }
 
-  async down() {
+  override async down() {
     this.schema.dropTable('activity_records')
     this.schema.alterTable('accounts', (table) => {
       table.dropColumn('last_activity_sync_at')

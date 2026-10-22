@@ -1,6 +1,5 @@
 import { toJsxRuntime } from 'hast-util-to-jsx-runtime'
 import { Fragment, jsx, jsxs } from 'react/jsx-runtime'
-import type { Nodes } from 'hast'
 import type { SiteStandardDocumentDetail } from '#transformers/activity_transformer'
 import { BlobImage } from '~/components/BlobImage'
 import { MarkdownContent } from '~/components/MarkdownContent'
@@ -12,8 +11,7 @@ import { useT } from '~/lib/i18n'
 
 export function SiteStandardDocument({ activity }: { activity: SiteStandardDocumentDetail }) {
   const { locale, t } = useT()
-  // Cast because inertia fails on TS `interface`s.
-  const structuredContent = activity.content as Nodes | undefined
+  const structuredContent = activity.content
   const publishedAt = parseDate(activity.publishedAt)
   const updatedAt = parseDate(activity.updatedAt)
 

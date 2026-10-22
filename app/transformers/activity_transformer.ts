@@ -1,8 +1,9 @@
 import { BaseTransformer } from '@adonisjs/core/transformers'
-import type { JSONDataTypes } from '@adonisjs/core/types/transformers'
 import type { AtUriString } from '@atproto/lex'
+import type { ElementContent, Root } from 'hast'
 import { truncate } from 'hast-util-truncate'
 import * as lexicon from '#lexicons'
+import type { Jsonify } from '#shared/json'
 import { type Activity, toCreatedAt } from '#utils/activity'
 import { type Context, toBlobLocator } from '#utils/blob'
 import { toEmbed } from '#utils/embed'
@@ -71,11 +72,10 @@ class AppBskyFeedPost extends BaseTransformer<lexicon.app.bsky.feed.post.Main> {
     const embed = this.resource.embed ? toEmbed(this.resource.embed, this.#context) : undefined
     const openUri = this.#context.uri
     const replyUri = this.resource.reply ? this.resource.reply.parent.uri : undefined
-    // Cast because Inertia fails on hast TS interfaces.
-    const text = bskyRichtextToHast(
+    const text: Jsonify<Array<ElementContent>> = bskyRichtextToHast(
       this.resource.text,
       this.resource.facets
-    ) as unknown as JSONDataTypes
+    )
     return {
       ...this.pick(this.resource, ['$type']),
       createdAt: toCreatedAt(this.resource)?.toISO(),
@@ -111,14 +111,13 @@ class SiteStandardDocument extends BaseTransformer<lexicon.site.standard.documen
   toObject() {
     const { content: rawContent } = this.resource
     // Only leaflet supported for now.
-    let root =
+    let content: Jsonify<Root> | undefined =
       rawContent && lexicon.pub.leaflet.content.main.isTypeOf(rawContent)
         ? leafletToHast(rawContent, this.#context)
         : undefined
     // Don’t accidentally send giant trees.
-    if (root) root = truncate(root, { ellipsis: '…', size: 4096 })
+    if (content) content = truncate(content, { ellipsis: '…', size: 4096 })
 
-    const content = root as unknown as JSONDataTypes | undefined
     const coverImage = this.resource.coverImage
       ? toBlobLocator(this.resource.coverImage, this.#context)
       : undefined

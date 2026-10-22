@@ -172,17 +172,15 @@ export class AtStoreService {
    * Skips and logs any that fail.
    */
   async #hydrateAll(local: ReadonlyArray<CatalogApp>): Promise<ReadonlyArray<App>> {
-    const list = await Promise.allSettled(local.map((localApp) => this.#hydrate(localApp)))
+    const list = await Promise.all(
+      local.map((localApp) =>
+        this.#hydrate(localApp).catch((err: unknown): undefined => {
+          logger.warn({ err }, `Failed to fetch listing \`${localApp.atUri}\``)
+        })
+      )
+    )
 
-    return list
-      .map((result, index) => {
-        if (result.status === 'fulfilled') {
-          return result.value
-        } else {
-          logger.warn({ err: result.reason }, `Failed to fetch listing \`${local[index].atUri}\``)
-        }
-      })
-      .filter((a): a is App => a !== undefined)
+    return list.filter((a): a is App => a !== undefined)
   }
 
   /**

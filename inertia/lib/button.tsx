@@ -206,12 +206,12 @@ export const Button = forwardRef(function Button(
     className
   )
 
-  let buttonType = (type as ButtonType) ?? ('button' as ButtonType)
+  let buttonType = (type as ButtonType | undefined) ?? 'button'
 
   if (props.as === 'span') {
     let { as: _as, ...spanProps } = props
     return (
-      <span {...spanProps} className={classes} ref={ref as React.ForwardedRef<HTMLSpanElement>}>
+      <span {...spanProps} className={classes} ref={ref}>
         {children}
       </span>
     )

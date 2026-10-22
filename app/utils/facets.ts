@@ -62,10 +62,12 @@ export function segment<Facet extends FacetLike>(
   let segmentStartByte = 0
 
   for (const character of text) {
-    if (byteIndex >= bounds[boundIndex]) {
+    if (byteIndex >= (bounds[boundIndex] ?? Infinity)) {
       flush()
       segmentStartByte = byteIndex
-      while (boundIndex < bounds.length - 1 && bounds[boundIndex] <= byteIndex) boundIndex++
+      while (boundIndex < bounds.length - 1 && (bounds[boundIndex] ?? Infinity) <= byteIndex) {
+        boundIndex++
+      }
     }
 
     buffer += character
