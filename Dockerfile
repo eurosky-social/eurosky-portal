@@ -34,6 +34,9 @@ RUN \
   # Mount Apt cache and lib directories from Docker buildx caches
   --mount=type=cache,id=apt-cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,id=apt-lib,target=/var/lib/apt,sharing=locked \
+  # Refresh package lists, as the cache mounts may be empty when `base` is
+  # restored from the layer cache:
+  apt-get update; \
   # Install go & git:
   apt-get install -y --no-install-recommends git golang-go
 
