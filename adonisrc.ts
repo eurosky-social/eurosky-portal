@@ -58,6 +58,7 @@ export default defineConfig({
     () => import('@adonisjs/shield/shield_provider'),
     () => import('@adonisjs/static/static_provider'),
     () => import('@adonisjs/lucid/database_provider'),
+    () => import('#providers/automigrate_provider'),
     () => import('@adonisjs/queue/queue_provider'),
     () => import('@adonisjs/cors/cors_provider'),
     () => import('@adonisjs/inertia/inertia_provider'),
@@ -83,7 +84,6 @@ export default defineConfig({
   preloads: [
     () => import('#start/dates'),
     () => import('#start/events'),
-    () => import('#start/automigrate'),
     () => import('#start/routes'),
     () => import('#start/kernel'),
     () => import('#start/validator'),
