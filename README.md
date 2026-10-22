@@ -74,12 +74,12 @@ See [CONTRIBUTING.md](CONTRIBUTING.md#project-layout) for a fuller map of the co
 
 ## Quickstart (local development)
 
-You need Node.js 24 (see [`.node-version`](.node-version)) and pnpm via Corepack.
+You need Node.js 26 (see [`.node-version`](.node-version)) and pnpm (any recent version).
 
 ```sh
 git clone https://github.com/eurosky-social/eurosky-portal.git
 cd eurosky-portal
-corepack enable
+npm install --global pnpm
 pnpm install
 cp .env.example .env
 node ace generate:key   # writes APP_KEY into .env

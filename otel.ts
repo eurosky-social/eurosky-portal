@@ -4,6 +4,9 @@
  * IMPORTANT: This file must be imported FIRST in bin/server.ts
  * for auto-instrumentation to work correctly.
  */
-import { init } from '@adonisjs/otel/init'
+import env from '#start/env'
 
-await init(import.meta.dirname)
+if (env.get('OTEL_ENABLED', false)) {
+  const { init } = await import('@adonisjs/otel/init')
+  await init(import.meta.dirname)
+}

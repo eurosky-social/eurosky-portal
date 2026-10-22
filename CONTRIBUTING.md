@@ -25,8 +25,8 @@ By taking part in this project you agree to follow our [Code of Conduct](CODE_OF
 
 ### Prerequisites
 
-- **Node.js 24** (the exact version is in [`.node-version`](.node-version); tools like `fnm`, `nvm` or `mise` pick it up automatically).
-- **pnpm**, via Corepack: run `corepack enable` once. The pinned pnpm version in `package.json` is then used automatically.
+- **Node.js 26** (the exact version is in [`.node-version`](.node-version); tools like `fnm`, `nvm` or `mise` pick it up automatically).
+- **pnpm**, for example with `npm install --global pnpm`. Any recent version works.
 - **Git**.
 - **An AT Protocol account to sign in with.** Any Bluesky or other AT Protocol account works in development, because the example config allows external logins.
 - Docker is optional, only needed to test the production image.
@@ -38,7 +38,7 @@ No other services are required: the database is a local SQLite file, and the que
 ```sh
 git clone https://github.com/eurosky-social/eurosky-portal.git
 cd eurosky-portal
-corepack enable
+npm install --global pnpm
 pnpm install
 
 cp .env.example .env
