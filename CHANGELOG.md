@@ -1,5 +1,55 @@
 # eurosky-portal
 
+## 1.8.3
+
+### Patch Changes
+
+- [#277](https://github.com/eurosky-social/eurosky-portal/pull/277) [`b42bba4`](https://github.com/eurosky-social/eurosky-portal/commit/b42bba468d07f6e018e9b3f247eecf7ca30ec5d7) Thanks [@wooorm](https://github.com/wooorm)! - Update `@adonisjs/queue` to 0.7
+
+  The queue tables are upgraded by a migration,
+  which runs at boot when `DATABASE_AUTOMIGRATE` is on.
+  The upgrade cannot be undone:
+  downgrading after deploying this version is not possible.
+
+- [#282](https://github.com/eurosky-social/eurosky-portal/pull/282) [`b7c10b7`](https://github.com/eurosky-social/eurosky-portal/commit/b7c10b724bc939340e38a495372c78c8b40599d7) Thanks [@wooorm](https://github.com/wooorm)! - Add extra checks for activity origins
+
+- [#283](https://github.com/eurosky-social/eurosky-portal/pull/283) [`f7615f1`](https://github.com/eurosky-social/eurosky-portal/commit/f7615f1dc78fd29917352ba57fb350980395faa4) Thanks [@wooorm](https://github.com/wooorm)! - Fix oauth callbacks from other browsers
+
+  - tie oauth flows to browser sessions and verify them
+  - only log out when correctly logged in
+
+- [#284](https://github.com/eurosky-social/eurosky-portal/pull/284) [`636cff7`](https://github.com/eurosky-social/eurosky-portal/commit/636cff74830a9c2f2cd3ebe41bef92837eaa1239) Thanks [@wooorm](https://github.com/wooorm)! - Refactor to improve types
+
+  - stricter tsconfig settings
+  - less `any`s, casts
+
+- [#279](https://github.com/eurosky-social/eurosky-portal/pull/279) [`0f1378a`](https://github.com/eurosky-social/eurosky-portal/commit/0f1378aca212dba16092d085a850b06517812744) Thanks [@wooorm](https://github.com/wooorm)! - Update lexicons
+
+  - lots of meaningless reformatting, due to the previous update
+  - importantly, the gallery embed is now typed, so this drops the ducktyping
+
+- [#285](https://github.com/eurosky-social/eurosky-portal/pull/285) [`7dc2ef2`](https://github.com/eurosky-social/eurosky-portal/commit/7dc2ef2b8ea5f6e3acfdf329eda57a6b206bf865) Thanks [@wooorm](https://github.com/wooorm)! - Use `@atcute/jetstream`
+
+  Instead of our own jetstream client, use a maintained and typed one.
+  This comes with validation, handling of events in order, and fixes a
+  theoretical bug where watching zero users, would watch everyone
+
+- [#281](https://github.com/eurosky-social/eurosky-portal/pull/281) [`2fa4f8d`](https://github.com/eurosky-social/eurosky-portal/commit/2fa4f8d8c4ac97b5609eaf3e87fb599ef21f4452) Thanks [@wooorm](https://github.com/wooorm)! - Update Node.js to 26
+
+  Currently Docker pulls LTS Node.
+  In a week or so, that will be 26.
+  That no longer has corepack, which will break.
+
+  This switches to Node 26 already.
+  The one without the CVEs, of course.
+
+  Node 26 introduces two deprecations,
+  one fixed by upgrading `@adonisjs/application`,
+  another by hiding it if unneeded,
+  through lazy loading `@adonisjs/otel`.
+
+- [#280](https://github.com/eurosky-social/eurosky-portal/pull/280) [`9f997c5`](https://github.com/eurosky-social/eurosky-portal/commit/9f997c5cc6e954d381ad2414ae688ad8453156d6) Thanks [@wooorm](https://github.com/wooorm)! - Fix docker cache
+
 ## 1.8.2
 
 ### Patch Changes
