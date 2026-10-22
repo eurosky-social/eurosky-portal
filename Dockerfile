@@ -1,4 +1,4 @@
-FROM node:lts-trixie-slim AS base
+FROM node:26-trixie-slim AS base
 
 # Set default shell used for running commands
 SHELL ["/bin/bash", "-o", "pipefail", "-o", "errexit", "-c"]
@@ -46,8 +46,8 @@ FROM base AS base-deps
 WORKDIR /app
 COPY package.json pnpm-*.yaml ./
 
-# Configure Corepack
-RUN corepack enable
+# Install the pnpm version from `packageManager`
+RUN npm install --global "$(node --print "require('./package.json').packageManager.split('+')[0]")"
 RUN --mount=id=pnpm,target=/pnpm/store,type=cache pnpm fetch
 
 FROM base-deps AS production-deps
