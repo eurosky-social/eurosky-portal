@@ -123,16 +123,16 @@ export class QueueScheduleSchema extends BaseModel {
   declare cronExpression: string | null
   @column()
   declare everyMs: bigint | number | null
-  @column.dateTime()
-  declare fromDate: DateTime | null
+  @column()
+  declare fromDate: bigint | number | null
   @column({ isPrimary: true })
   declare id: string
-  @column.dateTime()
-  declare lastRunAt: DateTime | null
+  @column()
+  declare lastRunAt: bigint | number | null
   @column()
   declare name: string
-  @column.dateTime()
-  declare nextRunAt: DateTime | null
+  @column()
+  declare nextRunAt: bigint | number | null
   @column()
   declare payload: string
   @column()
@@ -143,6 +143,6 @@ export class QueueScheduleSchema extends BaseModel {
   declare status: string
   @column()
   declare timezone: string
-  @column.dateTime()
-  declare toDate: DateTime | null
+  @column()
+  declare toDate: bigint | number | null
 }

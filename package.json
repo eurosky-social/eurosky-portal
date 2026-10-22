@@ -88,7 +88,7 @@
     "@adonisjs/inertia": "^5.0.4",
     "@adonisjs/lucid": "^22.4.2",
     "@adonisjs/otel": "^1.2.4",
-    "@adonisjs/queue": "^0.6.2",
+    "@adonisjs/queue": "^0.7.0",
     "@adonisjs/session": "^8.3.0",
     "@adonisjs/shield": "^9.0.0",
     "@adonisjs/static": "^2.0.1",

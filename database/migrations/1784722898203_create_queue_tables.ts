@@ -1,15 +1,15 @@
 import { BaseSchema } from '@adonisjs/lucid/schema'
-import { QueueSchemaService } from '@adonisjs/queue'
+import { KnexQueueSchemaService } from '@adonisjs/queue/drivers/knex_adapter'
 
 export default class extends BaseSchema {
   async up() {
-    const schemaService = new QueueSchemaService(this.db.getWriteClient())
+    const schemaService = new KnexQueueSchemaService(this.db.getWriteClient())
     await schemaService.createJobsTable()
     await schemaService.createSchedulesTable()
   }
 
   async down() {
-    const schemaService = new QueueSchemaService(this.db.getWriteClient())
+    const schemaService = new KnexQueueSchemaService(this.db.getWriteClient())
     await schemaService.dropSchedulesTable()
     await schemaService.dropJobsTable()
   }
