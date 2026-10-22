@@ -3,7 +3,9 @@
  */
 
 import { l } from '@atproto/lex'
+import * as ThemePage from '../theme/page.defs.js'
 import * as BlocksIframe from '../blocks/iframe.defs.js'
+import * as BlocksHtml from '../blocks/html.defs.js'
 import * as BlocksText from '../blocks/text.defs.js'
 import * as BlocksBlockquote from '../blocks/blockquote.defs.js'
 import * as BlocksHeader from '../blocks/header.defs.js'
@@ -19,11 +21,18 @@ import * as BlocksBskyPost from '../blocks/bskyPost.defs.js'
 import * as BlocksStandardSitePost from '../blocks/standardSitePost.defs.js'
 import * as BlocksStandardSitePublication from '../blocks/standardSitePublication.defs.js'
 import * as BlocksPage from '../blocks/page.defs.js'
+import * as BlocksEmbeddedCanvas from '../blocks/embeddedCanvas.defs.js'
 import * as BlocksPoll from '../blocks/poll.defs.js'
 import * as BlocksButton from '../blocks/button.defs.js'
 import * as BlocksPostsList from '../blocks/postsList.defs.js'
 import * as BlocksSignup from '../blocks/signup.defs.js'
+import * as BlocksRecommendedPubs from '../blocks/recommendedPubs.defs.js'
+import * as BlocksReply from '../blocks/reply.defs.js'
+import * as BlocksQuestions from '../blocks/questions.defs.js'
 import * as BlocksMembersOnlyDelimiter from '../blocks/membersOnlyDelimiter.defs.js'
+import * as BlocksPostHeader from '../blocks/postHeader.defs.js'
+import * as BlocksDrawing from '../blocks/drawing.defs.js'
+import * as PagesLinearDocument from './linearDocument.defs.js'
 
 const $nsid = 'pub.leaflet.pages.canvas'
 
@@ -31,7 +40,38 @@ type $nsid = typeof $nsid
 
 export { $nsid }
 
-type Main = { $type?: 'pub.leaflet.pages.canvas'; id?: string; blocks: Block[] }
+type Main = {
+  $type?: 'pub.leaflet.pages.canvas'
+  id?: string
+  theme?: ThemePage.Main
+
+  /**
+   * Fixed canvas width in canvas px. With height, bounds the canvas: blocks are clipped to the area. Absent, the canvas grows with its content and is 1272px wide, or as wide as the inside of the publication's page (its theme's pageWidth) when it is one of a publication's pages.
+   */
+  width?: number
+  blocks: Block[]
+
+  /**
+   * Fixed canvas height in canvas px; see width.
+   */
+  height?: number
+
+  /**
+   * The guide pattern drawn over the canvas's background, under its blocks. Absent, a canvas that grows with its content shows the grid and a fixed-size canvas is plain.
+   */
+  pattern?: 'grid' | 'dot' | 'plain' | l.UnknownString
+  background?: Background
+
+  /**
+   * How a narrow viewport frames the canvas: the whole canvas scaled to fit the width (unconstrained, the default), or a phone-width area anchored to the canvas's left edge or centered on it, shown at up to 1:1.
+   */
+  mobileView?: 'unconstrained' | 'left' | 'center' | l.UnknownString
+
+  /**
+   * Viewers cannot zoom the canvas or scroll it sideways: no wheel, pinch, double-tap or zoom controls, and the initial framing (see mobileView) stays. Vertical scrolling is unaffected.
+   */
+  lockViewerZoom?: boolean
+}
 
 export type { Main }
 
@@ -40,9 +80,26 @@ const main = /*#__PURE__*/ l.typedObject<Main>(
   'main',
   /*#__PURE__*/ l.object({
     id: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string()),
+    theme: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<ThemePage.Main>((() => ThemePage.main) as any),
+    ),
+    width: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
     blocks: /*#__PURE__*/ l.array(
       /*#__PURE__*/ l.ref<Block>((() => block) as any),
     ),
+    height: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
+    pattern: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string<{ knownValues: ['grid', 'dot', 'plain'] }>(),
+    ),
+    background: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<Background>((() => background) as any),
+    ),
+    mobileView: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string<{
+        knownValues: ['unconstrained', 'left', 'center']
+      }>(),
+    ),
+    lockViewerZoom: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
   }),
 )
 
@@ -70,8 +127,13 @@ type Block = {
   $type?: 'pub.leaflet.pages.canvas#block'
   x: number
   y: number
+
+  /**
+   * A single block, or a linear document: blocks grouped in reading order that are positioned, sized and rotated on the canvas as one.
+   */
   block:
     | l.$Typed<BlocksIframe.Main>
+    | l.$Typed<BlocksHtml.Main>
     | l.$Typed<BlocksText.Main>
     | l.$Typed<BlocksBlockquote.Main>
     | l.$Typed<BlocksHeader.Main>
@@ -87,11 +149,18 @@ type Block = {
     | l.$Typed<BlocksStandardSitePost.Main>
     | l.$Typed<BlocksStandardSitePublication.Main>
     | l.$Typed<BlocksPage.Main>
+    | l.$Typed<BlocksEmbeddedCanvas.Main>
     | l.$Typed<BlocksPoll.Main>
     | l.$Typed<BlocksButton.Main>
     | l.$Typed<BlocksPostsList.Main>
     | l.$Typed<BlocksSignup.Main>
+    | l.$Typed<BlocksRecommendedPubs.Main>
+    | l.$Typed<BlocksReply.Main>
+    | l.$Typed<BlocksQuestions.Main>
     | l.$Typed<BlocksMembersOnlyDelimiter.Main>
+    | l.$Typed<BlocksPostHeader.Main>
+    | l.$Typed<BlocksDrawing.Main>
+    | l.$Typed<PagesLinearDocument.Main>
     | l.Unknown$TypedObject
   width: number
   height?: number
@@ -100,6 +169,21 @@ type Block = {
    * The rotation of the block in degrees
    */
   rotation?: number
+
+  /**
+   * Alignment of a single block's content. A linear document's blocks carry their own.
+   */
+  alignment?:
+    | 'lex:pub.leaflet.pages.linearDocument#textAlignLeft'
+    | 'lex:pub.leaflet.pages.linearDocument#textAlignCenter'
+    | 'lex:pub.leaflet.pages.linearDocument#textAlignRight'
+    | 'lex:pub.leaflet.pages.linearDocument#textAlignJustify'
+    | l.UnknownString
+
+  /**
+   * Fractional index ordering this block against its siblings on the z axis. Blocks without one stack below every block with one, ordered by position.
+   */
+  stackOrder?: string
 }
 
 export type { Block }
@@ -114,6 +198,9 @@ const block = /*#__PURE__*/ l.typedObject<Block>(
       [
         /*#__PURE__*/ l.typedRef<BlocksIframe.Main>(
           (() => BlocksIframe.main) as any,
+        ),
+        /*#__PURE__*/ l.typedRef<BlocksHtml.Main>(
+          (() => BlocksHtml.main) as any,
         ),
         /*#__PURE__*/ l.typedRef<BlocksText.Main>(
           (() => BlocksText.main) as any,
@@ -160,6 +247,9 @@ const block = /*#__PURE__*/ l.typedObject<Block>(
         /*#__PURE__*/ l.typedRef<BlocksPage.Main>(
           (() => BlocksPage.main) as any,
         ),
+        /*#__PURE__*/ l.typedRef<BlocksEmbeddedCanvas.Main>(
+          (() => BlocksEmbeddedCanvas.main) as any,
+        ),
         /*#__PURE__*/ l.typedRef<BlocksPoll.Main>(
           (() => BlocksPoll.main) as any,
         ),
@@ -172,8 +262,26 @@ const block = /*#__PURE__*/ l.typedObject<Block>(
         /*#__PURE__*/ l.typedRef<BlocksSignup.Main>(
           (() => BlocksSignup.main) as any,
         ),
+        /*#__PURE__*/ l.typedRef<BlocksRecommendedPubs.Main>(
+          (() => BlocksRecommendedPubs.main) as any,
+        ),
+        /*#__PURE__*/ l.typedRef<BlocksReply.Main>(
+          (() => BlocksReply.main) as any,
+        ),
+        /*#__PURE__*/ l.typedRef<BlocksQuestions.Main>(
+          (() => BlocksQuestions.main) as any,
+        ),
         /*#__PURE__*/ l.typedRef<BlocksMembersOnlyDelimiter.Main>(
           (() => BlocksMembersOnlyDelimiter.main) as any,
+        ),
+        /*#__PURE__*/ l.typedRef<BlocksPostHeader.Main>(
+          (() => BlocksPostHeader.main) as any,
+        ),
+        /*#__PURE__*/ l.typedRef<BlocksDrawing.Main>(
+          (() => BlocksDrawing.main) as any,
+        ),
+        /*#__PURE__*/ l.typedRef<PagesLinearDocument.Main>(
+          (() => PagesLinearDocument.main) as any,
         ),
       ],
       false,
@@ -181,6 +289,17 @@ const block = /*#__PURE__*/ l.typedObject<Block>(
     width: /*#__PURE__*/ l.integer(),
     height: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
     rotation: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
+    alignment: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string<{
+        knownValues: [
+          'lex:pub.leaflet.pages.linearDocument#textAlignLeft',
+          'lex:pub.leaflet.pages.linearDocument#textAlignCenter',
+          'lex:pub.leaflet.pages.linearDocument#textAlignRight',
+          'lex:pub.leaflet.pages.linearDocument#textAlignJustify',
+        ]
+      }>(),
+    ),
+    stackOrder: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string()),
   }),
 )
 
@@ -223,6 +342,39 @@ const position = /*#__PURE__*/ l.typedObject<Position>(
 )
 
 export { position }
+
+/** An image tiled across the canvas, under its guide pattern and blocks. */
+type Background = {
+  $type?: 'pub.leaflet.pages.canvas#background'
+  image: l.BlobRef
+
+  /**
+   * Width of each tile in canvas px. Defaults to 500.
+   */
+  width?: number
+
+  /**
+   * Opacity of the image as a percentage. Defaults to 100.
+   */
+  opacity?: number
+}
+
+export type { Background }
+
+/** An image tiled across the canvas, under its guide pattern and blocks. */
+const background = /*#__PURE__*/ l.typedObject<Background>(
+  $nsid,
+  'background',
+  /*#__PURE__*/ l.object({
+    image: /*#__PURE__*/ l.blob({ accept: ['image/*'], maxSize: 1000000 }),
+    width: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
+    opacity: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.integer({ maximum: 100, minimum: 0 }),
+    ),
+  }),
+)
+
+export { background }
 
 const textAlignLeft = /*#__PURE__*/ l.token($nsid, 'textAlignLeft')
 

@@ -3,9 +3,7 @@
   "defs": {
     "main": {
       "type": "object",
-      "required": [
-        "images"
-      ],
+      "required": ["images"],
       "properties": {
         "gap": {
           "type": "integer",
@@ -13,62 +11,36 @@
         },
         "format": {
           "type": "string",
-          "knownValues": [
-            "grid",
-            "carousel",
-            "strip"
-          ]
+          "knownValues": ["grid", "carousel", "strip", "masonry"]
         },
         "images": {
           "type": "array",
-          "items": {
-            "ref": "#image",
-            "type": "ref"
-          }
+          "items": { "ref": "#image", "type": "ref" }
         },
         "maxWidth": {
           "type": "integer",
-          "description": "Max width per image in grid view (px); drives how many columns fit."
+          "description": "Max width per image in grid and masonry views (px); drives how many columns fit."
         }
       }
     },
     "image": {
       "type": "object",
-      "required": [
-        "image",
-        "aspectRatio"
-      ],
+      "required": ["image", "aspectRatio"],
       "properties": {
         "alt": {
           "type": "string",
           "description": "Alt text description of the image, for accessibility."
         },
-        "image": {
-          "type": "blob",
-          "accept": [
-            "image/*"
-          ],
-          "maxSize": 1000000
-        },
-        "aspectRatio": {
-          "ref": "#aspectRatio",
-          "type": "ref"
-        }
+        "image": { "type": "blob", "accept": ["image/*"], "maxSize": 1000000 },
+        "aspectRatio": { "ref": "#aspectRatio", "type": "ref" }
       }
     },
     "aspectRatio": {
       "type": "object",
-      "required": [
-        "width",
-        "height"
-      ],
+      "required": ["width", "height"],
       "properties": {
-        "width": {
-          "type": "integer"
-        },
-        "height": {
-          "type": "integer"
-        }
+        "width": { "type": "integer" },
+        "height": { "type": "integer" }
       }
     }
   },

@@ -20,6 +20,11 @@ type Main = {
   image: l.BlobRef
 
   /**
+   * Display width of the image in pixels, capped at the page width.
+   */
+  width?: number
+
+  /**
    * Whether the image should extend to the full width of the container, ignoring padding.
    */
   fullBleed?: boolean
@@ -34,6 +39,7 @@ const main = /*#__PURE__*/ l.typedObject<Main>(
   /*#__PURE__*/ l.object({
     alt: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string()),
     image: /*#__PURE__*/ l.blob({ accept: ['image/*'], maxSize: 1000000 }),
+    width: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
     fullBleed: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.boolean()),
     aspectRatio: /*#__PURE__*/ l.ref<AspectRatio>((() => aspectRatio) as any),
   }),

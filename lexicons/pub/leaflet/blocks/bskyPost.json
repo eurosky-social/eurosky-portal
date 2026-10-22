@@ -3,17 +3,11 @@
   "defs": {
     "main": {
       "type": "object",
-      "required": [
-        "postRef"
-      ],
+      "required": ["postRef"],
       "properties": {
-        "postRef": {
-          "ref": "com.atproto.repo.strongRef",
-          "type": "ref"
-        },
-        "clientHost": {
-          "type": "string"
-        }
+        "view": { "type": "string", "knownValues": ["full", "media"] },
+        "postRef": { "ref": "com.atproto.repo.strongRef", "type": "ref" },
+        "clientHost": { "type": "string" }
       }
     }
   },

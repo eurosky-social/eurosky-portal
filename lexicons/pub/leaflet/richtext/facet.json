@@ -4,11 +4,7 @@
     "id": {
       "type": "object",
       "required": [],
-      "properties": {
-        "id": {
-          "type": "string"
-        }
-      },
+      "properties": { "id": { "type": "string" } },
       "description": "Facet feature for an identifier. Used for linking to a segment"
     },
     "bold": {
@@ -25,27 +21,15 @@
     },
     "link": {
       "type": "object",
-      "required": [
-        "uri"
-      ],
-      "properties": {
-        "uri": {
-          "type": "string"
-        }
-      },
+      "required": ["uri"],
+      "properties": { "uri": { "type": "string" } },
       "description": "Facet feature for a URL. The text URL may have been simplified or truncated, but the facet reference should be a complete URL."
     },
     "main": {
       "type": "object",
-      "required": [
-        "index",
-        "features"
-      ],
+      "required": ["index", "features"],
       "properties": {
-        "index": {
-          "ref": "#byteSlice",
-          "type": "ref"
-        },
+        "index": { "ref": "#byteSlice", "type": "ref" },
         "features": {
           "type": "array",
           "items": {
@@ -76,59 +60,32 @@
     },
     "footnote": {
       "type": "object",
-      "required": [
-        "footnoteId",
-        "contentPlaintext"
-      ],
+      "required": ["footnoteId", "contentPlaintext"],
       "properties": {
-        "footnoteId": {
-          "type": "string"
-        },
+        "footnoteId": { "type": "string" },
         "contentFacets": {
           "type": "array",
-          "items": {
-            "ref": "#main",
-            "type": "ref"
-          }
+          "items": { "ref": "#main", "type": "ref" }
         },
-        "contentPlaintext": {
-          "type": "string"
-        }
+        "contentPlaintext": { "type": "string" }
       },
       "description": "Facet feature for a footnote reference"
     },
     "atMention": {
       "type": "object",
-      "required": [
-        "atURI"
-      ],
+      "required": ["atURI"],
       "properties": {
-        "href": {
-          "type": "string",
-          "format": "uri"
-        },
-        "atURI": {
-          "type": "string",
-          "format": "uri"
-        }
+        "href": { "type": "string", "format": "uri" },
+        "atURI": { "type": "string", "format": "uri" }
       },
       "description": "Facet feature for mentioning an AT URI."
     },
     "byteSlice": {
       "type": "object",
-      "required": [
-        "byteStart",
-        "byteEnd"
-      ],
+      "required": ["byteStart", "byteEnd"],
       "properties": {
-        "byteEnd": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "byteStart": {
-          "type": "integer",
-          "minimum": 0
-        }
+        "byteEnd": { "type": "integer", "minimum": 0 },
+        "byteStart": { "type": "integer", "minimum": 0 }
       },
       "description": "Specifies the sub-string range a facet feature applies to. Start index is inclusive, end index is exclusive. Indices are zero-indexed, counting bytes of the UTF-8 encoded text. NOTE: some languages, like Javascript, use UTF-16 or Unicode codepoints for string slice indexing; in these languages, convert to byte arrays before working with facets."
     },
@@ -154,15 +111,8 @@
     },
     "didMention": {
       "type": "object",
-      "required": [
-        "did"
-      ],
-      "properties": {
-        "did": {
-          "type": "string",
-          "format": "did"
-        }
-      },
+      "required": ["did"],
+      "properties": { "did": { "type": "string", "format": "did" } },
       "description": "Facet feature for mentioning a did."
     },
     "strikethrough": {

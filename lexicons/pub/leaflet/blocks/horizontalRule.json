@@ -1,12 +1,6 @@
 {
   "id": "pub.leaflet.blocks.horizontalRule",
-  "defs": {
-    "main": {
-      "type": "object",
-      "required": [],
-      "properties": {}
-    }
-  },
+  "defs": { "main": { "type": "object", "required": [], "properties": {} } },
   "$type": "com.atproto.lexicon.schema",
   "lexicon": 1
 }

@@ -3,28 +3,14 @@
   "defs": {
     "main": {
       "type": "object",
-      "required": [
-        "plaintext"
-      ],
+      "required": ["plaintext"],
       "properties": {
         "facets": {
           "type": "array",
-          "items": {
-            "ref": "pub.leaflet.richtext.facet",
-            "type": "ref"
-          }
+          "items": { "ref": "pub.leaflet.richtext.facet", "type": "ref" }
         },
-        "textSize": {
-          "enum": [
-            "default",
-            "small",
-            "large"
-          ],
-          "type": "string"
-        },
-        "plaintext": {
-          "type": "string"
-        }
+        "textSize": { "enum": ["default", "small", "large"], "type": "string" },
+        "plaintext": { "type": "string" }
       }
     }
   },

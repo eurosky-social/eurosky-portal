@@ -3,16 +3,11 @@
   "defs": {
     "main": {
       "type": "object",
-      "required": [
-        "children"
-      ],
+      "required": ["children"],
       "properties": {
         "children": {
           "type": "array",
-          "items": {
-            "ref": "#listItem",
-            "type": "ref"
-          }
+          "items": { "ref": "#listItem", "type": "ref" }
         },
         "startIndex": {
           "type": "integer",
@@ -22,9 +17,7 @@
     },
     "listItem": {
       "type": "object",
-      "required": [
-        "content"
-      ],
+      "required": ["content"],
       "properties": {
         "checked": {
           "type": "boolean",
@@ -40,10 +33,7 @@
         },
         "children": {
           "type": "array",
-          "items": {
-            "ref": "#listItem",
-            "type": "ref"
-          },
+          "items": { "ref": "#listItem", "type": "ref" },
           "description": "Nested ordered list items. Mutually exclusive with unorderedListChildren; if both are present, children takes precedence."
         },
         "unorderedListChildren": {

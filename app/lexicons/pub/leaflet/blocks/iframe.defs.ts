@@ -12,7 +12,12 @@ export { $nsid }
 
 type Main = {
   $type?: 'pub.leaflet.blocks.iframe'
-  url: l.UriString
+  url?: l.UriString
+
+  /**
+   * @deprecated — use pub.leaflet.blocks.html instead. Inline HTML rendered via the iframe's srcdoc attribute. Takes precedence over url.
+   */
+  html?: string
   height?: number
   aspectRatio?: AspectRatio
 }
@@ -23,7 +28,8 @@ const main = /*#__PURE__*/ l.typedObject<Main>(
   $nsid,
   'main',
   /*#__PURE__*/ l.object({
-    url: /*#__PURE__*/ l.string({ format: 'uri' }),
+    url: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ format: 'uri' })),
+    html: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string()),
     height: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.integer({ maximum: 1600, minimum: 16 }),
     ),

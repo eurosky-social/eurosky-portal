@@ -3,7 +3,7 @@
  */
 
 export * as blocks from './leaflet/blocks.js'
+export * as theme from './leaflet/theme.js'
 export * as content from './leaflet/content.js'
 export * as pages from './leaflet/pages.js'
 export * as richtext from './leaflet/richtext.js'
-export * as theme from './leaflet/theme.js'

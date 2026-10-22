@@ -3,19 +3,11 @@
   "defs": {
     "main": {
       "type": "object",
-      "required": [
-        "plaintext"
-      ],
+      "required": ["plaintext"],
       "properties": {
-        "language": {
-          "type": "string"
-        },
-        "plaintext": {
-          "type": "string"
-        },
-        "syntaxHighlightingTheme": {
-          "type": "string"
-        }
+        "language": { "type": "string" },
+        "plaintext": { "type": "string" },
+        "syntaxHighlightingTheme": { "type": "string" }
       }
     }
   },

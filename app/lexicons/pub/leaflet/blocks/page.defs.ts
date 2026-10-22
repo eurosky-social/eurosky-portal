@@ -10,14 +10,23 @@ type $nsid = typeof $nsid
 
 export { $nsid }
 
-type Main = { $type?: 'pub.leaflet.blocks.page'; id: string }
+type Main = {
+  $type?: 'pub.leaflet.blocks.page'
+  id: string
+  display?: 'full' | 'compact' | l.UnknownString
+}
 
 export type { Main }
 
 const main = /*#__PURE__*/ l.typedObject<Main>(
   $nsid,
   'main',
-  /*#__PURE__*/ l.object({ id: /*#__PURE__*/ l.string() }),
+  /*#__PURE__*/ l.object({
+    id: /*#__PURE__*/ l.string(),
+    display: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string<{ knownValues: ['full', 'compact'] }>(),
+    ),
+  }),
 )
 
 export { main }

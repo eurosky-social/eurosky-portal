@@ -3,3 +3,4 @@
  */
 
 export * as color from './theme/color.js'
+export * as page from './theme/page.js'

@@ -4,4 +4,3 @@
 
 export * as defs from './actor/defs.js'
 export * as getProfile from './actor/getProfile.js'
-export * as status from './actor/status.js'

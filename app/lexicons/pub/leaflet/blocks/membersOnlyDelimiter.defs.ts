@@ -10,16 +10,35 @@ type $nsid = typeof $nsid
 
 export { $nsid }
 
-/** Marks where members-only content begins; blocks after this delimiter are only served to readers with an active paid membership. */
-type Main = { $type?: 'pub.leaflet.blocks.membersOnlyDelimiter' }
+/** Marks where members-only content begins and declares which publication members can read past it. */
+type Main = {
+  $type?: 'pub.leaflet.blocks.membersOnlyDelimiter'
+
+  /**
+   * Paid tier ids that grant access when audience is tiers. An empty selection grants no membership access.
+   */
+  tierIds?: string[]
+
+  /**
+   * Whether access is available to all subscribers, all paid members, or selected paid tiers.
+   */
+  audience: 'subscribers' | 'paid' | 'tiers' | l.UnknownString
+}
 
 export type { Main }
 
-/** Marks where members-only content begins; blocks after this delimiter are only served to readers with an active paid membership. */
+/** Marks where members-only content begins and declares which publication members can read past it. */
 const main = /*#__PURE__*/ l.typedObject<Main>(
   $nsid,
   'main',
-  /*#__PURE__*/ l.object({}),
+  /*#__PURE__*/ l.object({
+    tierIds: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.array(/*#__PURE__*/ l.string()),
+    ),
+    audience: /*#__PURE__*/ l.string<{
+      knownValues: ['subscribers', 'paid', 'tiers']
+    }>(),
+  }),
 )
 
 export { main }

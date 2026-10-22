@@ -3,31 +3,24 @@
   "defs": {
     "main": {
       "type": "object",
-      "required": [
-        "blocks"
-      ],
+      "required": ["blocks"],
       "properties": {
-        "id": {
-          "type": "string"
-        },
+        "id": { "type": "string" },
+        "theme": { "ref": "pub.leaflet.theme.page", "type": "ref" },
         "blocks": {
           "type": "array",
-          "items": {
-            "ref": "#block",
-            "type": "ref"
-          }
+          "items": { "ref": "#block", "type": "ref" }
         }
       }
     },
     "block": {
       "type": "object",
-      "required": [
-        "block"
-      ],
+      "required": ["block"],
       "properties": {
         "block": {
           "refs": [
             "pub.leaflet.blocks.iframe",
+            "pub.leaflet.blocks.html",
             "pub.leaflet.blocks.text",
             "pub.leaflet.blocks.blockquote",
             "pub.leaflet.blocks.header",
@@ -43,11 +36,17 @@
             "pub.leaflet.blocks.standardSitePost",
             "pub.leaflet.blocks.standardSitePublication",
             "pub.leaflet.blocks.page",
+            "pub.leaflet.blocks.embeddedCanvas",
             "pub.leaflet.blocks.poll",
             "pub.leaflet.blocks.button",
             "pub.leaflet.blocks.postsList",
             "pub.leaflet.blocks.signup",
-            "pub.leaflet.blocks.membersOnlyDelimiter"
+            "pub.leaflet.blocks.recommendedPubs",
+            "pub.leaflet.blocks.reply",
+            "pub.leaflet.blocks.questions",
+            "pub.leaflet.blocks.membersOnlyDelimiter",
+            "pub.leaflet.blocks.postHeader",
+            "pub.leaflet.blocks.drawing"
           ],
           "type": "union"
         },
@@ -64,51 +63,24 @@
     },
     "quote": {
       "type": "object",
-      "required": [
-        "start",
-        "end"
-      ],
+      "required": ["start", "end"],
       "properties": {
-        "end": {
-          "ref": "#position",
-          "type": "ref"
-        },
-        "start": {
-          "ref": "#position",
-          "type": "ref"
-        }
+        "end": { "ref": "#position", "type": "ref" },
+        "start": { "ref": "#position", "type": "ref" }
       }
     },
     "position": {
       "type": "object",
-      "required": [
-        "block",
-        "offset"
-      ],
+      "required": ["block", "offset"],
       "properties": {
-        "block": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
-        },
-        "offset": {
-          "type": "integer"
-        }
+        "block": { "type": "array", "items": { "type": "integer" } },
+        "offset": { "type": "integer" }
       }
     },
-    "textAlignLeft": {
-      "type": "token"
-    },
-    "textAlignRight": {
-      "type": "token"
-    },
-    "textAlignCenter": {
-      "type": "token"
-    },
-    "textAlignJustify": {
-      "type": "token"
-    }
+    "textAlignLeft": { "type": "token" },
+    "textAlignRight": { "type": "token" },
+    "textAlignCenter": { "type": "token" },
+    "textAlignJustify": { "type": "token" }
   },
   "$type": "com.atproto.lexicon.schema",
   "lexicon": 1

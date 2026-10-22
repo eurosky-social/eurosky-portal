@@ -3,7 +3,9 @@
  */
 
 import { l } from '@atproto/lex'
+import * as ThemePage from '../theme/page.defs.js'
 import * as BlocksIframe from '../blocks/iframe.defs.js'
+import * as BlocksHtml from '../blocks/html.defs.js'
 import * as BlocksText from '../blocks/text.defs.js'
 import * as BlocksBlockquote from '../blocks/blockquote.defs.js'
 import * as BlocksHeader from '../blocks/header.defs.js'
@@ -19,11 +21,17 @@ import * as BlocksBskyPost from '../blocks/bskyPost.defs.js'
 import * as BlocksStandardSitePost from '../blocks/standardSitePost.defs.js'
 import * as BlocksStandardSitePublication from '../blocks/standardSitePublication.defs.js'
 import * as BlocksPage from '../blocks/page.defs.js'
+import * as BlocksEmbeddedCanvas from '../blocks/embeddedCanvas.defs.js'
 import * as BlocksPoll from '../blocks/poll.defs.js'
 import * as BlocksButton from '../blocks/button.defs.js'
 import * as BlocksPostsList from '../blocks/postsList.defs.js'
 import * as BlocksSignup from '../blocks/signup.defs.js'
+import * as BlocksRecommendedPubs from '../blocks/recommendedPubs.defs.js'
+import * as BlocksReply from '../blocks/reply.defs.js'
+import * as BlocksQuestions from '../blocks/questions.defs.js'
 import * as BlocksMembersOnlyDelimiter from '../blocks/membersOnlyDelimiter.defs.js'
+import * as BlocksPostHeader from '../blocks/postHeader.defs.js'
+import * as BlocksDrawing from '../blocks/drawing.defs.js'
 
 const $nsid = 'pub.leaflet.pages.linearDocument'
 
@@ -34,6 +42,7 @@ export { $nsid }
 type Main = {
   $type?: 'pub.leaflet.pages.linearDocument'
   id?: string
+  theme?: ThemePage.Main
   blocks: Block[]
 }
 
@@ -44,6 +53,9 @@ const main = /*#__PURE__*/ l.typedObject<Main>(
   'main',
   /*#__PURE__*/ l.object({
     id: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string()),
+    theme: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<ThemePage.Main>((() => ThemePage.main) as any),
+    ),
     blocks: /*#__PURE__*/ l.array(
       /*#__PURE__*/ l.ref<Block>((() => block) as any),
     ),
@@ -74,6 +86,7 @@ type Block = {
   $type?: 'pub.leaflet.pages.linearDocument#block'
   block:
     | l.$Typed<BlocksIframe.Main>
+    | l.$Typed<BlocksHtml.Main>
     | l.$Typed<BlocksText.Main>
     | l.$Typed<BlocksBlockquote.Main>
     | l.$Typed<BlocksHeader.Main>
@@ -89,11 +102,17 @@ type Block = {
     | l.$Typed<BlocksStandardSitePost.Main>
     | l.$Typed<BlocksStandardSitePublication.Main>
     | l.$Typed<BlocksPage.Main>
+    | l.$Typed<BlocksEmbeddedCanvas.Main>
     | l.$Typed<BlocksPoll.Main>
     | l.$Typed<BlocksButton.Main>
     | l.$Typed<BlocksPostsList.Main>
     | l.$Typed<BlocksSignup.Main>
+    | l.$Typed<BlocksRecommendedPubs.Main>
+    | l.$Typed<BlocksReply.Main>
+    | l.$Typed<BlocksQuestions.Main>
     | l.$Typed<BlocksMembersOnlyDelimiter.Main>
+    | l.$Typed<BlocksPostHeader.Main>
+    | l.$Typed<BlocksDrawing.Main>
     | l.Unknown$TypedObject
   alignment?:
     | '#textAlignLeft'
@@ -113,6 +132,9 @@ const block = /*#__PURE__*/ l.typedObject<Block>(
       [
         /*#__PURE__*/ l.typedRef<BlocksIframe.Main>(
           (() => BlocksIframe.main) as any,
+        ),
+        /*#__PURE__*/ l.typedRef<BlocksHtml.Main>(
+          (() => BlocksHtml.main) as any,
         ),
         /*#__PURE__*/ l.typedRef<BlocksText.Main>(
           (() => BlocksText.main) as any,
@@ -159,6 +181,9 @@ const block = /*#__PURE__*/ l.typedObject<Block>(
         /*#__PURE__*/ l.typedRef<BlocksPage.Main>(
           (() => BlocksPage.main) as any,
         ),
+        /*#__PURE__*/ l.typedRef<BlocksEmbeddedCanvas.Main>(
+          (() => BlocksEmbeddedCanvas.main) as any,
+        ),
         /*#__PURE__*/ l.typedRef<BlocksPoll.Main>(
           (() => BlocksPoll.main) as any,
         ),
@@ -171,8 +196,23 @@ const block = /*#__PURE__*/ l.typedObject<Block>(
         /*#__PURE__*/ l.typedRef<BlocksSignup.Main>(
           (() => BlocksSignup.main) as any,
         ),
+        /*#__PURE__*/ l.typedRef<BlocksRecommendedPubs.Main>(
+          (() => BlocksRecommendedPubs.main) as any,
+        ),
+        /*#__PURE__*/ l.typedRef<BlocksReply.Main>(
+          (() => BlocksReply.main) as any,
+        ),
+        /*#__PURE__*/ l.typedRef<BlocksQuestions.Main>(
+          (() => BlocksQuestions.main) as any,
+        ),
         /*#__PURE__*/ l.typedRef<BlocksMembersOnlyDelimiter.Main>(
           (() => BlocksMembersOnlyDelimiter.main) as any,
+        ),
+        /*#__PURE__*/ l.typedRef<BlocksPostHeader.Main>(
+          (() => BlocksPostHeader.main) as any,
+        ),
+        /*#__PURE__*/ l.typedRef<BlocksDrawing.Main>(
+          (() => BlocksDrawing.main) as any,
         ),
       ],
       false,

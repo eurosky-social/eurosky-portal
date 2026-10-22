@@ -3,25 +3,14 @@
   "defs": {
     "main": {
       "type": "object",
-      "required": [
-        "src"
-      ],
+      "required": ["src"],
       "properties": {
-        "src": {
-          "type": "string",
-          "format": "uri"
-        },
-        "title": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
+        "src": { "type": "string", "format": "uri" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
         "previewImage": {
           "type": "blob",
-          "accept": [
-            "image/*"
-          ],
+          "accept": ["image/*"],
           "maxSize": 1000000
         }
       }

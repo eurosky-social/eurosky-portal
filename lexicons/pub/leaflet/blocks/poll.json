@@ -3,14 +3,9 @@
   "defs": {
     "main": {
       "type": "object",
-      "required": [
-        "pollRef"
-      ],
+      "required": ["pollRef"],
       "properties": {
-        "pollRef": {
-          "ref": "com.atproto.repo.strongRef",
-          "type": "ref"
-        }
+        "pollRef": { "ref": "com.atproto.repo.strongRef", "type": "ref" }
       }
     }
   },

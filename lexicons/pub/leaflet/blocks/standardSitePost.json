@@ -3,28 +3,15 @@
   "defs": {
     "main": {
       "type": "object",
-      "required": [
-        "uri"
-      ],
+      "required": ["uri"],
       "properties": {
-        "cid": {
-          "type": "string"
-        },
-        "uri": {
-          "type": "string",
-          "format": "at-uri"
-        },
+        "cid": { "type": "string" },
+        "uri": { "type": "string", "format": "at-uri" },
         "size": {
           "type": "string",
-          "knownValues": [
-            "large",
-            "medium",
-            "small"
-          ]
+          "knownValues": ["large", "medium", "small"]
         },
-        "showPublicationTheme": {
-          "type": "boolean"
-        }
+        "showPublicationTheme": { "type": "boolean" }
       }
     }
   },

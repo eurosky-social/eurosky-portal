@@ -10,6 +10,7 @@ import * as LabelerDefs from '../labeler/defs.defs.js'
 import * as ActorDefs from '../actor/defs.defs.js'
 import * as EmbedImages from './images.defs.js'
 import * as EmbedVideo from './video.defs.js'
+import * as EmbedGallery from './gallery.defs.js'
 import * as EmbedExternal from './external.defs.js'
 import * as EmbedRecordWithMedia from './recordWithMedia.defs.js'
 import * as LabelDefs from '../../../com/atproto/label/defs.defs.js'
@@ -113,6 +114,7 @@ type ViewRecord = {
   embeds?: (
     | l.$Typed<EmbedImages.View>
     | l.$Typed<EmbedVideo.View>
+    | l.$Typed<EmbedGallery.View>
     | l.$Typed<EmbedExternal.View>
     | l.$Typed<View>
     | l.$Typed<EmbedRecordWithMedia.View>
@@ -124,6 +126,16 @@ type ViewRecord = {
   quoteCount?: number
   replyCount?: number
   repostCount?: number
+
+  /**
+   * The total number of posts in the contiguous OP thread that this post belongs to. Only present when this post is part of the OP thread.
+   */
+  opThreadPostCount?: number
+
+  /**
+   * The 1-indexed position of this post within the contiguous OP thread. Only present when this post is part of the OP thread.
+   */
+  opThreadPostIndex?: number
 }
 
 export type { ViewRecord }
@@ -148,6 +160,9 @@ const viewRecord = /*#__PURE__*/ l.typedObject<ViewRecord>(
             /*#__PURE__*/ l.typedRef<EmbedVideo.View>(
               (() => EmbedVideo.view) as any,
             ),
+            /*#__PURE__*/ l.typedRef<EmbedGallery.View>(
+              (() => EmbedGallery.view) as any,
+            ),
             /*#__PURE__*/ l.typedRef<EmbedExternal.View>(
               (() => EmbedExternal.view) as any,
             ),
@@ -170,6 +185,8 @@ const viewRecord = /*#__PURE__*/ l.typedObject<ViewRecord>(
     quoteCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
     replyCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
     repostCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
+    opThreadPostCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
+    opThreadPostIndex: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
   }),
 )
 
