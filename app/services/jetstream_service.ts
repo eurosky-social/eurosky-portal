@@ -2,7 +2,13 @@ import { DateTime } from 'luxon'
 import cache from '@adonisjs/cache/services/main'
 import app from '@adonisjs/core/services/app'
 import logger from '@adonisjs/core/services/logger'
-import { type DidString, type LexValue, isDidString, isNsidString, lexParse } from '@atproto/lex'
+import {
+  type AccountData,
+  type CommitOperation,
+  type JetstreamEvent,
+  JetstreamSubscription,
+} from '@atcute/jetstream'
+import { type DidString, type JsonValue, jsonToLex } from '@atproto/lex'
 import Account from '#models/account'
 import ActivityRecord from '#models/activity_record'
 import { supportedCollections, toPreview, toValue } from '#utils/activity'
@@ -11,34 +17,10 @@ import { dormancyCutoff } from '#utils/dormancy'
 
 const cursorCacheKey = 'jetstream:cursor'
 const cursorSaveInterval = 500
-const jetstreamUrl = 'wss://jetstream1.eurosky.network/subscribe'
-const reconnectDelay = 5_000
+const jetstreamUrl = 'wss://jetstream1.eurosky.network'
 const wantedCollections = [...supportedCollections]
 
-interface JetstreamAccount {
-  active: boolean
-  did: string
-  seq: number
-  status?: 'deactivated' | 'deleted' | 'desynchronized' | 'suspended' | 'takendown' | 'throttled'
-  time: string
-}
-
-interface JetstreamCommit {
-  cid?: string
-  collection: string
-  operation: 'create' | 'delete' | 'update'
-  record?: LexValue
-  rev: string
-  rkey: string
-}
-
-interface JetstreamMessage {
-  account?: JetstreamAccount
-  commit?: JetstreamCommit
-  did: string
-  kind: 'account' | 'commit' | 'identity'
-  time_us: number
-}
+type Events = ReturnType<JetstreamSubscription[typeof Symbol.asyncIterator]>
 
 /**
  * Watch a Jetstream and mirror commits for known DIDs into
@@ -47,9 +29,9 @@ interface JetstreamMessage {
 export class JetstreamService {
   #cursor: number | undefined
   #dids: Set<DidString> = new Set()
+  #events: Events | undefined
   #eventsSinceLastSave = 0
-  #reconnectTimeout: ReturnType<typeof setTimeout> | undefined
-  #socket: WebSocket | undefined
+  #subscription: JetstreamSubscription | undefined
   #sweepInterval: ReturnType<typeof setInterval> | undefined
 
   /**
@@ -62,27 +44,8 @@ export class JetstreamService {
    */
   addDid(did: DidString): undefined {
     if (this.#dids.has(did)) return
-
     this.#dids.add(did)
-
-    const socket = this.#socket
-
-    if (socket && socket.readyState === WebSocket.OPEN) {
-      socket.send(
-        JSON.stringify({
-          payload: { wantedCollections, wantedDids: [...this.#dids] },
-          type: 'options_update',
-        })
-      )
-    }
-    // Connect if not already open or connecting.
-    else if (
-      !socket ||
-      socket.readyState === WebSocket.CLOSED ||
-      socket.readyState === WebSocket.CLOSING
-    ) {
-      this.#connect()
-    }
+    this.#update()
   }
 
   /**
@@ -95,17 +58,7 @@ export class JetstreamService {
    */
   removeDid(did: DidString): undefined {
     if (!this.#dids.delete(did)) return
-
-    const socket = this.#socket
-
-    if (socket && socket.readyState === WebSocket.OPEN) {
-      socket.send(
-        JSON.stringify({
-          payload: { wantedCollections, wantedDids: [...this.#dids] },
-          type: 'options_update',
-        })
-      )
-    }
+    this.#update()
   }
 
   /**
@@ -124,7 +77,7 @@ export class JetstreamService {
     const cachedCursor: unknown = await cache.get({ key: cursorCacheKey })
     if (typeof cachedCursor === 'number') this.#cursor = cachedCursor
 
-    if (this.#dids.size > 0) this.#connect()
+    this.#update()
 
     // Sweep now and every 6 hours.
     const task = (): undefined => {
@@ -138,92 +91,107 @@ export class JetstreamService {
   }
 
   /**
-   * Cancel tasks and close the socket.
+   * Cancel tasks and close the connection.
    *
    * @returns
    *   Nothing.
    */
   stop(): undefined {
     clearInterval(this.#sweepInterval)
-    clearTimeout(this.#reconnectTimeout)
-
-    if (this.#socket) {
-      this.#socket.onclose = null
-      this.#socket.close()
-      this.#socket = undefined
-    }
+    this.#disconnect()
   }
 
   /**
-   * Open a socket connection.
+   * Open a connection.
    *
    * @returns
    *   Nothing.
    */
   #connect(): undefined {
-    clearTimeout(this.#reconnectTimeout)
+    const subscription = new JetstreamSubscription({
+      cursor: this.#cursor,
+      onConnectionClose() {
+        logger.info('jetstream: disconnected from `%s`', jetstreamUrl)
+      },
+      onConnectionError(event) {
+        logger.warn({ event }, 'jetstream: socket error')
+      },
+      onConnectionOpen() {
+        logger.info('jetstream: connected to `%s`', jetstreamUrl)
+      },
+      onError(err) {
+        logger.warn({ err }, 'jetstream: invalid event')
+      },
+      url: jetstreamUrl,
+      wantedCollections,
+      wantedDids: [...this.#dids],
+    })
+    const events = subscription[Symbol.asyncIterator]()
 
-    const url = new URL(jetstreamUrl)
-    if (this.#cursor !== undefined) url.searchParams.set('cursor', String(this.#cursor))
+    this.#events = events
+    this.#subscription = subscription
 
-    const socket = new WebSocket(url)
-    this.#socket = socket
+    this.#listen(events).catch((err: unknown) => {
+      logger.warn({ err }, 'jetstream: cannot listen to events')
+    })
+  }
 
-    socket.onopen = () => {
-      logger.info('jetstream: connected to `%s`', jetstreamUrl)
-      socket.send(
-        JSON.stringify({
-          payload: { wantedCollections, wantedDids: [...this.#dids] },
-          type: 'options_update',
-        })
-      )
+  /**
+   * Close the connection, if any, and persist the cursor.
+   *
+   * @returns
+   *   Nothing.
+   */
+  #disconnect(): undefined {
+    if (!this.#subscription) return
+
+    // Ends `#listen`; drops events that are queued but not handled yet,
+    // which is fine as `#cursor` only includes handled events.
+    this.#events?.dispose()
+    this.#events = undefined
+    this.#subscription = undefined
+    this.#saveCursor().catch((err: unknown) => {
+      logger.warn({ err }, 'jetstream: cannot save cursor')
+    })
+  }
+
+  /**
+   * Handle an event.
+   *
+   * @param event
+   *   Event.
+   * @returns
+   *   Promise that resolves when handled.
+   */
+  async #handleEvent(event: JetstreamEvent): Promise<undefined> {
+    if (event.kind === 'commit') {
+      await this.#handleCommit(event.did, event.commit)
+    } else if (event.kind === 'account') {
+      await this.#handleAccount(event.did, event.account)
     }
 
-    socket.onmessage = (event) => {
-      let message: JetstreamMessage
+    this.#cursor = event.time_us
+    this.#eventsSinceLastSave++
 
-      try {
-        message = lexParse(event.data) as unknown as JetstreamMessage
-      } catch (err) {
-        logger.warn({ err }, 'jetstream: cannot handle message')
-        return
-      }
-
-      if (typeof message.time_us === 'number' && Number.isFinite(message.time_us)) {
-        this.#cursor = message.time_us
-      }
-
-      this.#eventsSinceLastSave++
-
-      if (this.#eventsSinceLastSave >= cursorSaveInterval) {
-        this.#eventsSinceLastSave = 0
-        this.#saveCursor().catch((err: unknown) =>
-          logger.warn({ err }, 'jetstream: cannot save cursor')
-        )
-      }
-
-      if (message.kind === 'commit' && message.commit) {
-        this.#handleCommit(message.did, message.commit).catch((err: unknown) => {
-          logger.warn({ err }, 'jetstream: cannot handle commit')
-        })
-      } else if (message.kind === 'account' && message.account) {
-        this.#handleAccount(message.did, message.account).catch((err: unknown) => {
-          logger.warn({ err }, 'jetstream: cannot handle account')
-        })
-      }
+    if (this.#eventsSinceLastSave >= cursorSaveInterval) {
+      this.#eventsSinceLastSave = 0
+      await this.#saveCursor()
     }
+  }
 
-    socket.onerror = (event) => {
-      logger.warn({ event }, 'jetstream: socket error')
-    }
-
-    socket.onclose = () => {
-      this.#socket = undefined
-      this.#saveCursor().catch((err: unknown) =>
-        logger.warn({ err }, 'jetstream: cannot save cursor')
-      )
-      logger.info('jetstream: reconnecting to `%s` (%dms)', jetstreamUrl, reconnectDelay)
-      this.#reconnectTimeout = setTimeout(() => this.#connect(), reconnectDelay)
+  /**
+   * Handle events, one at a time, until the connection is closed.
+   *
+   * @param events
+   *   Events.
+   * @returns
+   *   Promise that resolves when the connection is closed.
+   */
+  async #listen(events: Events): Promise<undefined> {
+    for await (const event of events) {
+      await this.#handleEvent(event).catch((err: unknown) => {
+        logger.warn({ err, kind: event.kind }, 'jetstream: cannot handle event')
+      })
     }
   }
 
@@ -237,39 +205,21 @@ export class JetstreamService {
    * @returns
    *   Promise that resolves when handled.
    */
-  async #handleCommit(did: string, commit: JetstreamCommit): Promise<undefined> {
-    const { cid, collection, operation, record, rkey } = commit
+  async #handleCommit(did: DidString, commit: CommitOperation): Promise<undefined> {
+    if (!this.#dids.has(did)) return
 
-    if (!isNsidString(collection)) {
-      logger.warn({ collection }, 'jetstream: invalid commit `collection`')
-      return
-    }
-    if (!isDidString(did)) {
-      logger.warn({ did }, 'jetstream: invalid commit `did`')
-      return
-    }
-
+    const { collection, rkey } = commit
     const uri = `at://${did}/${collection}/${rkey}`
 
-    if (operation === 'delete') {
-      if (this.#dids.has(did)) await ActivityRecord.query().where('uri', uri).delete()
+    if (commit.operation === 'delete') {
+      await ActivityRecord.query().where('uri', uri).delete()
       return
     }
 
     // Create or update.
-    if (!this.#dids.has(did)) return
-
-    if (!cid) {
-      logger.warn({ operation, uri }, 'jetstream: missing commit `cid` in create/update')
-      return
-    }
-
-    if (!record) {
-      logger.warn({ operation, uri }, 'jetstream: missing commit `record` in create/update')
-      return
-    }
-
-    const activity = toValue(collection, record)
+    const { cid, record } = commit
+    // turn `$link`s and `$bytes` into CIDs and bytes.
+    const activity = toValue(collection, jsonToLex(record as JsonValue))
 
     // Unknown collection / invalid record.
     if (!activity) {
@@ -300,12 +250,7 @@ export class JetstreamService {
    * @returns
    *   Promise that resolves when handled.
    */
-  async #handleAccount(did: string, account: JetstreamAccount): Promise<undefined> {
-    if (!isDidString(did)) {
-      logger.warn({ did }, 'jetstream: invalid account `did`')
-      return
-    }
-
+  async #handleAccount(did: DidString, account: AccountData): Promise<undefined> {
     const { active, status } = account
     if (active || !this.#dids.has(did)) return
 
@@ -358,6 +303,22 @@ export class JetstreamService {
     await ActivityRecord.query().whereIn('did', dids).delete()
 
     logger.info({ count: dids.length }, 'jetstream: stopped watching dormant accounts')
+  }
+
+  /**
+   * Connect, update who to watch, or disconnect, based on the current DIDs.
+   *
+   * @returns
+   *   Nothing.
+   */
+  #update(): undefined {
+    if (this.#dids.size === 0) {
+      this.#disconnect()
+    } else if (this.#subscription) {
+      this.#subscription.updateOptions({ wantedDids: [...this.#dids] })
+    } else {
+      this.#connect()
+    }
   }
 }
 

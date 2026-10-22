@@ -93,6 +93,7 @@
     "@adonisjs/shield": "^9.0.0",
     "@adonisjs/static": "^2.0.1",
     "@adonisjs/vite": "^6.0.3",
+    "@atcute/jetstream": "^2.2.0",
     "@atproto-labs/simple-store": "^0.5.1",
     "@atproto/jwk-jose": "^0.2.4",
     "@atproto/lex": "^0.4.0",
