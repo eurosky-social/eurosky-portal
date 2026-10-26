@@ -8,6 +8,7 @@ import { createInertiaApp, ResolvedComponent } from '@inertiajs/react'
 import { TuyauProvider } from '@adonisjs/inertia/react'
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
 import { brand } from '#shared/brand'
+import { MotionConfig } from 'motion/react'
 
 export default function render(page: Page) {
   return createInertiaApp({
@@ -24,7 +25,9 @@ export default function render(page: Page) {
     setup: ({ App, props }) => {
       return (
         <TuyauProvider client={client}>
-          <App {...props} />
+          <MotionConfig reducedMotion="user">
+            <App {...props} />
+          </MotionConfig>
         </TuyauProvider>
       )
     },
