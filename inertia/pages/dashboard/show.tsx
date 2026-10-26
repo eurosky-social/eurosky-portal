@@ -14,6 +14,7 @@ import { client } from '~/client'
 import { useRouter } from '@adonisjs/inertia/react'
 import { INVALID_HANDLE } from '@atproto/syntax'
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid'
+import { NewTab } from '~/components/NewTab'
 import { useT } from '~/lib/i18n'
 import { formatNumber } from '~/utils/number'
 
@@ -65,14 +66,21 @@ export default function Dashboard({
               {t('dashboard.invalidHandle.title')}
             </Text>
             <Text className="text-white! text-shadow-sm text-shadow-amber-600/80">
-              {t('dashboard.invalidHandle.text')}{' '}
-              <a
-                href="https://eurosky.tech/help/#handle-invalid"
-                target="_blank"
-                className="font-semibold hover:underline"
-              >
-                {t('common.learnMore')}
-              </a>
+              {t('dashboard.invalidHandle.text', {
+                link(chunks) {
+                  return (
+                    <a
+                      className="font-semibold hover:underline"
+                      href="https://eurosky.tech/help/#handle-invalid"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      {chunks}
+                      <NewTab />
+                    </a>
+                  )
+                },
+              })}
             </Text>
           </div>
         </Card>

@@ -46,6 +46,7 @@ const fr = {
     '{productTitle} est actuellement en bêta. <feedback>Donnez votre avis</feedback>.',
   'common.breadcrumb': 'Fil d’Ariane',
   'common.learnMore': 'En savoir plus',
+  'common.opensInNewTab': '(s’ouvre dans un nouvel onglet)',
   'common.someone': 'quelqu’un',
   'createAccount.haveAccount': 'Vous avez déjà un compte {orgName}? <signIn>Se connecter</signIn>',
   'createAccount.pageTitle': 'Créer un compte',
@@ -66,7 +67,7 @@ const fr = {
   'dashboard.greeting.plain': 'Bon retour !',
   'dashboard.greeting.withName': 'Bon retour, {name} !',
   'dashboard.invalidHandle.text':
-    'Il semble que vous ayez tenté de modifier votre identifiant, et nous ne pouvons pas le vérifier.',
+    'Il semble que vous ayez tenté de modifier votre identifiant, et nous ne pouvons pas le vérifier. <link>En savoir plus</link>',
   'dashboard.invalidHandle.title': 'Votre identifiant est actuellement invalide',
   'dashboard.stats.followers': 'Abonnés',
   'dashboard.stats.following': 'Abonnements',

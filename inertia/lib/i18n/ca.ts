@@ -46,6 +46,7 @@ const ca = {
     '{productTitle} està actualment en fase beta. <feedback>Envia comentaris</feedback>.',
   'common.breadcrumb': 'Camí de navegació',
   'common.learnMore': 'Més informació',
+  'common.opensInNewTab': '(s’obre en una pestanya nova)',
   'common.someone': 'algú',
   'createAccount.haveAccount': 'Ja teniu un compte {orgName}? <signIn>Inicia la sessió</signIn>',
   'createAccount.pageTitle': 'Creeu un compte',
@@ -67,7 +68,7 @@ const ca = {
   'dashboard.greeting.plain': 'Us donem la benvinguda',
   'dashboard.greeting.withName': 'Us donem la benvinguda, {name}!',
   'dashboard.invalidHandle.text':
-    'Sembla que heu intentat canviar el vostre nom d’usuari i no l’hem pogut verificar.',
+    'Sembla que heu intentat canviar el vostre nom d’usuari i no l’hem pogut verificar. <link>Més informació</link>',
   'dashboard.invalidHandle.title': 'El vostre nom d’usuari no és vàlid actualment',
   'dashboard.stats.followers': 'Seguidors',
   'dashboard.stats.following': 'Seguint',

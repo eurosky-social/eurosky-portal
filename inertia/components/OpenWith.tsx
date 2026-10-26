@@ -8,6 +8,7 @@ import { TouchTarget, styles as buttonStyles } from '~/lib/button'
 import { Dropdown, DropdownButton, DropdownItem, DropdownMenu } from '~/lib/dropdown'
 import type { LauncherApp } from '#services/atstore_service'
 import { find, preferred, prefer, serverSnapshot, snapshot, subscribe } from '~/utils/apps'
+import { NewTab } from '~/components/NewTab'
 import { useT } from '~/lib/i18n'
 
 interface Properties {
@@ -41,7 +42,10 @@ export function OpenWith({ uri }: Properties) {
         rel="noreferrer"
         target="_blank"
       >
-        <TouchTarget>{t('apps.openWith', { name: preferredName })}</TouchTarget>
+        <TouchTarget>
+          {t('apps.openWith', { name: preferredName })}
+          <NewTab icon={false} />
+        </TouchTarget>
       </a>
       <Dropdown>
         <DropdownButton className="rounded-l-none px-2 sm:px-1.5" outline>

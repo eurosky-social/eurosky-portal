@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { Data } from '@generated/data'
-import { ArrowTopRightOnSquareIcon, ShieldCheckIcon } from '@heroicons/react/24/solid'
+import { ShieldCheckIcon } from '@heroicons/react/24/solid'
 import { Head, usePage } from '@inertiajs/react'
 import { AppGrid } from '~/components/AppGrid'
 import { Button } from '~/lib/button'
@@ -8,6 +8,7 @@ import Card from '~/lib/card'
 import { Text } from '~/lib/text'
 import type { InertiaProps } from '~/types'
 import { useAuth } from '~/utils/use_auth'
+import { NewTab } from '~/components/NewTab'
 import { useT } from '~/lib/i18n'
 
 export default function YourApps({
@@ -63,13 +64,13 @@ export default function YourApps({
           <Text>{t('yourApps.access.text')}</Text>
           <Text>
             <a
-              className="inline-flex items-center gap-1 font-semibold text-zinc-950 underline dark:text-white"
+              className="font-semibold text-zinc-950 underline dark:text-white"
               href={manageAppsUrl}
               rel="noopener noreferrer"
               target="_blank"
             >
               {t('yourApps.access.link')}
-              <ArrowTopRightOnSquareIcon aria-hidden="true" className="size-4" />
+              <NewTab />
             </a>
           </Text>
         </div>

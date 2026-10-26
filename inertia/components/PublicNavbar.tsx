@@ -7,6 +7,7 @@ import { Button } from '~/lib/button'
 import { usePage } from '@inertiajs/react'
 import { urlFor } from '~/client'
 import { useT } from '~/lib/i18n'
+import { NewTab } from './NewTab'
 
 export default function PublicNavbar() {
   const page = usePage()
@@ -29,7 +30,10 @@ export default function PublicNavbar() {
           {t('nav.apps')}
         </NavbarItem>
         <NavbarItem href="https://eurosky.tech/accounts/privacy/" target="_blank">
-          {t('nav.privacy')}
+          <span>
+            {t('nav.privacy')}
+            <NewTab />
+          </span>
         </NavbarItem>
         <Button route="auth.login" outline className="hidden! md:inline-flex!">
           {t('nav.signIn')}

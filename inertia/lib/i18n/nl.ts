@@ -45,6 +45,7 @@ const nl = {
   'beta.warning': '{productTitle} is momenteel in bèta. <feedback>Feedback geven</feedback>.',
   'common.breadcrumb': 'Kruimelpad',
   'common.learnMore': 'Meer informatie',
+  'common.opensInNewTab': '(opent in een nieuw tabblad)',
   'common.someone': 'iemand',
   'createAccount.haveAccount': 'Heb je al een {orgName} account? <signIn>Inloggen</signIn>',
   'createAccount.pageTitle': 'Account aanmaken',
@@ -64,7 +65,7 @@ const nl = {
   'dashboard.greeting.plain': 'Welkom terug!',
   'dashboard.greeting.withName': 'Welkom terug, {name}!',
   'dashboard.invalidHandle.text':
-    'Het lijkt erop dat je hebt geprobeerd je handle te wijzigen, maar we kunnen deze niet verifiëren.',
+    'Het lijkt erop dat je hebt geprobeerd je handle te wijzigen, maar we kunnen deze niet verifiëren. <link>Meer informatie</link>',
   'dashboard.invalidHandle.title': 'Je handle is momenteel ongeldig',
   'dashboard.stats.followers': 'Volgers',
   'dashboard.stats.following': 'Volgend',
