@@ -55,6 +55,7 @@ export function OpenWith({ uri }: Properties) {
 
             return (
               <DropdownItem
+                aria-current={appUri === preferredUri ? 'true' : undefined}
                 key={appUri}
                 onClick={() => {
                   prefer(appUri, value)

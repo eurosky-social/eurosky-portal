@@ -10,15 +10,21 @@ export function LanguageToggle({ className }: React.ComponentPropsWithoutRef<'di
 
   return (
     <Dropdown>
-      <DropdownButton className={clsx(className, 'relative inline-flex! w-10 h-10 p-0.5!')} plain>
-        <LanguageIcon
-          title={tPlain('nav.chooseLanguage')}
-          className="text-neutral-400! dark:text-slate-500!"
-        />
+      <DropdownButton
+        aria-label={tPlain('nav.chooseLanguage')}
+        className={clsx(className, 'relative inline-flex! w-10 h-10 p-0.5!')}
+        plain
+        title={tPlain('nav.chooseLanguage')}
+      >
+        <LanguageIcon className="text-neutral-400! dark:text-slate-500!" />
       </DropdownButton>
       <DropdownMenu anchor="bottom end">
         {locales.map((code) => (
-          <DropdownItem key={code} onClick={() => setLocale(code)}>
+          <DropdownItem
+            aria-current={code === locale ? 'true' : undefined}
+            key={code}
+            onClick={() => setLocale(code)}
+          >
             <span className="col-span-full flex w-full items-center justify-between gap-2">
               <span lang={code}>{localeNames[code]}</span>
               {code === locale ? (

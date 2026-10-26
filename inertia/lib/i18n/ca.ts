@@ -38,7 +38,7 @@ const ca = {
   'apps.favorited': 'Preferida',
   'apps.madeInEurope': 'Fet a Europa',
   'apps.openWith': 'Obre amb {name}',
-  'apps.rating': '{value} de 5',
+  'apps.rating': '{value} de 5, {count, plural, one {# ressenya} other {# ressenyes}}',
   'apps.removeFavoriteNamed': 'Elimineu {name} de les vostres aplicacions',
   'apps.subheading': 'Exploreu les aplicacions destacades que funcionen amb el compte {orgName}.',
   'beta.giveFeedback': 'Envia comentaris',

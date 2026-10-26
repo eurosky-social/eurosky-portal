@@ -38,7 +38,7 @@ const nl = {
   'apps.favorited': 'Favoriet',
   'apps.madeInEurope': 'Gemaakt in Europa',
   'apps.openWith': 'Openen met {name}',
-  'apps.rating': '{value} van de 5',
+  'apps.rating': '{value} van de 5, {count, plural, one {# beoordeling} other {# beoordelingen}}',
   'apps.removeFavoriteNamed': 'Verwijder {name} uit je apps',
   'apps.subheading': 'Bekijk de aanbevolen apps die werken met je {orgName} account.',
   'beta.giveFeedback': 'Feedback geven',

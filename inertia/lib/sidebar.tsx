@@ -131,6 +131,7 @@ export const SidebarItem = forwardRef(function SidebarItem(
         <Headless.CloseButton
           as={Link}
           {...props}
+          aria-current={current ? 'page' : undefined}
           className={classes}
           data-current={current ? 'true' : undefined}
           ref={ref}

@@ -27,16 +27,20 @@ export function ThemeToggle({ className }: React.ComponentPropsWithoutRef<'div'>
     setTheme(newTheme)
   }, [theme])
 
+  const label = tPlain(theme === 'dark' ? 'theme.setLight' : 'theme.setDark')
+
   return (
     <Button
+      aria-label={label}
       className={clsx(className, 'relative inline-block w-10 h-10 p-0.5!')}
       plain
       onClick={toggleTheme}
+      title={label}
     >
       {theme === 'dark' ? (
-        <LightBulbIcon title={tPlain('theme.setLight')} className="dark:text-slate-500!" />
+        <LightBulbIcon className="dark:text-slate-500!" />
       ) : (
-        <MoonIcon title={tPlain('theme.setDark')} className="text-neutral-400!" />
+        <MoonIcon className="text-neutral-400!" />
       )}
     </Button>
   )

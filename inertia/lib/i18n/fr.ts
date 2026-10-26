@@ -38,7 +38,7 @@ const fr = {
   'apps.favorited': 'Favori',
   'apps.madeInEurope': 'Fabriqué en Europe',
   'apps.openWith': 'Ouvrir avec {name}',
-  'apps.rating': '{value} sur 5',
+  'apps.rating': '{value} sur 5, {count, plural, one {# avis} other {# avis}}',
   'apps.removeFavoriteNamed': 'Retirer {name} de vos applications',
   'apps.subheading': 'Parcourez les applications phares compatibles avec votre compte {orgName}.',
   'beta.giveFeedback': 'Donner votre avis',
