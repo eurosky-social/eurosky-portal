@@ -6,6 +6,7 @@ import { MarkdownContent } from '~/components/MarkdownContent'
 import { Rating } from '~/components/Rating'
 import { Avatar } from '~/lib/avatar'
 import { Badge } from '~/lib/badge'
+import { Button } from '~/lib/button'
 import Card from '~/lib/card'
 import { Heading } from '~/lib/heading'
 import { BackLink } from '~/lib/link'
@@ -113,15 +114,10 @@ export default function AppDetailPage({
 
           <div className="flex flex-wrap items-center gap-3">
             {externalUrl ? (
-              <a
-                className="inline-flex items-center justify-center rounded-lg bg-zinc-900 px-3.5 py-2.5 text-base/6 font-semibold text-white sm:px-3 sm:py-1.5 sm:text-sm/6 dark:bg-zinc-600"
-                href={externalUrl}
-                rel="noopener noreferrer"
-                target="_blank"
-              >
+              <Button as="a" href={externalUrl} rel="noopener noreferrer" target="_blank">
                 {t('apps.detail.explore')}
                 <NewTab icon={false} />
-              </a>
+              </Button>
             ) : undefined}
           </div>
         </div>

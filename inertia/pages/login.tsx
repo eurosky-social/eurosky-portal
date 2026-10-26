@@ -68,12 +68,7 @@ export default function Login({ migrationUrl }: InertiaProps<{ migrationUrl?: st
                   {errors.input && <ErrorMessage>{errors.input}</ErrorMessage>}
                 </Field>
                 <Field className="mt-2 flex justify-end justify-items-stretch">
-                  <Button
-                    type="submit"
-                    color={processing ? 'zinc' : 'brand'}
-                    className="w-full py-3! disabled:cursor-default"
-                    disabled={processing}
-                  >
+                  <Button type="submit" color="brand" className="w-full" disabled={processing}>
                     {t('login.continue')}
                   </Button>
                 </Field>

@@ -44,7 +44,7 @@ export default function YourApps({
       {apps.length === 0 ? (
         <Card className="p-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <Text>{t('yourApps.empty')}</Text>
-          <Button route="discover.apps" className="w-full sm:w-auto dark:bg-slate-700!">
+          <Button route="discover.apps" className="w-full sm:w-auto">
             {t('yourApps.browse')}
           </Button>
         </Card>

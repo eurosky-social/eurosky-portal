@@ -31,10 +31,10 @@ export function Hero() {
           {t('hero.subtitle')}
         </p>
         <div className="my-6 flex justify-center gap-4 md:gap-6 text-2xl flex-col md:flex-row">
-          <Button route="account.create" className="py-3! px-6!" color="brand">
+          <Button route="account.create" color="brand">
             {t('hero.createAccount')}
           </Button>
-          <Button route="auth.login" className="py-3! px-6!" outline>
+          <Button route="auth.login" outline>
             {t('nav.signIn')}
           </Button>
         </div>

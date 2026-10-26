@@ -1,6 +1,5 @@
 import { CheckIcon } from '@heroicons/react/16/solid'
 import { LanguageIcon } from '@heroicons/react/24/solid'
-import clsx from 'clsx'
 import { localeNames, locales } from '#shared/locale'
 import { Dropdown, DropdownButton, DropdownItem, DropdownMenu } from '~/lib/dropdown'
 import { useT } from '~/lib/i18n'
@@ -12,11 +11,11 @@ export function LanguageToggle({ className }: React.ComponentPropsWithoutRef<'di
     <Dropdown>
       <DropdownButton
         aria-label={tPlain('nav.chooseLanguage')}
-        className={clsx(className, 'relative inline-flex! w-10 h-10 p-0.5!')}
-        plain
+        className={className}
+        icon
         title={tPlain('nav.chooseLanguage')}
       >
-        <LanguageIcon className="text-neutral-500! dark:text-slate-400!" />
+        <LanguageIcon data-slot="icon" />
       </DropdownButton>
       <DropdownMenu anchor="bottom end">
         {locales.map((code) => (

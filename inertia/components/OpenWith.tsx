@@ -4,7 +4,7 @@ import { CheckIcon, ChevronDownIcon, HeartIcon } from '@heroicons/react/16/solid
 import clsx from 'clsx'
 import { useSyncExternalStore } from 'react'
 import { Avatar } from '~/lib/avatar'
-import { TouchTarget, styles as buttonStyles } from '~/lib/button'
+import { Button } from '~/lib/button'
 import { Dropdown, DropdownButton, DropdownItem, DropdownMenu } from '~/lib/dropdown'
 import type { LauncherApp } from '#services/atstore_service'
 import { find, preferred, prefer, serverSnapshot, snapshot, subscribe } from '~/utils/apps'
@@ -32,21 +32,17 @@ export function OpenWith({ uri }: Properties) {
 
   return (
     <span className="inline-flex">
-      <a
-        className={clsx(
-          buttonStyles.base,
-          buttonStyles.outline,
-          '-mr-px rounded-r-none pr-3.5 sm:pr-3'
-        )}
+      <Button
+        as="a"
+        className="-mr-px rounded-r-none"
         href={preferredUrl}
+        outline
         rel="noreferrer"
         target="_blank"
       >
-        <TouchTarget>
-          {t('apps.openWith', { name: preferredName })}
-          <NewTab icon={false} />
-        </TouchTarget>
-      </a>
+        {t('apps.openWith', { name: preferredName })}
+        <NewTab icon={false} />
+      </Button>
       <Dropdown>
         <DropdownButton className="rounded-l-none px-2 sm:px-1.5" outline>
           <ChevronDownIcon aria-hidden="true" className="size-4" />

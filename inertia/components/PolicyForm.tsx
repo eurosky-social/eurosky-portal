@@ -89,12 +89,7 @@ export function PolicyForm({ route, terms, privacy }: PolicyFormProps<Routes>) {
                 {errors.terms && <ErrorMessage>{errors.terms}</ErrorMessage>}
               </CheckboxField>
             </div>
-            <Button
-              type="submit"
-              color={processing ? 'zinc' : 'brand'}
-              className="mt-2 py-3! disabled:cursor-default"
-              disabled={processing}
-            >
+            <Button type="submit" color="brand" className="mt-2" disabled={processing}>
               {t('login.continue')}
             </Button>
           </div>

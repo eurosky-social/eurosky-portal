@@ -7,18 +7,28 @@ import type { LinkProps } from '@adonisjs/inertia/react'
 export const styles = {
   base: [
     // Base
-    'relative isolate inline-flex items-baseline justify-center gap-x-2 rounded-lg border text-base/6 font-semibold',
-    // Sizing
-    'px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] sm:px-[calc(--spacing(3)-1px)] sm:py-[calc(--spacing(1.5)-1px)] sm:text-sm/6',
-    // Focus
-    'focus:not-data-focus:outline-hidden data-focus:outline-2 data-focus:outline-offset-2 data-focus:outline-blue-500',
+    'relative isolate inline-flex justify-center rounded-lg border font-semibold',
+    // Focus (the outline itself comes from `:focus-visible` in `app.css`)
+    'outline-offset-2',
     // Disabled
-    'data-disabled:opacity-50',
+    'data-disabled:cursor-default data-disabled:opacity-50',
     // Icon
-    '*:data-[slot=icon]:-mx-0.5 *:data-[slot=icon]:my-0.5 *:data-[slot=icon]:size-5 *:data-[slot=icon]:shrink-0 *:data-[slot=icon]:self-center *:data-[slot=icon]:text-(--btn-icon) sm:*:data-[slot=icon]:my-1 sm:*:data-[slot=icon]:size-4 forced-colors:[--btn-icon:ButtonText] forced-colors:data-hover:[--btn-icon:ButtonText]',
+    '*:data-[slot=icon]:shrink-0 *:data-[slot=icon]:text-(--btn-icon) forced-colors:[--btn-icon:ButtonText] forced-colors:data-hover:[--btn-icon:ButtonText]',
+  ],
+  // Buttons with text (all but `icon`).
+  text: [
+    'items-baseline gap-x-2 text-base/6 sm:text-sm/6',
+    'px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] sm:px-[calc(--spacing(3)-1px)] sm:py-[calc(--spacing(1.5)-1px)]',
+    '*:data-[slot=icon]:-mx-0.5 *:data-[slot=icon]:my-0.5 *:data-[slot=icon]:size-5 *:data-[slot=icon]:self-center sm:*:data-[slot=icon]:my-1 sm:*:data-[slot=icon]:size-4',
+  ],
+  // Square button with only an icon (give it an `aria-label`).
+  icon: [
+    'size-10 items-center border-transparent *:data-[slot=icon]:size-5',
+    'data-active:bg-zinc-950/5 data-hover:bg-zinc-950/5 dark:data-active:bg-white/10 dark:data-hover:bg-white/10',
+    '[--btn-icon:var(--color-zinc-500)] data-active:[--btn-icon:var(--color-zinc-700)] data-hover:[--btn-icon:var(--color-zinc-700)] dark:[--btn-icon:var(--color-slate-400)] dark:data-active:[--btn-icon:var(--color-white)] dark:data-hover:[--btn-icon:var(--color-white)]',
   ],
   link: [
-    'p-0! bg-none border-none text-blue-500 font-normal! data-hover:underline data-active:underline',
+    'p-0! bg-none border-none text-blue-600 font-normal! data-hover:underline data-active:underline dark:text-blue-400',
   ],
   solid: [
     // Optical border, implemented as the button background to avoid corner artifacts
@@ -52,116 +62,16 @@ export const styles = {
     // Icon
     '[--btn-icon:var(--color-zinc-500)] data-active:[--btn-icon:var(--color-zinc-700)] data-hover:[--btn-icon:var(--color-zinc-700)] dark:data-active:[--btn-icon:var(--color-zinc-400)] dark:data-hover:[--btn-icon:var(--color-zinc-400)]',
   ],
-  plain: [
-    // Base
-    'border-transparent text-zinc-950 data-active:bg-zinc-950/5 data-hover:bg-zinc-950/5',
-    // Dark mode
-    'dark:text-white dark:data-active:bg-white/10 dark:data-hover:bg-white/10',
-    // Icon
-    '[--btn-icon:var(--color-zinc-500)] data-active:[--btn-icon:var(--color-zinc-700)] data-hover:[--btn-icon:var(--color-zinc-700)] dark:[--btn-icon:var(--color-zinc-500)] dark:data-active:[--btn-icon:var(--color-zinc-400)] dark:data-hover:[--btn-icon:var(--color-zinc-400)]',
-  ],
   colors: {
-    'dark/zinc': [
+    dark: [
       'text-white [--btn-bg:var(--color-zinc-900)] [--btn-border:var(--color-zinc-950)]/90 [--btn-hover-overlay:var(--color-white)]/10',
-      'dark:text-white dark:[--btn-bg:var(--color-zinc-600)] dark:[--btn-hover-overlay:var(--color-white)]/5',
+      'dark:[--btn-bg:var(--color-slate-700)] dark:[--btn-hover-overlay:var(--color-white)]/5',
       '[--btn-icon:var(--color-zinc-400)] data-active:[--btn-icon:var(--color-zinc-300)] data-hover:[--btn-icon:var(--color-zinc-300)]',
     ],
-    'light': [
-      'text-zinc-950 [--btn-bg:white] [--btn-border:var(--color-zinc-950)]/10 [--btn-hover-overlay:var(--color-zinc-950)]/2.5 data-active:[--btn-border:var(--color-zinc-950)]/15 data-hover:[--btn-border:var(--color-zinc-950)]/15',
-      'dark:text-white dark:[--btn-hover-overlay:var(--color-white)]/5 dark:[--btn-bg:var(--color-zinc-800)]',
-      '[--btn-icon:var(--color-zinc-500)] data-active:[--btn-icon:var(--color-zinc-700)] data-hover:[--btn-icon:var(--color-zinc-700)] dark:[--btn-icon:var(--color-zinc-500)] dark:data-active:[--btn-icon:var(--color-zinc-400)] dark:data-hover:[--btn-icon:var(--color-zinc-400)]',
-    ],
-    'dark/white': [
-      'text-white [--btn-bg:var(--color-zinc-900)] [--btn-border:var(--color-zinc-950)]/90 [--btn-hover-overlay:var(--color-white)]/10',
-      'dark:text-zinc-950 dark:[--btn-bg:white] dark:[--btn-hover-overlay:var(--color-zinc-950)]/5',
-      '[--btn-icon:var(--color-zinc-400)] data-active:[--btn-icon:var(--color-zinc-300)] data-hover:[--btn-icon:var(--color-zinc-300)] dark:[--btn-icon:var(--color-zinc-500)] dark:data-active:[--btn-icon:var(--color-zinc-400)] dark:data-hover:[--btn-icon:var(--color-zinc-400)]',
-    ],
-    'dark': [
-      'text-white [--btn-bg:var(--color-zinc-900)] [--btn-border:var(--color-zinc-950)]/90 [--btn-hover-overlay:var(--color-white)]/10',
-      'dark:[--btn-hover-overlay:var(--color-white)]/5 dark:[--btn-bg:var(--color-zinc-800)]',
-      '[--btn-icon:var(--color-zinc-400)] data-active:[--btn-icon:var(--color-zinc-300)] data-hover:[--btn-icon:var(--color-zinc-300)]',
-    ],
-    'white': [
-      'text-zinc-950 [--btn-bg:white] [--btn-border:var(--color-zinc-950)]/10 [--btn-hover-overlay:var(--color-zinc-950)]/2.5 data-active:[--btn-border:var(--color-zinc-950)]/15 data-hover:[--btn-border:var(--color-zinc-950)]/15',
-      'dark:[--btn-hover-overlay:var(--color-zinc-950)]/5',
-      '[--btn-icon:var(--color-zinc-400)] data-active:[--btn-icon:var(--color-zinc-500)] data-hover:[--btn-icon:var(--color-zinc-500)]',
-    ],
-    'zinc': [
-      'text-white [--btn-hover-overlay:var(--color-white)]/10 [--btn-bg:var(--color-zinc-600)] [--btn-border:var(--color-zinc-700)]/90',
-      'dark:[--btn-hover-overlay:var(--color-white)]/5',
-      '[--btn-icon:var(--color-zinc-400)] data-active:[--btn-icon:var(--color-zinc-300)] data-hover:[--btn-icon:var(--color-zinc-300)]',
-    ],
-    'indigo': [
-      'text-white [--btn-hover-overlay:var(--color-white)]/10 [--btn-bg:var(--color-indigo-500)] [--btn-border:var(--color-indigo-600)]/90',
-      '[--btn-icon:var(--color-indigo-300)] data-active:[--btn-icon:var(--color-indigo-200)] data-hover:[--btn-icon:var(--color-indigo-200)]',
-    ],
-    'cyan': [
-      'text-cyan-950 [--btn-bg:var(--color-cyan-300)] [--btn-border:var(--color-cyan-400)]/80 [--btn-hover-overlay:var(--color-white)]/25',
-      '[--btn-icon:var(--color-cyan-500)]',
-    ],
-    'red': [
-      'text-white [--btn-hover-overlay:var(--color-white)]/10 [--btn-bg:var(--color-red-600)] [--btn-border:var(--color-red-700)]/90',
-      '[--btn-icon:var(--color-red-300)] data-active:[--btn-icon:var(--color-red-200)] data-hover:[--btn-icon:var(--color-red-200)]',
-    ],
-    'orange': [
-      'text-white [--btn-hover-overlay:var(--color-white)]/10 [--btn-bg:var(--color-orange-500)] [--btn-border:var(--color-orange-600)]/90',
-      '[--btn-icon:var(--color-orange-300)] data-active:[--btn-icon:var(--color-orange-200)] data-hover:[--btn-icon:var(--color-orange-200)]',
-    ],
-    'amber': [
-      'text-amber-950 [--btn-hover-overlay:var(--color-white)]/25 [--btn-bg:var(--color-amber-400)] [--btn-border:var(--color-amber-500)]/80',
-      '[--btn-icon:var(--color-amber-600)]',
-    ],
-    'yellow': [
-      'text-yellow-950 [--btn-hover-overlay:var(--color-white)]/25 [--btn-bg:var(--color-yellow-300)] [--btn-border:var(--color-yellow-400)]/80',
-      '[--btn-icon:var(--color-yellow-600)] data-active:[--btn-icon:var(--color-yellow-700)] data-hover:[--btn-icon:var(--color-yellow-700)]',
-    ],
-    'brand': [
+    // Main action on a page, such as signing in.
+    brand: [
       'text-black/80 [--btn-hover-overlay:var(--color-black)]/10 [--btn-bg:var(--color-brand)] [--btn-border:var(--color-brand-border)]/60',
-      '[--btn-icon:var(--color-brand-600)] data-active:[--btn-icon:var(--color-brand-700)] data-hover:[--btn-icon:var(--color-brand-700)]',
-    ],
-    'lime': [
-      'text-lime-950 [--btn-hover-overlay:var(--color-white)]/25 [--btn-bg:var(--color-lime-300)] [--btn-border:var(--color-lime-400)]/80',
-      '[--btn-icon:var(--color-lime-600)] data-active:[--btn-icon:var(--color-lime-700)] data-hover:[--btn-icon:var(--color-lime-700)]',
-    ],
-    'green': [
-      'text-white [--btn-hover-overlay:var(--color-white)]/10 [--btn-bg:var(--color-green-600)] [--btn-border:var(--color-green-700)]/90',
-      '[--btn-icon:var(--color-white)]/60 data-active:[--btn-icon:var(--color-white)]/80 data-hover:[--btn-icon:var(--color-white)]/80',
-    ],
-    'emerald': [
-      'text-white [--btn-hover-overlay:var(--color-white)]/10 [--btn-bg:var(--color-emerald-600)] [--btn-border:var(--color-emerald-700)]/90',
-      '[--btn-icon:var(--color-white)]/60 data-active:[--btn-icon:var(--color-white)]/80 data-hover:[--btn-icon:var(--color-white)]/80',
-    ],
-    'teal': [
-      'text-white [--btn-hover-overlay:var(--color-white)]/10 [--btn-bg:var(--color-teal-600)] [--btn-border:var(--color-teal-700)]/90',
-      '[--btn-icon:var(--color-white)]/60 data-active:[--btn-icon:var(--color-white)]/80 data-hover:[--btn-icon:var(--color-white)]/80',
-    ],
-    'sky': [
-      'text-white [--btn-hover-overlay:var(--color-white)]/10 [--btn-bg:var(--color-sky-500)] [--btn-border:var(--color-sky-600)]/80',
-      '[--btn-icon:var(--color-white)]/60 data-active:[--btn-icon:var(--color-white)]/80 data-hover:[--btn-icon:var(--color-white)]/80',
-    ],
-    'blue': [
-      'text-white [--btn-hover-overlay:var(--color-white)]/10 [--btn-bg:var(--color-blue-600)] [--btn-border:var(--color-blue-700)]/90',
-      '[--btn-icon:var(--color-blue-400)] data-active:[--btn-icon:var(--color-blue-300)] data-hover:[--btn-icon:var(--color-blue-300)]',
-    ],
-    'violet': [
-      'text-white [--btn-hover-overlay:var(--color-white)]/10 [--btn-bg:var(--color-violet-500)] [--btn-border:var(--color-violet-600)]/90',
-      '[--btn-icon:var(--color-violet-300)] data-active:[--btn-icon:var(--color-violet-200)] data-hover:[--btn-icon:var(--color-violet-200)]',
-    ],
-    'purple': [
-      'text-white [--btn-hover-overlay:var(--color-white)]/10 [--btn-bg:var(--color-purple-500)] [--btn-border:var(--color-purple-600)]/90',
-      '[--btn-icon:var(--color-purple-300)] data-active:[--btn-icon:var(--color-purple-200)] data-hover:[--btn-icon:var(--color-purple-200)]',
-    ],
-    'fuchsia': [
-      'text-white [--btn-hover-overlay:var(--color-white)]/10 [--btn-bg:var(--color-fuchsia-500)] [--btn-border:var(--color-fuchsia-600)]/90',
-      '[--btn-icon:var(--color-fuchsia-300)] data-active:[--btn-icon:var(--color-fuchsia-200)] data-hover:[--btn-icon:var(--color-fuchsia-200)]',
-    ],
-    'pink': [
-      'text-white [--btn-hover-overlay:var(--color-white)]/10 [--btn-bg:var(--color-pink-500)] [--btn-border:var(--color-pink-600)]/90',
-      '[--btn-icon:var(--color-pink-300)] data-active:[--btn-icon:var(--color-pink-200)] data-hover:[--btn-icon:var(--color-pink-200)]',
-    ],
-    'rose': [
-      'text-white [--btn-hover-overlay:var(--color-white)]/10 [--btn-bg:var(--color-rose-500)] [--btn-border:var(--color-rose-600)]/90',
-      '[--btn-icon:var(--color-rose-300)] data-active:[--btn-icon:var(--color-rose-200)] data-hover:[--btn-icon:var(--color-rose-200)]',
+      '[--btn-icon:var(--color-black)]/60',
     ],
   },
 }
@@ -169,51 +79,47 @@ export const styles = {
 export type ButtonType = 'button' | 'submit' | 'reset'
 
 type ButtonProps = (
-  | {
-      color?: keyof typeof styles.colors
-      outline?: never
-      plain?: never
-      link?: never
-    }
-  | { color?: never; outline: true; plain?: never; link?: never }
-  | { color?: never; outline?: never; plain: true; link?: never }
-  | { color?: never; outline?: never; plain?: never; link: true }
+  | { color?: keyof typeof styles.colors; icon?: never; outline?: never; link?: never }
+  | { color?: never; icon: true; outline?: never; link?: never }
+  | { color?: never; icon?: never; outline: true; link?: never }
+  | { color?: never; icon?: never; outline?: never; link: true }
 ) & { className?: string; children: React.ReactNode } & (
     | ({ href?: never; route?: never; as?: never; type?: ButtonType } & Omit<
         Headless.ButtonProps,
         'as' | 'className'
       >)
     | (LinkProps & Omit<React.ComponentPropsWithoutRef<typeof Link>, 'className'> & { as?: never })
-    | ({ as: 'span'; href?: never; route?: never; type?: never } & Omit<
-        React.ComponentPropsWithoutRef<'span'>,
+    | ({ as: 'a'; href: string; route?: never; type?: never } & Omit<
+        React.ComponentPropsWithoutRef<'a'>,
         'className'
       >)
   )
 
 export const Button = forwardRef(function Button(
-  { color, outline, plain, link, className, children, type, ...props }: ButtonProps,
+  { color, icon, outline, link, className, children, type, ...props }: ButtonProps,
   ref: React.ForwardedRef<HTMLElement>
 ) {
   let classes = clsx(
     styles.base,
-    outline
-      ? styles.outline
-      : plain
-        ? styles.plain
+    icon ? styles.icon : styles.text,
+    icon
+      ? undefined
+      : outline
+        ? styles.outline
         : link
           ? styles.link
-          : clsx(styles.solid, styles.colors[color ?? 'dark/zinc']),
+          : clsx(styles.solid, styles.colors[color ?? 'dark']),
     className
   )
 
   let buttonType = (type as ButtonType | undefined) ?? 'button'
 
-  if (props.as === 'span') {
-    let { as: _as, ...spanProps } = props
+  if (props.as === 'a') {
+    let { as: _as, ...anchorProps } = props
     return (
-      <span {...spanProps} className={classes} ref={ref}>
-        {children}
-      </span>
+      <a {...anchorProps} className={classes} ref={ref as React.ForwardedRef<HTMLAnchorElement>}>
+        <TouchTarget>{children}</TouchTarget>
+      </a>
     )
   }
 
