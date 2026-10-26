@@ -13,13 +13,12 @@ import { BackLink } from '~/lib/link'
 import { Text } from '~/lib/text'
 import { InertiaProps } from '~/types'
 import { useT } from '~/lib/i18n'
-import { formatNumber } from '~/utils/number'
 
 export default function AppDetailPage({
   app,
   favorite,
 }: InertiaProps<{ app: Data.App; favorite: boolean | undefined }>) {
-  const { locale, tPlain, t } = useT()
+  const { tPlain, t } = useT()
   const { externalUrl, listing, madeInEurope } = app
   const {
     appTags,
@@ -93,12 +92,7 @@ export default function AppDetailPage({
 
           {rating ? (
             <span className="flex items-center gap-2">
-              <span className="flex items-center gap-0.5 text-sm text-amber-500">
-                <Rating value={parseFloat(rating)} />
-                <span className="ml-0.5 text-zinc-400 dark:text-zinc-500">
-                  ({formatNumber(reviewCount, locale)})
-                </span>
-              </span>
+              <Rating count={reviewCount} value={parseFloat(rating)} />
               {reviewsUrl ? (
                 <a
                   className="text-sm text-zinc-500 underline hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-300"

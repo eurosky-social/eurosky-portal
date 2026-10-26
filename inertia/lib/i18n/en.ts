@@ -38,7 +38,7 @@ const en = {
   'apps.favorited': 'Favorite',
   'apps.madeInEurope': 'Made in Europe',
   'apps.openWith': 'Open with {name}',
-  'apps.rating': '{value} out of 5',
+  'apps.rating': '{value} out of 5, {count, plural, one {# review} other {# reviews}}',
   'apps.removeFavoriteNamed': 'Remove {name} from your apps',
   'apps.subheading': 'Browse featured apps that work with your {orgName} account.',
   'beta.giveFeedback': 'Give feedback',

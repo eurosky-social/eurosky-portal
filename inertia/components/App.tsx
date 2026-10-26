@@ -9,7 +9,6 @@ import { Text } from '~/lib/text'
 import { FavoriteButton } from './FavoriteButton'
 import { Rating } from './Rating'
 import { useT } from '~/lib/i18n'
-import { formatNumber } from '~/utils/number'
 
 /**
  * App card.
@@ -17,7 +16,7 @@ import { formatNumber } from '~/utils/number'
  * Pass `favorite` (`boolean`) to show a toggle button.
  */
 export function App({ app, favorite }: { app: Data.AppSummary; favorite?: boolean | undefined }) {
-  const { locale, t } = useT()
+  const { t } = useT()
   const favoritable = typeof favorite === 'boolean'
 
   return (
@@ -50,12 +49,7 @@ export function App({ app, favorite }: { app: Data.AppSummary; favorite?: boolea
         {typeof app.listing.rating === 'string' || app.madeInEurope || favoritable ? (
           <div className={clsx('flex w-full items-center gap-2', favoritable && 'min-h-6 pr-10')}>
             {typeof app.listing.rating === 'string' ? (
-              <span className="flex items-center gap-0.5 text-sm text-amber-500">
-                <Rating value={parseFloat(app.listing.rating)} />
-                <span className="text-gray-400 dark:text-slate-500 ml-0.5">
-                  ({formatNumber(app.listing.reviewCount, locale)})
-                </span>
-              </span>
+              <Rating count={app.listing.reviewCount} value={parseFloat(app.listing.rating)} />
             ) : undefined}
             {app.madeInEurope ? (
               <Badge color="blue" className="ml-auto">
