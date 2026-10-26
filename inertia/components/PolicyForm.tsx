@@ -7,9 +7,8 @@ import type { ReactNode } from 'react'
 import type { Jsonify } from '#shared/json'
 import { Button } from '~/lib/button'
 import { Checkbox, CheckboxField } from '~/lib/checkbox'
-import { Label } from '~/lib/fieldset'
+import { ErrorMessage, Label } from '~/lib/fieldset'
 import { Link } from '~/lib/link'
-import { Text } from '~/lib/text'
 import { useForm } from '@inertiajs/react'
 import type { routes } from '@generated/registry'
 import { useT } from '~/lib/i18n'
@@ -54,6 +53,7 @@ export function PolicyForm({ route, terms, privacy }: PolicyFormProps<Routes>) {
             <div className="inline-block">
               <CheckboxField>
                 <Checkbox
+                  aria-invalid={errors.terms ? true : undefined}
                   color="brand"
                   name="terms"
                   value="1"
@@ -86,14 +86,16 @@ export function PolicyForm({ route, terms, privacy }: PolicyFormProps<Routes>) {
                     },
                   })}
                 </Label>
+                {errors.terms && (
+                  <ErrorMessage className="text-orange-500!">{errors.terms}</ErrorMessage>
+                )}
               </CheckboxField>
             </div>
-            {errors.terms && <Text className="text-orange-500!">{errors.terms}</Text>}
             <Button
               type="submit"
-              color={!form.data.terms || processing ? 'zinc' : 'brand'}
+              color={processing ? 'zinc' : 'brand'}
               className="mt-2 py-3! disabled:cursor-default"
-              disabled={!form.data.terms || processing}
+              disabled={processing}
             >
               {t('login.continue')}
             </Button>

@@ -19,6 +19,8 @@ export function CheckboxField({
         '*:data-[slot=label]:col-start-2 *:data-[slot=label]:row-start-1',
         // Description layout
         '*:data-[slot=description]:col-start-2 *:data-[slot=description]:row-start-2',
+        // Error layout
+        '*:data-[slot=error]:col-start-2 *:data-[slot=error]:row-start-2',
         // With description
         'has-data-[slot=description]:**:data-[slot=label]:font-medium'
       )}
