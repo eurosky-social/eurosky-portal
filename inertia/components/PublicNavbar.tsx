@@ -13,7 +13,10 @@ export default function PublicNavbar() {
   const { tPlain, t } = useT()
 
   return (
-    <Navbar className="gap-2! md:gap-4! md:px-6 px-3 bg-neutral-50 dark:bg-slate-800 sticky top-0 z-50">
+    <Navbar
+      aria-label={tPlain('nav.main')}
+      className="gap-2! md:gap-4! md:px-6 px-3 bg-neutral-50 dark:bg-slate-800 sticky top-0 z-50"
+    >
       <Link route="home" aria-label={tPlain('nav.home')} className="pb-3 mt-1">
         <Logo />
       </Link>

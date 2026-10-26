@@ -105,9 +105,12 @@ const nl = {
   'nav.closeNavigation': 'Navigatie sluiten',
   'nav.home': 'Home',
   'nav.logout': 'Uitloggen',
+  'nav.main': 'Hoofdmenu',
   'nav.openNavigation': 'Navigatie openen',
   'nav.privacy': 'Privacy',
+  'nav.sidebar': 'Zijbalk',
   'nav.signIn': 'Inloggen',
+  'nav.skipToContent': 'Naar inhoud gaan',
   'onboarding.alternative':
     'Je kunt ook <logout>Uitloggen</logout> en {productTitle} niet gebruiken.',
   'onboarding.notice.bothUpdated': 'Onze Gebruiksvoorwaarden en Privacybeleid zijn bijgewerkt',

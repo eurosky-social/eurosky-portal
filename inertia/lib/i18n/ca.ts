@@ -109,9 +109,12 @@ const ca = {
   'nav.closeNavigation': 'Tanca la navegació',
   'nav.home': 'Inici',
   'nav.logout': 'Tanca la sessió',
+  'nav.main': 'Principal',
   'nav.openNavigation': 'Obre la navegació',
   'nav.privacy': 'Privadesa',
+  'nav.sidebar': 'Barra lateral',
   'nav.signIn': 'Inicia la sessió',
+  'nav.skipToContent': 'Vés al contingut',
   'onboarding.alternative':
     'Alternativament, podeu <logout>tancar la sessió</logout> i no utilitzar {productTitle}.',
   'onboarding.notice.bothUpdated':

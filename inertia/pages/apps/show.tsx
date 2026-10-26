@@ -14,9 +14,9 @@ export default function ApplicationsPage({
   return (
     <Card className="p-6 sm:p-8">
       <Head title={tPlain('sidebar.applications')} />
-      <h2 className="mt-2 mb-4 text-lg/8 sm:text-3xl/8 font-semibold text-gray-900 dark:text-gray-200">
+      <h1 className="mt-2 mb-4 text-lg/8 sm:text-3xl/8 font-semibold text-gray-900 dark:text-gray-200">
         {t('sidebar.applications')}
-      </h2>
+      </h1>
       <p className="mb-4 text-sm/6 text-gray-500 dark:text-gray-300">{t('apps.subheading')}</p>
       <Apps favorites={favorites} sections={sections} />
     </Card>

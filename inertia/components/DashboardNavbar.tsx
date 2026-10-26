@@ -17,7 +17,7 @@ export default function DashboardNavbar({ className }: React.ComponentProps<'div
   const isHandleInvalid = user.handle === INVALID_HANDLE
 
   return (
-    <Navbar className={clsx(className, 'dark:bg-slate-800/70')}>
+    <Navbar aria-label={tPlain('nav.main')} className={clsx(className, 'dark:bg-slate-800/70')}>
       <Link
         route="dashboard.show"
         aria-label={tPlain('nav.home')}

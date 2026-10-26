@@ -4,6 +4,7 @@ import * as Headless from '@headlessui/react'
 import React, { useState } from 'react'
 import { NavbarItem } from './navbar'
 import { useT } from './i18n'
+import { mainId } from '~/components/SkipLink'
 
 function OpenMenuIcon() {
   return (
@@ -83,7 +84,7 @@ export function SidebarLayout({
       </header>
 
       {/* Content */}
-      <main className="flex flex-1 flex-col lg:min-w-0 lg:pt-2">
+      <main className="flex flex-1 flex-col lg:min-w-0 lg:pt-2" id={mainId} tabIndex={-1}>
         <div className="grow p-6 lg:rounded-tl-lg bg-neutral-50 lg:p-10 lg:shadow-xs lg:ring-1 lg:ring-slate-900/5 dark:bg-slate-900 dark:lg:ring-white/10">
           {children}
         </div>
