@@ -4,8 +4,7 @@ import { Text, TextLink } from '~/lib/text'
 import { Container } from '~/lib/container'
 import { InertiaProps } from '~/types'
 import { Data } from '@generated/data'
-import { Head, usePage } from '@inertiajs/react'
-import { ExclamationTriangleIcon } from '@heroicons/react/24/solid'
+import { Head } from '@inertiajs/react'
 import { useT } from '~/lib/i18n'
 import Notice from '~/lib/notice'
 
@@ -15,7 +14,6 @@ export default function CreateAccount(
     migrationUrl?: string
   }>
 ) {
-  const { props: pageProps } = usePage()
   const { tPlain, t } = useT()
   return (
     <div className="bg-neutral-50 dark:bg-slate-900 min-h-dvh-minus-35">
@@ -36,16 +34,6 @@ export default function CreateAccount(
               title={tPlain('migrationAlert.title')}
             />
           </div>
-        )}
-        {pageProps.flash.error && (
-          <Card className="w-full md:w-3/4 lg:w-1/2 m-auto px-4 py-2 mb-8 bg-gray-500! dark:bg-slate-600! text-white!">
-            <div className="flex flex-row gap-2 items-center-safe">
-              <div className="h-8 w-8">
-                <ExclamationTriangleIcon color="white" />
-              </div>
-              <span>{pageProps.flash.error}</span>
-            </div>
-          </Card>
         )}
         <Card className="w-full md:w-3/4 lg:w-1/2 m-auto p-4 mb-8">
           <h1 className="mx-auto max-w-4xl mb-2 text-center font-display text-3xl leading-[1.2] font-extrabold tracking-tight text-slate-900 dark:text-slate-200 sm:text-5xl">

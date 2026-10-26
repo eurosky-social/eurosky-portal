@@ -130,7 +130,6 @@
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "reflect-metadata": "^0.2.2",
-    "sonner": "^2.0.8",
     "tailwindcss": "^4.3.3",
     "unist-util-visit": "^5.1.0"
   },
