@@ -6,6 +6,7 @@ import PublicNavbar from '~/components/PublicNavbar'
 import DashboardNavbar from '~/components/DashboardNavbar'
 import { AuthenticatedLayout } from '~/components/layouts/authenticated'
 import BetaWarning from '~/components/BetaWarning'
+import { mainId, SkipLink } from '~/components/SkipLink'
 
 export default function Layout({ children }: { children: ReactElement<Data.SharedProps> }) {
   const page = usePage()
@@ -24,13 +25,16 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
   ) {
     return (
       <div>
+        <SkipLink />
         <BetaWarning />
         {children.props.isAuthenticated ? (
           <DashboardNavbar className="lg:pe-4" />
         ) : (
           <PublicNavbar />
         )}
-        <main className="mb-2">{children}</main>
+        <main className="mb-2" id={mainId} tabIndex={-1}>
+          {children}
+        </main>
         <Toaster position="top-center" richColors />
       </div>
     )
@@ -42,9 +46,12 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
 
   return (
     <div>
+      <SkipLink />
       <BetaWarning />
       <PublicNavbar />
-      <main className="mb-2">{children}</main>
+      <main className="mb-2" id={mainId} tabIndex={-1}>
+        {children}
+      </main>
       <Toaster position="top-center" richColors />
     </div>
   )

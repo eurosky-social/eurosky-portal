@@ -105,9 +105,12 @@ const en = {
   'nav.closeNavigation': 'Close navigation',
   'nav.home': 'Home',
   'nav.logout': 'Logout',
+  'nav.main': 'Main',
   'nav.openNavigation': 'Open navigation',
   'nav.privacy': 'Privacy',
+  'nav.sidebar': 'Sidebar',
   'nav.signIn': 'Sign in',
+  'nav.skipToContent': 'Skip to content',
   'onboarding.alternative':
     'Alternatively, you can <logout>Logout</logout> and not use {productTitle}.',
   'onboarding.notice.bothUpdated': 'Our Terms of service and Privacy policy have been updated',

@@ -107,9 +107,12 @@ const fr = {
   'nav.closeNavigation': 'Fermer la navigation',
   'nav.home': 'Accueil',
   'nav.logout': 'Déconnexion',
+  'nav.main': 'Principale',
   'nav.openNavigation': 'Ouvrir la navigation',
   'nav.privacy': 'Confidentialité',
+  'nav.sidebar': 'Barre latérale',
   'nav.signIn': 'Se connecter',
+  'nav.skipToContent': 'Aller au contenu',
   'onboarding.alternative':
     'Vous pouvez aussi <logout>vous déconnecter</logout> et ne pas utiliser {productTitle}.',
   'onboarding.notice.bothUpdated':

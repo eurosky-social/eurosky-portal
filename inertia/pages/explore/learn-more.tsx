@@ -14,9 +14,9 @@ export default function Dashboard({
   return (
     <Card className="py-3 px-4">
       <Head title={tPlain('dashboard.explore.heading')} />
-      <h2 className="mt-2 text-lg/8 sm:text-3xl/8 font-semibold text-gray-900 dark:text-gray-200">
+      <h1 className="mt-2 text-lg/8 sm:text-3xl/8 font-semibold text-gray-900 dark:text-gray-200">
         {t('dashboard.explore.heading')}
-      </h2>
+      </h1>
       <MarkdownDocument document={document} />
     </Card>
   )

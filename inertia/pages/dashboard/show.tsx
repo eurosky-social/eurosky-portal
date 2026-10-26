@@ -54,6 +54,7 @@ export default function Dashboard({
 
   return (
     <div className="flex flex-col gap-y-8">
+      <h1 className="sr-only">{t('sidebar.dashboard')}</h1>
       {isHandleInvalid && (
         <Card className="p-4 bg-amber-500! dark:bg-amber-600/80! flex flex-row gap-2">
           <div className="h-12 w-12">

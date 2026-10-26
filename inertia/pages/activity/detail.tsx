@@ -117,6 +117,8 @@ export default function ActivityDetailPage({
   return (
     <Card className="p-6 sm:p-8">
       <Head title={title} />
+      {/* Articles have their own titles. */}
+      {$type === 'site.standard.document' ? undefined : <h1 className="sr-only">{title}</h1>}
 
       <div className="mb-8 flex items-start justify-between gap-4">
         <nav

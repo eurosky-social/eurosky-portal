@@ -30,6 +30,7 @@ import { useAuth } from '~/utils/use_auth'
 import { Form } from '@adonisjs/inertia/react'
 import { Button } from '~/lib/button'
 import BetaWarning from '~/components/BetaWarning'
+import { SkipLink } from '~/components/SkipLink'
 import { useT } from '~/lib/i18n'
 
 export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedProps> }) {
@@ -38,7 +39,7 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
     url,
   } = usePage()
   const user = useAuth()
-  const { t } = useT()
+  const { t, tPlain } = useT()
 
   const manageUrl = useMemo(() => {
     return new URL('/account', authorizationServer).toString()
@@ -46,6 +47,7 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
 
   return (
     <>
+      <SkipLink />
       <BetaWarning />
       <div className="dashboard">
         <div className="hidden lg:block">
@@ -54,7 +56,7 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
         <SidebarLayout
           navbar={<DashboardNavbar />}
           sidebar={
-            <Sidebar>
+            <Sidebar aria-label={tPlain('nav.sidebar')}>
               <SidebarBody>
                 <SidebarHeading className="font-bold">{t('sidebar.myAccount')}</SidebarHeading>
                 <SidebarSection>
@@ -131,7 +133,7 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
           }
           children={
             <>
-              <main>{props.children}</main>
+              {props.children}
               <Toaster position="top-center" richColors />
             </>
           }

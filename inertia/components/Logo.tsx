@@ -1,9 +1,6 @@
-import { brand } from '#shared/brand'
-
-export function Logo(_props: React.ComponentProps<'div'>) {
-  return (
-    <h1 id="logo">
-      <span className="invisible">{brand.orgName}</span>
-    </h1>
-  )
+/**
+ * Decorative logo (see `#logo` css).
+ */
+export function Logo() {
+  return <span aria-hidden="true" id="logo" />
 }

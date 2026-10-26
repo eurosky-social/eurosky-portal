@@ -108,9 +108,12 @@ const de = {
   'nav.closeNavigation': 'Navigation schließen',
   'nav.home': 'Start',
   'nav.logout': 'Abmelden',
+  'nav.main': 'Hauptnavigation',
   'nav.openNavigation': 'Navigation öffnen',
   'nav.privacy': 'Datenschutz',
+  'nav.sidebar': 'Seitenleiste',
   'nav.signIn': 'Anmelden',
+  'nav.skipToContent': 'Zum Inhalt springen',
   'onboarding.alternative':
     'Alternativ kannst du dich auch <logout>abmelden</logout> und {productTitle} nicht nutzen.',
   'onboarding.notice.bothUpdated':
