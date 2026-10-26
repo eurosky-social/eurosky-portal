@@ -9,6 +9,7 @@ import { TuyauProvider } from '@adonisjs/inertia/react'
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
 import { I18nProvider } from '~/lib/i18n'
 import { brand } from '#shared/brand'
+import { MotionConfig } from 'motion/react'
 import { focusOnNavigate } from '~/utils/focus_on_navigate'
 
 import.meta.glob(['../resources/images/og-image.png', './images/**'], { eager: true })
@@ -27,7 +28,9 @@ createInertiaApp({
     createRoot(el).render(
       <TuyauProvider client={client}>
         <I18nProvider>
-          <App {...props} />
+          <MotionConfig reducedMotion="user">
+            <App {...props} />
+          </MotionConfig>
         </I18nProvider>
       </TuyauProvider>
     )
