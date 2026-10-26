@@ -1,6 +1,5 @@
 import { Data } from '@generated/data'
 import { ChevronLeftIcon } from '@heroicons/react/20/solid'
-import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid'
 import { Head } from '@inertiajs/react'
 import { FavoriteButton } from '~/components/FavoriteButton'
 import { MarkdownContent } from '~/components/MarkdownContent'
@@ -12,6 +11,7 @@ import { Heading } from '~/lib/heading'
 import { BackLink } from '~/lib/link'
 import { Text } from '~/lib/text'
 import { InertiaProps } from '~/types'
+import { NewTab } from '~/components/NewTab'
 import { useT } from '~/lib/i18n'
 
 export default function AppDetailPage({
@@ -101,6 +101,7 @@ export default function AppDetailPage({
                   target="_blank"
                 >
                   {t('apps.detail.seeAllReviews')}
+                  <NewTab />
                 </a>
               ) : undefined}
             </span>
@@ -119,7 +120,7 @@ export default function AppDetailPage({
                 target="_blank"
               >
                 {t('apps.detail.explore')}
-                <ArrowTopRightOnSquareIcon className="ml-1 size-4" />
+                <NewTab icon={false} />
               </a>
             ) : undefined}
           </div>

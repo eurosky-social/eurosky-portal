@@ -8,6 +8,7 @@ import { Button } from '~/lib/button'
 import Card from '~/lib/card'
 import { Text } from '~/lib/text'
 import type { InertiaProps } from '~/types'
+import { NewTab } from '~/components/NewTab'
 import { useT } from '~/lib/i18n'
 
 const feedbackUrl = 'https://userinput.app/#/s/did:plc:ooensn4mr5mhznzypvxelfa3/3mr5gmbhteg2p'
@@ -53,6 +54,7 @@ export default function Activity(result: InertiaProps<GetRecordsResult>) {
               target="_blank"
             >
               {t('beta.giveFeedback')}
+              <NewTab />
             </a>
           </Text>
         </div>

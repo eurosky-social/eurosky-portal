@@ -46,6 +46,7 @@ const de = {
     '{productTitle} befindet sich derzeit in der Betaphase. <feedback>Feedback geben</feedback>.',
   'common.breadcrumb': 'Brotkrümelnavigation',
   'common.learnMore': 'Mehr erfahren',
+  'common.opensInNewTab': '(öffnet in einem neuen Tab)',
   'common.someone': 'jemand',
   'createAccount.haveAccount': 'Du hast bereits ein {orgName}-Konto? <signIn>Anmelden</signIn>',
   'createAccount.pageTitle': 'Konto erstellen',
@@ -67,7 +68,7 @@ const de = {
   'dashboard.greeting.plain': 'Willkommen zurück!',
   'dashboard.greeting.withName': 'Willkommen zurück, {name}!',
   'dashboard.invalidHandle.text':
-    'Es sieht so aus, als hättest du versucht, deinen Handle zu ändern, und wir können ihn nicht verifizieren.',
+    'Es sieht so aus, als hättest du versucht, deinen Handle zu ändern, und wir können ihn nicht verifizieren. <link>Mehr erfahren</link>',
   'dashboard.invalidHandle.title': 'Dein Handle ist derzeit ungültig',
   'dashboard.stats.followers': 'Follower',
   'dashboard.stats.following': 'Folge ich',

@@ -21,7 +21,6 @@ import {
   DocumentTextIcon,
   Cog6ToothIcon,
   GlobeAltIcon,
-  ArrowTopRightOnSquareIcon,
   LifebuoyIcon,
   LockClosedIcon,
   StarIcon,
@@ -30,6 +29,7 @@ import { useAuth } from '~/utils/use_auth'
 import { Form } from '@adonisjs/inertia/react'
 import { Button } from '~/lib/button'
 import BetaWarning from '~/components/BetaWarning'
+import { NewTab } from '~/components/NewTab'
 import { SkipLink } from '~/components/SkipLink'
 import { useT } from '~/lib/i18n'
 
@@ -74,9 +74,9 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
                   </SidebarItem>
                   <SidebarItem href={manageUrl} target="_blank" as={'a'}>
                     <Cog6ToothIcon />
-                    <SidebarLabel className="flex gap-1">
-                      {t('sidebar.manageAccount')}{' '}
-                      <ArrowTopRightOnSquareIcon className="size-4 inline-block self-center" />
+                    <SidebarLabel>
+                      {t('sidebar.manageAccount')}
+                      <NewTab />
                     </SidebarLabel>
                   </SidebarItem>
                 </SidebarSection>
@@ -91,7 +91,10 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
                 <SidebarSection>
                   <SidebarItem href="https://eurosky.tech/help/" target="_blank" as={'a'}>
                     <LifebuoyIcon />
-                    <SidebarLabel>{t('sidebar.help')}</SidebarLabel>
+                    <SidebarLabel>
+                      {t('sidebar.help')}
+                      <NewTab />
+                    </SidebarLabel>
                   </SidebarItem>
                   <SidebarItem route="faq.show">
                     <QuestionMarkCircleIcon />
@@ -99,11 +102,17 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
                   </SidebarItem>
                   <SidebarItem href="https://eurosky.tech/contact/" target="_blank" as={'a'}>
                     <ChatBubbleOvalLeftEllipsisIcon />
-                    <SidebarLabel>{t('sidebar.contactUs')}</SidebarLabel>
+                    <SidebarLabel>
+                      {t('sidebar.contactUs')}
+                      <NewTab />
+                    </SidebarLabel>
                   </SidebarItem>
                   <SidebarItem href="https://eurosky.tech/accounts/terms/" target="_blank" as={'a'}>
                     <DocumentTextIcon />
-                    <SidebarLabel>{t('sidebar.termsOfService')}</SidebarLabel>
+                    <SidebarLabel>
+                      {t('sidebar.termsOfService')}
+                      <NewTab />
+                    </SidebarLabel>
                   </SidebarItem>
                   <SidebarItem
                     href="https://eurosky.tech/accounts/privacy/"
@@ -111,7 +120,10 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
                     as={'a'}
                   >
                     <LockClosedIcon />
-                    <SidebarLabel>{t('sidebar.privacyPolicy')}</SidebarLabel>
+                    <SidebarLabel>
+                      {t('sidebar.privacyPolicy')}
+                      <NewTab />
+                    </SidebarLabel>
                   </SidebarItem>
                 </SidebarSection>
               </SidebarBody>

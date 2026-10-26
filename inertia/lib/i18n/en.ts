@@ -45,6 +45,7 @@ const en = {
   'beta.warning': '{productTitle} is currently in beta. <feedback>Give feedback</feedback>.',
   'common.breadcrumb': 'Breadcrumb',
   'common.learnMore': 'Learn more',
+  'common.opensInNewTab': '(opens in a new tab)',
   'common.someone': 'someone',
   'createAccount.haveAccount': 'Already have a {orgName} account? <signIn>Sign in</signIn>',
   'createAccount.pageTitle': 'Create account',
@@ -64,7 +65,7 @@ const en = {
   'dashboard.greeting.plain': 'Welcome back!',
   'dashboard.greeting.withName': 'Welcome back, {name}!',
   'dashboard.invalidHandle.text':
-    'It looks like you’ve attempted to change your handle, and we can’t verify it.',
+    'It looks like you’ve attempted to change your handle, and we can’t verify it. <link>Learn more</link>',
   'dashboard.invalidHandle.title': 'Your handle is currently invalid',
   'dashboard.stats.followers': 'Followers',
   'dashboard.stats.following': 'Following',
