@@ -41,7 +41,7 @@ export default function DashboardNavbar({ className }: React.ComponentProps<'div
         </NavbarItem>
 
         <Form route="oauth.logout" className="justify-stretch hidden lg:flex">
-          <Button type="submit" outline className="dark:text-slate-300!">
+          <Button type="submit" outline>
             {t('nav.logout')}
           </Button>
         </Form>

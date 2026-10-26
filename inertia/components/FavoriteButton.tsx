@@ -1,7 +1,7 @@
 import { Form } from '@adonisjs/inertia/react'
 import { HeartIcon as HeartOutlineIcon } from '@heroicons/react/24/outline'
 import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid'
-import { Button, TouchTarget } from '~/lib/button'
+import { Button } from '~/lib/button'
 import { useT } from '~/lib/i18n'
 
 interface Properties {
@@ -51,18 +51,19 @@ export function FavoriteButton(properties: Properties) {
     >
       {({ processing }) =>
         compact ? (
-          // Sits in a 24px row: 32px (`size-8`) with `-m-1`, for a bigger target.
-          <button
+          // Sits in a 24px row: 40px (`size-10`) with `-m-2`, for a bigger target.
+          <Button
             aria-label={tPlain(favorite ? 'apps.removeFavoriteNamed' : 'apps.addFavoriteNamed', {
               name,
             })}
-            className="relative -m-1 flex size-8 cursor-pointer items-center justify-center rounded-md text-zinc-500 hover:bg-zinc-950/5 hover:text-zinc-600 focus:outline-hidden focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 disabled:opacity-50 dark:text-slate-500 dark:hover:bg-white/10 dark:hover:text-slate-400 *:data-[slot=icon]:size-5"
+            className="-m-2"
             disabled={processing}
+            icon
             title={tPlain(favorite ? 'apps.detail.removeFavorite' : 'apps.detail.addFavorite')}
             type="submit"
           >
-            <TouchTarget>{icon}</TouchTarget>
-          </button>
+            {icon}
+          </Button>
         ) : (
           <Button disabled={processing} outline type="submit">
             {icon}

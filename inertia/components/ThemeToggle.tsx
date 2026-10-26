@@ -3,7 +3,6 @@ import * as ThemeUtils from '~/utils/darkmode'
 import { type Theme } from '~/utils/darkmode'
 import { LightBulbIcon, MoonIcon } from '@heroicons/react/24/solid'
 import { Button } from '~/lib/button'
-import clsx from 'clsx'
 import { useT } from '~/lib/i18n'
 
 export function ThemeToggle({ className }: React.ComponentPropsWithoutRef<'div'>) {
@@ -30,18 +29,8 @@ export function ThemeToggle({ className }: React.ComponentPropsWithoutRef<'div'>
   const label = tPlain(theme === 'dark' ? 'theme.setLight' : 'theme.setDark')
 
   return (
-    <Button
-      aria-label={label}
-      className={clsx(className, 'relative inline-block w-10 h-10 p-0.5!')}
-      plain
-      onClick={toggleTheme}
-      title={label}
-    >
-      {theme === 'dark' ? (
-        <LightBulbIcon className="dark:text-slate-400!" />
-      ) : (
-        <MoonIcon className="text-neutral-500!" />
-      )}
+    <Button aria-label={label} className={className} icon onClick={toggleTheme} title={label}>
+      {theme === 'dark' ? <LightBulbIcon data-slot="icon" /> : <MoonIcon data-slot="icon" />}
     </Button>
   )
 }
