@@ -49,6 +49,7 @@ export function ErrorMessage({
   return (
     <Headless.Description
       data-slot="error"
+      role="alert"
       {...props}
       className={clsx(
         className,

@@ -51,14 +51,14 @@ export default function Login({ migrationUrl }: InertiaProps<{ migrationUrl?: st
           </h1>
           <Text className="text-center">{t('login.subtitle')}</Text>
           <Form className="my-6" route="oauth.login">
-            {({ errors, isDirty, processing }) => (
+            {({ errors, processing }) => (
               <FieldGroup>
                 <Field>
-                  <Label htmlFor="input">{t('login.handleLabel')}</Label>
+                  <Label>{t('login.handleLabel')}</Label>
                   <Input
-                    id="input"
+                    invalid={Boolean(errors.input)}
                     name="input"
-                    type="input"
+                    type="text"
                     placeholder="sebastian.eurosky.social"
                     // Input fields turn into `old_$field` on output.
                     // See `createFieldError` in `app/utils/errors.ts`.
@@ -71,7 +71,8 @@ export default function Login({ migrationUrl }: InertiaProps<{ migrationUrl?: st
                     required
                     autoCapitalize="none"
                     autoCorrect="off"
-                    autoComplete="off"
+                    autoComplete="username"
+                    spellCheck={false}
                   />
                   {errors.input && (
                     <ErrorMessage className="text-orange-500!">{errors.input}</ErrorMessage>
@@ -80,9 +81,9 @@ export default function Login({ migrationUrl }: InertiaProps<{ migrationUrl?: st
                 <Field className="mt-2 flex justify-end justify-items-stretch">
                   <Button
                     type="submit"
-                    color={!isDirty || processing ? 'zinc' : 'brand'}
+                    color={processing ? 'zinc' : 'brand'}
                     className="w-full py-3! disabled:cursor-default"
-                    disabled={!isDirty || processing}
+                    disabled={processing}
                   >
                     {t('login.continue')}
                   </Button>
