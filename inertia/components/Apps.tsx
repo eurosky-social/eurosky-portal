@@ -10,7 +10,7 @@ export function Apps({
   sections: Data.Apps['sections']
 }) {
   const { t } = useT()
-  const headingStyle = 'mt-8 mb-4 text-lg font-semibold text-neutral-400 dark:text-slate-400'
+  const headingStyle = 'mt-8 mb-4 text-lg font-semibold text-zinc-950 dark:text-white'
 
   return (
     <>

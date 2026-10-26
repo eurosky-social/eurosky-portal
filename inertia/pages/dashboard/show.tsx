@@ -83,16 +83,16 @@ export default function Dashboard({
             <h2 className="text-lg/8 sm:text-xl/8 font-semibold text-gray-900 dark:text-gray-200 mb-2">
               {t('dashboard.welcome.heading')}
             </h2>
-            <p className="mt-0.5 text-xs/6 text-gray-500 dark:text-gray-300">
+            <p className="mt-0.5 text-sm/6 text-gray-500 dark:text-gray-300">
               {t('dashboard.welcome.text')}
             </p>
             {!isHandleInvalid && (
-              <p className="mt-0.5 text-xs/6 text-gray-500 dark:text-gray-300">
+              <p className="mt-0.5 text-sm/6 text-gray-500 dark:text-gray-300">
                 {t('dashboard.welcome.handle', {
                   handle: user.handle,
                   strong(chunks) {
                     return (
-                      <strong className="text-brand-border font-semibold whitespace-pre">
+                      <strong className="text-brand-strong font-semibold whitespace-pre dark:text-brand">
                         {chunks}
                       </strong>
                     )
@@ -129,7 +129,7 @@ export default function Dashboard({
                     {user.handle}
                   </Text>
                 ) : (
-                  <Text className="text-slate-400!">@{user.handle}</Text>
+                  <Text className="text-slate-500! dark:text-slate-400!">@{user.handle}</Text>
                 )}
                 {profile?.stats && (
                   <div className="hidden md:grid grid-cols-1 sm:grid-cols-3">
@@ -156,7 +156,7 @@ export default function Dashboard({
           <h2 className="text-lg/8 sm:text-xl/8 font-semibold text-gray-900 dark:text-gray-200 mb-2">
             {t('dashboard.explore.heading')}
           </h2>
-          <p className="text-xs/6 text-gray-500 dark:text-gray-300">
+          <p className="text-sm/6 text-gray-500 dark:text-gray-300">
             {t('dashboard.explore.text')}
           </p>
           <Button
@@ -169,10 +169,10 @@ export default function Dashboard({
         </Card>
       </div>
       <div>
-        <h2 className="text-xl font-medium text-neutral-500 dark:text-slate-200">
+        <h2 className="text-xl font-semibold text-zinc-950 dark:text-white">
           {t('dashboard.activity.heading')}
         </h2>
-        <p className="text-base text-neutral-400 dark:text-slate-400 mb-6">
+        <p className="text-base text-neutral-500 dark:text-slate-400 mb-6">
           {t('dashboard.activity.subheading')}
         </p>
 
@@ -198,10 +198,10 @@ export default function Dashboard({
       </div>
 
       <div className="pt-4">
-        <h2 className="text-xl font-medium text-neutral-500 dark:text-slate-200">
+        <h2 className="text-xl font-semibold text-zinc-950 dark:text-white">
           {t(appsKind === 'yours' ? 'sidebar.yourApps' : 'dashboard.featuredApps.heading')}
         </h2>
-        <p className="text-base text-neutral-400 dark:text-slate-400 mb-6">
+        <p className="text-base text-neutral-500 dark:text-slate-400 mb-6">
           {t(appsKind === 'yours' ? 'dashboard.yourApps.text' : 'dashboard.featuredApps.text')}
         </p>
 

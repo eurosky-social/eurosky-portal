@@ -56,7 +56,7 @@ export function FavoriteButton(properties: Properties) {
             aria-label={tPlain(favorite ? 'apps.removeFavoriteNamed' : 'apps.addFavoriteNamed', {
               name,
             })}
-            className="relative -m-1 flex size-8 cursor-pointer items-center justify-center rounded-md text-zinc-400 hover:bg-zinc-950/5 hover:text-zinc-500 focus:outline-hidden focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 disabled:opacity-50 dark:text-slate-500 dark:hover:bg-white/10 dark:hover:text-slate-400 *:data-[slot=icon]:size-5"
+            className="relative -m-1 flex size-8 cursor-pointer items-center justify-center rounded-md text-zinc-500 hover:bg-zinc-950/5 hover:text-zinc-600 focus:outline-hidden focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 disabled:opacity-50 dark:text-slate-500 dark:hover:bg-white/10 dark:hover:text-slate-400 *:data-[slot=icon]:size-5"
             disabled={processing}
             title={tPlain(favorite ? 'apps.detail.removeFavorite' : 'apps.detail.addFavorite')}
             type="submit"

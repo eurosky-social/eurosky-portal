@@ -55,11 +55,15 @@ export const Input = forwardRef(function Input(
           // Basic layout
           'relative block w-full appearance-none rounded-lg px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] sm:px-[calc(--spacing(3)-1px)] sm:py-[calc(--spacing(1.5)-1px)]',
           // Typography
-          'text-base/6 text-zinc-950 placeholder:text-zinc-500 sm:text-sm/6 dark:text-white',
+          'text-base/6 text-zinc-950 placeholder:text-zinc-500 sm:text-sm/6 dark:text-white dark:placeholder:text-zinc-400',
           // Border
           'border border-zinc-950/10 data-hover:border-zinc-950/20 dark:border-white/10 dark:data-hover:border-white/20',
           // Background color
           'bg-transparent dark:bg-white/5',
+          // Autofill: browsers paint their own (light) background but keep our
+          // (white, in dark mode) text, so paint over it and set the text too.
+          'autofill:shadow-[inset_0_0_0_1000px_var(--color-blue-50)] autofill:[-webkit-text-fill-color:var(--color-zinc-950)]',
+          'dark:autofill:shadow-[inset_0_0_0_1000px_var(--color-slate-700)] dark:autofill:[-webkit-text-fill-color:var(--color-white)]',
           // Hide default focus styles
           'focus:outline-hidden',
           // Invalid state

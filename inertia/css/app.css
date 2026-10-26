@@ -14,6 +14,7 @@
   --color-neutral-500: oklch(0.46 0.006 68.3);
   --color-brand: oklch(0.793 0.103 243.6);
   --color-brand-border: oklch(0.703 0.123 243.6);
+  --color-brand-strong: oklch(0.48 0.13 243.6);
   --color-black: #1a1a1a;
   --color-stone: rgb(236 234 229);
   --color-stone-light: rgb(236 234 229);
@@ -52,6 +53,8 @@
 
 :root {
   scroll-padding-top: 100px;
+  background: var(--color-white);
+  color-scheme: light;
 }
 
 *:focus-visible {
@@ -81,6 +84,7 @@
 .dark {
   color: var(--color-slate-100);
   background: var(--color-slate-900);
+  color-scheme: dark;
 }
 
 .dark .dashboard {

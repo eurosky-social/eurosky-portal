@@ -22,7 +22,10 @@ export default function Login({ migrationUrl }: InertiaProps<{ migrationUrl?: st
           <div className="w-full md:w-3/4 lg:w-1/2 m-auto">
             <Notice
               action={
-                <a href={migrationUrl} className="text-brand hover:underline">
+                <a
+                  href={migrationUrl}
+                  className="text-brand-strong hover:underline dark:text-brand"
+                >
                   {tPlain('migrationAlert.cta')}
                 </a>
               }
@@ -45,7 +48,7 @@ export default function Login({ migrationUrl }: InertiaProps<{ migrationUrl?: st
           <h1 className="mx-auto max-w-4xl mb-2 text-center font-display text-3xl leading-[1.2] font-extrabold tracking-tight text-slate-900 dark:text-slate-200 sm:text-5xl">
             {t('login.title', {
               brand(chunks) {
-                return <span className="text-brand">{chunks}</span>
+                return <span className="text-brand-strong dark:text-brand">{chunks}</span>
               },
             })}
           </h1>
@@ -74,9 +77,7 @@ export default function Login({ migrationUrl }: InertiaProps<{ migrationUrl?: st
                     autoComplete="username"
                     spellCheck={false}
                   />
-                  {errors.input && (
-                    <ErrorMessage className="text-orange-500!">{errors.input}</ErrorMessage>
-                  )}
+                  {errors.input && <ErrorMessage>{errors.input}</ErrorMessage>}
                 </Field>
                 <Field className="mt-2 flex justify-end justify-items-stretch">
                   <Button

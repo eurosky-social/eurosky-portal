@@ -16,7 +16,7 @@ export function EmbedExternal({ embed }: { embed: External }) {
               {embed.description}
             </p>
           ) : undefined}
-          <p className="mt-1 truncate text-xs text-zinc-400 dark:text-zinc-500">{embed.uri}</p>
+          <p className="mt-1 truncate text-xs text-zinc-500 dark:text-zinc-400">{embed.uri}</p>
         </div>
       </div>
     </div>
