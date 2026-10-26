@@ -1,5 +1,4 @@
 import { Data } from '@generated/data'
-import { Toaster } from 'sonner'
 import { usePage } from '@inertiajs/react'
 import { ReactElement, useMemo } from 'react'
 import DashboardNavbar from '~/components/DashboardNavbar'
@@ -29,6 +28,7 @@ import { useAuth } from '~/utils/use_auth'
 import { Form } from '@adonisjs/inertia/react'
 import { Button } from '~/lib/button'
 import BetaWarning from '~/components/BetaWarning'
+import { FlashError } from '~/components/FlashError'
 import { NewTab } from '~/components/NewTab'
 import { SkipLink } from '~/components/SkipLink'
 import { useT } from '~/lib/i18n'
@@ -49,6 +49,7 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
     <>
       <SkipLink />
       <BetaWarning />
+      <FlashError />
       <div className="dashboard">
         <div className="hidden lg:block">
           <DashboardNavbar className="lg:pe-4" />
@@ -143,12 +144,7 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
               </SidebarFooter>
             </Sidebar>
           }
-          children={
-            <>
-              {props.children}
-              <Toaster position="top-center" richColors />
-            </>
-          }
+          children={props.children}
         />
       </div>
     </>
