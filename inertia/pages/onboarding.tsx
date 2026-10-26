@@ -27,7 +27,7 @@ export default function Onboarding(
           <h1 className="mx-auto max-w-4xl mb-2 text-center font-display text-3xl leading-[1.2] font-extrabold tracking-tight text-slate-900 dark:text-slate-200 sm:text-5xl">
             {t('onboarding.title', {
               brand(chunks) {
-                return <span className="text-brand">{chunks}</span>
+                return <span className="text-brand-strong dark:text-brand">{chunks}</span>
               },
             })}
           </h1>

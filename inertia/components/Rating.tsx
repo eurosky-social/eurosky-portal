@@ -30,7 +30,7 @@ export function Rating(properties: Properties): React.JSX.Element {
   return (
     <span
       aria-label={label}
-      className="flex items-center gap-0.5 text-sm text-amber-500"
+      className="flex items-center gap-0.5 text-sm text-amber-600 dark:text-amber-500"
       role="img"
       title={label}
     >
@@ -44,7 +44,7 @@ export function Rating(properties: Properties): React.JSX.Element {
           </span>
         )}
       </span>
-      <span className="ml-0.5 text-zinc-400 dark:text-zinc-500">
+      <span className="ml-0.5 text-zinc-500 dark:text-zinc-400">
         ({formatNumber(count, locale)})
       </span>
     </span>

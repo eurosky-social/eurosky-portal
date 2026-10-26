@@ -25,7 +25,10 @@ export default function CreateAccount(
           <div className="w-full md:w-3/4 lg:w-1/2 m-auto">
             <Notice
               action={
-                <a href={props.migrationUrl} className="text-brand hover:underline">
+                <a
+                  href={props.migrationUrl}
+                  className="text-brand-strong hover:underline dark:text-brand"
+                >
                   {tPlain('migrationAlert.cta')}
                 </a>
               }
@@ -48,7 +51,7 @@ export default function CreateAccount(
           <h1 className="mx-auto max-w-4xl mb-2 text-center font-display text-3xl leading-[1.2] font-extrabold tracking-tight text-slate-900 dark:text-slate-200 sm:text-5xl">
             {t('createAccount.title', {
               brand(chunks) {
-                return <span className="text-brand">{chunks}</span>
+                return <span className="text-brand-strong dark:text-brand">{chunks}</span>
               },
             })}
           </h1>

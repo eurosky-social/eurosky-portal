@@ -16,7 +16,7 @@ export function LanguageToggle({ className }: React.ComponentPropsWithoutRef<'di
         plain
         title={tPlain('nav.chooseLanguage')}
       >
-        <LanguageIcon className="text-neutral-400! dark:text-slate-500!" />
+        <LanguageIcon className="text-neutral-500! dark:text-slate-400!" />
       </DropdownButton>
       <DropdownMenu anchor="bottom end">
         {locales.map((code) => (

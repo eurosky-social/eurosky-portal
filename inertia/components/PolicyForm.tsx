@@ -67,7 +67,7 @@ export function PolicyForm({ route, terms, privacy }: PolicyFormProps<Routes>) {
                         <Link
                           route="legal.show"
                           routeParams={{ document: 'terms' }}
-                          className="text-blue-500 hover:underline"
+                          className="text-blue-600 hover:underline dark:text-blue-400"
                         >
                           {chunks}
                         </Link>
@@ -78,7 +78,7 @@ export function PolicyForm({ route, terms, privacy }: PolicyFormProps<Routes>) {
                         <Link
                           route="legal.show"
                           routeParams={{ document: 'privacy' }}
-                          className="text-blue-500 hover:underline"
+                          className="text-blue-600 hover:underline dark:text-blue-400"
                         >
                           {chunks}
                         </Link>
@@ -86,9 +86,7 @@ export function PolicyForm({ route, terms, privacy }: PolicyFormProps<Routes>) {
                     },
                   })}
                 </Label>
-                {errors.terms && (
-                  <ErrorMessage className="text-orange-500!">{errors.terms}</ErrorMessage>
-                )}
+                {errors.terms && <ErrorMessage>{errors.terms}</ErrorMessage>}
               </CheckboxField>
             </div>
             <Button

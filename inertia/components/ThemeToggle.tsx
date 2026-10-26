@@ -38,9 +38,9 @@ export function ThemeToggle({ className }: React.ComponentPropsWithoutRef<'div'>
       title={label}
     >
       {theme === 'dark' ? (
-        <LightBulbIcon className="dark:text-slate-500!" />
+        <LightBulbIcon className="dark:text-slate-400!" />
       ) : (
-        <MoonIcon className="text-neutral-400!" />
+        <MoonIcon className="text-neutral-500!" />
       )}
     </Button>
   )
