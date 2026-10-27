@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react'
-import { router as inertiaRouter } from '@inertiajs/react'
+import { Head, router as inertiaRouter } from '@inertiajs/react'
 import type { ActivityRow, GetRecordsResult } from '#services/activity_service'
 import { ActivityList } from '~/components/ActivityList'
 import { UserAvatar } from '~/components/UserAvatar'
@@ -38,7 +38,7 @@ export default function Dashboard({
 }>) {
   const user = useAuth()
   const router = useRouter()
-  const { locale, t } = useT()
+  const { locale, t, tPlain } = useT()
   const isHandleInvalid = user.handle === INVALID_HANDLE
 
   const dismissWelcome = useCallback(async () => {
@@ -56,6 +56,7 @@ export default function Dashboard({
 
   return (
     <div className="flex flex-col gap-y-8">
+      <Head title={tPlain('sidebar.dashboard')} />
       <h1 className="sr-only">{t('sidebar.dashboard')}</h1>
       {isHandleInvalid && (
         <Card className="p-4 bg-amber-500! dark:bg-amber-600/80! flex flex-row gap-2">

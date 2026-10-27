@@ -204,11 +204,11 @@ function collectTagNames(
  * @param locale
  *   Current locale.
  * @param messages
- *   Translation messages for the current locale or `undefined` while loading.
+ *   Translation messages for the current locale.
  * @returns
  *   Translation functions.
  */
-function createT(locale: Locale, messages: Record<string, string> | undefined) {
+function createT(locale: Locale, messages: Record<string, string>) {
   const compiled = new Map<string, CompiledMessage>()
 
   return { tPlain, t }
@@ -219,13 +219,11 @@ function createT(locale: Locale, messages: Record<string, string> | undefined) {
    * @param key
    *   Message key.
    * @returns
-   *   Compiled message or `undefined` while loading.
+   *   Compiled message.
    * @throws
    *   Throws for malformed ICU syntax.
    */
-  function compile(key: string): CompiledMessage | undefined {
-    if (!messages) return
-
+  function compile(key: string): CompiledMessage {
     let message = compiled.get(key)
 
     if (!message) {
@@ -250,15 +248,13 @@ function createT(locale: Locale, messages: Record<string, string> | undefined) {
    * @param variables
    *   Variables and components.
    * @returns
-   *   Rendered and translated message or empty string while loading.
+   *   Rendered and translated message.
    */
   function tPlain(
     key: string,
     variables?: Record<string, VariableValue<PrimitiveType>> | null | undefined
   ): string {
-    const message = compile(key)
-    if (!message) return ''
-    const { format, names } = message
+    const { format, names } = compile(key)
     const defaults: Record<string, FormatXMLElementFn<PrimitiveType>> = {}
     for (const name of names) defaults[name] = identity
     // `IntlMessageFormat` collapses adjacent strings (`["Jane", "!"]`) already,
@@ -284,15 +280,13 @@ function createT(locale: Locale, messages: Record<string, string> | undefined) {
    * @param variables
    *   Variables and components.
    * @returns
-   *   Rendered and translated message or `undefined` while loading.
+   *   Rendered and translated message.
    */
   function t(
     key: string,
     variables?: Record<string, VariableValue<ReactNode>> | null | undefined
   ): ReactNode {
-    const message = compile(key)
-    if (!message) return
-    const { format } = message
+    const { format } = compile(key)
     const values: Record<string, VariableValue<ReactNode>> = { ...brand, ...variables }
     const result = format.format(values)
 
