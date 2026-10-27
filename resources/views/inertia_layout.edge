@@ -6,9 +6,6 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title data-inertia>
-      {{ title }}
-    </title>
     <link rel="preconnect" href="https://fonts.bunny.net" />
     <link
       href="https://fonts.bunny.net/css?family=ibm-plex-mono:200,200i,400,400i,600,600i|inter:300,300i,400,400i,500,500i,600,600i,700i,800,800i,900,900i"
@@ -23,7 +20,12 @@
     <link rel="manifest" href="/icons/icons_manifest.json" />
     <meta name="msapplication-TileColor" content="#ffffff" />
     <meta name="msapplication-TileImage" content="/icons/ms-icon-144x144.png" />
-    <meta name="theme-color" content="#ffffff" />
+    @if(theme === 'system')
+      <meta name="theme-color" content="{{ themeColors.light }}" media="(prefers-color-scheme: light)" />
+      <meta name="theme-color" content="{{ themeColors.dark }}" media="(prefers-color-scheme: dark)" />
+    @else
+      <meta name="theme-color" content="{{ themeColors[theme] }}" />
+    @end
 
     <meta name="description" content="{{ description }}" data-inertia />
 

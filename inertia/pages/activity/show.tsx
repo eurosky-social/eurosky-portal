@@ -1,6 +1,6 @@
 import { links } from '#shared/links'
 import { useEffect } from 'react'
-import { router } from '@inertiajs/react'
+import { Head, router } from '@inertiajs/react'
 import { TriangleAlert } from 'lucide-react'
 import type { GetRecordsResult } from '#services/activity_service'
 import { urlFor } from '~/client'
@@ -16,7 +16,7 @@ import { useT } from '~/lib/i18n'
 const pageSize = 20
 
 export default function Activity(result: InertiaProps<GetRecordsResult>) {
-  const { t } = useT()
+  const { t, tPlain } = useT()
 
   useEffect(() => {
     if (result.state !== 'syncing') return
@@ -26,6 +26,7 @@ export default function Activity(result: InertiaProps<GetRecordsResult>) {
 
   return (
     <div className="flex flex-col gap-y-6">
+      <Head title={tPlain('sidebar.yourActivity')} />
       <PageHeader
         description={
           result.state === 'syncing'

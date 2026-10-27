@@ -7,7 +7,7 @@
  * variant in `app.css`).
  */
 
-import { defaultTheme, isTheme, type Theme, themeCookieName } from '#shared/theme'
+import { defaultTheme, isTheme, type Theme, themeColors, themeCookieName } from '#shared/theme'
 
 type Listener = () => undefined | void
 
@@ -40,7 +40,32 @@ export function setTheme(theme: Theme): undefined {
   classList.remove('dark', 'light')
   if (theme !== 'system') classList.add(theme)
 
+  setThemeColor(theme)
+
   for (const listener of listeners) listener()
+}
+
+/**
+ * Set browser UI (`<meta name="theme-color">`).
+ * See also `inertia_layout.edge`.
+ *
+ * @param theme
+ *   Theme.
+ * @returns
+ *   Nothing.
+ */
+function setThemeColor(theme: Theme): undefined {
+  for (const meta of document.head.querySelectorAll('meta[name="theme-color"]')) meta.remove()
+
+  const shown: ReadonlyArray<ShownTheme> = theme === 'system' ? ['light', 'dark'] : [theme]
+
+  for (const name of shown) {
+    const meta = document.createElement('meta')
+    meta.name = 'theme-color'
+    meta.content = themeColors[name]
+    if (theme === 'system') meta.media = `(prefers-color-scheme: ${name})`
+    document.head.append(meta)
+  }
 }
 
 /**

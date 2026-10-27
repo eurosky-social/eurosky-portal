@@ -9,6 +9,11 @@ export type Theme = (typeof themes)[number]
 export const defaultTheme: Theme = 'system'
 
 /**
+ * Backgrounds per theme for browser UI.
+ */
+export const themeColors = { dark: '#0f172b', light: '#ffffff' }
+
+/**
  * Name of the cookie storing a chosen theme (absent for `system`).
  */
 export const themeCookieName = 'theme'
