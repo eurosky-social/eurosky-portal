@@ -42,7 +42,7 @@ const nl = {
   'apps.removeFavoriteNamed': 'Verwijder {name} uit je apps',
   'apps.subheading': 'Bekijk de aanbevolen apps die werken met je {orgName} account.',
   'beta.giveFeedback': 'Feedback geven',
-  'beta.warning': '{productTitle} is momenteel in bèta. <feedback>Feedback geven</feedback>.',
+  'beta.warning': '{productTitle} is in bèta. <feedback>Feedback geven</feedback>.',
   'common.breadcrumb': 'Kruimelpad',
   'common.learnMore': 'Meer informatie',
   'common.opensInNewTab': '(opent in een nieuw tabblad)',

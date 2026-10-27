@@ -42,8 +42,7 @@ const fr = {
   'apps.removeFavoriteNamed': 'Retirer {name} de vos applications',
   'apps.subheading': 'Parcourez les applications phares compatibles avec votre compte {orgName}.',
   'beta.giveFeedback': 'Donner votre avis',
-  'beta.warning':
-    '{productTitle} est actuellement en bêta. <feedback>Donnez votre avis</feedback>.',
+  'beta.warning': '{productTitle} est en bêta. <feedback>Donnez votre avis</feedback>.',
   'common.breadcrumb': 'Fil d’Ariane',
   'common.learnMore': 'En savoir plus',
   'common.opensInNewTab': '(s’ouvre dans un nouvel onglet)',

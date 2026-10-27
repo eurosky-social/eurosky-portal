@@ -12,7 +12,7 @@ export default function ApplicationsPage({
   const { tPlain, t } = useT()
 
   return (
-    <Card className="p-6 sm:p-8">
+    <Card className="p-4 sm:p-8">
       <Head title={tPlain('sidebar.applications')} />
       <h1 className="mt-2 mb-4 text-lg/8 sm:text-3xl/8 font-semibold text-gray-900 dark:text-gray-200">
         {t('sidebar.applications')}

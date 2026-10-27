@@ -1,20 +1,30 @@
 import { Link } from '~/lib/link'
-import { Navbar, NavbarItem, NavbarSection, NavbarSpacer } from '~/lib/navbar'
+import { Navbar, NavbarSection, NavbarSpacer } from '~/lib/navbar'
 import { Logo } from './Logo'
 import { Form } from '@adonisjs/inertia/react'
 import { Button } from '~/lib/button'
-import { useAuth } from '~/utils/use_auth'
 import { LanguageToggle } from './LanguageToggle'
 import { ThemeToggle } from './ThemeToggle'
 import clsx from 'clsx'
-import { INVALID_HANDLE } from '@atproto/syntax'
-import { ExclamationTriangleIcon } from '@heroicons/react/20/solid'
 import { useT } from '~/lib/i18n'
 
-export default function DashboardNavbar({ className }: React.ComponentProps<'div'>) {
-  const user = useAuth()
+interface Properties {
+  /**
+   * Whether to show actions (default: `true`);
+   * Renders logout, theme, and language.
+   * Turn off when there is no space (and display them somewhere else).
+   */
+  actions?: boolean
+
+  /**
+   * Class name.
+   */
+  className?: string
+}
+
+export default function DashboardNavbar(properties: Properties) {
+  const { actions = true, className } = properties
   const { tPlain, t } = useT()
-  const isHandleInvalid = user.handle === INVALID_HANDLE
 
   return (
     <Navbar aria-label={tPlain('nav.main')} className={clsx(className, 'dark:bg-slate-800/70')}>
@@ -26,28 +36,17 @@ export default function DashboardNavbar({ className }: React.ComponentProps<'div
         <Logo />
       </Link>
       <NavbarSpacer />
-      <NavbarSection>
-        <NavbarItem route="dashboard.show" className="hidden md:flex">
-          {isHandleInvalid ? (
-            <span className="text-base/6! sm:text-sm/6! text-amber-500 dark:text-amber-400!">
-              <ExclamationTriangleIcon color="amber" className="h-6 w-6 inline-block" />{' '}
-              {user.handle}
-            </span>
-          ) : (
-            <span className="text-base/6! text-zinc-500! sm:text-sm/6! dark:text-slate-400!">
-              @{user.handle}
-            </span>
-          )}
-        </NavbarItem>
-
-        <Form route="oauth.logout" className="justify-stretch hidden lg:flex">
-          <Button type="submit" outline>
-            {t('nav.logout')}
-          </Button>
-        </Form>
-        <ThemeToggle />
-        <LanguageToggle />
-      </NavbarSection>
+      {actions ? (
+        <NavbarSection>
+          <Form route="oauth.logout" className="flex justify-stretch max-sm:hidden">
+            <Button type="submit" outline>
+              {t('nav.logout')}
+            </Button>
+          </Form>
+          <ThemeToggle />
+          <LanguageToggle />
+        </NavbarSection>
+      ) : undefined}
     </Navbar>
   )
 }

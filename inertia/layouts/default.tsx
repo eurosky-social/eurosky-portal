@@ -11,21 +11,13 @@ import { mainId, SkipLink } from '~/components/SkipLink'
 export default function Layout({ children }: { children: ReactElement<Data.SharedProps> }) {
   const page = usePage()
 
-  if (
-    page.url.startsWith('/onboarding') ||
-    page.url.startsWith('/legal/') ||
-    page.url.startsWith('/faq')
-  ) {
+  if (page.url.startsWith('/onboarding')) {
     return (
       <div>
         <SkipLink />
         <BetaWarning />
         <FlashError />
-        {children.props.isAuthenticated ? (
-          <DashboardNavbar className="lg:pe-4" />
-        ) : (
-          <PublicNavbar />
-        )}
+        <DashboardNavbar className="lg:pe-4" />
         <main className="mb-2" id={mainId} tabIndex={-1}>
           {children}
         </main>

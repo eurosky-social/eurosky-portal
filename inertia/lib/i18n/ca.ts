@@ -42,8 +42,7 @@ const ca = {
   'apps.removeFavoriteNamed': 'Elimineu {name} de les vostres aplicacions',
   'apps.subheading': 'Exploreu les aplicacions destacades que funcionen amb el compte {orgName}.',
   'beta.giveFeedback': 'Envia comentaris',
-  'beta.warning':
-    '{productTitle} està actualment en fase beta. <feedback>Envia comentaris</feedback>.',
+  'beta.warning': '{productTitle} està en beta. <feedback>Envia comentaris</feedback>.',
   'common.breadcrumb': 'Camí de navegació',
   'common.learnMore': 'Més informació',
   'common.opensInNewTab': '(s’obre en una pestanya nova)',

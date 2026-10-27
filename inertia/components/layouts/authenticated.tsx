@@ -24,12 +24,13 @@ import {
   LockClosedIcon,
   StarIcon,
 } from '@heroicons/react/24/solid'
-import { useAuth } from '~/utils/use_auth'
 import { Form } from '@adonisjs/inertia/react'
 import { Button } from '~/lib/button'
 import BetaWarning from '~/components/BetaWarning'
 import { FlashError } from '~/components/FlashError'
 import { NewTab } from '~/components/NewTab'
+import { LanguageToggle } from '~/components/LanguageToggle'
+import { ThemeToggle } from '~/components/ThemeToggle'
 import { SkipLink } from '~/components/SkipLink'
 import { useT } from '~/lib/i18n'
 
@@ -38,7 +39,6 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
     props: { authorizationServer },
     url,
   } = usePage()
-  const user = useAuth()
   const { t, tPlain } = useT()
 
   const manageUrl = useMemo(() => {
@@ -55,7 +55,7 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
           <DashboardNavbar className="lg:pe-4" />
         </div>
         <SidebarLayout
-          navbar={<DashboardNavbar />}
+          navbar={<DashboardNavbar actions={false} />}
           sidebar={
             <Sidebar aria-label={tPlain('nav.sidebar')}>
               <SidebarBody>
@@ -97,7 +97,7 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
                       <NewTab />
                     </SidebarLabel>
                   </SidebarItem>
-                  <SidebarItem route="faq.show">
+                  <SidebarItem route="faq.show" current={url.startsWith('/faq')}>
                     <QuestionMarkCircleIcon />
                     <SidebarLabel>{t('sidebar.faq')}</SidebarLabel>
                   </SidebarItem>
@@ -130,9 +130,6 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
               </SidebarBody>
               <SidebarFooter className="lg:hidden">
                 <SidebarSection>
-                  <SidebarItem as={'div'} className="pointer-events-none">
-                    <SidebarLabel>@{user.handle}</SidebarLabel>
-                  </SidebarItem>
                   <SidebarItem as={'div'}>
                     <Form route="oauth.logout" className="w-full flex justify-stretch">
                       <Button type="submit" className="w-full">
@@ -141,6 +138,10 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
                     </Form>
                   </SidebarItem>
                 </SidebarSection>
+                <div className="mt-2 flex justify-end gap-2">
+                  <ThemeToggle />
+                  <LanguageToggle />
+                </div>
               </SidebarFooter>
             </Sidebar>
           }

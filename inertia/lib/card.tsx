@@ -2,17 +2,25 @@ import clsx from 'clsx'
 import { type ElementType, createElement } from 'react'
 
 export default function Card<As extends ElementType = 'div'>({
-  className,
   as: asElement,
+  bleed,
   children,
+  className,
   ...props
-}: React.ComponentPropsWithoutRef<As> & { as?: As }) {
+}: React.ComponentPropsWithoutRef<As> & {
+  as?: As
+  /**
+   * Edge to edge on small screens, over `Container` padding.
+   */
+  bleed?: boolean
+}) {
   return createElement(
     asElement ?? 'div',
     {
       className: clsx(
         className,
-        'overflow-hidden rounded-lg bg-white shadow-sm dark:bg-slate-800/50 dark:shadow-none dark:outline dark:-outline-offset-1 dark:outline-white/5'
+        'overflow-hidden rounded-lg bg-white shadow-sm dark:bg-slate-800/50 dark:shadow-none dark:outline dark:-outline-offset-1 dark:outline-white/5',
+        bleed && 'max-sm:-mx-4 max-sm:w-auto max-sm:rounded-none max-sm:shadow-none'
       ),
       ...props,
     },
