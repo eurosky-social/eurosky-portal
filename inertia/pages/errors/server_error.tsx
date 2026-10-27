@@ -1,4 +1,5 @@
 import { Head } from '@inertiajs/react'
+import { PageHeader } from '~/components/PageHeader'
 import { useT } from '~/lib/i18n'
 
 export default function ServerError() {
@@ -7,7 +8,7 @@ export default function ServerError() {
   return (
     <>
       <Head title={tPlain('errors.serverError.title')} />
-      <h1>{t('errors.serverError.heading')}</h1>
+      <PageHeader title={t('errors.serverError.heading')} />
     </>
   )
 }

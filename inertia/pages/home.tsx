@@ -4,6 +4,8 @@ import { Data } from '@generated/data'
 import { Container } from '~/lib/container'
 import { Apps } from '~/components/Apps'
 import { useT } from '~/lib/i18n'
+import Layout from '~/layouts/default'
+import type { ReactElement } from 'react'
 
 export default function Home({ sections }: InertiaProps<Data.Apps>) {
   const { t } = useT()
@@ -19,8 +21,10 @@ export default function Home({ sections }: InertiaProps<Data.Apps>) {
           {t('home.subheading')}
         </p>
 
-        <Apps sections={sections} />
+        <Apps level={3} sections={sections} />
       </Container>
     </>
   )
 }
+
+Home.layout = (page: ReactElement<Data.SharedProps>) => <Layout bleed>{page}</Layout>

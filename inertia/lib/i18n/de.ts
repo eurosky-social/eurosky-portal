@@ -106,6 +106,7 @@ const de = {
   'nav.apps': 'Apps',
   'nav.chooseLanguage': 'Sprache wählen',
   'nav.closeNavigation': 'Navigation schließen',
+  'nav.footer': 'Fußzeile',
   'nav.home': 'Start',
   'nav.logout': 'Abmelden',
   'nav.main': 'Hauptnavigation',

@@ -7,6 +7,8 @@ import { Data } from '@generated/data'
 import { Head } from '@inertiajs/react'
 import { useT } from '~/lib/i18n'
 import Notice from '~/lib/notice'
+import Layout from '~/layouts/default'
+import type { ReactElement } from 'react'
 
 export default function CreateAccount(
   props: InertiaProps<{
@@ -58,3 +60,5 @@ export default function CreateAccount(
     </div>
   )
 }
+
+CreateAccount.layout = (page: ReactElement<Data.SharedProps>) => <Layout bleed>{page}</Layout>

@@ -8,7 +8,8 @@ import type { Jsonify } from '#shared/json'
 import { Button } from '~/lib/button'
 import { Checkbox, CheckboxField } from '~/lib/checkbox'
 import { ErrorMessage, Label } from '~/lib/fieldset'
-import { Link } from '~/lib/link'
+import { links } from '#shared/links'
+import { NewTab } from '~/components/NewTab'
 import { useForm } from '@inertiajs/react'
 import type { routes } from '@generated/registry'
 import { useT } from '~/lib/i18n'
@@ -64,24 +65,28 @@ export function PolicyForm({ route, terms, privacy }: PolicyFormProps<Routes>) {
                   {t('policy.accept', {
                     terms(chunks) {
                       return (
-                        <Link
-                          route="legal.show"
-                          routeParams={{ document: 'terms' }}
+                        <a
                           className="text-blue-600 hover:underline dark:text-blue-400"
+                          href={links.terms}
+                          rel="noopener noreferrer"
+                          target="_blank"
                         >
                           {chunks}
-                        </Link>
+                          <NewTab />
+                        </a>
                       )
                     },
                     privacy(chunks) {
                       return (
-                        <Link
-                          route="legal.show"
-                          routeParams={{ document: 'privacy' }}
+                        <a
                           className="text-blue-600 hover:underline dark:text-blue-400"
+                          href={links.privacy}
+                          rel="noopener noreferrer"
+                          target="_blank"
                         >
                           {chunks}
-                        </Link>
+                          <NewTab />
+                        </a>
                       )
                     },
                   })}

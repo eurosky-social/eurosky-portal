@@ -9,6 +9,9 @@ import { InertiaProps } from '~/types'
 import { Head } from '@inertiajs/react'
 import { useT } from '~/lib/i18n'
 import Notice from '~/lib/notice'
+import Layout from '~/layouts/default'
+import type { ReactElement } from 'react'
+import { Data } from '@generated/data'
 
 export default function Login({ migrationUrl }: InertiaProps<{ migrationUrl?: string }>) {
   const { tPlain, t } = useT()
@@ -84,3 +87,5 @@ export default function Login({ migrationUrl }: InertiaProps<{ migrationUrl?: st
     </div>
   )
 }
+
+Login.layout = (page: ReactElement<Data.SharedProps>) => <Layout bleed>{page}</Layout>
