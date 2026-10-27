@@ -107,6 +107,7 @@ const ca = {
   'nav.apps': 'Aplicacions',
   'nav.chooseLanguage': 'Trieu l’idioma',
   'nav.closeNavigation': 'Tanca la navegació',
+  'nav.footer': 'Peu de pàgina',
   'nav.home': 'Inici',
   'nav.logout': 'Tanca la sessió',
   'nav.main': 'Principal',

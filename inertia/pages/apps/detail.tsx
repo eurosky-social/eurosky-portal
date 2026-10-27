@@ -7,7 +7,6 @@ import { Rating } from '~/components/Rating'
 import { Avatar } from '~/lib/avatar'
 import { Badge } from '~/lib/badge'
 import { Button } from '~/lib/button'
-import Card from '~/lib/card'
 import { Heading } from '~/lib/heading'
 import { BackLink } from '~/lib/link'
 import { Text } from '~/lib/text'
@@ -42,7 +41,7 @@ export default function AppDetailPage({
     : undefined
 
   return (
-    <Card className="p-4 sm:p-8">
+    <>
       <Head title={name} />
 
       <div className="mb-8 flex items-start justify-between gap-4">
@@ -130,6 +129,6 @@ export default function AppDetailPage({
           />
         ) : undefined}
       </div>
-    </Card>
+    </>
   )
 }

@@ -1,7 +1,6 @@
+import { links } from '#shared/links'
 import { NewTab } from '~/components/NewTab'
 import { useT } from '~/lib/i18n'
-
-const feedbackUrl = 'https://userinput.app/#/s/did:plc:ooensn4mr5mhznzypvxelfa3/3mr5gmbhteg2p'
 
 export default function BetaWarning() {
   const { t } = useT()
@@ -12,7 +11,7 @@ export default function BetaWarning() {
         feedback(chunks) {
           return (
             <a
-              href={feedbackUrl}
+              href={links.feedback}
               rel="noopener noreferrer"
               target="_blank"
               className="underline hover:text-black/60"

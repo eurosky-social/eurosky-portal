@@ -1,4 +1,5 @@
 import { Head } from '@inertiajs/react'
+import { PageHeader } from '~/components/PageHeader'
 import { useT } from '~/lib/i18n'
 
 export default function NotFound() {
@@ -7,7 +8,7 @@ export default function NotFound() {
   return (
     <>
       <Head title={tPlain('errors.notFound.title')} />
-      <h1>{t('errors.notFound.title')}</h1>
+      <PageHeader title={t('errors.notFound.title')} />
     </>
   )
 }

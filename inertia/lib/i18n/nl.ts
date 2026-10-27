@@ -104,6 +104,7 @@ const nl = {
   'nav.apps': 'Apps',
   'nav.chooseLanguage': 'Taal kiezen',
   'nav.closeNavigation': 'Navigatie sluiten',
+  'nav.footer': 'Voettekst',
   'nav.home': 'Home',
   'nav.logout': 'Uitloggen',
   'nav.main': 'Hoofdmenu',

@@ -6,9 +6,23 @@ import DashboardNavbar from '~/components/DashboardNavbar'
 import { AuthenticatedLayout } from '~/components/layouts/authenticated'
 import BetaWarning from '~/components/BetaWarning'
 import { FlashError } from '~/components/FlashError'
+import { Footer } from '~/components/Footer'
 import { mainId, SkipLink } from '~/components/SkipLink'
 
-export default function Layout({ children }: { children: ReactElement<Data.SharedProps> }) {
+interface Properties {
+  /**
+   * Page.
+   */
+  children: ReactElement<Data.SharedProps>
+
+  /**
+   * Whether the page goes edge to edge (default: `false`).
+   */
+  bleed?: boolean
+}
+
+export default function Layout(properties: Properties) {
+  const { bleed, children } = properties
   const page = usePage()
 
   if (page.url.startsWith('/onboarding')) {
@@ -21,6 +35,7 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
         <main className="mb-2" id={mainId} tabIndex={-1}>
           {children}
         </main>
+        <Footer />
       </div>
     )
   }
@@ -36,8 +51,9 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
       <FlashError />
       <PublicNavbar />
       <main className="mb-2" id={mainId} tabIndex={-1}>
-        {children}
+        {bleed ? children : <div className="mx-auto max-w-7xl p-6 lg:p-10">{children}</div>}
       </main>
+      <Footer />
     </div>
   )
 }

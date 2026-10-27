@@ -13,6 +13,7 @@ import { AppGrid } from '~/components/AppGrid'
 import { client } from '~/client'
 import { useRouter } from '@adonisjs/inertia/react'
 import { INVALID_HANDLE } from '@atproto/syntax'
+import { links } from '#shared/links'
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid'
 import { NewTab } from '~/components/NewTab'
 import { useT } from '~/lib/i18n'
@@ -71,7 +72,7 @@ export default function Dashboard({
                   return (
                     <a
                       className="font-semibold hover:underline"
-                      href="https://eurosky.tech/help/#handle-invalid"
+                      href={links.helpInvalidHandle}
                       rel="noopener noreferrer"
                       target="_blank"
                     >

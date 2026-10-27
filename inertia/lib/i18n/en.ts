@@ -104,6 +104,7 @@ const en = {
   'nav.apps': 'Apps',
   'nav.chooseLanguage': 'Choose language',
   'nav.closeNavigation': 'Close navigation',
+  'nav.footer': 'Footer',
   'nav.home': 'Home',
   'nav.logout': 'Logout',
   'nav.main': 'Main',

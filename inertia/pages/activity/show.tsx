@@ -1,17 +1,17 @@
+import { links } from '#shared/links'
 import { useEffect } from 'react'
 import { router } from '@inertiajs/react'
 import { TriangleAlert } from 'lucide-react'
 import type { GetRecordsResult } from '#services/activity_service'
 import { urlFor } from '~/client'
 import { ActivityList } from '~/components/ActivityList'
+import { PageHeader } from '~/components/PageHeader'
 import { Button } from '~/lib/button'
 import Card from '~/lib/card'
 import { Text } from '~/lib/text'
 import type { InertiaProps } from '~/types'
 import { NewTab } from '~/components/NewTab'
 import { useT } from '~/lib/i18n'
-
-const feedbackUrl = 'https://userinput.app/#/s/did:plc:ooensn4mr5mhznzypvxelfa3/3mr5gmbhteg2p'
 
 const pageSize = 20
 
@@ -26,16 +26,15 @@ export default function Activity(result: InertiaProps<GetRecordsResult>) {
 
   return (
     <div className="flex flex-col gap-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
-          {t('sidebar.yourActivity')}
-        </h1>
-        <p aria-live="polite" className="mt-1 text-gray-500 dark:text-gray-400" role="status">
-          {result.state === 'syncing'
+      <PageHeader
+        description={
+          result.state === 'syncing'
             ? t('dashboard.activity.syncing')
-            : t('activity.showing', { count: result.activities.length, total: result.total })}
-        </p>
-      </div>
+            : t('activity.showing', { count: result.activities.length, total: result.total })
+        }
+        live
+        title={t('sidebar.yourActivity')}
+      />
 
       <Card className="p-4 bg-amber-50! dark:bg-amber-400/10! flex flex-row gap-3">
         <TriangleAlert aria-hidden="true" className="mt-1 h-5 w-5 shrink-0 text-amber-400" />
@@ -49,7 +48,7 @@ export default function Activity(result: InertiaProps<GetRecordsResult>) {
           <Text className="text-amber-700! dark:text-amber-200/80!">
             <a
               className="font-semibold underline hover:text-amber-900 dark:hover:text-amber-100"
-              href={feedbackUrl}
+              href={links.feedback}
               rel="noopener noreferrer"
               target="_blank"
             >

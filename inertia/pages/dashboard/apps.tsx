@@ -9,6 +9,7 @@ import { Text } from '~/lib/text'
 import type { InertiaProps } from '~/types'
 import { useAuth } from '~/utils/use_auth'
 import { NewTab } from '~/components/NewTab'
+import { PageHeader } from '~/components/PageHeader'
 import { useT } from '~/lib/i18n'
 
 export default function YourApps({
@@ -34,12 +35,7 @@ export default function YourApps({
   return (
     <div className="flex flex-col gap-y-6">
       <Head title={tPlain('sidebar.yourApps')} />
-      <div>
-        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
-          {t('sidebar.yourApps')}
-        </h1>
-        <p className="mt-1 text-gray-500 dark:text-gray-400">{t('yourApps.subheading')}</p>
-      </div>
+      <PageHeader description={t('yourApps.subheading')} title={t('sidebar.yourApps')} />
 
       {apps.length === 0 ? (
         <Card className="p-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

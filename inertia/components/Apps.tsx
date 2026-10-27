@@ -2,15 +2,26 @@ import { Data } from '@generated/data'
 import { AppGrid } from '~/components/AppGrid'
 import { useT } from '~/lib/i18n'
 
-export function Apps({
-  favorites,
-  sections,
-}: {
+interface Properties {
+  /**
+   * List of favorite app IDs.
+   */
   favorites?: ReadonlyArray<string> | undefined
+
+  /**
+   * Rank of category headings (default: `2`).
+   */
+  level?: 2 | 3
+
+  /**
+   * App sections.
+   */
   sections: Data.Apps['sections']
-}) {
+}
+
+export function Apps({ favorites, level = 2, sections }: Properties) {
   const { t } = useT()
-  const headingStyle = 'mt-8 mb-4 text-lg font-semibold text-zinc-950 dark:text-white'
+  const Heading = level === 2 ? 'h2' : 'h3'
 
   return (
     <>
@@ -18,7 +29,9 @@ export function Apps({
         (section) =>
           section.apps.length > 0 && (
             <div key={section.category}>
-              <h3 className={headingStyle}>{t(section.category)}</h3>
+              <Heading className="mt-8 mb-4 text-lg font-semibold text-zinc-950 dark:text-white">
+                {t(section.category)}
+              </Heading>
               <AppGrid apps={section.apps} favorites={favorites} />
             </div>
           )

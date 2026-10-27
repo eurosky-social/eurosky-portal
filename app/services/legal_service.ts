@@ -5,6 +5,7 @@ import { toString } from 'hast-util-to-string'
 import type { Root } from 'hast'
 import { DateTime } from 'luxon'
 import { EXIT, visit } from 'unist-util-visit'
+import { links } from '#shared/links'
 
 interface CachedLegalDocument {
   effectiveAt: string
@@ -16,11 +17,6 @@ export type LegalDocumentName = 'privacy' | 'terms'
 export interface LegalDocument {
   effectiveAt: DateTime
   tree: Root
-}
-
-const legalUrls: Record<LegalDocumentName, string> = {
-  privacy: 'https://eurosky.tech/accounts/privacy/',
-  terms: 'https://eurosky.tech/accounts/terms/',
 }
 
 class LegalService {
@@ -54,7 +50,7 @@ class LegalService {
 }
 
 async function fetchDocument(name: LegalDocumentName): Promise<CachedLegalDocument> {
-  const response = await fetch(legalUrls[name], { signal: AbortSignal.timeout(10_000) })
+  const response = await fetch(links[name], { signal: AbortSignal.timeout(10_000) })
 
   if (!response.ok) {
     throw new Error(`Cannot fetch ${name} document (${response.status})`)

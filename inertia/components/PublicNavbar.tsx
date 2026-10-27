@@ -15,11 +15,9 @@ import { ThemeToggle } from './ThemeToggle'
 import { Button } from '~/lib/button'
 import { usePage } from '@inertiajs/react'
 import { useState } from 'react'
-import { urlFor } from '~/client'
+import { links } from '#shared/links'
 import { useT } from '~/lib/i18n'
 import { NewTab } from './NewTab'
-
-const privacyUrl = 'https://eurosky.tech/accounts/privacy/'
 
 export default function PublicNavbar() {
   const page = usePage()
@@ -39,10 +37,10 @@ export default function PublicNavbar() {
         <NavbarItem route="home" current={page.url === '/'}>
           {t('nav.about')}
         </NavbarItem>
-        <NavbarItem href={`${urlFor('home')}#apps`} current={page.url === '/#apps'}>
+        <NavbarItem route="discover.apps" current={page.url.startsWith('/apps')}>
           {t('nav.apps')}
         </NavbarItem>
-        <NavbarItem href={privacyUrl} target="_blank">
+        <NavbarItem href={links.privacy} target="_blank">
           <span>
             {t('nav.privacy')}
             <NewTab icon={false} />
@@ -68,10 +66,10 @@ export default function PublicNavbar() {
               <SidebarItem route="home" current={page.url === '/'}>
                 <SidebarLabel>{t('nav.about')}</SidebarLabel>
               </SidebarItem>
-              <SidebarItem href={`${urlFor('home')}#apps`} current={page.url === '/#apps'}>
+              <SidebarItem route="discover.apps" current={page.url.startsWith('/apps')}>
                 <SidebarLabel>{t('nav.apps')}</SidebarLabel>
               </SidebarItem>
-              <SidebarItem href={privacyUrl} target="_blank" as={'a'}>
+              <SidebarItem href={links.privacy} target="_blank" as={'a'}>
                 <SidebarLabel>
                   {t('nav.privacy')}
                   <NewTab />
