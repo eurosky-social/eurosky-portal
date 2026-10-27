@@ -1,5 +1,16 @@
 @import 'tailwindcss';
-@custom-variant dark (&:where(.dark, .dark *));
+
+@custom-variant dark {
+  &:where(.dark, .dark *) {
+    @slot;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    &:where(:root:not(.light), :root:not(.light) *) {
+      @slot;
+    }
+  }
+}
 
 @theme {
   --default-font-family: Inter, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, Sans-Serif;
@@ -55,6 +66,12 @@
   scroll-padding-top: 100px;
   background: var(--color-white);
   color-scheme: light;
+
+  @variant dark {
+    color: var(--color-slate-100);
+    background: var(--color-slate-900);
+    color-scheme: dark;
+  }
 }
 
 *:focus-visible {
@@ -81,14 +98,10 @@
   white-space-collapse: collapse;
 }
 
-.dark {
-  color: var(--color-slate-100);
-  background: var(--color-slate-900);
-  color-scheme: dark;
-}
-
-.dark .dashboard {
-  background: var(--color-slate-800);
+.dashboard {
+  @variant dark {
+    background: var(--color-slate-800);
+  }
 }
 
 #logo {
@@ -101,10 +114,10 @@
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-}
 
-.dark #logo {
-  background-image: url('../images/logo-white.png');
+  @variant dark {
+    background-image: url('../images/logo-white.png');
+  }
 }
 
 details summary > svg {

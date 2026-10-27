@@ -2,7 +2,7 @@
 @let(description = metaDescription ?? "Your Portal to the Atmosphere")
 
 <!DOCTYPE html>
-<html lang="{{ locale ?? 'en' }}">
+<html lang="{{ locale ?? 'en' }}" class="{{ theme === 'system' ? '' : theme }}">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -43,27 +43,6 @@
     <meta name="twitter:title" content="{{ title }}" />
     <meta name="twitter:description" content="{{ description }}" />
     <meta name="twitter:image" content="{{ opengraph_url(asset('resources/images/og-image.png')) }}" />
-
-    <script type="text/javascript">
-      (function() {
-        try {
-          var root = document.documentElement;
-          var stored = window.localStorage.getItem("theme");
-          if (stored === "dark") {
-            root.classList.add("dark");
-          } else if (stored === "light") {
-            root.classList.remove("dark");
-          } else {
-            var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-            if (prefersDark) {
-              root.classList.add("dark");
-            } else {
-              root.classList.remove("dark");
-            }
-          }
-        } catch (e) {}
-      })();
-    </script>
 
     @viteReactRefresh()
     @vite(['inertia/app.tsx'])
