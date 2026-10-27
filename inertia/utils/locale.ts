@@ -1,5 +1,4 @@
-import { lookup } from 'bcp-47-match'
-import { defaultLocale, isLocale, locales, type Locale } from '#shared/locale'
+import { isLocale, type Locale } from '#shared/locale'
 
 type Listener = () => undefined | void
 
@@ -18,16 +17,13 @@ const cookieName = 'locale'
  *
  * @param value
  *   Snapshot value.
+ * @param fallback
+ *   Locale detected by the server.
  * @returns
  *   Locale to use.
  */
-export function parse(value: string | undefined): Locale {
-  if (isLocale(value)) return value
-
-  if (typeof navigator === 'undefined') return defaultLocale
-
-  const match = lookup([...locales], [...navigator.languages])
-  return isLocale(match) ? match : defaultLocale
+export function parse(value: string | undefined, fallback: Locale): Locale {
+  return isLocale(value) ? value : fallback
 }
 
 /**

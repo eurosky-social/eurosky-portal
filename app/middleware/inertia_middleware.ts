@@ -7,6 +7,7 @@ import Account from '#models/account'
 import AccountTransformer from '#transformers/account_transformer'
 import { getFlashedSessionValue } from '#utils/session'
 import { captureMessage } from '#utils/telemetry'
+import { defaultLocale, isLocale } from '#shared/locale'
 import { defaultTheme, isTheme, themeCookieName } from '#shared/theme'
 
 export default class InertiaMiddleware extends BaseInertiaMiddleware {
@@ -19,7 +20,7 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
      * In that case, we must always assume that HttpContext is not fully hydrated
      * with all the properties
      */
-    const { auth, session, oauth } = ctx as Partial<HttpContext>
+    const { auth, i18n, session, oauth } = ctx as Partial<HttpContext>
 
     let account: Account | undefined
     if (auth?.user?.did) {
@@ -76,6 +77,7 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
         error: error,
       }),
       isAuthenticated: !!auth?.user,
+      locale: ctx.inertia.always(isLocale(i18n?.locale) ? i18n.locale : defaultLocale),
       theme: ctx.inertia.always(theme),
       user: ctx.inertia.always(
         auth?.user && account ? AccountTransformer.transform(account) : undefined

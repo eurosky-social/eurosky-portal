@@ -49,6 +49,26 @@ interface CompiledMessage {
 }
 
 /**
+ * Properties.
+ */
+interface Properties {
+  /**
+   * Content.
+   */
+  children: ReactNode
+
+  /**
+   * Locale detected by the server.
+   */
+  locale: Locale
+
+  /**
+   * Translation messages (see {@linkcode loadMessages}) for first render on server.
+   */
+  messages: Record<string, string>
+}
+
+/**
  * Translation context.
  */
 const I18nContext = createContext<I18nContextValue | undefined>(undefined)
@@ -74,9 +94,28 @@ const catalogs: Record<Locale, () => Promise<{ default: Record<string, string> }
   },
 }
 
-export function I18nProvider({ children }: { children: ReactNode }) {
-  const locale = parse(useSyncExternalStore(subscribe, snapshot, serverSnapshot))
-  const [messages, setMessages] = useState<Record<string, string> | undefined>()
+/**
+ * Load the messages of a locale.
+ *
+ * @param locale
+ *   Locale.
+ * @returns
+ *   Messages.
+ */
+export async function loadMessages(locale: Locale): Promise<Record<string, string>> {
+  const module = await catalogs[locale]()
+  return module.default
+}
+
+/**
+ * Provide translations.
+ */
+export function I18nProvider(properties: Properties) {
+  const locale = parse(useSyncExternalStore(subscribe, snapshot, serverSnapshot), properties.locale)
+  const [loaded, setLoaded] = useState({
+    locale: properties.locale,
+    messages: properties.messages,
+  })
   const mounted = useRef(false)
 
   useEffect(
@@ -102,12 +141,13 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 
   useEffect(
     function () {
+      if (loaded.locale === locale) return
+
       let cancelled = false
 
-      setMessages(undefined)
-      catalogs[locale]().then((module) => {
+      loadMessages(locale).then((messages) => {
         if (!cancelled) {
-          setMessages(module.default)
+          setLoaded({ locale, messages })
         }
       })
 
@@ -117,18 +157,18 @@ export function I18nProvider({ children }: { children: ReactNode }) {
         cancelled = true
       }
     },
-    [locale]
+    [locale, loaded.locale]
   )
 
   const value = useMemo<I18nContextValue>(
     function () {
-      const { tPlain, t } = createT(locale, messages)
+      const { tPlain, t } = createT(loaded.locale, loaded.messages)
       return { locale, setLocale, tPlain, t }
     },
-    [locale, messages]
+    [locale, loaded]
   )
 
-  return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>
+  return <I18nContext.Provider value={value}>{properties.children}</I18nContext.Provider>
 }
 
 /**
