@@ -3,14 +3,18 @@ import { ReactElement } from 'react'
 import Layout from '~/layouts/default'
 import { Data } from '@generated/data'
 import ReactDOMServer from 'react-dom/server'
-import type { Page } from '@inertiajs/core'
+import type { Page, SharedPageProps } from '@inertiajs/core'
 import { createInertiaApp, ResolvedComponent } from '@inertiajs/react'
 import { TuyauProvider } from '@adonisjs/inertia/react'
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
 import { brand } from '#shared/brand'
+import { I18nProvider, loadMessages } from '~/lib/i18n'
 import { MotionConfig } from 'motion/react'
 
-export default function render(page: Page) {
+export default async function render(page: Page<SharedPageProps>) {
+  const { locale } = page.props
+  const messages = await loadMessages(locale)
+
   return createInertiaApp({
     title: (title) => (title ? `${title} - ${brand.productTitle}` : brand.productTitle),
     page,
@@ -25,9 +29,11 @@ export default function render(page: Page) {
     setup: ({ App, props }) => {
       return (
         <TuyauProvider client={client}>
-          <MotionConfig reducedMotion="user">
-            <App {...props} />
-          </MotionConfig>
+          <I18nProvider locale={locale} messages={messages}>
+            <MotionConfig reducedMotion="user">
+              <App {...props} />
+            </MotionConfig>
+          </I18nProvider>
         </TuyauProvider>
       )
     },

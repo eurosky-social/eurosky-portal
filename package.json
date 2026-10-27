@@ -109,7 +109,6 @@
     "@thisismissem/adonisjs-atproto-oauth": "^3.0.4",
     "@tuyau/core": "^1.2.3",
     "@vinejs/vine": "^4.4.0",
-    "bcp-47-match": "^2.0.3",
     "better-sqlite3": "^13.0.3",
     "clsx": "^2.1.1",
     "edge-markdown": "^1.10.2",
