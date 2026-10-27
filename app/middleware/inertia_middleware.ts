@@ -7,6 +7,7 @@ import Account from '#models/account'
 import AccountTransformer from '#transformers/account_transformer'
 import { getFlashedSessionValue } from '#utils/session'
 import { captureMessage } from '#utils/telemetry'
+import { defaultTheme, isTheme, themeCookieName } from '#shared/theme'
 
 export default class InertiaMiddleware extends BaseInertiaMiddleware {
   async share(ctx: HttpContext) {
@@ -50,6 +51,13 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
     }
 
     /**
+     * Theme chosen with the toggle (a cookie) or `system`.
+     */
+    const themeCookie = ctx.request.plainCookie(themeCookieName, { encoded: false })
+    const theme = isTheme(themeCookie) ? themeCookie : defaultTheme
+    ctx.view.share({ theme })
+
+    /**
      * Fetching the first error from the flash messages
      */
     const errorsBag = (session && getFlashedSessionValue(session, 'errorsBag')) ?? {}
@@ -62,12 +70,13 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
      * transformers for rich data-types like Models.
      */
     return {
+      authorizationServer: ctx.inertia.always(auth?.user?.authorizationServer),
       errors: ctx.inertia.always(this.getValidationErrors(ctx)),
       flash: ctx.inertia.always({
         error: error,
       }),
       isAuthenticated: !!auth?.user,
-      authorizationServer: ctx.inertia.always(auth?.user?.authorizationServer),
+      theme: ctx.inertia.always(theme),
       user: ctx.inertia.always(
         auth?.user && account ? AccountTransformer.transform(account) : undefined
       ),
