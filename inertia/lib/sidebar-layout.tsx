@@ -1,12 +1,13 @@
 'use client'
 
 import * as Headless from '@headlessui/react'
-import React, { useState } from 'react'
+import { router } from '@inertiajs/react'
+import React, { useEffect, useState } from 'react'
 import { NavbarItem } from './navbar'
 import { useT } from './i18n'
 import { mainId } from '~/components/SkipLink'
 
-function OpenMenuIcon() {
+export function OpenMenuIcon() {
   return (
     <svg data-slot="icon" viewBox="0 0 20 20" aria-hidden="true">
       <path d="M2 6.75C2 6.33579 2.33579 6 2.75 6H17.25C17.6642 6 18 6.33579 18 6.75C18 7.16421 17.6642 7.5 17.25 7.5H2.75C2.33579 7.5 2 7.16421 2 6.75ZM2 13.25C2 12.8358 2.33579 12.5 2.75 12.5H17.25C17.6642 12.5 18 12.8358 18 13.25C18 13.6642 17.6642 14 17.25 14H2.75C2.33579 14 2 13.6642 2 13.25Z" />
@@ -22,21 +23,41 @@ function CloseMenuIcon() {
   )
 }
 
-function MobileSidebar({
+export function MobileSidebar({
   open,
   close,
   children,
 }: React.PropsWithChildren<{ open: boolean; close: () => void }>) {
   const { tPlain } = useT()
+  // Close instantly when navigating for focus.
+  const [instant, setInstant] = useState(false)
+
+  useEffect(
+    function () {
+      return router.on('start', function (event) {
+        if (!open || event.detail.visit.url.pathname === window.location.pathname) return
+        setInstant(true)
+        close()
+      })
+    },
+    [close, open]
+  )
+
+  useEffect(
+    function () {
+      if (open) setInstant(false)
+    },
+    [open]
+  )
 
   return (
-    <Headless.Dialog open={open} onClose={close} className="lg:hidden">
+    <Headless.Dialog open={open} onClose={close} className="relative z-50 lg:hidden">
       <Headless.DialogBackdrop
-        transition
+        transition={!instant}
         className="fixed inset-0 bg-black/30 transition data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"
       />
       <Headless.DialogPanel
-        transition
+        transition={!instant}
         className="fixed inset-y-0 w-full max-w-80 p-2 transition duration-300 ease-in-out data-closed:-translate-x-full"
       >
         <div className="flex h-full flex-col rounded-lg bg-white shadow-xs ring-1 ring-slate-950/5 dark:bg-slate-900 dark:ring-white/10">

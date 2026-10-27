@@ -42,7 +42,7 @@ export default function AppDetailPage({
     : undefined
 
   return (
-    <Card className="p-6 sm:p-8">
+    <Card className="p-4 sm:p-8">
       <Head title={name} />
 
       <div className="mb-8 flex items-start justify-between gap-4">

@@ -42,7 +42,7 @@ const en = {
   'apps.removeFavoriteNamed': 'Remove {name} from your apps',
   'apps.subheading': 'Browse featured apps that work with your {orgName} account.',
   'beta.giveFeedback': 'Give feedback',
-  'beta.warning': '{productTitle} is currently in beta. <feedback>Give feedback</feedback>.',
+  'beta.warning': '{productTitle} is in beta. <feedback>Give feedback</feedback>.',
   'common.breadcrumb': 'Breadcrumb',
   'common.learnMore': 'Learn more',
   'common.opensInNewTab': '(opens in a new tab)',

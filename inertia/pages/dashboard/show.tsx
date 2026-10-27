@@ -100,7 +100,7 @@ export default function Dashboard({
                   handle: user.handle,
                   strong(chunks) {
                     return (
-                      <strong className="text-brand-strong font-semibold whitespace-pre dark:text-brand">
+                      <strong className="text-brand-border font-semibold whitespace-pre">
                         {chunks}
                       </strong>
                     )

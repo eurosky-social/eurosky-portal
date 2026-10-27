@@ -115,7 +115,7 @@ export default function ActivityDetailPage({
   }
 
   return (
-    <Card className="p-6 sm:p-8">
+    <Card className="p-4 sm:p-8">
       <Head title={title} />
       {/* Articles have their own titles. */}
       {$type === 'site.standard.document' ? undefined : <h1 className="sr-only">{title}</h1>}

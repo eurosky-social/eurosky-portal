@@ -7,7 +7,7 @@ export default function BetaWarning() {
   const { t } = useT()
 
   return (
-    <div className="bg-brand py-2 px-3 text-center text-black/80 font-semibold">
+    <div className="bg-brand py-2 px-3 text-center text-black/80 font-semibold max-sm:text-sm">
       {t('beta.warning', {
         feedback(chunks) {
           return (

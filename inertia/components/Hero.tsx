@@ -23,7 +23,7 @@ export function Hero() {
         <h1 className="mx-auto max-w-4xl font-display text-3xl sm:text-6xl lg:text-5xl leading-[1.3] font-extrabold tracking-tight text-slate-900 dark:text-slate-200">
           {t('hero.title', {
             brand(chunks) {
-              return <span className="text-brand-strong dark:text-brand">{chunks}</span>
+              return <span className="text-brand">{chunks}</span>
             },
           })}
         </h1>

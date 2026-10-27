@@ -42,8 +42,7 @@ const de = {
   'apps.removeFavoriteNamed': 'Entferne {name} aus deinen Apps',
   'apps.subheading': 'Entdecke ausgewählte Apps, die mit deinem {orgName}-Konto funktionieren.',
   'beta.giveFeedback': 'Feedback geben',
-  'beta.warning':
-    '{productTitle} befindet sich derzeit in der Betaphase. <feedback>Feedback geben</feedback>.',
+  'beta.warning': '{productTitle} ist in der Beta. <feedback>Feedback geben</feedback>.',
   'common.breadcrumb': 'Brotkrümelnavigation',
   'common.learnMore': 'Mehr erfahren',
   'common.opensInNewTab': '(öffnet in einem neuen Tab)',
