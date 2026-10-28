@@ -62,7 +62,7 @@ const de = {
   'dashboard.explore.text':
     'Dein {orgName}-Konto funktioniert mit Dutzenden von Apps. Sieh dir unten die ausgewählten Apps an und klicke auf eine, um loszulegen.',
   'dashboard.featuredApps.browseMore': 'Weitere Apps entdecken',
-  'dashboard.featuredApps.heading': 'Ausgewählte Anwendungen',
+  'dashboard.featuredApps.heading': 'Ausgewählte Apps',
   'dashboard.featuredApps.text': 'Dein {orgName}-Konto funktioniert mit all diesen Apps.',
   'dashboard.greeting.plain': 'Willkommen zurück!',
   'dashboard.greeting.withName': 'Willkommen zurück, {name}!',
@@ -84,6 +84,15 @@ const de = {
   'errors.serverError.heading': 'Etwas ist schiefgelaufen',
   'errors.serverError.title': 'Serverfehler',
   'faq.title': 'Häufig gestellte Fragen',
+  'footer.about': 'Über {orgName}',
+  'footer.copyright': '© {year} {orgName}. Alle Rechte vorbehalten.',
+  'footer.foundation':
+    '{orgName} ist eine Initiative von Stichting Modal, Kranenburgweg 135 A, 2583 ER Den Haag, Niederlande | RSIN-Nr. 868779465',
+  'footer.legal': 'Rechtliches',
+  'footer.organization': '{orgName}',
+  'footer.security': 'Sicherheit',
+  'footer.status': 'Servicestatus',
+  'footer.transparency': 'Transparenz',
   'hero.badge.joinFuture': 'Werde Teil der Zukunft des Webs',
   'hero.badge.nowOpen': 'Jetzt geöffnet',
   'hero.createAccount': 'Erstelle dein Konto →',
@@ -127,7 +136,7 @@ const de = {
   'onboarding.title': 'Willkommen bei {orgName}.',
   'policy.accept':
     'Ich stimme den <terms>Nutzungsbedingungen</terms> und der <privacy>Datenschutzerklärung</privacy> zu',
-  'sidebar.applications': 'Anwendungen',
+  'sidebar.applications': 'Apps',
   'sidebar.contactUs': 'Kontakt',
   'sidebar.dashboard': 'Dashboard',
   'sidebar.discover': 'Entdecken',
@@ -146,9 +155,9 @@ const de = {
   'yourApps.access.link': 'App-Zugriff verwalten',
   'yourApps.access.text':
     'Diese Liste zeigt nur Apps, die du selbst markiert hast. Um zu sehen, welche Apps auf dein Konto zugreifen können, und um den Zugriff zu widerrufen, gehe zu deinen Kontoeinstellungen.',
-  'yourApps.browse': 'Anwendungen entdecken',
+  'yourApps.browse': 'Apps entdecken',
   'yourApps.empty':
-    'Du hast noch keine Apps hinzugefügt. Öffne eine Anwendung und wähle „Zu deinen Apps hinzufügen“.',
+    'Du hast noch keine Apps hinzugefügt. Öffne eine App und wähle „Zu deinen Apps hinzufügen“.',
   'yourApps.subheading':
     'Deine Lieblings-Apps. Wir speichern sie in deinen öffentlichen Daten bei {orgName}, deshalb erscheinen sie auch an Orten wie atstore.fyi.',
 } satisfies Record<string, string>
