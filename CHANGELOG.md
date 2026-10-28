@@ -1,5 +1,120 @@
 # eurosky-portal
 
+## 1.8.3
+
+### Patch Changes
+
+- [#288](https://github.com/eurosky-social/eurosky-portal/pull/288) [`e1cc42d`](https://github.com/eurosky-social/eurosky-portal/commit/e1cc42d081c201d6438289111a398a89da628236) Thanks [@wooorm](https://github.com/wooorm)! - Fix focus, tabbing on navigate
+
+- [#289](https://github.com/eurosky-social/eurosky-portal/pull/289) [`8cae3ca`](https://github.com/eurosky-social/eurosky-portal/commit/8cae3caa6222f2349b63e7fa44dc4330c46b8074) Thanks [@wooorm](https://github.com/wooorm)! - Add support for reduced motion
+
+- [#304](https://github.com/eurosky-social/eurosky-portal/pull/304) [`dfde22a`](https://github.com/eurosky-social/eurosky-portal/commit/dfde22a8b9304a2ff89db3180a75874dfe1a8705) Thanks [@wooorm](https://github.com/wooorm)! - Add help links for password reset and migration
+
+- [#292](https://github.com/eurosky-social/eurosky-portal/pull/292) [`407c098`](https://github.com/eurosky-social/eurosky-portal/commit/407c0984c4daac9b77ad740e42b2c177ff9fd9bc) Thanks [@wooorm](https://github.com/wooorm)! - Add explanation of things opening in new tabs
+
+- [#295](https://github.com/eurosky-social/eurosky-portal/pull/295) [`8c21467`](https://github.com/eurosky-social/eurosky-portal/commit/8c21467c501f4bcd32b91cff1d0af436500aa9b0) Thanks [@wooorm](https://github.com/wooorm)! - Add theme cookie
+
+  Make theme work like chosen locale and make it available on server,
+  for SSR, and for preventing a flash.
+
+- [#277](https://github.com/eurosky-social/eurosky-portal/pull/277) [`b42bba4`](https://github.com/eurosky-social/eurosky-portal/commit/b42bba468d07f6e018e9b3f247eecf7ca30ec5d7) Thanks [@wooorm](https://github.com/wooorm)! - Update `@adonisjs/queue` to 0.7
+
+  The queue tables are upgraded by a migration,
+  which runs at boot when `DATABASE_AUTOMIGRATE` is on.
+  The upgrade cannot be undone:
+  downgrading after deploying this version is not possible.
+
+- [#282](https://github.com/eurosky-social/eurosky-portal/pull/282) [`b7c10b7`](https://github.com/eurosky-social/eurosky-portal/commit/b7c10b724bc939340e38a495372c78c8b40599d7) Thanks [@wooorm](https://github.com/wooorm)! - Add extra checks for activity origins
+
+- [#306](https://github.com/eurosky-social/eurosky-portal/pull/306) [`71429f1`](https://github.com/eurosky-social/eurosky-portal/commit/71429f14958d6f2cd898e47f3fbf2c6d9d92606c) Thanks [@wooorm](https://github.com/wooorm)! - Use a single i18n catalog on server, client
+
+- [#283](https://github.com/eurosky-social/eurosky-portal/pull/283) [`f7615f1`](https://github.com/eurosky-social/eurosky-portal/commit/f7615f1dc78fd29917352ba57fb350980395faa4) Thanks [@wooorm](https://github.com/wooorm)! - Fix oauth callbacks from other browsers
+
+  - tie oauth flows to browser sessions and verify them
+  - only log out when correctly logged in
+
+- [#294](https://github.com/eurosky-social/eurosky-portal/pull/294) [`ec7c6a3`](https://github.com/eurosky-social/eurosky-portal/commit/ec7c6a3002af0fc5387159464d5c8cada3cc37e3) Thanks [@wooorm](https://github.com/wooorm)! - Fix to make buttons more uniform
+
+- [#299](https://github.com/eurosky-social/eurosky-portal/pull/299) [`cb8ea2d`](https://github.com/eurosky-social/eurosky-portal/commit/cb8ea2dd4fcd984bc7b506bc96932ae92d11630d) Thanks [@wooorm](https://github.com/wooorm)! - Fix duplicate `title`, switch theme color
+
+  - fix duplicate `<title>`s
+  - remove unused `undefined` result for `t` functions
+  - add missing page titles (dashboard, activities)
+  - set corrent `theme-color` in browser
+
+- [#291](https://github.com/eurosky-social/eurosky-portal/pull/291) [`929fab5`](https://github.com/eurosky-social/eurosky-portal/commit/929fab594d48c65223a6fafc066832aea93f0853) Thanks [@wooorm](https://github.com/wooorm)! - Refactor to improve contrast
+
+- [#284](https://github.com/eurosky-social/eurosky-portal/pull/284) [`636cff7`](https://github.com/eurosky-social/eurosky-portal/commit/636cff74830a9c2f2cd3ebe41bef92837eaa1239) Thanks [@wooorm](https://github.com/wooorm)! - Refactor to improve types
+
+  - stricter tsconfig settings
+  - less `any`s, casts
+
+- [#279](https://github.com/eurosky-social/eurosky-portal/pull/279) [`0f1378a`](https://github.com/eurosky-social/eurosky-portal/commit/0f1378aca212dba16092d085a850b06517812744) Thanks [@wooorm](https://github.com/wooorm)! - Update lexicons
+
+  - lots of meaningless reformatting, due to the previous update
+  - importantly, the gallery embed is now typed, so this drops the ducktyping
+
+- [#290](https://github.com/eurosky-social/eurosky-portal/pull/290) [`6fe5b58`](https://github.com/eurosky-social/eurosky-portal/commit/6fe5b581c721aad137b893a15fc8b54ddc40333f) Thanks [@wooorm](https://github.com/wooorm)! - Fix connections between labels, inputs, errors in forms
+
+- [#302](https://github.com/eurosky-social/eurosky-portal/pull/302) [`cd0f6d9`](https://github.com/eurosky-social/eurosky-portal/commit/cd0f6d97b3119a17829671fe9c8b549eb8b837c8) Thanks [@wooorm](https://github.com/wooorm)! - Use footer from `eurosky.tech`
+
+- [#293](https://github.com/eurosky-social/eurosky-portal/pull/293) [`dd46594`](https://github.com/eurosky-social/eurosky-portal/commit/dd465941708945e0506e11d15fe39fc4f41f9e5f) Thanks [@wooorm](https://github.com/wooorm)! - Add improved error bar
+
+- [#297](https://github.com/eurosky-social/eurosky-portal/pull/297) [`cae2345`](https://github.com/eurosky-social/eurosky-portal/commit/cae2345ec2f2a254cfa22f0ed5048c121a097786) Thanks [@wooorm](https://github.com/wooorm)! - Fix crowded content on mobile
+
+  - nice new mobile sidebar and sidebars on faq, legal
+  - more things from top bar into sidebar
+  - no unneeded padding around pages on mobile
+  - shorter beta message
+  - fix focus on faq entries
+  - old brand color back
+
+- [#287](https://github.com/eurosky-social/eurosky-portal/pull/287) [`90755a1`](https://github.com/eurosky-social/eurosky-portal/commit/90755a1b6d63fd34388be27fc9305eaaa568b566) Thanks [@wooorm](https://github.com/wooorm)! - Fix main heading on each page
+
+- [#305](https://github.com/eurosky-social/eurosky-portal/pull/305) [`522ef68`](https://github.com/eurosky-social/eurosky-portal/commit/522ef688c4b21a25c47cc87d0e3a30fbe137ca47) Thanks [@wooorm](https://github.com/wooorm)! - Remove explore page
+
+- [#303](https://github.com/eurosky-social/eurosky-portal/pull/303) [`3ecbec0`](https://github.com/eurosky-social/eurosky-portal/commit/3ecbec066a46c2da1b81c32f270a44d313950123) Thanks [@wooorm](https://github.com/wooorm)! - Fix contrast of invalid handle warning
+
+- [#301](https://github.com/eurosky-social/eurosky-portal/pull/301) [`375a769`](https://github.com/eurosky-social/eurosky-portal/commit/375a7697d554b4ef22810c7f85e83b037decd63d) Thanks [@wooorm](https://github.com/wooorm)! - Add localized links
+
+- [#285](https://github.com/eurosky-social/eurosky-portal/pull/285) [`7dc2ef2`](https://github.com/eurosky-social/eurosky-portal/commit/7dc2ef2b8ea5f6e3acfdf329eda57a6b206bf865) Thanks [@wooorm](https://github.com/wooorm)! - Use `@atcute/jetstream`
+
+  Instead of our own jetstream client, use a maintained and typed one.
+  This comes with validation, handling of events in order, and fixes a
+  theoretical bug where watching zero users, would watch everyone
+
+- [#281](https://github.com/eurosky-social/eurosky-portal/pull/281) [`2fa4f8d`](https://github.com/eurosky-social/eurosky-portal/commit/2fa4f8d8c4ac97b5609eaf3e87fb599ef21f4452) Thanks [@wooorm](https://github.com/wooorm)! - Update Node.js to 26
+
+  Currently Docker pulls LTS Node.
+  In a week or so, that will be 26.
+  That no longer has corepack, which will break.
+
+  This switches to Node 26 already.
+  The one without the CVEs, of course.
+
+  Node 26 introduces two deprecations,
+  one fixed by upgrading `@adonisjs/application`,
+  another by hiding it if unneeded,
+  through lazy loading `@adonisjs/otel`.
+
+- [#280](https://github.com/eurosky-social/eurosky-portal/pull/280) [`9f997c5`](https://github.com/eurosky-social/eurosky-portal/commit/9f997c5cc6e954d381ad2414ae688ad8453156d6) Thanks [@wooorm](https://github.com/wooorm)! - Fix docker cache
+
+- [#296](https://github.com/eurosky-social/eurosky-portal/pull/296) [`3e03191`](https://github.com/eurosky-social/eurosky-portal/commit/3e03191820ebb7dcdaacf62235d90181b8a5e5ab) Thanks [@wooorm](https://github.com/wooorm)! - Add SSR for guest pages
+
+  This adds rendering on the server for public pages.
+
+- [#286](https://github.com/eurosky-social/eurosky-portal/pull/286) [`bc2a34a`](https://github.com/eurosky-social/eurosky-portal/commit/bc2a34a9112a1a6f7cf7270d5d99bf8126190fcc) Thanks [@wooorm](https://github.com/wooorm)! - Add better aria names, current markers
+
+- [#298](https://github.com/eurosky-social/eurosky-portal/pull/298) [`1909eb4`](https://github.com/eurosky-social/eurosky-portal/commit/1909eb482f2a9e41435f7aeab1c4907b9ea72257) Thanks [@wooorm](https://github.com/wooorm)! - Add better navigation for guests, consistent pages
+
+  - add footer to link more things, so that pages can be found
+  - gives signed out pages a frame too
+  - consistent page titles
+  - fix broken help link for invalid handles
+  - define eurosky urls only once
+
+- [#300](https://github.com/eurosky-social/eurosky-portal/pull/300) [`4d30479`](https://github.com/eurosky-social/eurosky-portal/commit/4d304790217b30b8f3abc7d8dfa6c8b3ba43d552) Thanks [@wooorm](https://github.com/wooorm)! - Change styles to match `eurosky.tech`
+
 ## 1.8.2
 
 ### Patch Changes
