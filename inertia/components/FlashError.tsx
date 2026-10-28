@@ -2,6 +2,7 @@ import { ExclamationTriangleIcon } from '@heroicons/react/20/solid'
 import { Data } from '@generated/data'
 import { usePage } from '@inertiajs/react'
 import { useEffect, useRef, useState } from 'react'
+import { useT } from '~/lib/i18n'
 
 /**
  * Error flashed by the previous request, such as a failed sign in,
@@ -9,8 +10,9 @@ import { useEffect, useRef, useState } from 'react'
  */
 export function FlashError() {
   const { props, url } = usePage<Data.SharedProps>()
+  const { tPlain } = useT()
   const error = props.flash.error
-  const [message, setMessage] = useState<string | undefined>()
+  const [message, setMessage] = useState<typeof error>()
   const previousUrl = useRef(url)
 
   useEffect(
@@ -27,7 +29,7 @@ export function FlashError() {
       {message ? (
         <p className="flex items-center justify-center gap-2 border-b border-red-200 bg-red-50 px-3 py-2 text-center font-semibold text-red-900 dark:border-red-900 dark:bg-red-950 dark:text-red-100">
           <ExclamationTriangleIcon aria-hidden="true" className="size-5 shrink-0" />
-          {message}
+          {'key' in message ? tPlain(message.key, message.values) : message.text}
         </p>
       ) : undefined}
     </div>

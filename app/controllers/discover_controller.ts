@@ -100,7 +100,7 @@ export default class DiscoverController {
         extra: { action, subject },
         tags: { component: 'favorites' },
       })
-      flashSessionValue(session, 'errorsBag', { favorite: i18n.t('apps.favoriteFailed') })
+      flashSessionValue(session, 'errorMessage', { key: 'apps.favoriteFailed' })
     }
 
     return response.redirect().back()

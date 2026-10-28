@@ -31,10 +31,15 @@ const ca = {
   'apps.category.social': 'Social',
   'apps.category.sport': 'Esport',
   'apps.chooseAppToOpen': 'Trieu una aplicació per a obrir-ho',
-  'apps.detail.explore': 'Explora',
   'apps.detail.addFavorite': 'Afegiu a les vostres aplicacions',
+  'apps.detail.explore': 'Explora',
   'apps.detail.removeFavorite': 'Elimineu de les vostres aplicacions',
   'apps.detail.seeAllReviews': 'Totes les ressenyes',
+  'apps.favoriteDenied':
+    'Per a afegir a preferits, cal que doneu permís per a desar els preferits al compte.',
+  'apps.favoriteFailed': 'No s’han pogut actualitzar els preferits. Torneu-ho a provar més tard.',
+  'apps.favoriteOtherAccount':
+    'Continueu amb el compte amb què heu iniciat la sessió per a afegir aplicacions.',
   'apps.favorited': 'Preferida',
   'apps.madeInEurope': 'Fet a Europa',
   'apps.openWith': 'Obre amb {name}',
@@ -76,6 +81,7 @@ const ca = {
     '{orgName} és la vostra llar europea a l’Atmosphere, una xarxa global d’aplicacions i serveis socials.',
   'dashboard.yourApps.text': 'Les vostres aplicacions preferides.',
   'dashboard.yourApps.viewAll': 'Vegeu totes les aplicacions',
+  'errors.E_UNAUTHORIZED_ACCESS': 'Inicieu la sessió per veure aquesta pàgina.',
   'errors.notFound.title': 'No s’ha trobat la pàgina',
   'errors.serverError.heading': 'S’ha produït un error',
   'errors.serverError.title': 'Error del servidor',
@@ -97,6 +103,7 @@ const ca = {
   'hero.title': '{orgName}: El vostre portal cap a l’Atmosphere.',
   'home.heading': 'Una aplicació per a tot',
   'home.subheading': 'Sempre s’estan creant aplicacions noves',
+  'legal.loadError': 'No s’ha pogut carregar la política de privadesa ni les condicions d’ús',
   'login.continue': 'Continua →',
   'login.forgotPassword': 'Heu oblidat la contrasenya? <link>Restabliu-la</link>',
   'login.handleLabel': 'El vostre nom d’usuari de l’Atmosphere',
@@ -105,6 +112,7 @@ const ca = {
     'Introduïu el vostre nom d’usuari a continuació per a iniciar la sessió al compte',
   'login.title': 'Inicieu la sessió al compte {orgName}.',
   'markdown.error': 'No s’ha pogut mostrar aquest contingut.',
+  'meta.description': 'El portal cap a l’Atmosphere',
   'migrationAlert.cta': 'Migra',
   'migrationAlert.text':
     'Porteu el vostre nom d’usuari, les publicacions i els seguidors a {orgName} amb l’eina de migració. Un compte nou <link>no es podrà fusionar més endavant amb un d’existent</link>.',
@@ -122,6 +130,21 @@ const ca = {
   'nav.sidebar': 'Barra lateral',
   'nav.signIn': 'Inicia la sessió',
   'nav.skipToContent': 'Vés al contingut',
+  'oauth.accountNotFound': 'No s’ha trobat el compte d’Atmosphere: {handle}',
+  'oauth.accountNotFoundWithFallback':
+    'No s’ha trobat el compte d’Atmosphere: {handle}. Torneu-ho a provar més tard o intenteu iniciar la sessió amb: {url}',
+  'oauth.cancelledSignup': 'Heu cancel·lat la creació del compte',
+  'oauth.deniedSignIn': 'Heu denegat l’intent d’inici de sessió',
+  'oauth.invalidAccount': 'Introduïu un compte d’Atmosphere vàlid',
+  'oauth.loginFailed':
+    'No s’ha pogut iniciar la sessió en aquest moment. Torneu-ho a provar més tard.',
+  'oauth.signupError': 'S’ha produït un error durant el registre',
+  'oauth.signupServerError':
+    'No s’ha pogut crear el compte en aquest moment. Torneu-ho a provar més tard.',
+  'oauth.unknownCallbackError': 'S’ha produït un error desconegut. Torneu-ho a provar més tard.',
+  'oauth.unknownError': 'S’ha produït un error desconegut',
+  'oauth.unsupportedAccount':
+    'Actualment, {productTitle} només està disponible per als comptes {orgName}.',
   'onboarding.alternative':
     'Alternativament, podeu <logout>tancar la sessió</logout> i no utilitzar {productTitle}.',
   'onboarding.notice.bothUpdated':
@@ -148,6 +171,17 @@ const ca = {
   'sidebar.yourApps': 'Les vostres aplicacions',
   'theme.setDark': 'Estableix el tema fosc',
   'theme.setLight': 'Estableix el tema clar',
+  'validator.shared.messages.accepted': 'El camp {field} s’ha d’acceptar.',
+  'validator.shared.messages.at-handle':
+    'Introduïu un compte d’Atmosphere vàlid, com ara nomdusuari{domain}',
+  'validator.shared.messages.enum': 'El {field} seleccionat no és vàlid.',
+  'validator.shared.messages.max': 'El camp {field} no pot ser superior a {max}.',
+  'validator.shared.messages.min': 'El camp {field} ha de ser com a mínim de {min}.',
+  'validator.shared.messages.notIn': 'El {field} seleccionat no és vàlid.',
+  'validator.shared.messages.regex': 'El format del camp {field} no és vàlid.',
+  'validator.shared.messages.required': 'El camp {field} és obligatori.',
+  'validator.shared.messages.terms.required':
+    'Heu d’acceptar els termes del servei i la política de privadesa per a continuar.',
   'yourApps.access.heading': 'Comprova quines aplicacions tenen accés',
   'yourApps.access.link': 'Gestiona l’accés de les aplicacions',
   'yourApps.access.text':

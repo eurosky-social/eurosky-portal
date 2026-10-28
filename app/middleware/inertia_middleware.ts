@@ -5,8 +5,9 @@ import type { NextFn } from '@adonisjs/core/types/http'
 import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
 import Account from '#models/account'
 import AccountTransformer from '#transformers/account_transformer'
-import { getFlashedSessionValue } from '#utils/session'
+import { type FlashMessage, getFlashedSessionValue } from '#utils/session'
 import { captureMessage } from '#utils/telemetry'
+import { isMessageKey } from '#shared/i18n'
 import { defaultLocale, isLocale } from '#shared/locale'
 import { defaultTheme, isTheme, themeCookieName } from '#shared/theme'
 
@@ -59,12 +60,21 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
     ctx.view.share({ theme })
 
     /**
-     * Fetching the first error from the flash messages
+     * Error to show: ours, as a message key,
+     * or else the first one Adonis flashed (such as `E_UNAUTHORIZED_ACCESS`),
+     * as the key `errors.$code` if there is one (Adonis looks that up too),
+     * or as its text.
      */
     const errorsBag = (session && getFlashedSessionValue(session, 'errorsBag')) ?? {}
-    const error = Object.keys(errorsBag)
-      .filter((code) => code !== 'E_VALIDATION_ERROR')
-      .map((code) => errorsBag[code])[0]
+    const code = Object.keys(errorsBag).find((name) => name !== 'E_VALIDATION_ERROR')
+    const codeKey = 'errors.' + code
+    const error: FlashMessage | { text: string } | undefined =
+      (session && getFlashedSessionValue(session, 'errorMessage')) ??
+      (code === undefined
+        ? undefined
+        : isMessageKey(codeKey)
+          ? { key: codeKey }
+          : { text: errorsBag[code] ?? '' })
 
     /**
      * Data shared with all Inertia pages. Make sure you are using

@@ -35,6 +35,12 @@ const fr = {
   'apps.detail.explore': 'Explorer',
   'apps.detail.removeFavorite': 'Retirer de vos applications',
   'apps.detail.seeAllReviews': 'Voir tous les avis',
+  'apps.favoriteDenied':
+    'Les favoris nécessitent votre autorisation pour être enregistrés dans votre compte.',
+  'apps.favoriteFailed':
+    'Nous n’avons pas pu mettre à jour vos favoris, veuillez réessayer plus tard.',
+  'apps.favoriteOtherAccount':
+    'Continuez avec le compte avec lequel vous êtes connecté pour ajouter des applications.',
   'apps.favorited': 'Favori',
   'apps.madeInEurope': 'Fabriqué en Europe',
   'apps.openWith': 'Ouvrir avec {name}',
@@ -75,6 +81,7 @@ const fr = {
     '{orgName} est votre foyer européen sur l’Atmosphere – un réseau mondial d’applications et de services sociaux.',
   'dashboard.yourApps.text': 'Vos applications favorites.',
   'dashboard.yourApps.viewAll': 'Voir toutes vos applications',
+  'errors.E_UNAUTHORIZED_ACCESS': 'Connectez-vous pour voir cette page.',
   'errors.notFound.title': 'Page introuvable',
   'errors.serverError.heading': 'Une erreur s’est produite',
   'errors.serverError.title': 'Erreur serveur',
@@ -96,6 +103,8 @@ const fr = {
   'hero.title': '{orgName} : votre portail vers l’Atmosphere.',
   'home.heading': 'Une application pour tout',
   'home.subheading': 'De nouvelles applications sont créées en permanence !',
+  'legal.loadError':
+    'Impossible de charger la politique de confidentialité ou les conditions d’utilisation',
   'login.continue': 'Continuer →',
   'login.forgotPassword': 'Mot de passe oublié? <link>Réinitialisez-le</link>',
   'login.handleLabel': 'Votre identifiant Atmosphere',
@@ -103,6 +112,7 @@ const fr = {
   'login.subtitle': 'Saisissez votre identifiant ci-dessous pour vous connecter à votre compte',
   'login.title': 'Connectez-vous à votre compte {orgName}.',
   'markdown.error': 'Ce contenu n’a pas pu être affiché.',
+  'meta.description': 'Votre portail vers l’Atmosphere',
   'migrationAlert.cta': 'Migrer',
   'migrationAlert.text':
     'Transférez votre identifiant, vos publications et vos abonnés vers {orgName} avec l’outil de migration. Un nouveau compte <link>ne pourra pas être fusionné plus tard avec un compte existant</link>.',
@@ -120,6 +130,21 @@ const fr = {
   'nav.sidebar': 'Barre latérale',
   'nav.signIn': 'Se connecter',
   'nav.skipToContent': 'Aller au contenu',
+  'oauth.accountNotFound': 'Nous n’avons pas trouvé votre compte Atmosphere: {handle}',
+  'oauth.accountNotFoundWithFallback':
+    'Nous n’avons pas trouvé votre compte Atmosphere: {handle}, veuillez réessayer plus tard, ou essayez de vous connecter avec: {url}',
+  'oauth.cancelledSignup': 'Vous avez annulé la création de votre compte',
+  'oauth.deniedSignIn': 'Vous avez refusé la tentative de connexion',
+  'oauth.invalidAccount': 'Veuillez saisir un compte Atmosphere valide',
+  'oauth.loginFailed':
+    'Nous n’avons pas pu vous connecter pour le moment, veuillez réessayer plus tard.',
+  'oauth.signupError': 'Une erreur s’est produite lors de l’inscription',
+  'oauth.signupServerError':
+    'Nous n’avons pas pu créer votre compte pour le moment, veuillez réessayer plus tard.',
+  'oauth.unknownCallbackError': 'Une erreur inconnue s’est produite, veuillez réessayer plus tard.',
+  'oauth.unknownError': 'Une erreur inconnue s’est produite',
+  'oauth.unsupportedAccount':
+    '{productTitle} n’est actuellement disponible que pour les comptes {orgName}.',
   'onboarding.alternative':
     'Vous pouvez aussi <logout>vous déconnecter</logout> et ne pas utiliser {productTitle}.',
   'onboarding.notice.bothUpdated':
@@ -147,6 +172,17 @@ const fr = {
   'sidebar.yourApps': 'Vos applications',
   'theme.setDark': 'Passer au thème sombre',
   'theme.setLight': 'Passer au thème clair',
+  'validator.shared.messages.accepted': 'Le champ {field} doit être accepté.',
+  'validator.shared.messages.at-handle':
+    'Veuillez saisir un compte Atmosphere valide, par exemple nom{domain}',
+  'validator.shared.messages.enum': 'Le champ {field} sélectionné n’est pas valide.',
+  'validator.shared.messages.max': 'Le champ {field} ne doit pas dépasser {max}.',
+  'validator.shared.messages.min': 'Le champ {field} doit contenir au moins {min}.',
+  'validator.shared.messages.notIn': 'Le champ {field} sélectionné n’est pas valide.',
+  'validator.shared.messages.regex': 'Le format du champ {field} n’est pas valide.',
+  'validator.shared.messages.required': 'Le champ {field} est requis.',
+  'validator.shared.messages.terms.required':
+    'Vous devez accepter les conditions d’utilisation et la politique de confidentialité pour continuer.',
   'yourApps.access.heading': 'Vérifiez ce à quoi les applications ont accès',
   'yourApps.access.link': 'Gérer l’accès des applications',
   'yourApps.access.text':

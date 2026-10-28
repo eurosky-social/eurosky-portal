@@ -85,14 +85,13 @@ data/             Markdown and JSON content per locale (FAQ, explore page)
 inertia/
   pages/          One React component per page, matching the controllers' `inertia.render(...)` calls
   components/     Shared React components
-  lib/i18n/       Front-end translations (one file per locale)
 lexicons/         Pinned lexicon JSON files (source for app/lexicons)
 providers/        App providers, including the queue worker and Jetstream subscriber
 resources/
-  lang/           Server-side translations (one folder per locale)
   views/          Edge templates (the Inertia root layout)
 service/          Example production deployment (Docker Compose, Caddy, systemd)
 shared/           Code used by both server and front end (app catalog, brand, locales)
+  i18n/           Translations, for server and front end (one file per locale)
 start/            Boot files: routes, env validation, middleware kernel, auto-migration
 ```
 
@@ -136,11 +135,10 @@ Create a migration with `node ace make:migration <name>`, run `pnpm db:migrate`,
 
 Strings live in these places, and every locale must define the same keys:
 
-- **Front end:** `inertia/lib/i18n/<locale>.ts`
-- **Server side** (validation messages, flash errors and similar): `resources/lang/<locale>/*.json`
+- **Messages**, for the front end and the server (validation messages, flash errors and similar): `shared/i18n/<locale>.ts`
 - Longer content, the FAQ and explore page, is in `data/<locale>/` (`faq.json`, `explore.md`).
 
-English (`en`) is the reference locale. When you add a key, add it to every locale; if you can't translate it, copy the English text and mention it in your pull request so a translator can follow up. `pnpm i18n:check` runs in CI and fails if keys are missing from the front end or server side translations; it does not check `data/`.
+English (`en`) is the reference locale. When you add a key, add it to every locale; if you can't translate it, copy the English text and mention it in your pull request so a translator can follow up. `pnpm i18n:check` runs in CI and fails if keys are missing or placeholders differ; it does not check `data/`.
 
 To add a new locale, also add it to `locales` and `localeNames` in [`shared/locale.ts`](shared/locale.ts), and to `catalogs` in [`inertia/lib/i18n.tsx`](inertia/lib/i18n.tsx).
 

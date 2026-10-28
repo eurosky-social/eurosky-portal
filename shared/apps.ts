@@ -1,4 +1,5 @@
 import { type AtUriParts, type AtUriString, ifAtIdentifierString } from '@atproto/syntax'
+import type { MessageKey } from '#shared/i18n'
 
 /**
  * Hashtag.
@@ -28,7 +29,7 @@ export interface CatalogApp {
    * apps w/o category are hidden from lists,
    * but still have a detail page and can be used by the “open with” launcher.
    */
-  category?: string | undefined
+  category?: MessageKey | undefined
 
   /**
    * Whether to show the app “outside” of the apps page.

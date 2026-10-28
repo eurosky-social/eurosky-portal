@@ -35,6 +35,12 @@ const de = {
   'apps.detail.explore': 'Entdecken',
   'apps.detail.removeFavorite': 'Aus deinen Apps entfernen',
   'apps.detail.seeAllReviews': 'Alle Bewertungen ansehen',
+  'apps.favoriteDenied':
+    'Für Favoriten brauchen wir deine Erlaubnis, sie in deinem Konto zu speichern.',
+  'apps.favoriteFailed':
+    'Wir konnten deine Favoriten nicht aktualisieren, versuche es später erneut.',
+  'apps.favoriteOtherAccount':
+    'Fahre mit dem Konto fort, mit dem du angemeldet bist, um Apps hinzuzufügen.',
   'apps.favorited': 'Favorit',
   'apps.madeInEurope': 'Hergestellt in Europa',
   'apps.openWith': 'Mit {name} öffnen',
@@ -76,6 +82,7 @@ const de = {
     '{orgName} ist dein europäisches Zuhause in der Atmosphere – einem globalen Netzwerk aus sozialen Apps und Diensten.',
   'dashboard.yourApps.text': 'Deine Lieblings-Apps.',
   'dashboard.yourApps.viewAll': 'Alle deine Apps ansehen',
+  'errors.E_UNAUTHORIZED_ACCESS': 'Melde dich an, um diese Seite zu sehen.',
   'errors.notFound.title': 'Seite nicht gefunden',
   'errors.serverError.heading': 'Etwas ist schiefgelaufen',
   'errors.serverError.title': 'Serverfehler',
@@ -97,6 +104,7 @@ const de = {
   'hero.title': '{orgName}: dein Zugang zur Atmosphere.',
   'home.heading': 'Eine App für alles',
   'home.subheading': 'Es entstehen ständig neue Apps!',
+  'legal.loadError': 'Datenschutzerklärung oder Nutzungsbedingungen konnten nicht geladen werden',
   'login.continue': 'Weiter →',
   'login.forgotPassword': 'Passwort vergessen? <link>Zurücksetzen</link>',
   'login.handleLabel': 'Dein Atmosphere-Handle',
@@ -104,6 +112,7 @@ const de = {
   'login.subtitle': 'Gib unten deinen Handle ein, um dich bei deinem Konto anzumelden',
   'login.title': 'Melde dich bei deinem {orgName}-Konto an.',
   'markdown.error': 'Dieser Inhalt konnte nicht angezeigt werden.',
+  'meta.description': 'Dein Zugang zur Atmosphere',
   'migrationAlert.cta': 'Migrieren',
   'migrationAlert.text':
     'Nimm deinen Handle, deine Beiträge und deine Follower mit dem Migrationstool zu {orgName} mit. Ein neues Konto <link>kann später nicht mit einem bestehenden zusammengeführt werden</link>.',
@@ -121,6 +130,20 @@ const de = {
   'nav.sidebar': 'Seitenleiste',
   'nav.signIn': 'Anmelden',
   'nav.skipToContent': 'Zum Inhalt springen',
+  'oauth.accountNotFound': 'Wir konnten dein Atmosphere-Konto nicht finden: {handle}',
+  'oauth.accountNotFoundWithFallback':
+    'Wir konnten dein Atmosphere-Konto nicht finden: {handle}. Versuche es später erneut oder melde dich an mit: {url}',
+  'oauth.cancelledSignup': 'Du hast die Erstellung deines Kontos abgebrochen',
+  'oauth.deniedSignIn': 'Du hast den Anmeldeversuch abgelehnt',
+  'oauth.invalidAccount': 'Bitte gib ein gültiges Atmosphere-Konto ein',
+  'oauth.loginFailed': 'Wir konnten dich derzeit nicht anmelden, versuche es später erneut.',
+  'oauth.signupError': 'Bei der Registrierung ist ein Fehler aufgetreten',
+  'oauth.signupServerError':
+    'Wir konnten dein Konto derzeit nicht erstellen, versuche es später erneut.',
+  'oauth.unknownCallbackError':
+    'Ein unbekannter Fehler ist aufgetreten, versuche es später erneut.',
+  'oauth.unknownError': 'Unbekannter Fehler aufgetreten',
+  'oauth.unsupportedAccount': '{productTitle} ist derzeit nur für {orgName}-Konten verfügbar.',
   'onboarding.alternative':
     'Alternativ kannst du dich auch <logout>abmelden</logout> und {productTitle} nicht nutzen.',
   'onboarding.notice.bothUpdated':
@@ -148,6 +171,17 @@ const de = {
   'sidebar.yourApps': 'Deine Apps',
   'theme.setDark': 'Dunkles Design aktivieren',
   'theme.setLight': 'Helles Design aktivieren',
+  'validator.shared.messages.accepted': 'Das Feld {field} muss akzeptiert werden.',
+  'validator.shared.messages.at-handle':
+    'Bitte gib ein gültiges Atmosphere-Konto ein, zum Beispiel name{domain}',
+  'validator.shared.messages.enum': 'Das ausgewählte Feld {field} ist ungültig.',
+  'validator.shared.messages.max': 'Das Feld {field} darf nicht größer als {max} sein.',
+  'validator.shared.messages.min': 'Das Feld {field} muss mindestens {min} sein.',
+  'validator.shared.messages.notIn': 'Das ausgewählte Feld {field} ist ungültig.',
+  'validator.shared.messages.regex': 'Das Format des Felds {field} ist ungültig.',
+  'validator.shared.messages.required': 'Das Feld {field} ist erforderlich.',
+  'validator.shared.messages.terms.required':
+    'Du musst den Nutzungsbedingungen und der Datenschutzerklärung zustimmen, um fortzufahren.',
   'yourApps.access.heading': 'Prüfe, worauf Apps zugreifen können',
   'yourApps.access.link': 'App-Zugriff verwalten',
   'yourApps.access.text':
