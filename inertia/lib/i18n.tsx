@@ -17,6 +17,7 @@ import {
   useState,
   useSyncExternalStore,
 } from 'react'
+import type { MessageKey } from '#shared/i18n'
 import type { Locale } from '#shared/locale'
 import { brand } from '#shared/brand'
 import { parse, serverSnapshot, setLocale, snapshot, subscribe } from '~/utils/locale'
@@ -27,10 +28,13 @@ interface I18nContextValue {
   locale: Locale
   setLocale(locale: Locale): undefined
   tPlain(
-    key: string,
+    key: MessageKey,
     variables?: Record<string, VariableValue<PrimitiveType>> | null | undefined
   ): string
-  t(key: string, variables?: Record<string, VariableValue<ReactNode>> | null | undefined): ReactNode
+  t(
+    key: MessageKey,
+    variables?: Record<string, VariableValue<ReactNode>> | null | undefined
+  ): ReactNode
 }
 
 /**
@@ -78,19 +82,19 @@ const I18nContext = createContext<I18nContextValue | undefined>(undefined)
  */
 const catalogs: Record<Locale, () => Promise<{ default: Record<string, string> }>> = {
   ca() {
-    return import('./i18n/ca')
+    return import('#shared/i18n/ca')
   },
   de() {
-    return import('./i18n/de')
+    return import('#shared/i18n/de')
   },
   en() {
-    return import('./i18n/en')
+    return import('#shared/i18n/en')
   },
   fr() {
-    return import('./i18n/fr')
+    return import('#shared/i18n/fr')
   },
   nl() {
-    return import('./i18n/nl')
+    return import('#shared/i18n/nl')
   },
 }
 
@@ -251,7 +255,7 @@ function createT(locale: Locale, messages: Record<string, string>) {
    *   Rendered and translated message.
    */
   function tPlain(
-    key: string,
+    key: MessageKey,
     variables?: Record<string, VariableValue<PrimitiveType>> | null | undefined
   ): string {
     const { format, names } = compile(key)
@@ -283,7 +287,7 @@ function createT(locale: Locale, messages: Record<string, string>) {
    *   Rendered and translated message.
    */
   function t(
-    key: string,
+    key: MessageKey,
     variables?: Record<string, VariableValue<ReactNode>> | null | undefined
   ): ReactNode {
     const { format } = compile(key)

@@ -3,8 +3,25 @@
  */
 
 import type { Session } from '@adonisjs/session'
+import type { MessageKey } from '#shared/i18n'
 import type { Source } from '#events/auth_flow_completed'
 import type { FavoriteIntent } from '#services/favorite_service'
+
+/**
+ * Message to show on the next page;
+ * translated there, so it follows the locale when that changes.
+ */
+export type FlashMessage = {
+  /**
+   * Message key (in `shared/i18n/`).
+   */
+  key: MessageKey
+
+  /**
+   * Values for placeholders in the message.
+   */
+  values?: Record<string, string>
+}
 
 /**
  * Values we flash to the next request, by key.
@@ -17,8 +34,15 @@ interface FlashValues {
    * Pages in history are stale (such as after favoriting); clear them.
    */
   clearHistory: true
+
   /**
-   * Errors, by code;
+   * Error to show, shown as `flash.error`.
+   */
+  errorMessage: FlashMessage
+
+  /**
+   * Errors flashed by Adonis, by code (such as `E_UNAUTHORIZED_ACCESS`);
+   * if there is no `errorMessage`,
    * the first that is not `E_VALIDATION_ERROR` is shown as `flash.error`.
    */
   errorsBag: Record<string, string>

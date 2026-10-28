@@ -1,4 +1,3 @@
-import { readdir, readFile } from 'node:fs/promises'
 import { BaseCommand } from '@adonisjs/core/ace'
 import type { CommandOptions } from '@adonisjs/core/types/ace'
 import {
@@ -15,20 +14,14 @@ import {
 } from '@formatjs/icu-messageformat-parser'
 import { type Locale, defaultLocale, locales } from '#shared/locale'
 
-const clientSideBase = new URL('../inertia/lib/i18n/', import.meta.url)
-const serverSideBase = new URL('../resources/lang/', import.meta.url)
+const catalogBase = new URL('../shared/i18n/', import.meta.url)
 
 /**
- * Check that translations have the same:
+ * Check that the catalogs in `shared/i18n/$locale.ts`,
+ * used on the client and the server, have the same:
  *
- * * files,
  * * keys,
  * * message placeholders.
- *
- * Two catalog shapes are covered:
- *
- * * client side: flat `inertia/lib/i18n/$locale.ts`
- * * server side: `resources/lang/$locale/$namespace.json`, w/ optional nesting
  */
 export default class I18nCheck extends BaseCommand {
   static override commandName = 'i18n:check'
@@ -89,28 +82,28 @@ export default class I18nCheck extends BaseCommand {
   }
 
   /**
-   * Check client catalogs.
+   * Check the catalogs.
    *
    * @returns
    *   Promise that resolves to whether the catalogs are valid.
    */
-  async checkClientCatalogs(): Promise<boolean> {
+  async checkAllCatalogs(): Promise<boolean> {
     let ok = true
     const catalogs = new Map<Locale, Record<string, string>>()
 
     for (const locale of locales) {
       try {
         const module: { default: Record<string, string> } = await import(
-          new URL(`${locale}.js`, clientSideBase).href
+          new URL(`${locale}.js`, catalogBase).href
         )
         catalogs.set(locale, module.default)
       } catch {
-        this.logger.error(`[client] missing locale catalog (\`inertia/lib/i18n/${locale}.ts\`)`)
+        this.logger.error(`[catalog] missing locale catalog (\`shared/i18n/${locale}.ts\`)`)
         ok = false
       }
     }
 
-    ok = this.checkCatalogs('client', catalogs) && ok
+    ok = this.checkCatalogs('catalog', catalogs) && ok
 
     return ok
   }
@@ -187,93 +180,10 @@ export default class I18nCheck extends BaseCommand {
   }
 
   /**
-   * Check server catalogs.
-   *
-   * @returns
-   *   Promise that resolves to whether the catalogs are valid.
-   */
-  async checkServerCatalogs(): Promise<boolean> {
-    let localeFolders: Array<string>
-    let ok = true
-
-    try {
-      localeFolders = await readdir(serverSideBase)
-    } catch {
-      this.logger.error('[server] cannot read server side catalogs')
-      return false
-    }
-
-    const filesByLocale = new Map<Locale, Set<string>>()
-    const namespaces = new Set<string>()
-
-    for (const locale of locales) {
-      if (!localeFolders.includes(locale)) {
-        this.logger.error(`[server] missing locale folder (\`resources/lang/${locale}/\`)`)
-        ok = false
-        continue
-      }
-
-      const entries = await readdir(new URL(`${locale}/`, serverSideBase))
-      const files = new Set(entries.filter((file) => file.endsWith('.json')))
-      filesByLocale.set(locale, files)
-      for (const file of files) namespaces.add(file)
-    }
-
-    for (const locale of locales) {
-      const files = filesByLocale.get(locale)
-      if (!files) continue
-      for (const namespace of namespaces) {
-        if (!files.has(namespace)) {
-          this.logger.error(
-            `[server] missing locale catalog (\`resources/lang/${locale}/${namespace}\`)`
-          )
-          ok = false
-        }
-      }
-    }
-
-    for (const namespace of namespaces) {
-      const catalogs = new Map<Locale, Record<string, string>>()
-
-      for (const locale of locales) {
-        const files = filesByLocale.get(locale)
-        if (!files) continue
-        if (!files.has(namespace)) continue
-
-        const raw: unknown = JSON.parse(
-          await readFile(new URL(`${locale}/${namespace}`, serverSideBase), 'utf8')
-        )
-        const flat: Record<string, string> = {}
-
-        try {
-          flatten(raw, '', flat)
-        } catch (error) {
-          const reason =
-            error && typeof error === 'object' && 'message' in error ? error.message : error
-          this.logger.error(
-            `[server] problem in locale namespace (\`resources/lang/${locale}/${namespace}\`): ${reason}`
-          )
-          ok = false
-          continue
-        }
-
-        catalogs.set(locale, flat)
-      }
-
-      ok = this.checkCatalogs(`server/${namespace}`, catalogs) && ok
-    }
-
-    return ok
-  }
-
-  /**
    * Check i18n.
    */
   override async run(): Promise<undefined> {
-    const clientOk = await this.checkClientCatalogs()
-    const serverOk = await this.checkServerCatalogs()
-
-    if (clientOk && serverOk) {
+    if (await this.checkAllCatalogs()) {
       this.logger.success('Translations are complete and consistent.')
     } else {
       this.exitCode = 1
@@ -317,32 +227,5 @@ function collectPlaceholders(
     } else {
       // Literal or Pound.
     }
-  }
-}
-
-/**
- * Flatten a nested translation file into a single level record,
- * keyed by dotted paths.
- *
- * @param value
- *   Value to flatten.
- * @param path
- *   Current path within the nested structure.
- * @param into
- *   Record to collect into.
- * @returns
- *   Nothing.
- * @throws
- *   When a value is invalid.
- */
-function flatten(value: unknown, path: string, into: Record<string, string>): undefined {
-  if (typeof value === 'string') {
-    into[path] = value
-  } else if (value && typeof value === 'object' && !Array.isArray(value)) {
-    for (const [key, child] of Object.entries(value)) {
-      flatten(child, path ? `${path}.${key}` : key, into)
-    }
-  } else {
-    throw new Error(`unsupported value at \`${path}\`: expected \`object\`, \`string\``)
   }
 }

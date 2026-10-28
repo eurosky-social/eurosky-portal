@@ -1,6 +1,7 @@
 import clsx from 'clsx'
 import { Heart, LucideIcon, MessageSquareText, Newspaper, UserPlus } from 'lucide-react'
 import type { ActivityRow } from '#services/activity_service'
+import type { MessageKey } from '#shared/i18n'
 import type { SupportedCollection } from '#utils/activity'
 import { ClickableCard } from '~/lib/card'
 import { Link } from '~/lib/link'
@@ -19,7 +20,7 @@ const labelKeys = {
   'app.bsky.feed.post': 'activity.type.post',
   'app.bsky.graph.follow': 'activity.type.follow',
   'site.standard.document': 'activity.type.article',
-} satisfies Record<SupportedCollection, string>
+} satisfies Record<SupportedCollection, MessageKey>
 
 export function ActivityItem({ activity }: { activity: ActivityRow }) {
   const { collection, createdAt, text, uri } = activity

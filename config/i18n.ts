@@ -1,9 +1,8 @@
 import { configProvider } from '@adonisjs/core'
-import app from '@adonisjs/core/services/app'
-import { defineConfig, formatters, loaders } from '@adonisjs/i18n'
-import type { FormatterFactory } from '@adonisjs/i18n/types'
+import { defineConfig, formatters } from '@adonisjs/i18n'
+import type { FormatterFactory, LoaderFactory, Translations } from '@adonisjs/i18n/types'
 import { brand } from '#shared/brand'
-import { defaultLocale } from '#shared/locale'
+import { defaultLocale, locales } from '#shared/locale'
 
 const i18nConfig = defineConfig({
   defaultLocale,
@@ -24,9 +23,24 @@ const i18nConfig = defineConfig({
   }),
   loaders: [
     /**
-     * File system loader reads translations `resources/lang/$locale/`.
+     * Load the catalogs shared with the client (`shared/i18n/$locale.ts`).
      */
-    loaders.fs({ location: app.languageFilesPath() }),
+    function (): ReturnType<LoaderFactory> {
+      return {
+        async load() {
+          const translations: Translations = {}
+
+          for (const locale of locales) {
+            const module: { default: Record<string, string> } = await import(
+              `#shared/i18n/${locale}`
+            )
+            translations[locale] = module.default
+          }
+
+          return translations
+        },
+      }
+    },
   ],
 })
 

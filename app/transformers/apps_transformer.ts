@@ -1,12 +1,13 @@
 import { BaseTransformer } from '@adonisjs/core/transformers'
 import type { App } from '#services/atstore_service'
+import type { MessageKey } from '#shared/i18n'
 import AppSummaryTransformer from '#transformers/app_summary_transformer'
 
 export default class AppsTransformer extends BaseTransformer<{
   apps: ReadonlyArray<App>
 }> {
   toObject() {
-    const byCategory = new Map<string, App[]>()
+    const byCategory = new Map<MessageKey, App[]>()
     const recommended: App[] = []
 
     for (const app of this.resource.apps) {
@@ -21,7 +22,7 @@ export default class AppsTransformer extends BaseTransformer<{
     const categories = [...byCategory.entries()]
       .map(([category, apps]) => ({ apps, category }))
       .sort((a, b) => a.category.localeCompare(b.category))
-    const sections =
+    const sections: Array<{ apps: App[]; category: MessageKey }> =
       recommended.length > 0
         ? [{ apps: recommended, category: 'apps.category.recommended' }, ...categories]
         : categories

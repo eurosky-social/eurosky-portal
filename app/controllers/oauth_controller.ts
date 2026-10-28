@@ -243,7 +243,7 @@ export default class OAuthController {
    * See `DiscoverController`.
    */
   async #favoriteCallback(
-    { i18n, logger, oauth, response, session }: HttpContext,
+    { logger, oauth, response, session }: HttpContext,
     intent: FavoriteIntent,
     oauthState: string | undefined
   ) {
@@ -257,7 +257,7 @@ export default class OAuthController {
       // Another account was chosen.
       // It is not logged in here.
       if (user.did !== intent.did) {
-        flashSessionValue(session, 'errorsBag', { favorite: i18n.t('apps.favoriteOtherAccount') })
+        flashSessionValue(session, 'errorMessage', { key: 'apps.favoriteOtherAccount' })
         return response.redirect().toIntended('/apps')
       }
 
@@ -277,8 +277,8 @@ export default class OAuthController {
         })
       }
 
-      flashSessionValue(session, 'errorsBag', {
-        favorite: i18n.t(denied ? 'apps.favoriteDenied' : 'apps.favoriteFailed'),
+      flashSessionValue(session, 'errorMessage', {
+        key: denied ? 'apps.favoriteDenied' : 'apps.favoriteFailed',
       })
     }
 
@@ -289,7 +289,7 @@ export default class OAuthController {
    * Finish logging in or signing up.
    */
   async #loginCallback(
-    { auth, i18n, logger, oauth, request, response, session }: HttpContext,
+    { auth, logger, oauth, request, response, session }: HttpContext,
     oauthState: string | undefined
   ) {
     const termsAccepted = pullSessionValue(session, 'terms_accepted') ?? 'invalid'
@@ -308,7 +308,7 @@ export default class OAuthController {
         extra: { source, value: termsAccepted },
       })
 
-      flashSessionValue(session, 'errorsBag', { signup_failed: i18n.t('oauth.signupError') })
+      flashSessionValue(session, 'errorMessage', { key: 'oauth.signupError' })
       AuthFlowCompleted.dispatch({
         ip,
         outcome: 'error',
@@ -355,9 +355,7 @@ export default class OAuthController {
       if (!existingAccount && !resolved) {
         await oauth.logout(did)
 
-        flashSessionValue(session, 'errorsBag', {
-          login_failed: i18n.t('oauth.loginFailed'),
-        })
+        flashSessionValue(session, 'errorMessage', { key: 'oauth.loginFailed' })
 
         AuthFlowCompleted.dispatch({
           ip,
@@ -418,9 +416,8 @@ export default class OAuthController {
         // If the user denied the authorization request, or it timed out, this
         // doesn't need an explicit capture:
         if (error === 'access_denied') {
-          flashSessionValue(session, 'errorsBag', {
-            access_denied:
-              source === 'signup' ? i18n.t('oauth.cancelledSignup') : i18n.t('oauth.deniedSignIn'),
+          flashSessionValue(session, 'errorMessage', {
+            key: source === 'signup' ? 'oauth.cancelledSignup' : 'oauth.deniedSignIn',
           })
 
           AuthFlowCompleted.dispatch({
@@ -436,9 +433,8 @@ export default class OAuthController {
 
         // We do want to capture information about the OAuth server failing:
         if (error === 'server_error') {
-          flashSessionValue(session, 'errorsBag', {
-            server_error:
-              source === 'signup' ? i18n.t('oauth.signupServerError') : i18n.t('oauth.loginFailed'),
+          flashSessionValue(session, 'errorMessage', {
+            key: source === 'signup' ? 'oauth.signupServerError' : 'oauth.loginFailed',
           })
 
           captureException(err, {
@@ -486,9 +482,7 @@ export default class OAuthController {
         })
       }
 
-      flashSessionValue(session, 'errorsBag', {
-        error: i18n.t('oauth.unknownCallbackError'),
-      })
+      flashSessionValue(session, 'errorMessage', { key: 'oauth.unknownCallbackError' })
 
       AuthFlowCompleted.dispatch({
         ip,

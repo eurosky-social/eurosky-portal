@@ -35,6 +35,10 @@ const nl = {
   'apps.detail.explore': 'Verkennen',
   'apps.detail.removeFavorite': 'Uit je apps verwijderen',
   'apps.detail.seeAllReviews': 'Bekijk alle beoordelingen',
+  'apps.favoriteDenied': 'Voor favorieten is je toestemming nodig om ze in je account op te slaan.',
+  'apps.favoriteFailed': 'We konden je favorieten niet bijwerken, probeer het later opnieuw.',
+  'apps.favoriteOtherAccount':
+    'Ga verder met het account waarmee je bent ingelogd om apps toe te voegen.',
   'apps.favorited': 'Favoriet',
   'apps.madeInEurope': 'Gemaakt in Europa',
   'apps.openWith': 'Openen met {name}',
@@ -74,6 +78,7 @@ const nl = {
     '{orgName} is jouw Europese thuis in de Atmosphere – een wereldwijd netwerk van sociale apps en diensten.',
   'dashboard.yourApps.text': 'Je favoriete apps.',
   'dashboard.yourApps.viewAll': 'Bekijk al je apps',
+  'errors.E_UNAUTHORIZED_ACCESS': 'Log in om deze pagina te bekijken.',
   'errors.notFound.title': 'Pagina niet gevonden',
   'errors.serverError.heading': 'Er is iets misgegaan',
   'errors.serverError.title': 'Serverfout',
@@ -95,6 +100,7 @@ const nl = {
   'hero.title': '{orgName}: jouw portaal naar de Atmosphere.',
   'home.heading': 'Een app voor alles',
   'home.subheading': 'Er worden steeds nieuwe apps gemaakt!',
+  'legal.loadError': 'Kan de privacyverklaring of gebruiksvoorwaarden niet laden',
   'login.continue': 'Doorgaan →',
   'login.forgotPassword': 'Wachtwoord vergeten? <link>Stel opnieuw in</link>',
   'login.handleLabel': 'Je Atmosphere handle',
@@ -102,6 +108,7 @@ const nl = {
   'login.subtitle': 'Voer hieronder je handle in om in te loggen op je account',
   'login.title': 'Log in op je {orgName} account.',
   'markdown.error': 'Deze inhoud kan niet worden weergegeven.',
+  'meta.description': 'Jouw portaal naar de Atmosphere',
   'migrationAlert.cta': 'Migreer',
   'migrationAlert.text':
     'Neem je handle, berichten en volgers mee naar {orgName} met de migratietool. Een nieuw account <link>kan later niet worden samengevoegd met een bestaand account</link>.',
@@ -119,6 +126,20 @@ const nl = {
   'nav.sidebar': 'Zijbalk',
   'nav.signIn': 'Inloggen',
   'nav.skipToContent': 'Naar inhoud gaan',
+  'oauth.accountNotFound': 'We konden je Atmosphere account niet vinden: {handle}',
+  'oauth.accountNotFoundWithFallback':
+    'We konden je Atmosphere account niet vinden: {handle}. Probeer het later opnieuw, of log in via: {url}',
+  'oauth.cancelledSignup': 'Je hebt het aanmaken van je account geannuleerd',
+  'oauth.deniedSignIn': 'Je hebt de inlogpoging geweigerd',
+  'oauth.invalidAccount': 'Voer een geldig Atmosphere account in',
+  'oauth.loginFailed': 'We konden je op dit moment niet inloggen, probeer het later opnieuw.',
+  'oauth.signupError': 'Er is een fout opgetreden tijdens het aanmaken van je account',
+  'oauth.signupServerError':
+    'We konden je account op dit moment niet aanmaken, probeer het later opnieuw.',
+  'oauth.unknownCallbackError': 'Er is een onbekende fout opgetreden, probeer het later opnieuw.',
+  'oauth.unknownError': 'Onbekende fout opgetreden',
+  'oauth.unsupportedAccount':
+    '{productTitle} is momenteel alleen beschikbaar voor {orgName} accounts.',
   'onboarding.alternative':
     'Je kunt ook <logout>Uitloggen</logout> en {productTitle} niet gebruiken.',
   'onboarding.notice.bothUpdated': 'Onze Gebruiksvoorwaarden en Privacybeleid zijn bijgewerkt',
@@ -144,6 +165,17 @@ const nl = {
   'sidebar.yourApps': 'Je apps',
   'theme.setDark': 'Stel thema in op donker',
   'theme.setLight': 'Stel thema in op licht',
+  'validator.shared.messages.accepted': 'Het veld {field} moet worden geaccepteerd.',
+  'validator.shared.messages.at-handle':
+    'Vul een geldig Atmosphere account in, bijvoorbeeld naam{domain}',
+  'validator.shared.messages.enum': 'Het geselecteerde {field} is ongeldig.',
+  'validator.shared.messages.max': 'Het veld {field} mag niet meer dan {max} zijn.',
+  'validator.shared.messages.min': 'Het veld {field} moet minstens {min} zijn.',
+  'validator.shared.messages.notIn': 'Het geselecteerde {field} is ongeldig.',
+  'validator.shared.messages.regex': 'De notatie van het veld {field} is ongeldig.',
+  'validator.shared.messages.required': 'Het veld {field} is verplicht.',
+  'validator.shared.messages.terms.required':
+    'Je moet akkoord gaan met de gebruiksvoorwaarden en het privacybeleid om door te gaan.',
   'yourApps.access.heading': 'Controleer welke apps toegang hebben',
   'yourApps.access.link': 'App-toegang beheren',
   'yourApps.access.text':
