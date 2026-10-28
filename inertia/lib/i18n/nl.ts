@@ -100,6 +100,7 @@ const nl = {
   'home.heading': 'Een app voor alles',
   'home.subheading': 'Er worden steeds nieuwe apps gemaakt!',
   'login.continue': 'Doorgaan →',
+  'login.forgotPassword': 'Wachtwoord vergeten? <link>Stel opnieuw in</link>',
   'login.handleLabel': 'Je Atmosphere handle',
   'login.noAccount': 'Nog geen account? <signUp>Registreren</signUp>',
   'login.subtitle': 'Voer hieronder je handle in om in te loggen op je account',
@@ -107,7 +108,7 @@ const nl = {
   'markdown.error': 'Deze inhoud kan niet worden weergegeven.',
   'migrationAlert.cta': 'Migreer',
   'migrationAlert.text':
-    'Neem je handle, berichten en volgers mee naar {orgName} met de migratietool. Een nieuw account kan later niet worden samengevoegd met een bestaand account.',
+    'Neem je handle, berichten en volgers mee naar {orgName} met de migratietool. Een nieuw account <link>kan later niet worden samengevoegd met een bestaand account</link>.',
   'migrationAlert.title': 'Heb je al een Bluesky account?',
   'nav.about': 'Over',
   'nav.apps': 'Apps',

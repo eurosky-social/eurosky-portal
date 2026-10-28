@@ -101,6 +101,7 @@ const fr = {
   'home.heading': 'Une application pour tout',
   'home.subheading': 'De nouvelles applications sont créées en permanence !',
   'login.continue': 'Continuer →',
+  'login.forgotPassword': 'Mot de passe oublié? <link>Réinitialisez-le</link>',
   'login.handleLabel': 'Votre identifiant Atmosphere',
   'login.noAccount': 'Vous n’avez pas de compte? <signUp>Inscrivez-vous</signUp>',
   'login.subtitle': 'Saisissez votre identifiant ci-dessous pour vous connecter à votre compte',
@@ -108,7 +109,7 @@ const fr = {
   'markdown.error': 'Ce contenu n’a pas pu être affiché.',
   'migrationAlert.cta': 'Migrer',
   'migrationAlert.text':
-    'Transférez votre identifiant, vos publications et vos abonnés vers {orgName} avec l’outil de migration. Un nouveau compte ne pourra pas être fusionné plus tard avec un compte existant.',
+    'Transférez votre identifiant, vos publications et vos abonnés vers {orgName} avec l’outil de migration. Un nouveau compte <link>ne pourra pas être fusionné plus tard avec un compte existant</link>.',
   'migrationAlert.title': 'Vous avez déjà un compte Bluesky?',
   'nav.about': 'À propos',
   'nav.apps': 'Applications',

@@ -100,6 +100,7 @@ const en = {
   'home.heading': 'An app for everything',
   'home.subheading': 'There’s always new apps being created!',
   'login.continue': 'Continue →',
+  'login.forgotPassword': 'Forgot your password? <link>Reset it</link>',
   'login.handleLabel': 'Your Atmosphere handle',
   'login.noAccount': 'Don’t have an account? <signUp>Sign up</signUp>',
   'login.subtitle': 'Enter your handle below to login to your account',
@@ -107,7 +108,7 @@ const en = {
   'markdown.error': 'This content couldn’t be displayed.',
   'migrationAlert.cta': 'Migrate',
   'migrationAlert.text':
-    'Bring your handle, posts, and followers to {orgName} with the migration tool. A new account can’t be merged with an existing one later.',
+    'Bring your handle, posts, and followers to {orgName} with the migration tool. A new account <link>can’t be merged with an existing one later</link>.',
   'migrationAlert.title': 'Already have a Bluesky account?',
   'nav.about': 'About',
   'nav.apps': 'Apps',
