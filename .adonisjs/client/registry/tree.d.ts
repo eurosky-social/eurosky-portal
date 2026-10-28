@@ -28,15 +28,15 @@ export interface ApiDefinition {
     apps: typeof routes['discover.apps']
     app: typeof routes['discover.app']
   }
-  explore: {
-    learnMore: typeof routes['explore.learn_more']
-  }
   activity: {
     show: typeof routes['activity.show']
     detail: typeof routes['activity.detail']
   }
   legal: {
     show: typeof routes['legal.show']
+  }
+  explore: {
+    learnMore: typeof routes['explore.learn_more']
   }
   faq: {
     show: typeof routes['faq.show']

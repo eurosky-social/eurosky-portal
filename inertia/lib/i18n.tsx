@@ -125,7 +125,7 @@ export function I18nProvider(properties: Properties) {
     [locale]
   )
 
-  // Some props such as FAQ and the explore document are rendered server side
+  // Some props such as FAQ are rendered server side
   // in the request locale.
   // Reload to pick up the new one but skip the initial mount.
   useEffect(

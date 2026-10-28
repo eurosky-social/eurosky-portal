@@ -34,6 +34,9 @@ export const links = {
   privacy(_locale: Locale) {
     return 'https://eurosky.tech/accounts/privacy/'
   },
+  products(locale: Locale) {
+    return localize('https://eurosky.tech/products/', locale)
+  },
   security(_locale: Locale) {
     return 'https://eurosky.tech/security/'
   },

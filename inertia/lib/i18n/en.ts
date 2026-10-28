@@ -44,7 +44,6 @@ const en = {
   'beta.giveFeedback': 'Give feedback',
   'beta.warning': '{productTitle} is in beta. <feedback>Give feedback</feedback>.',
   'common.breadcrumb': 'Breadcrumb',
-  'common.learnMore': 'Learn more',
   'common.opensInNewTab': '(opens in a new tab)',
   'common.someone': 'someone',
   'createAccount.haveAccount': 'Already have a {orgName} account? <signIn>Sign in</signIn>',
@@ -56,9 +55,6 @@ const en = {
   'dashboard.activity.subheading': 'Your latest activity.',
   'dashboard.activity.syncing': 'Syncing your activity, this may take a moment…',
   'dashboard.activity.viewAll': 'View all activity',
-  'dashboard.explore.heading': 'Explore the ecosystem',
-  'dashboard.explore.text':
-    'Your {orgName} account works with dozens of apps. Browse the featured apps below and click one to get started.',
   'dashboard.featuredApps.browseMore': 'Browse more apps',
   'dashboard.featuredApps.heading': 'Featured applications',
   'dashboard.featuredApps.text': 'Your {orgName} account works with all of these.',

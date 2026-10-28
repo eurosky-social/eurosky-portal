@@ -44,7 +44,6 @@ const nl = {
   'beta.giveFeedback': 'Feedback geven',
   'beta.warning': '{productTitle} is in bèta. <feedback>Feedback geven</feedback>.',
   'common.breadcrumb': 'Kruimelpad',
-  'common.learnMore': 'Meer informatie',
   'common.opensInNewTab': '(opent in een nieuw tabblad)',
   'common.someone': 'iemand',
   'createAccount.haveAccount': 'Heb je al een {orgName} account? <signIn>Inloggen</signIn>',
@@ -56,9 +55,6 @@ const nl = {
   'dashboard.activity.subheading': 'Je laatste activiteiten.',
   'dashboard.activity.syncing': 'Je activiteiten worden gesynchroniseerd, dit kan even duren…',
   'dashboard.activity.viewAll': 'Alle activiteiten bekijken',
-  'dashboard.explore.heading': 'Verken het ecosysteem',
-  'dashboard.explore.text':
-    'Je {orgName} account werkt met tientallen apps. Blader hieronder door de uitgelichte apps en klik op een app om te beginnen.',
   'dashboard.featuredApps.browseMore': 'Meer apps bekijken',
   'dashboard.featuredApps.heading': 'Uitgelichte applicaties',
   'dashboard.featuredApps.text': 'Je {orgName} account werkt met al deze apps.',

@@ -15,7 +15,6 @@ export type ScannedRoutes = {
     'dashboard.apps': { paramsTuple?: []; params?: {} }
     'discover.favorite': { paramsTuple: [ParamValue]; params: {'rkey': ParamValue} }
     'discover.unfavorite': { paramsTuple: [ParamValue]; params: {'rkey': ParamValue} }
-    'explore.learn_more': { paramsTuple?: []; params?: {} }
     'activity.show': { paramsTuple?: []; params?: {} }
     'activity.detail': { paramsTuple: [ParamValue,ParamValue]; params: {'collection': ParamValue,'rkey': ParamValue} }
     'account.onboarding': { paramsTuple?: []; params?: {} }
@@ -24,6 +23,7 @@ export type ScannedRoutes = {
     'discover.apps': { paramsTuple?: []; params?: {} }
     'discover.app': { paramsTuple: [ParamValue]; params: {'rkey': ParamValue} }
     'legal.show': { paramsTuple: [ParamValue]; params: {'document': ParamValue} }
+    'explore.learn_more': { paramsTuple?: []; params?: {} }
     'faq.show': { paramsTuple?: []; params?: {} }
     'health_checks.live': { paramsTuple?: []; params?: {} }
     'health_checks.ready': { paramsTuple?: []; params?: {} }
@@ -35,13 +35,13 @@ export type ScannedRoutes = {
     'auth.login': { paramsTuple?: []; params?: {} }
     'dashboard.show': { paramsTuple?: []; params?: {} }
     'dashboard.apps': { paramsTuple?: []; params?: {} }
-    'explore.learn_more': { paramsTuple?: []; params?: {} }
     'activity.show': { paramsTuple?: []; params?: {} }
     'activity.detail': { paramsTuple: [ParamValue,ParamValue]; params: {'collection': ParamValue,'rkey': ParamValue} }
     'account.onboarding': { paramsTuple?: []; params?: {} }
     'discover.apps': { paramsTuple?: []; params?: {} }
     'discover.app': { paramsTuple: [ParamValue]; params: {'rkey': ParamValue} }
     'legal.show': { paramsTuple: [ParamValue]; params: {'document': ParamValue} }
+    'explore.learn_more': { paramsTuple?: []; params?: {} }
     'faq.show': { paramsTuple?: []; params?: {} }
     'health_checks.live': { paramsTuple?: []; params?: {} }
     'health_checks.ready': { paramsTuple?: []; params?: {} }
@@ -53,13 +53,13 @@ export type ScannedRoutes = {
     'auth.login': { paramsTuple?: []; params?: {} }
     'dashboard.show': { paramsTuple?: []; params?: {} }
     'dashboard.apps': { paramsTuple?: []; params?: {} }
-    'explore.learn_more': { paramsTuple?: []; params?: {} }
     'activity.show': { paramsTuple?: []; params?: {} }
     'activity.detail': { paramsTuple: [ParamValue,ParamValue]; params: {'collection': ParamValue,'rkey': ParamValue} }
     'account.onboarding': { paramsTuple?: []; params?: {} }
     'discover.apps': { paramsTuple?: []; params?: {} }
     'discover.app': { paramsTuple: [ParamValue]; params: {'rkey': ParamValue} }
     'legal.show': { paramsTuple: [ParamValue]; params: {'document': ParamValue} }
+    'explore.learn_more': { paramsTuple?: []; params?: {} }
     'faq.show': { paramsTuple?: []; params?: {} }
     'health_checks.live': { paramsTuple?: []; params?: {} }
     'health_checks.ready': { paramsTuple?: []; params?: {} }

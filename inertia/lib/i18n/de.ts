@@ -44,7 +44,6 @@ const de = {
   'beta.giveFeedback': 'Feedback geben',
   'beta.warning': '{productTitle} ist in der Beta. <feedback>Feedback geben</feedback>.',
   'common.breadcrumb': 'Brotkrümelnavigation',
-  'common.learnMore': 'Mehr erfahren',
   'common.opensInNewTab': '(öffnet in einem neuen Tab)',
   'common.someone': 'jemand',
   'createAccount.haveAccount': 'Du hast bereits ein {orgName}-Konto? <signIn>Anmelden</signIn>',
@@ -58,9 +57,6 @@ const de = {
   'dashboard.activity.syncing':
     'Deine Aktivität wird synchronisiert, das kann einen Moment dauern…',
   'dashboard.activity.viewAll': 'Alle Aktivitäten ansehen',
-  'dashboard.explore.heading': 'Das Ökosystem entdecken',
-  'dashboard.explore.text':
-    'Dein {orgName}-Konto funktioniert mit Dutzenden von Apps. Sieh dir unten die ausgewählten Apps an und klicke auf eine, um loszulegen.',
   'dashboard.featuredApps.browseMore': 'Weitere Apps entdecken',
   'dashboard.featuredApps.heading': 'Ausgewählte Apps',
   'dashboard.featuredApps.text': 'Dein {orgName}-Konto funktioniert mit all diesen Apps.',

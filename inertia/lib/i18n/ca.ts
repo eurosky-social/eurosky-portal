@@ -44,7 +44,6 @@ const ca = {
   'beta.giveFeedback': 'Envia comentaris',
   'beta.warning': '{productTitle} està en beta. <feedback>Envia comentaris</feedback>.',
   'common.breadcrumb': 'Camí de navegació',
-  'common.learnMore': 'Més informació',
   'common.opensInNewTab': '(s’obre en una pestanya nova)',
   'common.someone': 'algú',
   'createAccount.haveAccount': 'Ja teniu un compte {orgName}? <signIn>Inicia la sessió</signIn>',
@@ -57,9 +56,6 @@ const ca = {
   'dashboard.activity.syncing':
     'S’està sincronitzant la vostra activitat, això pot trigar una estona…',
   'dashboard.activity.viewAll': 'Visualitza tota l’activitat',
-  'dashboard.explore.heading': 'Exploreu l’ecosistema',
-  'dashboard.explore.text':
-    'El compte {orgName} funciona amb desenes d’aplicacions. Exploreu les aplicacions destacades que trobareu a continuació i feu-ne clic a una per a començar.',
   'dashboard.featuredApps.browseMore': 'Exploreu més aplicacions',
   'dashboard.featuredApps.heading': 'Aplicacions destacades',
   'dashboard.featuredApps.text':
