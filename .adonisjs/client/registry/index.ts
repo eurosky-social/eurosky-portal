@@ -72,12 +72,6 @@ const routes = {
     tokens: [[0,"apps"],[1,"rkey"],[0,"favorite"]],
     types: placeholder as Registry['discover.unfavorite']['types'],
   },
-  'explore.learn_more': {
-    methods: ["GET","HEAD"],
-    pattern: '/explore/learn-more',
-    tokens: [[0,"explore"],[0,"learn-more"]],
-    types: placeholder as Registry['explore.learn_more']['types'],
-  },
   'activity.show': {
     methods: ["GET","HEAD"],
     pattern: '/activity',
@@ -125,6 +119,12 @@ const routes = {
     pattern: '/legal/:document',
     tokens: [[0,"legal"],[1,"document"]],
     types: placeholder as Registry['legal.show']['types'],
+  },
+  'explore.learn_more': {
+    methods: ["GET","HEAD"],
+    pattern: '/explore/learn-more',
+    tokens: [[0,"explore"],[0,"learn-more"]],
+    types: placeholder as Registry['explore.learn_more']['types'],
   },
   'faq.show': {
     methods: ["GET","HEAD"],

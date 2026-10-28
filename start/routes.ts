@@ -24,10 +24,8 @@ router
   .group(() => {
     router.get('/dashboard', [controllers.Dashboard, 'show'])
     router.get('/dashboard/apps', [controllers.Dashboard, 'apps'])
-    router.on('/dashboard/explore').redirectToPath('/explore/learn-more')
     router.post('/apps/:rkey/favorite', [controllers.Discover, 'favorite'])
     router.delete('/apps/:rkey/favorite', [controllers.Discover, 'unfavorite'])
-    router.get('/explore/learn-more', [controllers.Explore, 'learnMore'])
     router.get('/activity', [controllers.Activity, 'show'])
     router.get('/activity/:collection/:rkey', [controllers.Activity, 'detail'])
     router.get('/onboarding', [controllers.Account, 'onboarding'])
@@ -39,6 +37,8 @@ router
 router.get('/apps', [controllers.Discover, 'apps'])
 router.get('/apps/:rkey', [controllers.Discover, 'app'])
 router.get('/legal/:document', [controllers.Legal, 'show'])
+router.on('/dashboard/explore').redirectToPath('/explore/learn-more')
+router.get('/explore/learn-more', [controllers.Explore, 'learnMore'])
 router.get('/faq', [controllers.Faq, 'show'])
 
 router.get('/_health', [controllers.HealthChecks, 'live'])

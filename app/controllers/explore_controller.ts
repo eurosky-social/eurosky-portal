@@ -1,14 +1,13 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import app from '@adonisjs/core/services/app'
+import { links } from '#shared/links'
 import { defaultLocale, isLocale } from '#shared/locale'
 
 export default class ExploreController {
-  async learnMore({ i18n, inertia, view }: HttpContext) {
+  /**
+   * The explore page moved to the products page on eurosky.tech.
+   */
+  async learnMore({ i18n, response }: HttpContext) {
     const locale = isLocale(i18n.locale) ? i18n.locale : defaultLocale
-    const renderedHtml = await view.render('markdown', {
-      document: app.makePath('data', locale, 'explore.md'),
-    })
-
-    return inertia.render('explore/learn-more', { document: renderedHtml })
+    return response.redirect().toPath(links.products(locale))
   }
 }

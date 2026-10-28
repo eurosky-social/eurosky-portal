@@ -150,19 +150,6 @@ export interface Registry {
       rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/discover_controller').default['unfavorite']>>>
     }
   }
-  'explore.learn_more': {
-    methods: ["GET","HEAD"]
-    pattern: '/explore/learn-more'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/explore_controller').default['learnMore']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/explore_controller').default['learnMore']>>>
-      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/explore_controller').default['learnMore']>>>
-    }
-  }
   'activity.show': {
     methods: ["GET","HEAD"]
     pattern: '/activity'
@@ -265,6 +252,19 @@ export interface Registry {
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/legal_controller').default['show']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/legal_controller').default['show']>>> | { status: 422; response: { errors: SimpleError[] } }
       rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/legal_controller').default['show']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'explore.learn_more': {
+    methods: ["GET","HEAD"]
+    pattern: '/explore/learn-more'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/explore_controller').default['learnMore']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/explore_controller').default['learnMore']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/explore_controller').default['learnMore']>>>
     }
   }
   'faq.show': {

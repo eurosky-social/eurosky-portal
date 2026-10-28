@@ -44,7 +44,6 @@ const fr = {
   'beta.giveFeedback': 'Donner votre avis',
   'beta.warning': '{productTitle} est en bêta. <feedback>Donnez votre avis</feedback>.',
   'common.breadcrumb': 'Fil d’Ariane',
-  'common.learnMore': 'En savoir plus',
   'common.opensInNewTab': '(s’ouvre dans un nouvel onglet)',
   'common.someone': 'quelqu’un',
   'createAccount.haveAccount': 'Vous avez déjà un compte {orgName}? <signIn>Se connecter</signIn>',
@@ -57,9 +56,6 @@ const fr = {
   'dashboard.activity.syncing':
     'Synchronisation de votre activité en cours, cela peut prendre un instant…',
   'dashboard.activity.viewAll': 'Voir toute l’activité',
-  'dashboard.explore.heading': 'Explorer l’écosystème',
-  'dashboard.explore.text':
-    'Votre compte {orgName} fonctionne avec des dizaines d’applications. Parcourez les applications phares ci-dessous et cliquez sur une application pour commencer.',
   'dashboard.featuredApps.browseMore': 'Voir plus d’applications',
   'dashboard.featuredApps.heading': 'Applications phares',
   'dashboard.featuredApps.text': 'Votre compte {orgName} fonctionne avec toutes ces applications.',
