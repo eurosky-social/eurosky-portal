@@ -102,15 +102,16 @@ const ca = {
   'home.heading': 'Una aplicació per a tot',
   'home.subheading': 'Sempre s’estan creant aplicacions noves',
   'login.continue': 'Continua →',
+  'login.forgotPassword': 'Heu oblidat la contrasenya? <link>Restabliu-la</link>',
   'login.handleLabel': 'El vostre nom d’usuari de l’Atmosphere',
-  'login.noAccount': 'No teniu cap compte? Crea’n un<signUp>Sign up</signUp>',
+  'login.noAccount': 'No teniu cap compte? <signUp>Creeu-ne un</signUp>',
   'login.subtitle':
     'Introduïu el vostre nom d’usuari a continuació per a iniciar la sessió al compte',
   'login.title': 'Inicieu la sessió al compte {orgName}.',
   'markdown.error': 'No s’ha pogut mostrar aquest contingut.',
   'migrationAlert.cta': 'Migra',
   'migrationAlert.text':
-    'Porteu el vostre nom d’usuari, les publicacions i els seguidors a {orgName} amb l’eina de migració. Un compte nou no es podrà fusionar més endavant amb un d’existent.',
+    'Porteu el vostre nom d’usuari, les publicacions i els seguidors a {orgName} amb l’eina de migració. Un compte nou <link>no es podrà fusionar més endavant amb un d’existent</link>.',
   'migrationAlert.title': 'Ja teniu un compte de Bluesky?',
   'nav.about': 'Quant a',
   'nav.apps': 'Aplicacions',

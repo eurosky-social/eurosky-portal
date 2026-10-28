@@ -6,7 +6,7 @@ import { InertiaProps } from '~/types'
 import { Data } from '@generated/data'
 import { Head } from '@inertiajs/react'
 import { useT } from '~/lib/i18n'
-import Notice from '~/lib/notice'
+import { MigrationNotice } from '~/components/MigrationNotice'
 import Layout from '~/layouts/default'
 import type { ReactElement } from 'react'
 
@@ -23,18 +23,7 @@ export default function CreateAccount(
       <Container className="pt-6 md:pt-12">
         {props.migrationUrl && (
           <div className="w-full md:w-3/4 lg:w-1/2 m-auto">
-            <Notice
-              action={
-                <a
-                  href={props.migrationUrl}
-                  className="underline decoration-ink/50 hover:decoration-ink dark:decoration-white/50 dark:hover:decoration-white"
-                >
-                  {tPlain('migrationAlert.cta')}
-                </a>
-              }
-              text={tPlain('migrationAlert.text')}
-              title={tPlain('migrationAlert.title')}
-            />
+            <MigrationNotice migrationUrl={props.migrationUrl} />
           </div>
         )}
         <Card bleed className="w-full md:w-3/4 lg:w-1/2 m-auto p-4 mb-8">

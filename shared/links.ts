@@ -16,8 +16,14 @@ export const links = {
   help(locale: Locale) {
     return localize('https://eurosky.tech/help/', locale)
   },
+  helpCantMigrate(locale: Locale) {
+    return localize('https://eurosky.tech/help/created-account-cant-migrate/', locale)
+  },
   helpInvalidHandle(locale: Locale) {
     return localize('https://eurosky.tech/help/handle-invalid/', locale)
+  },
+  helpPasswordReset(locale: Locale) {
+    return localize('https://eurosky.tech/help/password-reset/', locale)
   },
   linkedin(_locale: Locale) {
     return 'https://www.linkedin.com/company/euroskysocial'
@@ -40,6 +46,23 @@ export const links = {
   transparency(_locale: Locale) {
     return 'https://eurosky.tech/transparency/'
   },
+}
+
+/**
+ * Get the URL of the migration service (`MIGRATION_SERVICE`) in a locale;
+ * `move.eurosky.tech` takes it as `?locale=de` (and falls back to English).
+ *
+ * @param url
+ *   URL of the migration service.
+ * @param locale
+ *   Locale.
+ * @returns
+ *   Localized URL.
+ */
+export function localizeMigration(url: string, locale: Locale): string {
+  const result = new URL(url)
+  result.searchParams.set('locale', locale)
+  return result.href
 }
 
 /**

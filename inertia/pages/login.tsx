@@ -1,38 +1,29 @@
 import { Form } from '@adonisjs/inertia/react'
+import { Head } from '@inertiajs/react'
 import { Container } from '~/lib/container'
 import { Button } from '~/lib/button'
 import { ErrorMessage, Field, FieldGroup, Label } from '~/lib/fieldset'
 import { Input } from '~/lib/input'
 import { Text, TextLink } from '~/lib/text'
-import Card from '~/lib/card'
 import { InertiaProps } from '~/types'
-import { Head } from '@inertiajs/react'
+import Card from '~/lib/card'
 import { useT } from '~/lib/i18n'
-import Notice from '~/lib/notice'
+import { MigrationNotice } from '~/components/MigrationNotice'
+import { NewTab } from '~/components/NewTab'
+import { links } from '#shared/links'
 import Layout from '~/layouts/default'
 import type { ReactElement } from 'react'
 import { Data } from '@generated/data'
 
 export default function Login({ migrationUrl }: InertiaProps<{ migrationUrl?: string }>) {
-  const { tPlain, t } = useT()
+  const { locale, tPlain, t } = useT()
   return (
     <div className="bg-neutral-50 dark:bg-neutral-900 min-h-dvh-minus-35">
       <Head title={tPlain('nav.signIn')} />
       <Container className="pt-6 md:pt-12">
         {migrationUrl && (
           <div className="w-full md:w-3/4 lg:w-1/2 m-auto">
-            <Notice
-              action={
-                <a
-                  href={migrationUrl}
-                  className="underline decoration-ink/50 hover:decoration-ink dark:decoration-white/50 dark:hover:decoration-white"
-                >
-                  {tPlain('migrationAlert.cta')}
-                </a>
-              }
-              text={tPlain('migrationAlert.text')}
-              title={tPlain('migrationAlert.title')}
-            />
+            <MigrationNotice migrationUrl={migrationUrl} />
           </div>
         )}
         <Card bleed className="w-full md:w-3/4 lg:w-1/2 m-auto p-4 mb-8">
@@ -77,6 +68,23 @@ export default function Login({ migrationUrl }: InertiaProps<{ migrationUrl?: st
             {t('login.noAccount', {
               signUp(chunks) {
                 return <TextLink route="account.create">{chunks}</TextLink>
+              },
+            })}
+          </Text>
+          <Text className="text-center">
+            {t('login.forgotPassword', {
+              link(chunks) {
+                return (
+                  <a
+                    className="text-neutral-950 underline decoration-neutral-950/50 hover:decoration-neutral-950 dark:text-white dark:decoration-white/50 dark:hover:decoration-white"
+                    href={links.helpPasswordReset(locale)}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    {chunks}
+                    <NewTab />
+                  </a>
+                )
               },
             })}
           </Text>
