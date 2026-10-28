@@ -106,7 +106,7 @@ export function SidebarLayout({
 
       {/* Content */}
       <main className="flex flex-1 flex-col lg:min-w-0 lg:pt-2" id={mainId} tabIndex={-1}>
-        <div className="grow p-6 lg:rounded-tl-xl bg-cotton lg:p-10 lg:ring-1 lg:ring-stone-light dark:bg-neutral-950 dark:lg:ring-neutral-800">
+        <div className="grow p-6 lg:rounded-l-xl bg-cotton lg:p-10 lg:ring-1 lg:ring-stone-light dark:bg-neutral-950 dark:lg:ring-neutral-800">
           {children}
         </div>
       </main>

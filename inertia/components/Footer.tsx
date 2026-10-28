@@ -18,16 +18,38 @@ interface Properties {
 }
 
 /**
- * Footer with support and legal links.
+ * Footer with support, legal, and organization links, like on eurosky.tech.
  */
 export function Footer(properties: Properties) {
   const { panelAbove } = properties
   const { locale, t, tPlain } = useT()
-  const external = [
-    { href: links.help(locale), label: t('sidebar.help') },
-    { href: links.contact(locale), label: t('sidebar.contactUs') },
-    { href: links.terms(locale), label: t('sidebar.termsOfService') },
-    { href: links.privacy(locale), label: t('sidebar.privacyPolicy') },
+  const sections = [
+    {
+      title: t('sidebar.support'),
+      items: [
+        { href: links.help(locale), label: t('sidebar.help') },
+        { label: t('sidebar.faq'), route: 'faq.show' as const },
+        { href: links.contact(locale), label: t('sidebar.contactUs') },
+        { href: links.status(locale), label: t('footer.status') },
+      ],
+    },
+    {
+      title: t('footer.legal'),
+      items: [
+        { href: links.terms(locale), label: t('sidebar.termsOfService') },
+        { href: links.privacy(locale), label: t('sidebar.privacyPolicy') },
+        { href: links.transparency(locale), label: t('footer.transparency') },
+        { href: links.security(locale), label: t('footer.security') },
+      ],
+    },
+    {
+      title: t('footer.organization'),
+      items: [
+        { href: links.about(locale), label: t('footer.about') },
+        { href: links.mu(locale), label: 'mu' },
+        { href: links.linkedin(locale), label: 'LinkedIn' },
+      ],
+    },
   ]
 
   return (
@@ -37,24 +59,43 @@ export function Footer(properties: Properties) {
         panelAbove && 'lg:border-t-0'
       )}
     >
-      <Container>
-        <nav aria-label={tPlain('nav.footer')} className="py-8">
-          <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
-            <li>
-              <Link className={linkClassName} route="faq.show">
-                {t('sidebar.faq')}
-              </Link>
-            </li>
-            {external.map(({ href, label }) => (
-              <li key={href}>
-                <a className={linkClassName} href={href} rel="noopener noreferrer" target="_blank">
-                  {label}
-                  <NewTab />
-                </a>
-              </li>
+      <Container className="py-12">
+        <div className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3 lg:grid-cols-[2fr_repeat(3,minmax(0,1fr))]">
+          <p className="col-span-2 max-w-xs text-sm/6 text-charcoal sm:col-span-3 lg:col-span-1 dark:text-neutral-400">
+            {t('footer.foundation')}
+          </p>
+          <nav aria-label={tPlain('nav.footer')} className="contents">
+            {sections.map(({ items, title }, index) => (
+              <div key={index}>
+                <h2 className="mb-4 text-sm font-semibold text-ink dark:text-white">{title}</h2>
+                <ul className="space-y-2 text-sm">
+                  {items.map(({ href, label, route }) => (
+                    <li key={href ?? route}>
+                      {route ? (
+                        <Link className={linkClassName} route={route}>
+                          {label}
+                        </Link>
+                      ) : (
+                        <a
+                          className={linkClassName}
+                          href={href}
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          {label}
+                          <NewTab />
+                        </a>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             ))}
-          </ul>
-        </nav>
+          </nav>
+        </div>
+        <p className="mt-12 border-t border-stone-light pt-8 text-sm text-charcoal dark:border-neutral-800 dark:text-neutral-400">
+          {t('footer.copyright', { year: String(new Date().getFullYear()) })}
+        </p>
       </Container>
     </footer>
   )

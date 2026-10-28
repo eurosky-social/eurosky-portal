@@ -15,13 +15,8 @@ import { SidebarLayout } from '~/lib/sidebar-layout'
 import {
   ClockIcon,
   HomeIcon,
-  QuestionMarkCircleIcon,
-  ChatBubbleOvalLeftEllipsisIcon,
-  DocumentTextIcon,
   Cog6ToothIcon,
   GlobeAltIcon,
-  LifebuoyIcon,
-  LockClosedIcon,
   StarIcon,
 } from '@heroicons/react/24/solid'
 import { Form } from '@adonisjs/inertia/react'
@@ -34,14 +29,13 @@ import { LanguageToggle } from '~/components/LanguageToggle'
 import { ThemeToggle } from '~/components/ThemeToggle'
 import { SkipLink } from '~/components/SkipLink'
 import { useT } from '~/lib/i18n'
-import { links } from '#shared/links'
 
 export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedProps> }) {
   const {
     props: { authorizationServer },
     url,
   } = usePage()
-  const { locale, t, tPlain } = useT()
+  const { t, tPlain } = useT()
 
   const manageUrl = useMemo(() => {
     return new URL('/account', authorizationServer).toString()
@@ -88,41 +82,6 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
                   <SidebarItem href="/apps" current={url.startsWith('/apps')}>
                     <GlobeAltIcon />
                     <SidebarLabel>{t('sidebar.applications')}</SidebarLabel>
-                  </SidebarItem>
-                </SidebarSection>
-                <SidebarHeading className="mt-10 font-bold">{t('sidebar.support')}</SidebarHeading>
-                <SidebarSection>
-                  <SidebarItem href={links.help(locale)} target="_blank" as={'a'}>
-                    <LifebuoyIcon />
-                    <SidebarLabel>
-                      {t('sidebar.help')}
-                      <NewTab />
-                    </SidebarLabel>
-                  </SidebarItem>
-                  <SidebarItem route="faq.show" current={url.startsWith('/faq')}>
-                    <QuestionMarkCircleIcon />
-                    <SidebarLabel>{t('sidebar.faq')}</SidebarLabel>
-                  </SidebarItem>
-                  <SidebarItem href={links.contact(locale)} target="_blank" as={'a'}>
-                    <ChatBubbleOvalLeftEllipsisIcon />
-                    <SidebarLabel>
-                      {t('sidebar.contactUs')}
-                      <NewTab />
-                    </SidebarLabel>
-                  </SidebarItem>
-                  <SidebarItem href={links.terms(locale)} target="_blank" as={'a'}>
-                    <DocumentTextIcon />
-                    <SidebarLabel>
-                      {t('sidebar.termsOfService')}
-                      <NewTab />
-                    </SidebarLabel>
-                  </SidebarItem>
-                  <SidebarItem href={links.privacy(locale)} target="_blank" as={'a'}>
-                    <LockClosedIcon />
-                    <SidebarLabel>
-                      {t('sidebar.privacyPolicy')}
-                      <NewTab />
-                    </SidebarLabel>
                   </SidebarItem>
                 </SidebarSection>
               </SidebarBody>

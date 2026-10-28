@@ -4,6 +4,9 @@ import type { Locale } from '#shared/locale'
  * External pages that the portal links to.
  */
 export const links = {
+  about(locale: Locale) {
+    return localize('https://eurosky.tech/about/', locale)
+  },
   contact(locale: Locale) {
     return localize('https://eurosky.tech/contact/', locale)
   },
@@ -16,11 +19,26 @@ export const links = {
   helpInvalidHandle(locale: Locale) {
     return localize('https://eurosky.tech/help/handle-invalid/', locale)
   },
+  linkedin(_locale: Locale) {
+    return 'https://www.linkedin.com/company/euroskysocial'
+  },
+  mu(_locale: Locale) {
+    return 'https://mu.social/profile/eurosky.social'
+  },
   privacy(_locale: Locale) {
     return 'https://eurosky.tech/accounts/privacy/'
   },
+  security(_locale: Locale) {
+    return 'https://eurosky.tech/security/'
+  },
+  status(_locale: Locale) {
+    return 'https://eurosky-social.hyperping.app/'
+  },
   terms(_locale: Locale) {
     return 'https://eurosky.tech/accounts/terms/'
+  },
+  transparency(_locale: Locale) {
+    return 'https://eurosky.tech/transparency/'
   },
 }
 
