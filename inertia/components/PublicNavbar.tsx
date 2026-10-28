@@ -27,7 +27,7 @@ export default function PublicNavbar() {
   return (
     <Navbar
       aria-label={tPlain('nav.main')}
-      className="gap-2! md:gap-4! md:px-6 px-3 bg-neutral-50 dark:bg-slate-800 sticky top-0 z-50"
+      className="gap-2! md:gap-4! md:px-6 px-3 sticky top-0 z-50 border-b border-stone-light bg-cotton/95 backdrop-blur dark:border-neutral-800 dark:bg-neutral-950/95"
     >
       <Link route="home" aria-label={tPlain('nav.home')} className="pb-3 mt-1">
         <Logo />

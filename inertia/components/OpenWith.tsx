@@ -64,7 +64,7 @@ export function OpenWith({ uri }: Properties) {
                 <span className="col-span-full flex w-full items-center gap-2">
                   {app ? (
                     <Avatar
-                      className="size-5 shrink-0 bg-gray-100 outline-none! dark:bg-gray-800"
+                      className="size-5 shrink-0 bg-neutral-100 outline-none! dark:bg-neutral-800"
                       square
                       src={app.iconUrl}
                     />

@@ -27,7 +27,7 @@ export default function DashboardNavbar(properties: Properties) {
   const { tPlain, t } = useT()
 
   return (
-    <Navbar aria-label={tPlain('nav.main')} className={clsx(className, 'dark:bg-slate-800/70')}>
+    <Navbar aria-label={tPlain('nav.main')} className={clsx(className, 'dark:bg-neutral-900')}>
       <Link
         route="dashboard.show"
         aria-label={tPlain('nav.home')}

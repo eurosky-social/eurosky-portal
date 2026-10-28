@@ -37,11 +37,11 @@ export function ActivityItem({ activity }: { activity: ActivityRow }) {
         routeParams={{ collection, rkey }}
       >
         <div className="flex items-center justify-between gap-2">
-          <span className="inline-flex items-center gap-1.5 rounded-md border border-zinc-300 px-2 py-1 text-sm font-medium dark:border-zinc-600">
+          <span className="inline-flex items-center gap-1.5 rounded-md border border-neutral-300 px-2 py-1 text-sm font-medium dark:border-neutral-600">
             <Icon aria-hidden="true" className="h-4 w-4" />
             {label}
           </span>
-          <span className="text-sm text-zinc-500 dark:text-zinc-400">
+          <span className="text-sm text-neutral-500 dark:text-neutral-400">
             <RelativeTime value={createdAt} />
           </span>
         </div>

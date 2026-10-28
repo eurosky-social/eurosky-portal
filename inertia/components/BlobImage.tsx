@@ -22,10 +22,13 @@ export function BlobImage({ alt, blob, className, ...rest }: BlobImageProperties
       <div
         aria-hidden={alt ? undefined : true}
         aria-label={alt || undefined}
-        className={clsx(className, 'flex items-center justify-center bg-zinc-100 dark:bg-zinc-800')}
+        className={clsx(
+          className,
+          'flex items-center justify-center bg-neutral-100 dark:bg-neutral-800'
+        )}
         role={alt ? 'img' : undefined}
       >
-        <PhotoIcon className="size-1/4 text-zinc-400 dark:text-zinc-600" />
+        <PhotoIcon className="size-1/4 text-neutral-400 dark:text-neutral-600" />
       </div>
     )
   }
@@ -36,7 +39,9 @@ export function BlobImage({ alt, blob, className, ...rest }: BlobImageProperties
       alt={alt}
       className={clsx(
         className,
-        imageLoadState === 'loading' ? 'animate-pulse bg-zinc-200 dark:bg-zinc-800' : undefined
+        imageLoadState === 'loading'
+          ? 'animate-pulse bg-neutral-200 dark:bg-neutral-800'
+          : undefined
       )}
       onError={() => {
         // Try origin PDS if CDN fails.

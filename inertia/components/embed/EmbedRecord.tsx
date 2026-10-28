@@ -16,7 +16,7 @@ export function EmbedRecord({
 
   return (
     <div className="space-y-3">
-      <p className="text-sm text-zinc-500 dark:text-zinc-400">
+      <p className="text-sm text-neutral-500 dark:text-neutral-400">
         <ArrowTurnLeftUpIcon aria-hidden="true" className="size-2.5 shrink-0 inline-block" />{' '}
         {t('activity.embed.quoting', {
           user() {

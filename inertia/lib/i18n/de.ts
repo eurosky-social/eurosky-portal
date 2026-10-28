@@ -51,7 +51,7 @@ const de = {
   'createAccount.pageTitle': 'Konto erstellen',
   'createAccount.subtitle':
     'Bevor wir beginnen, lies dir bitte unsere Bedingungen durch und akzeptiere sie.',
-  'createAccount.title': 'Erstelle dein <brand>{orgName}-Konto.</brand>',
+  'createAccount.title': 'Erstelle dein {orgName}-Konto.',
   'dashboard.activity.empty': 'Hier ist noch nichts los – vielleicht einen Beitrag auf Mu posten?',
   'dashboard.activity.heading': 'Neueste Aktivität',
   'dashboard.activity.subheading': 'Deine neueste Aktivität.',
@@ -89,14 +89,14 @@ const de = {
   'hero.createAccount': 'Erstelle dein Konto →',
   'hero.dataPromise': 'Deine Daten gehören dir. Wir werden sie niemals verkaufen.',
   'hero.subtitle': 'Ein Konto. Dutzende Apps. Keine Abhängigkeit.',
-  'hero.title': '{orgName}: dein Zugang zur <brand>Atmosphere.</brand>',
+  'hero.title': '{orgName}: dein Zugang zur Atmosphere.',
   'home.heading': 'Eine App für alles',
   'home.subheading': 'Es entstehen ständig neue Apps!',
   'login.continue': 'Weiter →',
   'login.handleLabel': 'Dein Atmosphere-Handle',
   'login.noAccount': 'Du hast noch kein Konto? <signUp>Registrieren</signUp>',
   'login.subtitle': 'Gib unten deinen Handle ein, um dich bei deinem Konto anzumelden',
-  'login.title': 'Melde dich bei deinem <brand>{orgName}-Konto</brand> an.',
+  'login.title': 'Melde dich bei deinem {orgName}-Konto an.',
   'markdown.error': 'Dieser Inhalt konnte nicht angezeigt werden.',
   'migrationAlert.cta': 'Migrieren',
   'migrationAlert.text':
@@ -124,7 +124,7 @@ const de = {
   'onboarding.notice.text':
     'Bitte akzeptiere die Änderungen, um {productTitle} weiterhin zu nutzen',
   'onboarding.pageTitle': 'Nutzungsbedingungen akzeptieren',
-  'onboarding.title': 'Willkommen bei <brand>{orgName}</brand>.',
+  'onboarding.title': 'Willkommen bei {orgName}.',
   'policy.accept':
     'Ich stimme den <terms>Nutzungsbedingungen</terms> und der <privacy>Datenschutzerklärung</privacy> zu',
   'sidebar.applications': 'Anwendungen',

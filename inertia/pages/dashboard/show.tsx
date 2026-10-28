@@ -90,19 +90,19 @@ export default function Dashboard({
       {showWelcomeMessage && (
         <Card className="py-3 px-4 flex flex-col grow md:flex-row items-center justify-between gap-x-6 gap-y-4">
           <div className="flex-1">
-            <h2 className="text-lg/8 sm:text-xl/8 font-semibold text-gray-900 dark:text-gray-200 mb-2">
+            <h2 className="text-lg/8 sm:text-xl/8 font-semibold text-neutral-900 dark:text-neutral-200 mb-2">
               {t('dashboard.welcome.heading')}
             </h2>
-            <p className="mt-0.5 text-sm/6 text-gray-500 dark:text-gray-300">
+            <p className="mt-0.5 text-sm/6 text-neutral-500 dark:text-neutral-300">
               {t('dashboard.welcome.text')}
             </p>
             {!isHandleInvalid && (
-              <p className="mt-0.5 text-sm/6 text-gray-500 dark:text-gray-300">
+              <p className="mt-0.5 text-sm/6 text-neutral-500 dark:text-neutral-300">
                 {t('dashboard.welcome.handle', {
                   handle: user.handle,
                   strong(chunks) {
                     return (
-                      <strong className="text-brand-border font-semibold whitespace-pre">
+                      <strong className="font-semibold text-ink dark:text-white whitespace-pre">
                         {chunks}
                       </strong>
                     )
@@ -124,7 +124,7 @@ export default function Dashboard({
                 <UserAvatar avatar={profile?.avatar} />
               </div>
               <div className="flex flex-col">
-                <h2 className="text-lg/8 font-semibold text-zinc-950 sm:text-2xl/8 dark:text-white">
+                <h2 className="text-lg/8 font-semibold text-neutral-950 sm:text-2xl/8 dark:text-white">
                   {profile?.displayName
                     ? t('dashboard.greeting.withName', { name: profile.displayName })
                     : t('dashboard.greeting.plain')}
@@ -135,7 +135,7 @@ export default function Dashboard({
                     {user.handle}
                   </Text>
                 ) : (
-                  <Text className="text-slate-500! dark:text-slate-400!">@{user.handle}</Text>
+                  <Text className="text-neutral-500! dark:text-neutral-400!">@{user.handle}</Text>
                 )}
                 {profile?.stats && (
                   <div className="hidden md:grid grid-cols-1 sm:grid-cols-3">
@@ -159,10 +159,10 @@ export default function Dashboard({
         </Card>
 
         <Card className="py-3 px-4 col-span-3 md:col-span-1">
-          <h2 className="text-lg/8 sm:text-xl/8 font-semibold text-gray-900 dark:text-gray-200 mb-2">
+          <h2 className="text-lg/8 sm:text-xl/8 font-semibold text-neutral-900 dark:text-neutral-200 mb-2">
             {t('dashboard.explore.heading')}
           </h2>
-          <p className="text-sm/6 text-gray-500 dark:text-gray-300">
+          <p className="text-sm/6 text-neutral-500 dark:text-neutral-300">
             {t('dashboard.explore.text')}
           </p>
           <Button route="explore.learn_more" className="mt-3 w-full sm:w-auto">
@@ -171,10 +171,10 @@ export default function Dashboard({
         </Card>
       </div>
       <div>
-        <h2 className="text-xl font-semibold text-zinc-950 dark:text-white">
+        <h2 className="text-xl font-semibold text-neutral-950 dark:text-white">
           {t('dashboard.activity.heading')}
         </h2>
-        <p className="text-base text-neutral-500 dark:text-slate-400 mb-6">
+        <p className="text-base text-neutral-500 dark:text-neutral-400 mb-6">
           {t('dashboard.activity.subheading')}
         </p>
 
@@ -200,10 +200,10 @@ export default function Dashboard({
       </div>
 
       <div className="pt-4">
-        <h2 className="text-xl font-semibold text-zinc-950 dark:text-white">
+        <h2 className="text-xl font-semibold text-neutral-950 dark:text-white">
           {t(appsKind === 'yours' ? 'sidebar.yourApps' : 'dashboard.featuredApps.heading')}
         </h2>
-        <p className="text-base text-neutral-500 dark:text-slate-400 mb-6">
+        <p className="text-base text-neutral-500 dark:text-neutral-400 mb-6">
           {t(appsKind === 'yours' ? 'dashboard.yourApps.text' : 'dashboard.featuredApps.text')}
         </p>
 
@@ -228,13 +228,13 @@ export default function Dashboard({
 
 function StatHeading({ children }: React.ComponentPropsWithoutRef<'dt'>) {
   return (
-    <span className="text-sm/6 font-medium text-slate-500 dark:text-slate-400">{children}</span>
+    <span className="text-sm/6 font-medium text-neutral-500 dark:text-neutral-400">{children}</span>
   )
 }
 
 function StatValue({ children }: React.ComponentPropsWithoutRef<'dd'>) {
   return (
-    <div className="mt-1 text-sm/6 font-extrabold sm:mt-2 text-gray-900 dark:text-white">
+    <div className="mt-1 text-sm/6 font-extrabold sm:mt-2 text-neutral-900 dark:text-white">
       {children}
     </div>
   )

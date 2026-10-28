@@ -61,7 +61,7 @@ export default function Activity(result: InertiaProps<GetRecordsResult>) {
       </Card>
 
       {result.state === 'syncing' ? null : result.activities.length === 0 ? (
-        <p className="text-gray-500 dark:text-gray-400">{t('activity.noRecords')}</p>
+        <p className="text-neutral-500 dark:text-neutral-400">{t('activity.noRecords')}</p>
       ) : (
         <>
           <ActivityList activities={result.activities} />

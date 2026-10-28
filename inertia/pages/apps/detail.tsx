@@ -47,9 +47,12 @@ export default function AppDetailPage({
       <div className="mb-8 flex items-start justify-between gap-4">
         <nav
           aria-label={tPlain('common.breadcrumb')}
-          className="text-sm text-zinc-500 dark:text-zinc-400"
+          className="text-sm text-neutral-500 dark:text-neutral-400"
         >
-          <BackLink className="hover:text-zinc-700 dark:hover:text-zinc-300" route="discover.apps">
+          <BackLink
+            className="hover:text-neutral-700 dark:hover:text-neutral-300"
+            route="discover.apps"
+          >
             <ChevronLeftIcon aria-hidden="true" className="size-4 inline-block" />
             {t('sidebar.applications')}
           </BackLink>
@@ -67,7 +70,7 @@ export default function AppDetailPage({
         <div className="space-y-4">
           <div className="flex items-start gap-4">
             <Avatar
-              className="size-16 shrink-0 bg-gray-100 outline-none! dark:bg-gray-800"
+              className="size-16 shrink-0 bg-neutral-100 outline-none! dark:bg-neutral-800"
               square
               src={iconUrl}
             />
@@ -95,7 +98,7 @@ export default function AppDetailPage({
               <Rating count={reviewCount} value={parseFloat(rating)} />
               {reviewsUrl ? (
                 <a
-                  className="text-sm text-zinc-500 underline hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-300"
+                  className="text-sm text-neutral-500 underline hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-300"
                   href={reviewsUrl}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -107,7 +110,7 @@ export default function AppDetailPage({
             </span>
           ) : undefined}
 
-          <div className="article-body markdown-document text-base/6 text-zinc-500 sm:text-sm/6 dark:text-zinc-400">
+          <div className="article-body markdown-document text-base/6 text-neutral-500 sm:text-sm/6 dark:text-neutral-400">
             <MarkdownContent value={description} />
           </div>
 

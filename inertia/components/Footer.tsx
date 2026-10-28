@@ -6,7 +6,7 @@ import { Link } from '~/lib/link'
 import { NewTab } from './NewTab'
 
 const linkClassName =
-  'text-zinc-600 hover:text-zinc-950 hover:underline dark:text-slate-400 dark:hover:text-white'
+  'text-charcoal hover:text-ink hover:underline dark:text-neutral-400 dark:hover:text-white'
 
 interface Properties {
   /**
@@ -33,7 +33,7 @@ export function Footer(properties: Properties) {
   return (
     <footer
       className={clsx(
-        'border-t border-zinc-950/5 dark:border-white/10',
+        'border-t border-stone-light dark:border-neutral-800',
         panelAbove && 'lg:border-t-0'
       )}
     >

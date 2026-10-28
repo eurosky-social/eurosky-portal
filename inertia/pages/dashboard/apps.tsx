@@ -51,16 +51,16 @@ export default function YourApps({
       <Card className="p-4 flex flex-row gap-3">
         <ShieldCheckIcon
           aria-hidden="true"
-          className="mt-1 size-5 shrink-0 text-slate-500 dark:text-slate-400"
+          className="mt-1 size-5 shrink-0 text-neutral-500 dark:text-neutral-400"
         />
         <div>
-          <h2 className="text-base/6 font-semibold text-zinc-950 sm:text-sm/6 dark:text-white">
+          <h2 className="text-base/6 font-semibold text-neutral-950 sm:text-sm/6 dark:text-white">
             {t('yourApps.access.heading')}
           </h2>
           <Text>{t('yourApps.access.text')}</Text>
           <Text>
             <a
-              className="font-semibold text-zinc-950 underline dark:text-white"
+              className="font-semibold text-neutral-950 underline dark:text-white"
               href={manageAppsUrl}
               rel="noopener noreferrer"
               target="_blank"

@@ -47,7 +47,7 @@ export default function ActivityDetailPage({
             />
           ) : undefined}
           <div>
-            <p className="text-sm text-zinc-900 dark:text-white">
+            <p className="text-sm text-neutral-900 dark:text-white">
               {t('activity.detail.likedPostBy', {
                 user() {
                   return <UserName user={post?.author} />
@@ -55,7 +55,7 @@ export default function ActivityDetailPage({
               })}
             </p>
             {post?.text ? (
-              <p className="my-1 line-clamp-1 text-sm text-zinc-500 dark:text-zinc-400">
+              <p className="my-1 line-clamp-1 text-sm text-neutral-500 dark:text-neutral-400">
                 {post.text}
               </p>
             ) : undefined}
@@ -69,7 +69,7 @@ export default function ActivityDetailPage({
       detail = (
         <>
           {activity.replyUri ? (
-            <p className="text-sm text-zinc-500 dark:text-zinc-400">
+            <p className="text-sm text-neutral-500 dark:text-neutral-400">
               <ArrowTurnDownRightIcon
                 aria-hidden="true"
                 className="size-2.5 shrink-0 inline-block"
@@ -94,7 +94,7 @@ export default function ActivityDetailPage({
           {profile ? (
             <Avatar className="size-10 shrink-0 bg-amber-100 text-amber-700" src={profile.avatar} />
           ) : undefined}
-          <p className="text-sm text-zinc-900 dark:text-white">
+          <p className="text-sm text-neutral-900 dark:text-white">
             {t('activity.detail.followed', {
               user() {
                 return <UserName user={profile} />
@@ -123,9 +123,12 @@ export default function ActivityDetailPage({
       <div className="mb-8 flex items-start justify-between gap-4">
         <nav
           aria-label={tPlain('common.breadcrumb')}
-          className="text-sm text-zinc-500 dark:text-zinc-400"
+          className="text-sm text-neutral-500 dark:text-neutral-400"
         >
-          <BackLink className="hover:text-zinc-700 dark:hover:text-zinc-300" route="activity.show">
+          <BackLink
+            className="hover:text-neutral-700 dark:hover:text-neutral-300"
+            route="activity.show"
+          >
             <ChevronLeftIcon aria-hidden="true" className="size-4 inline-block" />
             {t('sidebar.yourActivity')}
           </BackLink>
@@ -133,7 +136,7 @@ export default function ActivityDetailPage({
           <span aria-current="page">{title}</span>
         </nav>
         <div className="flex flex-col items-end gap-2 sm:flex-row sm:items-center sm:gap-3">
-          <span className="text-sm text-zinc-500 dark:text-zinc-400">
+          <span className="text-sm text-neutral-500 dark:text-neutral-400">
             <RelativeTime value={activity.createdAt} />
           </span>
           {actions}

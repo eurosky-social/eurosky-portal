@@ -16,21 +16,27 @@
   --default-font-family: Inter, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, Sans-Serif;
   --default-mono-font-family: 'IBM Plex Mono', monospace;
   --text-tiny: 0.625rem;
-  /* --color-brand: oklch(0.723 0.178 158.4);
-  --color-brand-border: oklch(0.603 0.178 158.4); */
-  --color-neutral-50: oklch(0.974 0.005 91.6);
-  --color-neutral-100: oklch(0.947 0.007 83.2);
-  --color-neutral-200: oklch(0.897 0.009 75.4);
-  --color-neutral-300: oklch(0.762 0.012 71.8);
-  --color-neutral-500: oklch(0.46 0.006 68.3);
-  --color-brand: oklch(0.793 0.103 243.6);
-  --color-brand-border: oklch(0.703 0.123 243.6);
+  /* Warm neutrals from eurosky.tech. */
+  --color-neutral-50: #f7f6f2;
+  --color-neutral-100: #eceae5;
+  --color-neutral-200: #e0ddd8;
+  --color-neutral-300: #c9c5bf;
+  --color-neutral-400: #9a9792;
+  --color-neutral-500: #6b6965;
+  --color-neutral-600: #57554f;
+  --color-neutral-700: #3d3c39;
+  --color-neutral-800: #2e2e2e;
+  --color-neutral-900: #242424;
+  --color-neutral-950: #1a1a1a;
+  /* Accent blue from eurosky.tech. */
+  --color-brand: #9ac2ff;
   --color-black: #1a1a1a;
-  --color-stone: rgb(236 234 229);
-  --color-stone-light: rgb(236 234 229);
-  --color-charcoal: rgb(107 105 101);
-  --color-ink: rgb(26 26 26);
-  --color-cotton: rgb(247 246 242);
+  --color-stone: #eceae5;
+  --color-stone-light: #eceae5;
+  --color-stone-mid: #e0ddd8;
+  --color-charcoal: #6b6965;
+  --color-ink: #1a1a1a;
+  --color-cotton: #f7f6f2;
 }
 
 @utility min-h-dvh-minus-* {
@@ -63,12 +69,13 @@
 
 :root {
   scroll-padding-top: 100px;
-  background: var(--color-white);
+  background: var(--color-cotton);
+  color: var(--color-ink);
   color-scheme: light;
 
   @variant dark {
-    color: var(--color-slate-100);
-    background: var(--color-slate-900);
+    color: var(--color-neutral-100);
+    background: var(--color-neutral-950);
     color-scheme: dark;
   }
 }
@@ -108,8 +115,10 @@ details > summary:focus-visible {
 }
 
 .dashboard {
+  background: var(--color-white);
+
   @variant dark {
-    background: var(--color-slate-800);
+    background: var(--color-neutral-900);
   }
 }
 
@@ -228,23 +237,23 @@ details:open summary > svg {
 
 .markdown-document hr {
   margin: calc(var(--spacing) * 8) 0;
-  border-top: 1px solid var(--color-gray-300);
+  border-top: 1px solid var(--color-neutral-300);
 
   @variant dark {
-    border-top-color: var(--color-slate-700);
+    border-top-color: var(--color-neutral-700);
   }
 }
 
 .markdown-document blockquote {
   margin: calc(var(--spacing) * 6) 0;
   padding-left: calc(var(--spacing) * 4);
-  border-left: 3px solid var(--color-zinc-300);
+  border-left: 3px solid var(--color-neutral-300);
   font-style: italic;
-  color: var(--color-zinc-600);
+  color: var(--color-neutral-600);
 
   @variant dark {
-    border-left-color: var(--color-slate-600);
-    color: var(--color-zinc-400);
+    border-left-color: var(--color-neutral-600);
+    color: var(--color-neutral-400);
   }
 }
 
@@ -276,7 +285,7 @@ details:open summary > svg {
   margin: calc(var(--spacing) * 6) auto;
 
   @variant dark {
-    border: 1px solid var(--color-slate-700);
+    border: 1px solid var(--color-neutral-700);
   }
 }
 
@@ -289,5 +298,5 @@ details:open summary > svg {
 }
 
 .faq a {
-  @apply hover:text-ink dark:text-slate-400 dark:hover:text-slate-200 underline;
+  @apply hover:text-ink dark:text-neutral-400 dark:hover:text-neutral-200 underline;
 }

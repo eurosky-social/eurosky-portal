@@ -30,13 +30,13 @@ export function PageHeader(properties: Properties) {
 
   return (
     <header className={className}>
-      <h1 className="text-2xl/8 font-semibold text-zinc-950 sm:text-3xl/9 dark:text-white">
+      <h1 className="text-3xl/9 font-bold tracking-tight text-balance text-ink sm:text-4xl/11 dark:text-white">
         {title}
       </h1>
       {description ? (
         <p
           aria-live={live ? 'polite' : undefined}
-          className="mt-2 text-zinc-500 dark:text-slate-400"
+          className="mt-2 text-neutral-500 dark:text-neutral-400"
           role={live ? 'status' : undefined}
         >
           {description}

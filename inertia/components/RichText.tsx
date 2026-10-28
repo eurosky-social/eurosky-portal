@@ -8,7 +8,7 @@ export function RichText({ text }: { text: AppBskyFeedPostDetail['text'] }) {
   const root: Root = { type: 'root', children: text }
 
   return (
-    <div className="whitespace-pre-wrap text-base text-zinc-900 dark:text-white">
+    <div className="whitespace-pre-wrap text-base text-neutral-900 dark:text-white">
       {toJsxRuntime(root, { Fragment, components, jsxs, jsx, passNode: true })}
     </div>
   )

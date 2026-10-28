@@ -32,7 +32,7 @@ export function PolicyForm({ route, terms, privacy }: PolicyFormProps<Routes>) {
         <PolicyDetails
           header={
             <>
-              <DocumentTextIcon className="w-6 h-6 inline-block text-slate-500" />
+              <DocumentTextIcon className="w-6 h-6 inline-block text-neutral-500" />
               {t('sidebar.termsOfService')}
             </>
           }
@@ -41,7 +41,7 @@ export function PolicyForm({ route, terms, privacy }: PolicyFormProps<Routes>) {
         <PolicyDetails
           header={
             <>
-              <LockClosedIcon className="w-6 h-6 inline-block text-slate-500" />
+              <LockClosedIcon className="w-6 h-6 inline-block text-neutral-500" />
               {t('sidebar.privacyPolicy')}
             </>
           }
@@ -55,7 +55,7 @@ export function PolicyForm({ route, terms, privacy }: PolicyFormProps<Routes>) {
               <CheckboxField>
                 <Checkbox
                   aria-invalid={errors.terms ? true : undefined}
-                  color="brand"
+
                   name="terms"
                   value="1"
                   checked={form.data.terms}
@@ -66,7 +66,7 @@ export function PolicyForm({ route, terms, privacy }: PolicyFormProps<Routes>) {
                     terms(chunks) {
                       return (
                         <a
-                          className="text-blue-600 hover:underline dark:text-blue-400"
+                          className="underline decoration-ink/50 hover:decoration-ink dark:decoration-white/50 dark:hover:decoration-white"
                           href={links.terms}
                           rel="noopener noreferrer"
                           target="_blank"
@@ -79,7 +79,7 @@ export function PolicyForm({ route, terms, privacy }: PolicyFormProps<Routes>) {
                     privacy(chunks) {
                       return (
                         <a
-                          className="text-blue-600 hover:underline dark:text-blue-400"
+                          className="underline decoration-ink/50 hover:decoration-ink dark:decoration-white/50 dark:hover:decoration-white"
                           href={links.privacy}
                           rel="noopener noreferrer"
                           target="_blank"
@@ -94,7 +94,7 @@ export function PolicyForm({ route, terms, privacy }: PolicyFormProps<Routes>) {
                 {errors.terms && <ErrorMessage>{errors.terms}</ErrorMessage>}
               </CheckboxField>
             </div>
-            <Button type="submit" color="brand" className="mt-2" disabled={processing}>
+            <Button type="submit" className="mt-2" disabled={processing}>
               {t('login.continue')}
             </Button>
           </div>
@@ -108,13 +108,13 @@ function PolicyDetails({ header, document }: { header: ReactNode; document: Json
   return (
     <details
       name="policy"
-      className="legal-details overflow-auto rounded-lg shadow-xs dark:bg-gray-800/50 border border-slate-200 dark:border-slate-600"
+      className="legal-details overflow-auto rounded-lg shadow-xs dark:bg-neutral-800/50 border border-neutral-200 dark:border-neutral-600"
     >
-      <summary className="p-4 text-slate-600 dark:text-slate-300 list-none flex flex-row justify-between bg-white dark:bg-gray-800">
+      <summary className="p-4 text-neutral-600 dark:text-neutral-300 list-none flex flex-row justify-between bg-white dark:bg-neutral-800">
         <span className="flex flex-row gap-1">{header}</span>
         <ChevronDownIcon className="details-icon w-6 h-6 flex" />
       </summary>
-      <div className="markdown-document dark:text-slate-200 text-grey-800 p-4" lang="en">
+      <div className="markdown-document dark:text-neutral-200 text-grey-800 p-4" lang="en">
         {toJsxRuntime(document, { Fragment, jsx, jsxs })}
       </div>
     </details>

@@ -38,9 +38,9 @@ export function DropdownMenu({
         // Handle scrolling when menu won't fit in viewport
         'overflow-y-auto',
         // Popover background
-        'bg-white/75 backdrop-blur-xl dark:bg-zinc-800/75',
+        'bg-white/75 backdrop-blur-xl dark:bg-neutral-800/75',
         // Shadows
-        'shadow-lg ring-1 ring-zinc-950/10 dark:ring-white/10 dark:ring-inset',
+        'shadow-lg ring-1 ring-neutral-950/10 dark:ring-white/10 dark:ring-inset',
         // Define grid at the menu level if subgrid is supported
         'supports-[grid-template-columns:subgrid]:grid supports-[grid-template-columns:subgrid]:grid-cols-[auto_1fr_1.5rem_0.5rem_auto]',
         // Transitions
@@ -62,9 +62,9 @@ export function DropdownItem({
     // Base styles
     'group cursor-default rounded-lg px-3.5 py-2.5 focus:outline-hidden sm:px-3 sm:py-1.5',
     // Text styles
-    'text-left text-base/6 text-zinc-950 sm:text-sm/6 dark:text-white forced-colors:text-[CanvasText]',
+    'text-left text-base/6 text-neutral-950 sm:text-sm/6 dark:text-white forced-colors:text-[CanvasText]',
     // Focus
-    'data-focus:bg-blue-500 data-focus:text-white',
+    'data-focus:bg-stone-light dark:data-focus:bg-white/10',
     // Disabled state
     'data-disabled:opacity-50',
     // Forced colors mode
@@ -73,7 +73,7 @@ export function DropdownItem({
     'col-span-full grid grid-cols-[auto_1fr_1.5rem_0.5rem_auto] items-center supports-[grid-template-columns:subgrid]:grid-cols-subgrid',
     // Icons
     '*:data-[slot=icon]:col-start-1 *:data-[slot=icon]:row-start-1 *:data-[slot=icon]:mr-2.5 *:data-[slot=icon]:-ml-0.5 *:data-[slot=icon]:size-5 sm:*:data-[slot=icon]:mr-2 sm:*:data-[slot=icon]:size-4',
-    '*:data-[slot=icon]:text-zinc-500 data-focus:*:data-[slot=icon]:text-white dark:*:data-[slot=icon]:text-zinc-400 dark:data-focus:*:data-[slot=icon]:text-white',
+    '*:data-[slot=icon]:text-neutral-500 data-focus:*:data-[slot=icon]:text-ink dark:*:data-[slot=icon]:text-neutral-400 dark:data-focus:*:data-[slot=icon]:text-white',
     // Avatar
     '*:data-[slot=avatar]:mr-2.5 *:data-[slot=avatar]:-ml-1 *:data-[slot=avatar]:size-6 sm:*:data-[slot=avatar]:mr-2 sm:*:data-[slot=avatar]:size-5'
   )

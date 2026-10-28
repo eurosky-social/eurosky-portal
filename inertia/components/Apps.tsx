@@ -29,7 +29,7 @@ export function Apps({ favorites, level = 2, sections }: Properties) {
         (section) =>
           section.apps.length > 0 && (
             <div key={section.category}>
-              <Heading className="mt-8 mb-4 text-lg font-semibold text-zinc-950 dark:text-white">
+              <Heading className="mt-8 mb-4 text-lg font-semibold text-neutral-950 dark:text-white">
                 {t(section.category)}
               </Heading>
               <AppGrid apps={section.apps} favorites={favorites} />

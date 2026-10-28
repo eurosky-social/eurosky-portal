@@ -24,15 +24,15 @@ export function SiteStandardDocument({ activity }: { activity: SiteStandardDocum
           className="aspect-video w-full rounded-lg object-cover"
         />
       ) : undefined}
-      <h1 className="text-center text-3xl font-semibold text-zinc-950 sm:text-4xl dark:text-white">
+      <h1 className="text-center text-3xl font-semibold text-neutral-950 sm:text-4xl dark:text-white">
         {activity.title}
       </h1>
       {activity.description ? (
-        <p className="text-center text-lg text-zinc-500 dark:text-zinc-400">
+        <p className="text-center text-lg text-neutral-500 dark:text-neutral-400">
           {activity.description}
         </p>
       ) : undefined}
-      <div className="article-body markdown-document text-zinc-900 dark:text-white">
+      <div className="article-body markdown-document text-neutral-900 dark:text-white">
         {structuredContent ? (
           toJsxRuntime(structuredContent, {
             Fragment,

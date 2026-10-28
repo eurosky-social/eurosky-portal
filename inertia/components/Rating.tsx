@@ -44,7 +44,7 @@ export function Rating(properties: Properties): React.JSX.Element {
           </span>
         )}
       </span>
-      <span className="ml-0.5 text-zinc-500 dark:text-zinc-400">
+      <span className="ml-0.5 text-neutral-500 dark:text-neutral-400">
         ({formatNumber(count, locale)})
       </span>
     </span>
