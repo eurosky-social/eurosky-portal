@@ -11,6 +11,7 @@ export const controllers = {
   Discover: () => import('#controllers/discover_controller'),
   Explore: () => import('#controllers/explore_controller'),
   Faq: () => import('#controllers/faq_controller'),
+  Files: () => import('#controllers/files_controller'),
   HealthChecks: () => import('#controllers/health_checks_controller'),
   Home: () => import('#controllers/home_controller'),
   Legal: () => import('#controllers/legal_controller'),

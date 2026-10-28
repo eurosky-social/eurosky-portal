@@ -1,9 +1,8 @@
 import { DateTime } from 'luxon'
-import cache from '@adonisjs/cache/services/main'
 import logger from '@adonisjs/core/services/logger'
 import {
   type AtUriString,
-  Client,
+  type Client,
   type DidString,
   type Procedure,
   type Query,
@@ -14,7 +13,6 @@ import BackfillJob from '#jobs/backfill_job'
 import * as lexicon from '#lexicons'
 import Account from '#models/account'
 import ActivityRecord from '#models/activity_record'
-import { SlingshotService } from '#services/slingshot_service'
 import {
   type Activity,
   type SupportedCollection,
@@ -24,6 +22,8 @@ import {
   toValue,
 } from '#utils/activity'
 import type { ActivityRecordSchema } from '#database/schema'
+import { pdsClient } from '#utils/pds'
+import { decodeToken, encodeToken } from '#utils/token'
 
 /**
  * Max activities per user across all collections;
@@ -129,12 +129,6 @@ interface GetRecordsOptions {
 
 export class ActivityService {
   /**
-   * Resolve PDS of a DID so records can be read publicly, w/o a user OAuth
-   * session.
-   */
-  #slingshot = new SlingshotService()
-
-  /**
    * Backfill a collection in a user.
    *
    * Used for syncing existing stuff again after changes to
@@ -148,7 +142,7 @@ export class ActivityService {
    *   Promise that resolves when done.
    */
   async backfillCollection(did: DidString, collection: SupportedCollection): Promise<undefined> {
-    const { client } = await this.#clientFor(did)
+    const { client } = await pdsClient(did)
     await this.#syncCollection(client, did, collection, DateTime.now())
     await this.prune(did)
   }
@@ -162,7 +156,7 @@ export class ActivityService {
    *   Promise that resolves when done.
    */
   async backfill(did: DidString): Promise<undefined> {
-    const { client } = await this.#clientFor(did)
+    const { client } = await pdsClient(did)
 
     let describeResponse: XrpcResponse<typeof lexicon.com.atproto.repo.describeRepo.main>
     try {
@@ -330,7 +324,7 @@ export class ActivityService {
       snapshot: cursor
         ? snapshot
         : first
-          ? encodeSnapshot({ createdAt: first.createdAt?.toISO() ?? undefined, uri: first.uri })
+          ? encodeToken({ createdAt: first.createdAt?.toISO() ?? undefined, uri: first.uri })
           : undefined,
       state: 'ready',
       total: Number(count.$extras.count),
@@ -364,7 +358,7 @@ export class ActivityService {
     const row = await ActivityRecord.query().where('uri', uri).first()
     if (!row) return
 
-    const { client, pds } = await this.#clientFor(did)
+    const { client, pds } = await pdsClient(did)
     let value: Activity | undefined
 
     try {
@@ -391,26 +385,6 @@ export class ActivityService {
     }
 
     return { pds, uri, value }
-  }
-
-  /**
-   * Build a client.
-   *
-   * @param did
-   *   DID.
-   * @returns
-   *   Promise that resolves to a client and the PDS it talks to.
-   */
-  async #clientFor(did: DidString): Promise<{ client: Client; pds: string }> {
-    const resolved = await cache.getOrSet({
-      factory: (ctx) =>
-        this.#slingshot.resolveMiniDoc(did, AbortSignal.timeout(5000)).then((r) => r ?? ctx.skip()),
-      grace: '10m',
-      key: `pds-resolve:${did}`,
-      ttl: '10m',
-    })
-    if (!resolved) throw new Error(`Could not resolve PDS for \`${did}\``)
-    return { client: new Client(resolved.pds), pds: resolved.pds }
   }
 
   /**
@@ -485,32 +459,15 @@ export class ActivityService {
 export default new ActivityService()
 
 /**
- * @param snapshot
- *   Snapshot string (base64url-encoded JSON).
+ * @param value
+ *   Snapshot string.
  * @returns
  *   Decoded cursor or `undefined`.
  */
-function decodeSnapshot(snapshot: string): SnapshotCursor | undefined {
-  try {
-    const parsed: unknown = JSON.parse(Buffer.from(snapshot, 'base64url').toString('utf8'))
-    if (parsed === null || typeof parsed !== 'object') return
-    const uriRaw = 'uri' in parsed ? parsed.uri : undefined
-    const uri = typeof uriRaw === 'string' ? uriRaw : undefined
-    if (!uri) return
-    const createdAtRaw = 'createdAt' in parsed ? parsed.createdAt : undefined
-    const createdAt = typeof createdAtRaw === 'string' ? createdAtRaw : undefined
-    return { createdAt, uri }
-  } catch {}
-}
-
-/**
- * @param cursor
- *   Cursor.
- * @returns
- *   Snapshot string (base64url-encoded JSON).
- */
-function encodeSnapshot(cursor: SnapshotCursor): string {
-  return Buffer.from(JSON.stringify(cursor)).toString('base64url')
+function decodeSnapshot(value: string): SnapshotCursor | undefined {
+  const { createdAt, uri } = decodeToken(value) ?? {}
+  if (typeof uri !== 'string' || !uri) return
+  return { createdAt: typeof createdAt === 'string' ? createdAt : undefined, uri }
 }
 
 /**

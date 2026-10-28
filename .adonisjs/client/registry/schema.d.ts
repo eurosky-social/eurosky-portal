@@ -202,6 +202,19 @@ export interface Registry {
       rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/account_controller').default['storeAcceptance']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
+  'files.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/files'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: ExtractQueryForGet<InferInput<(typeof import('#validators/files').filesQueryValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/files_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/files_controller').default['show']>>> | { status: 422; response: { errors: SimpleError[] } }
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/files_controller').default['show']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
   'account.dismiss_welcome': {
     methods: ["POST"]
     pattern: '/account/dismiss-welcome'
