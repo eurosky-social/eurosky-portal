@@ -22,12 +22,12 @@ interface Properties {
  */
 export function Footer(properties: Properties) {
   const { panelAbove } = properties
-  const { t, tPlain } = useT()
+  const { locale, t, tPlain } = useT()
   const external = [
-    { href: links.help, label: t('sidebar.help') },
-    { href: links.contact, label: t('sidebar.contactUs') },
-    { href: links.terms, label: t('sidebar.termsOfService') },
-    { href: links.privacy, label: t('sidebar.privacyPolicy') },
+    { href: links.help(locale), label: t('sidebar.help') },
+    { href: links.contact(locale), label: t('sidebar.contactUs') },
+    { href: links.terms(locale), label: t('sidebar.termsOfService') },
+    { href: links.privacy(locale), label: t('sidebar.privacyPolicy') },
   ]
 
   return (

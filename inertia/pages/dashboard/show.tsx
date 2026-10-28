@@ -73,7 +73,7 @@ export default function Dashboard({
                   return (
                     <a
                       className="font-semibold hover:underline"
-                      href={links.helpInvalidHandle}
+                      href={links.helpInvalidHandle(locale)}
                       rel="noopener noreferrer"
                       target="_blank"
                     >

@@ -24,7 +24,7 @@ export function PolicyForm({ route, terms, privacy }: PolicyFormProps<Routes>) {
   const form = useForm({
     terms: false,
   })
-  const { t } = useT()
+  const { locale, t } = useT()
 
   return (
     <>
@@ -67,7 +67,7 @@ export function PolicyForm({ route, terms, privacy }: PolicyFormProps<Routes>) {
                       return (
                         <a
                           className="underline decoration-ink/50 hover:decoration-ink dark:decoration-white/50 dark:hover:decoration-white"
-                          href={links.terms}
+                          href={links.terms(locale)}
                           rel="noopener noreferrer"
                           target="_blank"
                         >
@@ -80,7 +80,7 @@ export function PolicyForm({ route, terms, privacy }: PolicyFormProps<Routes>) {
                       return (
                         <a
                           className="underline decoration-ink/50 hover:decoration-ink dark:decoration-white/50 dark:hover:decoration-white"
-                          href={links.privacy}
+                          href={links.privacy(locale)}
                           rel="noopener noreferrer"
                           target="_blank"
                         >
