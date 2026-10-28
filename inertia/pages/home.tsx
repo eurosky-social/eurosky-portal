@@ -14,10 +14,10 @@ export default function Home({ sections }: InertiaProps<Data.Apps>) {
     <>
       <Hero />
       <Container className="pt-8 pb-16 py-4" id="apps">
-        <h2 className="text-lg text-zinc-950 dark:text-white font-bold uppercase text-center">
+        <h2 className="text-lg text-neutral-950 dark:text-white font-bold uppercase text-center">
           {t('home.heading')}
         </h2>
-        <p className="text-center text-neutral-500 dark:text-slate-400 mb-12">
+        <p className="text-center text-neutral-500 dark:text-neutral-400 mb-12">
           {t('home.subheading')}
         </p>
 

@@ -19,9 +19,9 @@ export function MarkdownContent({ value }: { value?: string | undefined }): Reac
     case 'loading':
       return (
         <div aria-hidden="true" className="space-y-2">
-          <div className="h-3 w-full animate-pulse rounded bg-zinc-200 dark:bg-zinc-800" />
-          <div className="h-3 w-full animate-pulse rounded bg-zinc-200 dark:bg-zinc-800" />
-          <div className="h-3 w-2/3 animate-pulse rounded bg-zinc-200 dark:bg-zinc-800" />
+          <div className="h-3 w-full animate-pulse rounded bg-neutral-200 dark:bg-neutral-800" />
+          <div className="h-3 w-full animate-pulse rounded bg-neutral-200 dark:bg-neutral-800" />
+          <div className="h-3 w-2/3 animate-pulse rounded bg-neutral-200 dark:bg-neutral-800" />
         </div>
       )
     case 'ready':

@@ -29,7 +29,7 @@ export const Input = forwardRef(function Input(
         // Focus ring
         'after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:ring-transparent after:ring-inset sm:focus-within:after:ring sm:focus-within:after:ring-blue-600',
         // Disabled state
-        'has-data-disabled:opacity-50 has-data-disabled:before:bg-zinc-950/5 has-data-disabled:before:shadow-none',
+        'has-data-disabled:opacity-50 has-data-disabled:before:bg-neutral-950/5 has-data-disabled:before:shadow-none',
       ])}
     >
       <Headless.Input
@@ -55,21 +55,21 @@ export const Input = forwardRef(function Input(
           // Basic layout
           'relative block w-full appearance-none rounded-lg px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] sm:px-[calc(--spacing(3)-1px)] sm:py-[calc(--spacing(1.5)-1px)]',
           // Typography
-          'text-base/6 text-zinc-950 placeholder:text-zinc-500 sm:text-sm/6 dark:text-white dark:placeholder:text-zinc-400',
+          'text-base/6 text-neutral-950 placeholder:text-neutral-500 sm:text-sm/6 dark:text-white dark:placeholder:text-neutral-400',
           // Border
-          'border border-zinc-950/10 data-hover:border-zinc-950/20 dark:border-white/10 dark:data-hover:border-white/20',
+          'border border-neutral-950/10 data-hover:border-neutral-950/20 dark:border-white/10 dark:data-hover:border-white/20',
           // Background color
           'bg-transparent dark:bg-white/5',
           // Autofill: browsers paint their own (light) background but keep our
           // (white, in dark mode) text, so paint over it and set the text too.
-          'autofill:shadow-[inset_0_0_0_1000px_var(--color-blue-50)] autofill:[-webkit-text-fill-color:var(--color-zinc-950)]',
-          'dark:autofill:shadow-[inset_0_0_0_1000px_var(--color-slate-700)] dark:autofill:[-webkit-text-fill-color:var(--color-white)]',
+          'autofill:shadow-[inset_0_0_0_1000px_var(--color-blue-50)] autofill:[-webkit-text-fill-color:var(--color-neutral-950)]',
+          'dark:autofill:shadow-[inset_0_0_0_1000px_var(--color-neutral-700)] dark:autofill:[-webkit-text-fill-color:var(--color-white)]',
           // Hide default focus styles
           'focus:outline-hidden',
           // Invalid state
           'data-invalid:border-red-500 data-invalid:data-hover:border-red-500 dark:data-invalid:border-red-600 dark:data-invalid:data-hover:border-red-600',
           // Disabled state
-          'data-disabled:border-zinc-950/20 dark:data-disabled:border-white/15 dark:data-disabled:bg-white/2.5 dark:data-hover:data-disabled:border-white/15',
+          'data-disabled:border-neutral-950/20 dark:data-disabled:border-white/15 dark:data-disabled:bg-white/2.5 dark:data-hover:data-disabled:border-white/15',
           // System icons
           'dark:scheme-dark',
         ])}

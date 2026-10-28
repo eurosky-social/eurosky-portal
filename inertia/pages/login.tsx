@@ -16,14 +16,17 @@ import { Data } from '@generated/data'
 export default function Login({ migrationUrl }: InertiaProps<{ migrationUrl?: string }>) {
   const { tPlain, t } = useT()
   return (
-    <div className="bg-neutral-50 dark:bg-slate-900 min-h-dvh-minus-35">
+    <div className="bg-neutral-50 dark:bg-neutral-900 min-h-dvh-minus-35">
       <Head title={tPlain('nav.signIn')} />
       <Container className="pt-6 md:pt-12">
         {migrationUrl && (
           <div className="w-full md:w-3/4 lg:w-1/2 m-auto">
             <Notice
               action={
-                <a href={migrationUrl} className="text-brand hover:underline">
+                <a
+                  href={migrationUrl}
+                  className="underline decoration-ink/50 hover:decoration-ink dark:decoration-white/50 dark:hover:decoration-white"
+                >
                   {tPlain('migrationAlert.cta')}
                 </a>
               }
@@ -33,12 +36,8 @@ export default function Login({ migrationUrl }: InertiaProps<{ migrationUrl?: st
           </div>
         )}
         <Card bleed className="w-full md:w-3/4 lg:w-1/2 m-auto p-4 mb-8">
-          <h1 className="mx-auto max-w-4xl mb-2 text-center font-display text-3xl leading-[1.2] font-extrabold tracking-tight text-slate-900 dark:text-slate-200 sm:text-5xl">
-            {t('login.title', {
-              brand(chunks) {
-                return <span className="text-brand">{chunks}</span>
-              },
-            })}
+          <h1 className="mx-auto max-w-4xl mb-2 text-center text-3xl leading-[1.08] font-bold tracking-tight text-balance text-ink dark:text-white sm:text-5xl">
+            {t('login.title')}
           </h1>
           <Text className="text-center">{t('login.subtitle')}</Text>
           <Form className="my-6" route="oauth.login">
@@ -62,13 +61,12 @@ export default function Login({ migrationUrl }: InertiaProps<{ migrationUrl?: st
                     required
                     autoCapitalize="none"
                     autoCorrect="off"
-                    autoComplete="username"
                     spellCheck={false}
                   />
                   {errors.input && <ErrorMessage>{errors.input}</ErrorMessage>}
                 </Field>
                 <Field className="mt-2 flex justify-end justify-items-stretch">
-                  <Button type="submit" color="brand" className="w-full" disabled={processing}>
+                  <Button type="submit" className="w-full" disabled={processing}>
                     {t('login.continue')}
                   </Button>
                 </Field>

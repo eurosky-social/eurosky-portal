@@ -19,8 +19,8 @@ export default function Card<As extends ElementType = 'div'>({
     {
       className: clsx(
         className,
-        'overflow-hidden rounded-lg bg-white shadow-sm dark:bg-slate-800/50 dark:shadow-none dark:outline dark:-outline-offset-1 dark:outline-white/5',
-        bleed && 'max-sm:-mx-4 max-sm:w-auto max-sm:rounded-none max-sm:shadow-none'
+        'overflow-hidden rounded-xl border border-stone-light bg-white dark:border-neutral-800 dark:bg-neutral-900',
+        bleed && 'max-sm:-mx-4 max-sm:w-auto max-sm:rounded-none max-sm:border-x-0'
       ),
       ...props,
     },
@@ -39,8 +39,8 @@ export function ClickableCard<As extends ElementType = 'a'>({
     {
       className: clsx(
         className,
-        'overflow-hidden rounded-lg bg-white shadow-sm dark:bg-slate-800/20 dark:shadow-none dark:outline dark:-outline-offset-1 dark:outline-white/10',
-        'focus-visible:outline-2 focus-visible:outline-solid! focus-visible:outline-offset-2 focus-visible:outline-blue-600 hover:-outline-offset-1 border border-neutral-300/50 hover:border-neutral-300/70 dark:border-slate-800 dark:hover:border-slate-700 dark:hover:bg-slate-800/50 hover:shadow-lg'
+        'overflow-hidden rounded-xl border border-stone-light bg-white transition-colors hover:border-charcoal dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-500',
+        'focus-visible:outline-2 focus-visible:outline-solid! focus-visible:outline-offset-2 focus-visible:outline-blue-600'
       ),
       ...props,
     },

@@ -7,7 +7,7 @@ import type { LinkProps } from '@adonisjs/inertia/react'
 export const styles = {
   base: [
     // Base
-    'relative isolate inline-flex justify-center rounded-lg border font-semibold',
+    'relative isolate inline-flex justify-center border font-semibold transition-colors',
     // Focus (the outline itself comes from `:focus-visible` in `app.css`)
     'outline-offset-2',
     // Disabled
@@ -15,63 +15,38 @@ export const styles = {
     // Icon
     '*:data-[slot=icon]:shrink-0 *:data-[slot=icon]:text-(--btn-icon) forced-colors:[--btn-icon:ButtonText] forced-colors:data-hover:[--btn-icon:ButtonText]',
   ],
-  // Buttons with text (all but `icon`).
+  // Buttons with text (all but `icon`), pill shaped like on eurosky.tech.
   text: [
-    'items-baseline gap-x-2 text-base/6 sm:text-sm/6',
-    'px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] sm:px-[calc(--spacing(3)-1px)] sm:py-[calc(--spacing(1.5)-1px)]',
+    'items-baseline gap-x-2 rounded-full text-base/6 sm:text-sm/6',
+    'px-[calc(--spacing(4.5)-1px)] py-[calc(--spacing(2.5)-1px)] sm:px-[calc(--spacing(4)-1px)] sm:py-[calc(--spacing(1.5)-1px)]',
     '*:data-[slot=icon]:-mx-0.5 *:data-[slot=icon]:my-0.5 *:data-[slot=icon]:size-5 *:data-[slot=icon]:self-center sm:*:data-[slot=icon]:my-1 sm:*:data-[slot=icon]:size-4',
   ],
   // Square button with only an icon (give it an `aria-label`).
   icon: [
-    'size-10 items-center border-transparent *:data-[slot=icon]:size-5',
-    'data-active:bg-zinc-950/5 data-hover:bg-zinc-950/5 dark:data-active:bg-white/10 dark:data-hover:bg-white/10',
-    '[--btn-icon:var(--color-zinc-500)] data-active:[--btn-icon:var(--color-zinc-700)] data-hover:[--btn-icon:var(--color-zinc-700)] dark:[--btn-icon:var(--color-slate-400)] dark:data-active:[--btn-icon:var(--color-white)] dark:data-hover:[--btn-icon:var(--color-white)]',
+    'size-10 items-center rounded-lg border-transparent *:data-[slot=icon]:size-5',
+    'data-active:bg-stone-light data-hover:bg-stone-light dark:data-active:bg-white/10 dark:data-hover:bg-white/10',
+    '[--btn-icon:var(--color-charcoal)] data-active:[--btn-icon:var(--color-ink)] data-hover:[--btn-icon:var(--color-ink)] dark:[--btn-icon:var(--color-neutral-400)] dark:data-active:[--btn-icon:var(--color-white)] dark:data-hover:[--btn-icon:var(--color-white)]',
   ],
   link: [
-    'p-0! bg-none border-none text-blue-600 font-normal! data-hover:underline data-active:underline dark:text-blue-400',
+    'p-0! bg-none border-none text-ink font-normal! underline decoration-ink/50 data-hover:decoration-ink data-active:decoration-ink dark:text-white dark:decoration-white/50 dark:data-hover:decoration-white',
   ],
   solid: [
-    // Optical border, implemented as the button background to avoid corner artifacts
-    'border-transparent bg-(--btn-border)',
-    // Dark mode: border is rendered on `after` so background is set to button background
-    'dark:bg-(--btn-bg)',
-    // Button background, implemented as foreground layer to stack on top of pseudo-border layer
-    'before:absolute before:inset-0 before:-z-10 before:rounded-[calc(var(--radius-lg)-1px)] before:bg-(--btn-bg)',
-    // Drop shadow, applied to the inset `before` layer so it blends with the border
-    'before:shadow-sm',
-    // Background color is moved to control and shadow is removed in dark mode so hide `before` pseudo
-    'dark:before:hidden',
-    // Dark mode: Subtle white outline is applied using a border
-    'dark:border-white/5',
-    // Shim/overlay, inset to match button foreground and used for hover state + highlight shadow
-    'after:absolute after:inset-0 after:-z-10 after:rounded-[calc(var(--radius-lg)-1px)]',
-    // Inner highlight shadow
-    'after:shadow-[inset_0_1px_--theme(--color-white/15%)]',
-    // White overlay on hover
-    'data-active:after:bg-(--btn-hover-overlay) data-hover:after:bg-(--btn-hover-overlay)',
-    // Dark mode: `after` layer expands to cover entire button
-    'dark:after:-inset-px dark:after:rounded-lg',
-    // Disabled
-    'data-disabled:before:shadow-none data-disabled:after:shadow-none',
+    'border-transparent bg-(--btn-bg) data-active:bg-(--btn-hover-bg) data-hover:bg-(--btn-hover-bg)',
   ],
   outline: [
     // Base
-    'border-zinc-950/10 text-zinc-950 data-active:bg-zinc-950/2.5 data-hover:bg-zinc-950/2.5',
+    'border-ink text-ink data-active:bg-ink data-active:text-cotton data-hover:bg-ink data-hover:text-cotton',
     // Dark mode
-    'dark:border-white/15 dark:text-white dark:[--btn-bg:transparent] dark:data-active:bg-white/5 dark:data-hover:bg-white/5',
+    'dark:border-white/20 dark:text-white dark:data-active:bg-white/10 dark:data-hover:bg-white/10',
     // Icon
-    '[--btn-icon:var(--color-zinc-500)] data-active:[--btn-icon:var(--color-zinc-700)] data-hover:[--btn-icon:var(--color-zinc-700)] dark:data-active:[--btn-icon:var(--color-zinc-400)] dark:data-hover:[--btn-icon:var(--color-zinc-400)]',
+    '[--btn-icon:var(--color-ink)] data-active:[--btn-icon:var(--color-cotton)] data-hover:[--btn-icon:var(--color-cotton)] dark:[--btn-icon:var(--color-white)] dark:data-active:[--btn-icon:var(--color-white)] dark:data-hover:[--btn-icon:var(--color-white)]',
   ],
   colors: {
+    // Ink, inverted to white in dark mode like on the site’s ink sections.
     dark: [
-      'text-white [--btn-bg:var(--color-zinc-900)] [--btn-border:var(--color-zinc-950)]/90 [--btn-hover-overlay:var(--color-white)]/10',
-      'dark:[--btn-bg:var(--color-slate-700)] dark:[--btn-hover-overlay:var(--color-white)]/5',
-      '[--btn-icon:var(--color-zinc-400)] data-active:[--btn-icon:var(--color-zinc-300)] data-hover:[--btn-icon:var(--color-zinc-300)]',
-    ],
-    // Main action on a page, such as signing in.
-    brand: [
-      'text-black/80 [--btn-hover-overlay:var(--color-black)]/10 [--btn-bg:var(--color-brand)] [--btn-border:var(--color-brand-border)]/60',
-      '[--btn-icon:var(--color-black)]/60',
+      'text-cotton [--btn-bg:var(--color-ink)] [--btn-hover-bg:var(--color-charcoal)]',
+      'dark:text-ink dark:[--btn-bg:var(--color-white)] dark:[--btn-hover-bg:var(--color-neutral-200)]',
+      '[--btn-icon:var(--color-cotton)] dark:[--btn-icon:var(--color-ink)]',
     ],
   },
 }

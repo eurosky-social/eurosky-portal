@@ -7,7 +7,7 @@ export default function MarkdownDocument({
 }: { document: string } & React.ComponentPropsWithoutRef<'div'>) {
   return (
     <div
-      className={clsx('markdown-document dark:text-slate-200 text-grey-800', className)}
+      className={clsx('markdown-document dark:text-neutral-200 text-grey-800', className)}
       dangerouslySetInnerHTML={{ __html: document }}
       lang={lang}
     />

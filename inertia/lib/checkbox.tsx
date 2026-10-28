@@ -40,7 +40,7 @@ const base = [
   // Background color applied to control in dark mode
   'dark:bg-white/5 dark:group-data-checked:bg-(--checkbox-checked-bg)',
   // Border
-  'border border-zinc-950/15 group-data-checked:border-transparent group-data-hover:group-data-checked:border-transparent group-data-hover:border-zinc-950/30 group-data-checked:bg-(--checkbox-checked-border)',
+  'border border-neutral-950/15 group-data-checked:border-transparent group-data-hover:group-data-checked:border-transparent group-data-hover:border-neutral-950/30 group-data-checked:bg-(--checkbox-checked-border)',
   'dark:border-white/15 dark:group-data-checked:border-white/5 dark:group-data-hover:group-data-checked:border-white/5 dark:group-data-hover:border-white/30',
   // Inner highlight shadow
   'after:absolute after:inset-0 after:rounded-[calc(0.3125rem-1px)] after:shadow-[inset_0_1px_--theme(--color-white/15%)]',
@@ -49,7 +49,7 @@ const base = [
   'group-data-focus:outline-2 group-data-focus:outline-offset-2 group-data-focus:outline-blue-600',
   // Disabled state
   'group-data-disabled:opacity-50',
-  'group-data-disabled:border-zinc-950/25 group-data-disabled:bg-zinc-950/5 group-data-disabled:[--checkbox-check:var(--color-zinc-950)]/50 group-data-disabled:before:bg-transparent',
+  'group-data-disabled:border-neutral-950/25 group-data-disabled:bg-neutral-950/5 group-data-disabled:[--checkbox-check:var(--color-neutral-950)]/50 group-data-disabled:before:bg-transparent',
   'dark:group-data-disabled:border-white/20 dark:group-data-disabled:bg-white/2.5 dark:group-data-disabled:[--checkbox-check:var(--color-white)]/50 dark:group-data-checked:group-data-disabled:after:hidden',
   // Forced colors mode
   'forced-colors:[--checkbox-check:HighlightText] forced-colors:[--checkbox-checked-bg:Highlight] forced-colors:group-data-disabled:[--checkbox-check:Highlight]',
@@ -57,20 +57,20 @@ const base = [
 ]
 
 const colors = {
-  'dark/zinc': [
-    '[--checkbox-check:var(--color-white)] [--checkbox-checked-bg:var(--color-zinc-900)] [--checkbox-checked-border:var(--color-zinc-950)]/90',
-    'dark:[--checkbox-checked-bg:var(--color-zinc-600)]',
+  'dark/neutral': [
+    '[--checkbox-check:var(--color-white)] [--checkbox-checked-bg:var(--color-neutral-900)] [--checkbox-checked-border:var(--color-neutral-950)]/90',
+    'dark:[--checkbox-checked-bg:var(--color-neutral-600)]',
   ],
   'dark/white': [
-    '[--checkbox-check:var(--color-white)] [--checkbox-checked-bg:var(--color-zinc-900)] [--checkbox-checked-border:var(--color-zinc-950)]/90',
-    'dark:[--checkbox-check:var(--color-zinc-900)] dark:[--checkbox-checked-bg:var(--color-white)] dark:[--checkbox-checked-border:var(--color-zinc-950)]/15',
+    '[--checkbox-check:var(--color-white)] [--checkbox-checked-bg:var(--color-neutral-900)] [--checkbox-checked-border:var(--color-neutral-950)]/90',
+    'dark:[--checkbox-check:var(--color-neutral-900)] dark:[--checkbox-checked-bg:var(--color-white)] dark:[--checkbox-checked-border:var(--color-neutral-950)]/15',
   ],
   'white':
-    '[--checkbox-check:var(--color-zinc-900)] [--checkbox-checked-bg:var(--color-white)] [--checkbox-checked-border:var(--color-zinc-950)]/15',
+    '[--checkbox-check:var(--color-neutral-900)] [--checkbox-checked-bg:var(--color-white)] [--checkbox-checked-border:var(--color-neutral-950)]/15',
   'dark':
-    '[--checkbox-check:var(--color-white)] [--checkbox-checked-bg:var(--color-zinc-900)] [--checkbox-checked-border:var(--color-zinc-950)]/90',
-  'zinc':
-    '[--checkbox-check:var(--color-white)] [--checkbox-checked-bg:var(--color-zinc-600)] [--checkbox-checked-border:var(--color-zinc-700)]/90',
+    '[--checkbox-check:var(--color-white)] [--checkbox-checked-bg:var(--color-neutral-900)] [--checkbox-checked-border:var(--color-neutral-950)]/90',
+  'neutral':
+    '[--checkbox-check:var(--color-white)] [--checkbox-checked-bg:var(--color-neutral-600)] [--checkbox-checked-border:var(--color-neutral-700)]/90',
   'red':
     '[--checkbox-check:var(--color-white)] [--checkbox-checked-bg:var(--color-red-600)] [--checkbox-checked-border:var(--color-red-700)]/90',
   'orange':
@@ -79,8 +79,6 @@ const colors = {
     '[--checkbox-check:var(--color-amber-950)] [--checkbox-checked-bg:var(--color-amber-400)] [--checkbox-checked-border:var(--color-amber-500)]/80',
   'yellow':
     '[--checkbox-check:var(--color-yellow-950)] [--checkbox-checked-bg:var(--color-yellow-300)] [--checkbox-checked-border:var(--color-yellow-400)]/80',
-  'brand':
-    '[--checkbox-check:var(--color-white)] [--checkbox-checked-bg:var(--color-brand)] [--checkbox-checked-border:var(--color-brand-border)]/60',
   'lime':
     '[--checkbox-check:var(--color-lime-950)] [--checkbox-checked-bg:var(--color-lime-300)] [--checkbox-checked-border:var(--color-lime-400)]/80',
   'green':
@@ -112,7 +110,7 @@ const colors = {
 type Color = keyof typeof colors
 
 export function Checkbox({
-  color = 'dark/zinc',
+  color = 'dark/neutral',
   className,
   ...props
 }: {

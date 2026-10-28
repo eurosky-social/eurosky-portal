@@ -60,7 +60,7 @@ export function MobileSidebar({
         transition={!instant}
         className="fixed inset-y-0 w-full max-w-80 p-2 transition duration-300 ease-in-out data-closed:-translate-x-full"
       >
-        <div className="flex h-full flex-col rounded-lg bg-white shadow-xs ring-1 ring-slate-950/5 dark:bg-slate-900 dark:ring-white/10">
+        <div className="flex h-full flex-col rounded-xl bg-white ring-1 ring-stone-light dark:bg-neutral-900 dark:ring-neutral-800">
           <div className="-mb-3 px-4 pt-3 self-end">
             <Headless.CloseButton as={NavbarItem} aria-label={tPlain('nav.closeNavigation')}>
               <CloseMenuIcon />
@@ -82,7 +82,7 @@ export function SidebarLayout({
   const { tPlain } = useT()
 
   return (
-    <div className="relative isolate flex min-h-dvh-minus-32 w-full bg-white max-lg:flex-col lg:bg-white dark:bg-slate-800/70 dark:lg:bg-slate-800/70">
+    <div className="relative isolate flex min-h-dvh-minus-32 w-full bg-white max-lg:flex-col dark:bg-neutral-900">
       {/* Sidebar on desktop */}
       <div className="inset-y-0 left-0 w-64 max-lg:hidden">{sidebar}</div>
 
@@ -106,7 +106,7 @@ export function SidebarLayout({
 
       {/* Content */}
       <main className="flex flex-1 flex-col lg:min-w-0 lg:pt-2" id={mainId} tabIndex={-1}>
-        <div className="grow p-6 lg:rounded-l-lg bg-neutral-50 lg:p-10 lg:shadow-xs lg:ring-1 lg:ring-slate-900/5 dark:bg-slate-900 dark:lg:ring-white/10">
+        <div className="grow p-6 lg:rounded-tl-xl bg-cotton lg:p-10 lg:ring-1 lg:ring-stone-light dark:bg-neutral-950 dark:lg:ring-neutral-800">
           {children}
         </div>
       </main>

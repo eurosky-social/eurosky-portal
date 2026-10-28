@@ -33,7 +33,7 @@ export function App({ app, favorite }: { app: Data.AppSummary; favorite?: boolea
               {app.listing.name}
             </Heading>
             <Text
-              className="overflow-hidden dark:text-slate-400!"
+              className="overflow-hidden dark:text-neutral-400!"
               style={{ WebkitBoxOrient: 'vertical', WebkitLineClamp: 3, display: '-webkit-box' }}
               lang="en"
             >
@@ -43,7 +43,7 @@ export function App({ app, favorite }: { app: Data.AppSummary; favorite?: boolea
           <Avatar
             square
             src={app.listing.iconUrl}
-            className="size-12 mb-2 bg-gray-100 ml-auto dark:bg-gray-800 outline-none!"
+            className="size-12 mb-2 bg-neutral-100 ml-auto dark:bg-neutral-800 outline-none!"
           />
         </div>
         {typeof app.listing.rating === 'string' || app.madeInEurope || favoritable ? (

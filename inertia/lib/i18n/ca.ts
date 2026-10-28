@@ -50,7 +50,7 @@ const ca = {
   'createAccount.haveAccount': 'Ja teniu un compte {orgName}? <signIn>Inicia la sessió</signIn>',
   'createAccount.pageTitle': 'Creeu un compte',
   'createAccount.subtitle': 'Abans de començar, reviseu i accepteu les nostres condicions.',
-  'createAccount.title': 'Creeu el <brand>compte {orgName}.</brand>',
+  'createAccount.title': 'Creeu el compte {orgName}.',
   'dashboard.activity.empty': 'Encara no hi ha res aquí; potser voleu fer una publicació a Mu?',
   'dashboard.activity.heading': 'Activitat recent',
   'dashboard.activity.subheading': 'La vostra activitat recent.',
@@ -89,7 +89,7 @@ const ca = {
   'hero.createAccount': 'Creeu el vostre compte →',
   'hero.dataPromise': 'Les vostres dades són vostres. Mai no les vendrem.',
   'hero.subtitle': 'Un sol compte. Desenes d’aplicacions. Sense lligams.',
-  'hero.title': '{orgName}: El vostre portal cap a <brand>l’Atmosphere.</brand>',
+  'hero.title': '{orgName}: El vostre portal cap a l’Atmosphere.',
   'home.heading': 'Una aplicació per a tot',
   'home.subheading': 'Sempre s’estan creant aplicacions noves',
   'login.continue': 'Continua →',
@@ -97,7 +97,7 @@ const ca = {
   'login.noAccount': 'No teniu cap compte? Crea’n un<signUp>Sign up</signUp>',
   'login.subtitle':
     'Introduïu el vostre nom d’usuari a continuació per a iniciar la sessió al compte',
-  'login.title': 'Inicieu la sessió al <brand>compte {orgName}.</brand>',
+  'login.title': 'Inicieu la sessió al compte {orgName}.',
   'markdown.error': 'No s’ha pogut mostrar aquest contingut.',
   'migrationAlert.cta': 'Migra',
   'migrationAlert.text':
@@ -124,7 +124,7 @@ const ca = {
   'onboarding.notice.termsUpdated': 'S’han actualitzat les nostres condicions d’ús',
   'onboarding.notice.text': 'Accepteu els canvis per a continuar utilitzant {productTitle}',
   'onboarding.pageTitle': 'Acepto les condicions d’ús',
-  'onboarding.title': 'Us donem la benvinguda <brand>{orgName}</brand>.',
+  'onboarding.title': 'Us donem la benvinguda {orgName}.',
   'policy.accept':
     'Acepto les <terms>condicions d’ús</terms> i la <privacy>política de privadesa</privacy>',
   'sidebar.applications': 'Aplicacions',
