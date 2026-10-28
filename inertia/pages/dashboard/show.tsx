@@ -59,20 +59,21 @@ export default function Dashboard({
       <Head title={tPlain('sidebar.dashboard')} />
       <h1 className="sr-only">{t('sidebar.dashboard')}</h1>
       {isHandleInvalid && (
-        <Card className="p-4 bg-amber-500! dark:bg-amber-600/80! flex flex-row gap-2">
-          <div className="h-12 w-12">
-            <ExclamationTriangleIcon color="white" className="drop-shadow-sm" />
-          </div>
+        <Card className="p-4 bg-amber-50! dark:bg-amber-400/10! flex flex-row gap-3">
+          <ExclamationTriangleIcon
+            aria-hidden="true"
+            className="mt-1 h-5 w-5 shrink-0 text-amber-600 dark:text-amber-400"
+          />
           <div>
-            <Text className="font-semibold text-white! text-shadow-sm text-shadow-amber-600/80">
+            <Text className="font-semibold text-amber-800! dark:text-amber-200!">
               {t('dashboard.invalidHandle.title')}
             </Text>
-            <Text className="text-white! text-shadow-sm text-shadow-amber-600/80">
+            <Text className="text-amber-700! dark:text-amber-200/80!">
               {t('dashboard.invalidHandle.text', {
                 link(chunks) {
                   return (
                     <a
-                      className="font-semibold hover:underline"
+                      className="font-semibold underline hover:text-amber-900 dark:hover:text-amber-100"
                       href={links.helpInvalidHandle(locale)}
                       rel="noopener noreferrer"
                       target="_blank"
@@ -130,8 +131,8 @@ export default function Dashboard({
                     : t('dashboard.greeting.plain')}
                 </h2>
                 {isHandleInvalid ? (
-                  <Text className="text-amber-500!">
-                    <ExclamationTriangleIcon color="amber" className="h-6 w-6 inline-block" />{' '}
+                  <Text className="text-amber-700! dark:text-amber-400!">
+                    <ExclamationTriangleIcon aria-hidden="true" className="h-5 w-5 inline-block" />{' '}
                     {user.handle}
                   </Text>
                 ) : (
