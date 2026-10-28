@@ -65,18 +65,18 @@ The Portal is an [AdonisJS](https://docs.adonisjs.com) 7 app with a React front 
 
 ```text
 app/
-  controllers/    HTTP controllers (one per area: oauth, account, dashboard, activity, discover, ...)
+  controllers/    HTTP controllers (one per area: oauth, account, dashboard, activity, files, discover, ...)
   middleware/     Auth, guest, legal "roadblock" (re-accept updated terms), locale detection, ...
-  services/       Integrations: activity backfill, Jetstream, Slingshot, Bluesky AppView, atstore, favorites, legal docs, Plausible
-  jobs/           Background jobs (activity backfill), run by the in-process queue worker
-  models/         Lucid models: Account, ActivityRecord, OauthSession, OauthState
+  services/       Integrations: activity backfill, storage sync, Jetstream, Slingshot, Bluesky AppView, atstore, favorites, legal docs, Plausible
+  jobs/           Background jobs (activity backfill, storage sync), run by the in-process queue worker
+  models/         Lucid models: Account, ActivityRecord, Blob, OauthSession, OauthState
   events/         Domain events (auth flow started/completed, terms accepted, ...)
   listeners/      Event listeners, mostly analytics tracking
   transformers/   Shape server data into Inertia page props
   validators/     VineJS request validators
   lexicons/       Generated, typed AT Protocol lexicon clients (do not edit by hand)
-  utils/          Helpers (OAuth scopes, rich text, embeds, telemetry, ...)
-commands/         Ace commands (i18n:check, portal:backfill-handles, portal:resync-collection)
+  utils/          Helpers (OAuth scopes, PDS clients, rich text, embeds, telemetry, ...)
+commands/         Ace commands (i18n:check, portal:backfill-handles, portal:resync-collection, storage:recategorize)
 config/           Framework and package configuration
 database/
   migrations/     Database migrations
@@ -90,7 +90,7 @@ providers/        App providers, including the queue worker and Jetstream subscr
 resources/
   views/          Edge templates (the Inertia root layout)
 service/          Example production deployment (Docker Compose, Caddy, systemd)
-shared/           Code used by both server and front end (app catalog, brand, locales)
+shared/           Code used by both server and front end (app catalog, brand, locales, MIME types)
   i18n/           Translations, for server and front end (one file per locale)
 start/            Boot files: routes, env validation, middleware kernel, auto-migration
 ```
@@ -145,6 +145,10 @@ To add a new locale, also add it to `locales` and `localeNames` in [`shared/loca
 ### AT Protocol lexicons
 
 The lexicons the Portal uses are pinned in [`lexicons.json`](lexicons.json), with JSON files in `lexicons/` and generated TypeScript in `app/lexicons/`. To use a new record type or XRPC method, add it with the `lex` CLI (`pnpm lex --help`), then regenerate the clients with `pnpm lex:build`. Never edit `app/lexicons/` by hand.
+
+### Supporting more file types
+
+The files page sorts blobs into images, videos and other files by their MIME type. The types it can preview are listed in [`shared/mime.ts`](shared/mime.ts); their labels and download extensions are in [`inertia/utils/mime.ts`](inertia/utils/mime.ts), with label translations under `mimeType.*`. After changing these lists, run `node ace storage:recategorize` on the server to sort already stored blobs again; it needs no network access.
 
 ### Adding an app to the directory
 

@@ -8,6 +8,7 @@
  */
 
 import { defaultTheme, isTheme, type Theme, themeColors, themeCookieName } from '#shared/theme'
+import { mediaQuery } from '~/utils/media_query'
 
 type Listener = () => undefined | void
 
@@ -78,7 +79,7 @@ function setThemeColor(theme: Theme): undefined {
 export function snapshot(): ShownTheme {
   const theme = stored()
   if (theme !== 'system') return theme
-  return window.matchMedia(query).matches ? 'dark' : 'light'
+  return mediaQuery(query).snapshot() ? 'dark' : 'light'
 }
 
 /**
@@ -90,14 +91,13 @@ export function snapshot(): ShownTheme {
  *   Unsubscribe.
  */
 export function subscribe(listener: Listener) {
-  const media = window.matchMedia(query)
   listeners.add(listener)
   // CSS follows the system by itself; listeners need to know too.
-  media.addEventListener('change', listener)
+  const unsubscribe = mediaQuery(query).subscribe(listener)
 
   return function (): undefined {
     listeners.delete(listener)
-    media.removeEventListener('change', listener)
+    unsubscribe()
   }
 }
 
