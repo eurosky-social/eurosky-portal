@@ -16,7 +16,7 @@ import { useT } from '~/lib/i18n'
 const pageSize = 20
 
 export default function Activity(result: InertiaProps<GetRecordsResult>) {
-  const { t, tPlain } = useT()
+  const { locale, t, tPlain } = useT()
 
   useEffect(() => {
     if (result.state !== 'syncing') return
@@ -49,7 +49,7 @@ export default function Activity(result: InertiaProps<GetRecordsResult>) {
           <Text className="text-amber-700! dark:text-amber-200/80!">
             <a
               className="font-semibold underline hover:text-amber-900 dark:hover:text-amber-100"
-              href={links.feedback}
+              href={links.feedback(locale)}
               rel="noopener noreferrer"
               target="_blank"
             >

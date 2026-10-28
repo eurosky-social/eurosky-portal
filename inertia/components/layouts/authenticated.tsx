@@ -41,7 +41,7 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
     props: { authorizationServer },
     url,
   } = usePage()
-  const { t, tPlain } = useT()
+  const { locale, t, tPlain } = useT()
 
   const manageUrl = useMemo(() => {
     return new URL('/account', authorizationServer).toString()
@@ -92,7 +92,7 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
                 </SidebarSection>
                 <SidebarHeading className="mt-10 font-bold">{t('sidebar.support')}</SidebarHeading>
                 <SidebarSection>
-                  <SidebarItem href={links.help} target="_blank" as={'a'}>
+                  <SidebarItem href={links.help(locale)} target="_blank" as={'a'}>
                     <LifebuoyIcon />
                     <SidebarLabel>
                       {t('sidebar.help')}
@@ -103,21 +103,21 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
                     <QuestionMarkCircleIcon />
                     <SidebarLabel>{t('sidebar.faq')}</SidebarLabel>
                   </SidebarItem>
-                  <SidebarItem href={links.contact} target="_blank" as={'a'}>
+                  <SidebarItem href={links.contact(locale)} target="_blank" as={'a'}>
                     <ChatBubbleOvalLeftEllipsisIcon />
                     <SidebarLabel>
                       {t('sidebar.contactUs')}
                       <NewTab />
                     </SidebarLabel>
                   </SidebarItem>
-                  <SidebarItem href={links.terms} target="_blank" as={'a'}>
+                  <SidebarItem href={links.terms(locale)} target="_blank" as={'a'}>
                     <DocumentTextIcon />
                     <SidebarLabel>
                       {t('sidebar.termsOfService')}
                       <NewTab />
                     </SidebarLabel>
                   </SidebarItem>
-                  <SidebarItem href={links.privacy} target="_blank" as={'a'}>
+                  <SidebarItem href={links.privacy(locale)} target="_blank" as={'a'}>
                     <LockClosedIcon />
                     <SidebarLabel>
                       {t('sidebar.privacyPolicy')}

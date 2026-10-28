@@ -6,6 +6,7 @@ import type { Root } from 'hast'
 import { DateTime } from 'luxon'
 import { EXIT, visit } from 'unist-util-visit'
 import { links } from '#shared/links'
+import { defaultLocale } from '#shared/locale'
 
 interface CachedLegalDocument {
   effectiveAt: string
@@ -50,7 +51,7 @@ class LegalService {
 }
 
 async function fetchDocument(name: LegalDocumentName): Promise<CachedLegalDocument> {
-  const response = await fetch(links[name], { signal: AbortSignal.timeout(10_000) })
+  const response = await fetch(links[name](defaultLocale), { signal: AbortSignal.timeout(10_000) })
 
   if (!response.ok) {
     throw new Error(`Cannot fetch ${name} document (${response.status})`)

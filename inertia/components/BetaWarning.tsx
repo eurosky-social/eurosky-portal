@@ -3,7 +3,7 @@ import { NewTab } from '~/components/NewTab'
 import { useT } from '~/lib/i18n'
 
 export default function BetaWarning() {
-  const { t } = useT()
+  const { locale, t } = useT()
 
   return (
     <div className="bg-brand py-2 px-3 text-center text-ink text-sm font-medium max-sm:text-sm">
@@ -11,7 +11,7 @@ export default function BetaWarning() {
         feedback(chunks) {
           return (
             <a
-              href={links.feedback}
+              href={links.feedback(locale)}
               rel="noopener noreferrer"
               target="_blank"
               className="underline hover:text-charcoal"

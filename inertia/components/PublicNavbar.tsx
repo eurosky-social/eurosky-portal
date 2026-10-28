@@ -21,7 +21,7 @@ import { NewTab } from './NewTab'
 
 export default function PublicNavbar() {
   const page = usePage()
-  const { tPlain, t } = useT()
+  const { locale, tPlain, t } = useT()
   const [showSidebar, setShowSidebar] = useState(false)
 
   return (
@@ -40,7 +40,7 @@ export default function PublicNavbar() {
         <NavbarItem route="discover.apps" current={page.url.startsWith('/apps')}>
           {t('nav.apps')}
         </NavbarItem>
-        <NavbarItem href={links.privacy} target="_blank">
+        <NavbarItem href={links.privacy(locale)} target="_blank">
           <span>
             {t('nav.privacy')}
             <NewTab icon={false} />
@@ -69,7 +69,7 @@ export default function PublicNavbar() {
               <SidebarItem route="discover.apps" current={page.url.startsWith('/apps')}>
                 <SidebarLabel>{t('nav.apps')}</SidebarLabel>
               </SidebarItem>
-              <SidebarItem href={links.privacy} target="_blank" as={'a'}>
+              <SidebarItem href={links.privacy(locale)} target="_blank" as={'a'}>
                 <SidebarLabel>
                   {t('nav.privacy')}
                   <NewTab />
