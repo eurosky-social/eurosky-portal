@@ -1,5 +1,11 @@
 # eurosky-portal
 
+## 1.9.0
+
+### Minor Changes
+
+- [#86](https://github.com/eurosky-social/eurosky-portal/pull/86) [`adb6756`](https://github.com/eurosky-social/eurosky-portal/commit/adb6756c82d0a15ca75fbf48f4d08104b56da4f1) Thanks [@wooorm](https://github.com/wooorm)! - Add files page
+
 ## 1.8.3
 
 ### Patch Changes
