@@ -1,6 +1,6 @@
 # Eurosky Portal
 
-The Eurosky Portal is the web front door to a Eurosky account. It is where people sign up, sign in, accept the terms of service, see their recent activity across AT Protocol apps, and discover apps they can use with their Eurosky identity.
+The Eurosky Portal is the web front door to a Eurosky account. It is where people sign up, sign in, accept the terms of service, see their recent activity across AT Protocol apps, browse the files apps have stored for them, and discover apps they can use with their Eurosky identity.
 
 The Portal is one of three components that together make up the **Eurosky Identity Service**:
 
@@ -57,14 +57,16 @@ flowchart LR
 
 **4. Showing activity: PDS → Jetstream → Portal.** The Portal shows a person's recent posts, likes, follows and long-form documents. On first sign-in a background job backfills recent records by reading them directly from the person's PDS (located via the Slingshot identity resolver). After that, the Portal subscribes to a Jetstream firehose and mirrors new commits for recently active accounts. Only a bounded preview of recent records is cached; the PDS remains the source of truth.
 
-**5. App discovery.** The apps directory is a curated list in [`shared/apps.ts`](shared/apps.ts). Names, icons and descriptions are fetched from [atstore](https://atstore.fyi), and favorites are written as `fyi.atstore.listing.favorite` records into the person's own repository on their PDS.
+**5. Showing files: PDS → Portal.** The files page lists the files (blobs, such as images and videos) that apps have uploaded to a person's repository, and how much space each kind takes. A background job lists the blobs on the person's PDS and stores only their metadata (CID, type and size), for up to 5,000 per account. While the page is in use, new blobs are picked up every few minutes and removed ones once a day. Previews and downloads are loaded by the browser, from the Bluesky CDN or straight from the PDS.
+
+**6. App discovery.** The apps directory is a curated list in [`shared/apps.ts`](shared/apps.ts). Names, icons and descriptions are fetched from [atstore](https://atstore.fyi), and favorites are written as `fyi.atstore.listing.favorite` records into the person's own repository on their PDS.
 
 ### Inside the Portal
 
 The Portal is a single [AdonisJS](https://adonisjs.com) application with a React front end rendered through [Inertia](https://inertiajs.com) (server-side rendering included). It runs as one process and one container:
 
 - **HTTP server**: routes in [`start/routes.ts`](start/routes.ts), controllers in [`app/controllers`](app/controllers).
-- **Database**: SQLite (via Lucid and `better-sqlite3`) for accounts, OAuth states and sessions, cached activity, the cache store and the job queue. Migrations live in [`database/migrations`](database/migrations).
+- **Database**: SQLite (via Lucid and `better-sqlite3`) for accounts, OAuth states and sessions, cached activity, file metadata, the cache store and the job queue. Migrations live in [`database/migrations`](database/migrations).
 - **Background work**: the queue worker ([`providers/queue_worker_provider.ts`](providers/queue_worker_provider.ts)) and the Jetstream subscriber ([`providers/jetstream_provider.ts`](providers/jetstream_provider.ts)) start inside the web process.
 - **Front end**: pages and components in [`inertia/`](inertia), built with Vite and Tailwind CSS.
 - **Lexicons**: AT Protocol schemas the Portal uses are pinned in [`lexicons.json`](lexicons.json) and compiled into typed clients in [`app/lexicons`](app/lexicons).
