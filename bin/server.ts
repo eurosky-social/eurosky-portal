@@ -2,7 +2,7 @@
  * OpenTelemetry initialization - MUST be the first import
  * @see https://opentelemetry.io/docs/languages/js/getting-started/nodejs/
  */
-import '../otel.js'
+import '../otel.ts'
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +17,7 @@ import '../otel.js'
 
 await import('reflect-metadata')
 const { Ignitor, prettyPrintError } = await import('@adonisjs/core')
+const { default: rcFile } = await import('../adonisrc.ts')
 
 /**
  * URL to the application root. AdonisJS need it to resolve
@@ -37,6 +38,7 @@ const IMPORTER = (filePath: string) => {
 
 new Ignitor(APP_ROOT, { importer: IMPORTER })
   .tap((app) => {
+    app.rcContents(rcFile)
     app.booting(async () => {
       await import('#start/env')
     })

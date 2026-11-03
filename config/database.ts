@@ -55,11 +55,11 @@ const dbConfig = defineConfig({
          */
         paths: ['app/database/migrations'],
       },
-      schemaGeneration: {
-        enabled: true,
-        outputPath: './app/database/schema.ts',
-        rulesPaths: ['./app/database/schema_rules.js'],
-      },
+
+      /**
+       * Off as models in `app/models/` define their own columns.
+       */
+      schemaGeneration: { enabled: false },
     },
 
     /**

@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { Heart, LucideIcon, MessageSquareText, Newspaper, UserPlus } from 'lucide-react'
+import { Heart, type LucideIcon, MessageSquareText, Newspaper, UserPlus } from 'lucide-react'
 import type { ActivityRow } from '#services/activity_service'
 import type { MessageKey } from '#shared/i18n'
 import type { SupportedCollection } from '#utils/activity'

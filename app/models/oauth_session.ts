@@ -1,13 +1,14 @@
 import { BaseModel, column } from '@adonisjs/lucid/orm'
-import { DateTime } from 'luxon'
+import type { DateTime } from 'luxon'
 
 export default class OauthSession extends BaseModel {
-  @column({ isPrimary: true })
   declare sub: string
-
-  @column()
+  declare updatedAt: DateTime
   declare value: string
 
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime
+  static {
+    column({ isPrimary: true })(this.prototype, 'sub')
+    column.dateTime({ autoCreate: true, autoUpdate: true })(this.prototype, 'updatedAt')
+    column()(this.prototype, 'value')
+  }
 }

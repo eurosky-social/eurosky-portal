@@ -2,7 +2,7 @@ import { ArrowDownIcon } from '@heroicons/react/24/solid'
 import { Head } from '@inertiajs/react'
 import MarkdownDocument from '~/components/MarkdownDocument'
 import { PageHeader } from '~/components/PageHeader'
-import { InertiaProps } from '~/types'
+import type { InertiaProps } from '~/types'
 import { useT } from '~/lib/i18n'
 
 export default function Faq(props: InertiaProps<{ faq: { question: string; answer: string }[] }>) {

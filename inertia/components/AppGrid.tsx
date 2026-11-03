@@ -1,4 +1,4 @@
-import { Data } from '@generated/data'
+import type { Data } from '@generated/data'
 import { App } from '~/components/App'
 
 /**

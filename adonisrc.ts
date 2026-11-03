@@ -1,3 +1,4 @@
+import { readFile, writeFile } from 'node:fs/promises'
 import { indexPages } from '@adonisjs/inertia'
 import { indexEntities } from '@adonisjs/core'
 import { defineConfig } from '@adonisjs/core/app'
@@ -38,11 +39,12 @@ export default defineConfig({
   | Commands
   |--------------------------------------------------------------------------
   |
-  | List of ace commands to register from packages. The application commands
-  | will be scanned automatically from the "./commands" directory.
+  | List of ace commands to register from packages and this app
+  | (`app/commands/main.ts`).
   |
   */
   commands: [
+    () => import('#commands/main'),
     () => import('@adonisjs/core/commands'),
     () => import('@adonisjs/lucid/commands'),
     () => import('@adonisjs/session/commands'),
@@ -167,5 +169,21 @@ export default defineConfig({
       generateRegistry(),
     ],
     buildStarting: [() => import('@adonisjs/vite/build_hook')],
+    buildFinished: [
+      {
+        /**
+         * Node runs the `.ts` files in development.
+         * Replace the `.ts` extensions with `.js` in the built `package.json` imports.
+         */
+        async run(bundler) {
+          const file = new URL('build/package.json', bundler.cwd)
+          const packageJson = JSON.parse(await readFile(file, 'utf8'))
+          for (const [key, value] of Object.entries(packageJson.imports)) {
+            packageJson.imports[key] = String(value).replace(/\.ts$/, '.js')
+          }
+          await writeFile(file, JSON.stringify(packageJson, undefined, 2) + '\n')
+        },
+      },
+    ],
   },
 })

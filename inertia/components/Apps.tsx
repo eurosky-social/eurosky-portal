@@ -1,4 +1,4 @@
-import { Data } from '@generated/data'
+import type { Data } from '@generated/data'
 import { AppGrid } from '~/components/AppGrid'
 import { useT } from '~/lib/i18n'
 

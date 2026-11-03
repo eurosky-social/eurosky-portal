@@ -23,8 +23,14 @@ export default class PortalResyncCollection extends BaseCommand {
     startApp: true,
   }
 
-  @args.string({ description: 'Collection NSID to resync (example: `app.bsky.feed.post`)' })
   declare collection: string
+
+  static {
+    args.string({ description: 'Collection NSID to resync (example: `app.bsky.feed.post`)' })(
+      this.prototype,
+      'collection'
+    )
+  }
 
   override async run() {
     const { default: Account } = await import('#models/account')

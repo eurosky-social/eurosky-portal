@@ -15,6 +15,7 @@ process.env.NODE_ENV = 'test'
 import 'reflect-metadata'
 import { Ignitor, prettyPrintError } from '@adonisjs/core'
 import { configure, processCLIArgs, run } from '@japa/runner'
+import rcFile from '../adonisrc.ts'
 
 /**
  * URL to the application root. AdonisJS need it to resolve
@@ -35,6 +36,7 @@ const IMPORTER = (filePath: string) => {
 
 new Ignitor(APP_ROOT, { importer: IMPORTER })
   .tap((app) => {
+    app.rcContents(rcFile)
     app.booting(async () => {
       await import('#start/env')
     })
@@ -43,7 +45,7 @@ new Ignitor(APP_ROOT, { importer: IMPORTER })
   })
   .testRunner()
   .configure(async (app) => {
-    const { runnerHooks, ...config } = await import('../tests/bootstrap.js')
+    const { runnerHooks, ...config } = await import('../tests/bootstrap.ts')
 
     processCLIArgs(process.argv.splice(2))
     configure({

@@ -1,6 +1,6 @@
 import { Hero } from '~/components/Hero'
-import { InertiaProps } from '~/types'
-import { Data } from '@generated/data'
+import type { InertiaProps } from '~/types'
+import type { Data } from '@generated/data'
 import { Container } from '~/lib/container'
 import { Apps } from '~/components/Apps'
 import { useT } from '~/lib/i18n'

@@ -7,27 +7,30 @@ import type { Worker } from '@adonisjs/queue'
  * Runs the queue worker in the process as the app is deployed as a single container.
  */
 export default class QueueWorkerProvider {
+  #app: ApplicationService
   #worker: Worker | undefined
 
-  constructor(protected app: ApplicationService) {}
+  constructor(app: ApplicationService) {
+    this.#app = app
+  }
 
   async shutdown(): Promise<undefined> {
     await this.#worker?.stop()
   }
 
   async start(): Promise<undefined> {
-    if (this.app.getEnvironment() !== 'web') return
+    if (this.#app.getEnvironment() !== 'web' || this.#app.getMode() !== 'run') return
 
     const { Worker: WorkerClass } = await import('@adonisjs/queue')
     const adapters: Record<string, AdapterFactory> = {}
-    const config = this.app.config.get<QueueConfig>('queue')
-    const logger = await this.app.container.make('logger')
+    const config = this.#app.config.get<QueueConfig>('queue')
+    const logger = await this.#app.container.make('logger')
 
     for (const [name, adapterConfig] of Object.entries(config.adapters)) {
       const resolved =
         typeof adapterConfig === 'function'
           ? adapterConfig
-          : await configProvider.resolve<AdapterFactory | Adapter>(this.app, adapterConfig)
+          : await configProvider.resolve<AdapterFactory | Adapter>(this.#app, adapterConfig)
       if (!resolved) throw new Error(`Cannot resolve queue adapter \`${name}\``)
       adapters[name] = typeof resolved === 'function' ? resolved : () => resolved
     }
@@ -35,7 +38,7 @@ export default class QueueWorkerProvider {
     this.#worker = new WorkerClass({
       ...config,
       adapters,
-      jobFactory: (jobClass: JobClass) => this.app.container.make(jobClass),
+      jobFactory: (jobClass: JobClass) => this.#app.container.make(jobClass),
       logger,
     })
 

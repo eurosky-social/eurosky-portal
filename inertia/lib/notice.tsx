@@ -1,5 +1,5 @@
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid'
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 type NoticeProps = {
   action?: ReactNode

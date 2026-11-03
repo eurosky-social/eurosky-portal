@@ -6,12 +6,14 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
     "noUncheckedIndexedAccess": true,
+    "erasableSyntaxOnly": true,
     "rewriteRelativeImportExtensions": true,
     "paths": {
       "~/*": ["./*"],
       "@generated/*": ["../.adonisjs/client/*"]
     },
-    "strict": true
+    "strict": true,
+    "verbatimModuleSyntax": true
   },
   "include": [
     "./**/*.ts",

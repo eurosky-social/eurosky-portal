@@ -65,10 +65,10 @@ The Portal is an [AdonisJS](https://docs.adonisjs.com) 7 app with a React front 
 
 ```text
 app/
+  commands/       Ace commands (portal:backfill-handles, portal:resync-collection, storage:recategorize), listed in `main.ts`
   controllers/    HTTP controllers (one per area: oauth, account, dashboard, activity, files, discover, ...)
   database/
     migrations/   Database migrations
-    schema.ts     Generated model schema
   events/         Domain events (auth flow started/completed, terms accepted, ...)
   jobs/           Background jobs (activity backfill, storage sync), run by the in-process queue worker
   lexicons/       Generated, typed AT Protocol lexicon clients (do not edit by hand)
@@ -83,7 +83,6 @@ app/
   transformers/   Shape server data into Inertia page props
   utils/          Helpers (OAuth scopes, PDS clients, rich text, embeds, telemetry, ...)
   validators/     VineJS request validators
-commands/         Ace commands (portal:backfill-handles, portal:resync-collection, storage:recategorize)
 config/           Framework and package configuration
 data/             Markdown and JSON content per locale (FAQ, explore page)
 inertia/
@@ -128,7 +127,7 @@ Editor setup: the repo includes an [`.editorconfig`](.editorconfig). Use the wor
 
 ### Database changes
 
-Create a migration with `node ace make:migration <name>`, run `pnpm db:migrate`, and commit both the migration and the regenerated `app/database/schema.ts`. Migrations run automatically on deploy (`DATABASE_AUTOMIGRATE=true`), so they must be safe to run against an existing production database.
+Create a migration with `node ace make:migration <name>`, run `pnpm db:migrate`, and update the columns of the model in `app/models/`. Add columns in `static {}` blocks, not with decorators, so Node can run them as is. Migrations run automatically on deploy (`DATABASE_AUTOMIGRATE=true`), so they must be safe to run against an existing production database.
 
 ### Translations
 

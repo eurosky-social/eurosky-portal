@@ -1,6 +1,6 @@
-import { Data } from '@generated/data'
+import type { Data } from '@generated/data'
 import { usePage } from '@inertiajs/react'
-import { ReactElement } from 'react'
+import type { ReactElement } from 'react'
 import PublicNavbar from '~/components/PublicNavbar'
 import DashboardNavbar from '~/components/DashboardNavbar'
 import { AuthenticatedLayout } from '~/components/layouts/authenticated'

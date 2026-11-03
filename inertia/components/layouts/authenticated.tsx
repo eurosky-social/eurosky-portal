@@ -1,6 +1,6 @@
-import { Data } from '@generated/data'
+import type { Data } from '@generated/data'
 import { usePage } from '@inertiajs/react'
-import { ReactElement, useMemo } from 'react'
+import { type ReactElement, useMemo } from 'react'
 import DashboardNavbar from '~/components/DashboardNavbar'
 import {
   Sidebar,

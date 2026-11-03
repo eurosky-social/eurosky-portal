@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Data } from '@generated/data'
+import type { Data } from '@generated/data'
 import { ShieldCheckIcon } from '@heroicons/react/24/solid'
 import { Head, usePage } from '@inertiajs/react'
 import { AppGrid } from '~/components/AppGrid'

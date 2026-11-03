@@ -22,6 +22,7 @@
 
 await import('reflect-metadata')
 const { Ignitor, prettyPrintError } = await import('@adonisjs/core')
+const { default: rcFile } = await import('../adonisrc.ts')
 
 /**
  * URL to the application root. AdonisJS need it to resolve
@@ -42,6 +43,7 @@ const IMPORTER = (filePath: string) => {
 
 new Ignitor(APP_ROOT, { importer: IMPORTER })
   .tap((app) => {
+    app.rcContents(rcFile)
     app.booting(async () => {
       await import('#start/env')
     })

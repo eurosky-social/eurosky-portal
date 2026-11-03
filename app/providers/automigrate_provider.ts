@@ -10,10 +10,15 @@ import env from '#start/env'
  * and queue worker providers, which need migrated tables).
  */
 export default class AutomigrateProvider {
-  constructor(protected app: ApplicationService) {}
+  #app: ApplicationService
+
+  constructor(app: ApplicationService) {
+    this.#app = app
+  }
 
   async start(): Promise<undefined> {
-    if (this.app.getEnvironment() !== 'web') return
+    // Not in `node ace codegen` and such, which boot the app as `web` too.
+    if (this.#app.getEnvironment() !== 'web' || this.#app.getMode() !== 'run') return
 
     logger.info(
       { shouldAutoMigrate: env.get('DATABASE_AUTOMIGRATE', false) },
@@ -22,7 +27,7 @@ export default class AutomigrateProvider {
 
     if (env.get('DATABASE_AUTOMIGRATE', false) !== true) return
 
-    const migrator = new MigrationRunner(db, this.app, {
+    const migrator = new MigrationRunner(db, this.#app, {
       direction: 'up',
       dryRun: false,
     })

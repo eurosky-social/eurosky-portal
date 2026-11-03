@@ -1,4 +1,4 @@
-import { Form, FormRouteProps } from '@adonisjs/inertia/react'
+import { Form, type FormRouteProps } from '@adonisjs/inertia/react'
 import { ChevronDownIcon, DocumentTextIcon, LockClosedIcon } from '@heroicons/react/24/solid'
 import type { Root } from 'hast'
 import { toJsxRuntime } from 'hast-util-to-jsx-runtime'
