@@ -282,7 +282,10 @@ export class ActivityService {
 
     const cursor = snapshot ? decodeSnapshot(snapshot) : undefined
 
-    const baseQuery = () => ActivityRecord.query().where('did', did)
+    const baseQuery = () =>
+      ActivityRecord.query()
+        .where('did', did)
+        .whereIn('collection', [...supportedCollections])
     const recordsQuery = baseQuery()
       .orderByRaw('created_at DESC NULLS LAST')
       .orderBy('uri', 'desc')
@@ -300,10 +303,7 @@ export class ActivityService {
     }
 
     const [count, rows] = await Promise.all([
-      baseQuery()
-        .whereIn('collection', [...supportedCollections])
-        .count('* as count')
-        .firstOrFail(),
+      baseQuery().count('* as count').firstOrFail(),
       recordsQuery,
     ])
 

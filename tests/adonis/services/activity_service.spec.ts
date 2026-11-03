@@ -117,14 +117,11 @@ test.group('services / activity / getRecords', function (group) {
     const result = await activityService.getRecords({ did, ip, limit: 1 })
     const activities = 'activities' in result ? result.activities : []
 
-    // To do: should be `['c']`: unsupported collections should not be queried.
-    // Only happens for rows of collections that were removed from
-    // `supportedCollections` as `prune` does not delete them.
     assert.deepEqual(
       activities.map(function (d) {
         return d.text
       }),
-      []
+      ['c']
     )
   })
 
