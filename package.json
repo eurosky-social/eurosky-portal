@@ -31,37 +31,9 @@
       "source": "./app/*.ts",
       "default": "./app/*.js"
     },
-    "#config/*": {
-      "source": "./config/*.ts",
-      "default": "./config/*.js"
-    },
-    "#database/*": {
-      "source": "./database/*.ts",
-      "default": "./database/*.js"
-    },
     "#generated/*": {
       "source": "./.adonisjs/server/*.ts",
       "default": "./.adonisjs/server/*.js"
-    },
-    "#lexicons": {
-      "source": "./app/lexicons/index.ts",
-      "default": "./app/lexicons/index.js"
-    },
-    "#providers/*": {
-      "source": "./providers/*.ts",
-      "default": "./providers/*.js"
-    },
-    "#shared/*": {
-      "source": "./shared/*.ts",
-      "default": "./shared/*.js"
-    },
-    "#start/*": {
-      "source": "./start/*.ts",
-      "default": "./start/*.js"
-    },
-    "#tests/*": {
-      "source": "./tests/*.ts",
-      "default": "./tests/*.js"
     }
   },
   "devDependencies": {

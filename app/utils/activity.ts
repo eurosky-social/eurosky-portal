@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
 import type { NsidString } from '@atproto/lex'
-import * as lexicon from '#lexicons'
+import * as lexicon from '#lexicons/index'
 
 /**
  * Typed supported records.

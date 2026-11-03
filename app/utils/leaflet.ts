@@ -1,6 +1,6 @@
 import type { DidString } from '@atproto/lex'
 import type { ElementContent, Element, Properties, Root } from 'hast'
-import * as lexicon from '#lexicons'
+import * as lexicon from '#lexicons/index'
 import { type Context, toBlobLocator } from '#utils/blob'
 import { toHast as richtext } from '#utils/leaflet_richtext'
 

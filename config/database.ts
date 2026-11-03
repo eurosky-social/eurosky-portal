@@ -53,11 +53,12 @@ const dbConfig = defineConfig({
         /**
          * Paths containing migration files.
          */
-        paths: ['database/migrations'],
+        paths: ['app/database/migrations'],
       },
       schemaGeneration: {
         enabled: true,
-        rulesPaths: ['./database/schema_rules.js'],
+        outputPath: './app/database/schema.ts',
+        rulesPaths: ['./app/database/schema_rules.js'],
       },
     },
 
@@ -76,7 +77,7 @@ const dbConfig = defineConfig({
     //   },
     //   migrations: {
     //     naturalSort: true,
-    //     paths: ['database/migrations'],
+    //     paths: ['app/database/migrations'],
     //   },
     //   debug: app.inDev,
     // },
@@ -96,7 +97,7 @@ const dbConfig = defineConfig({
     //   },
     //   migrations: {
     //     naturalSort: true,
-    //     paths: ['database/migrations'],
+    //     paths: ['app/database/migrations'],
     //   },
     //   debug: app.inDev,
     // },
@@ -116,7 +117,7 @@ const dbConfig = defineConfig({
     //   },
     //   migrations: {
     //     naturalSort: true,
-    //     paths: ['database/migrations'],
+    //     paths: ['app/database/migrations'],
     //   },
     //   debug: app.inDev,
     // },
@@ -134,7 +135,7 @@ const dbConfig = defineConfig({
     //   useNullAsDefault: true,
     //   migrations: {
     //     naturalSort: true,
-    //     paths: ['database/migrations'],
+    //     paths: ['app/database/migrations'],
     //   },
     //   debug: app.inDev,
     // },

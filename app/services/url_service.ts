@@ -1,9 +1,9 @@
-import { appUrl as rawAppUrl } from '#config/app'
+import env from '#start/env'
 
 /**
  * App URL, normalized to always have a trailing slash.
  */
-const appUrl = new URL('/', rawAppUrl).toString()
+const appUrl = new URL('/', env.get('APP_URL')).toString()
 
 /**
  * App host (without protocol or port), as used by third parties such as Plausible.

@@ -1,7 +1,7 @@
 import en from '#shared/i18n/en'
 
 /**
- * Message key (in `shared/i18n/`).
+ * Message key (in `app/shared/i18n/`).
  */
 export type MessageKey = keyof typeof en
 

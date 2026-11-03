@@ -23,7 +23,7 @@ const i18nConfig = defineConfig({
   }),
   loaders: [
     /**
-     * Load the catalogs shared with the client (`shared/i18n/$locale.ts`).
+     * Load the catalogs shared with the client (`app/shared/i18n/$locale.ts`).
      */
     function (): ReturnType<LoaderFactory> {
       return {

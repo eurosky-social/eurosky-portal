@@ -66,40 +66,40 @@ The Portal is an [AdonisJS](https://docs.adonisjs.com) 7 app with a React front 
 ```text
 app/
   controllers/    HTTP controllers (one per area: oauth, account, dashboard, activity, files, discover, ...)
-  middleware/     Auth, guest, legal "roadblock" (re-accept updated terms), locale detection, ...
-  services/       Integrations: activity backfill, storage sync, Jetstream, Slingshot, Bluesky AppView, atstore, favorites, legal docs, Plausible
-  jobs/           Background jobs (activity backfill, storage sync), run by the in-process queue worker
-  models/         Lucid models: Account, ActivityRecord, Blob, OauthSession, OauthState
+  database/
+    migrations/   Database migrations
+    schema.ts     Generated model schema
   events/         Domain events (auth flow started/completed, terms accepted, ...)
-  listeners/      Event listeners, mostly analytics tracking
-  transformers/   Shape server data into Inertia page props
-  validators/     VineJS request validators
+  jobs/           Background jobs (activity backfill, storage sync), run by the in-process queue worker
   lexicons/       Generated, typed AT Protocol lexicon clients (do not edit by hand)
+  listeners/      Event listeners, mostly analytics tracking
+  middleware/     Auth, guest, legal "roadblock" (re-accept updated terms), locale detection, ...
+  models/         Lucid models: Account, ActivityRecord, Blob, OauthSession, OauthState
+  providers/      App providers, including the queue worker and Jetstream subscriber
+  services/       Integrations: activity backfill, storage sync, Jetstream, Slingshot, Bluesky AppView, atstore, favorites, legal docs, Plausible
+  shared/         Code used by both server and front end (app catalog, brand, locales, MIME types)
+    i18n/         Translations, for server and front end (one file per locale)
+  start/          Boot files: routes, env validation, middleware kernel, auto-migration
+  transformers/   Shape server data into Inertia page props
   utils/          Helpers (OAuth scopes, PDS clients, rich text, embeds, telemetry, ...)
+  validators/     VineJS request validators
 commands/         Ace commands (portal:backfill-handles, portal:resync-collection, storage:recategorize)
 config/           Framework and package configuration
-database/
-  migrations/     Database migrations
-  schema.ts       Generated model schema
 data/             Markdown and JSON content per locale (FAQ, explore page)
 inertia/
   pages/          One React component per page, matching the controllers' `inertia.render(...)` calls
   components/     Shared React components
 lexicons/         Pinned lexicon JSON files (source for app/lexicons)
-providers/        App providers, including the queue worker and Jetstream subscriber
 resources/
   views/          Edge templates (the Inertia root layout)
 service/          Example production deployment (Docker Compose, Caddy, systemd)
-shared/           Code used by both server and front end (app catalog, brand, locales, MIME types)
-  i18n/           Translations, for server and front end (one file per locale)
-start/            Boot files: routes, env validation, middleware kernel, auto-migration
 ```
 
-Imports use subpath aliases such as `#controllers/*`, `#services/*` and `#models/*` (see `imports` in [`package.json`](package.json)).
+Imports of `app/` use `#*` (see `imports` in [`package.json`](package.json)), such as `#controllers/x` for `app/controllers/x.ts`.
 
 ### Request flow in brief
 
-A request hits a route in [`start/routes.ts`](start/routes.ts) (OAuth routes are in [`start/routes/oauth.ts`](start/routes/oauth.ts)), passes through middleware registered in [`start/kernel.ts`](start/kernel.ts), and reaches a controller. Controllers call services, then render an Inertia page from `inertia/pages/` with props shaped by a transformer. Signed-in routes use the `auth` and `legalRoadblock` middleware, which send people to `/onboarding` if they have not accepted the current terms.
+A request hits a route in [`app/start/routes.ts`](app/start/routes.ts) (OAuth routes are in [`app/start/routes/oauth.ts`](app/start/routes/oauth.ts)), passes through middleware registered in [`start/kernel.ts`](start/kernel.ts), and reaches a controller. Controllers call services, then render an Inertia page from `inertia/pages/` with props shaped by a transformer. Signed-in routes use the `auth` and `legalRoadblock` middleware, which send people to `/onboarding` if they have not accepted the current terms.
 
 ## Day-to-day development
 
@@ -121,25 +121,25 @@ Editor setup: the repo includes an [`.editorconfig`](.editorconfig). Use the wor
 
 ### Adding or changing a page
 
-1. Add a route in `start/routes.ts`, inside the right group (guest, signed-in, or public).
+1. Add a route in `app/start/routes.ts`, inside the right group (guest, signed-in, or public).
 2. Add or extend a controller in `app/controllers/`, returning `inertia.render('your-page', props)`.
 3. Create `inertia/pages/your-page.tsx`.
 4. Add any new strings to the translation files (see below).
 
 ### Database changes
 
-Create a migration with `node ace make:migration <name>`, run `pnpm db:migrate`, and commit both the migration and the regenerated `database/schema.ts`. Migrations run automatically on deploy (`DATABASE_AUTOMIGRATE=true`), so they must be safe to run against an existing production database.
+Create a migration with `node ace make:migration <name>`, run `pnpm db:migrate`, and commit both the migration and the regenerated `app/database/schema.ts`. Migrations run automatically on deploy (`DATABASE_AUTOMIGRATE=true`), so they must be safe to run against an existing production database.
 
 ### Translations
 
 Strings live in these places, and every locale must define the same keys:
 
-- **Messages**, for the front end and the server (validation messages, flash errors and similar): `shared/i18n/<locale>.ts`
+- **Messages**, for the front end and the server (validation messages, flash errors and similar): `app/shared/i18n/<locale>.ts`
 - Longer content, the FAQ and explore page, is in `data/<locale>/` (`faq.json`, `explore.md`).
 
 English (`en`) is the reference locale. When you add a key, add it to every locale; if you can't translate it, copy the English text and mention it in your pull request so a translator can follow up. Tests fail if keys are missing or placeholders (variables) differ; tests do not check translations in `data/`.
 
-To add a new locale, also add it to `locales` and `localeNames` in [`shared/locale.ts`](shared/locale.ts), and to `catalogs` in [`inertia/lib/i18n.tsx`](inertia/lib/i18n.tsx).
+To add a new locale, also add it to `locales` and `localeNames` in [`app/shared/locale.ts`](app/shared/locale.ts), and to `catalogs` in [`inertia/lib/i18n.tsx`](inertia/lib/i18n.tsx).
 
 ### AT Protocol lexicons
 
@@ -147,11 +147,11 @@ The lexicons the Portal uses are pinned in [`lexicons.json`](lexicons.json), wit
 
 ### Supporting more file types
 
-The files page sorts blobs into images, videos and other files by their MIME type. The types it can preview are listed in [`shared/mime.ts`](shared/mime.ts); their labels and download extensions are in [`inertia/utils/mime.ts`](inertia/utils/mime.ts), with label translations under `mimeType.*`. After changing these lists, run `node ace storage:recategorize` on the server to sort already stored blobs again; it needs no network access.
+The files page sorts blobs into images, videos and other files by their MIME type. The types it can preview are listed in [`app/shared/mime.ts`](app/shared/mime.ts); their labels and download extensions are in [`inertia/utils/mime.ts`](inertia/utils/mime.ts), with label translations under `mimeType.*`. After changing these lists, run `node ace storage:recategorize` on the server to sort already stored blobs again; it needs no network access.
 
 ### Adding an app to the directory
 
-Apps shown on the apps page are listed in [`shared/apps.ts`](shared/apps.ts). Find the app's listing on [atstore](https://atstore.fyi) and add its `at://` URI with a category; details are fetched from atstore at runtime. The comments in that file explain the options.
+Apps shown on the apps page are listed in [`app/shared/apps.ts`](app/shared/apps.ts). Find the app's listing on [atstore](https://atstore.fyi) and add its `at://` URI with a category; details are fetched from atstore at runtime. The comments in that file explain the options.
 
 ### OAuth scopes
 

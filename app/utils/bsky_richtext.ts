@@ -1,6 +1,6 @@
 import type { ElementContent } from 'hast'
 import { sanitizeUri } from 'micromark-util-sanitize-uri'
-import * as lexicon from '#lexicons'
+import * as lexicon from '#lexicons/index'
 import { segment } from '#utils/facets'
 
 const allowedProtocols = /^https?$/i

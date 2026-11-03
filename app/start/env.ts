@@ -13,7 +13,7 @@ import { Env } from '@adonisjs/core/env'
 
 const validateDomain = Env.schema.string({ format: 'url', tld: true, protocol: false })
 
-export default await Env.create(new URL('../', import.meta.url), {
+export default await Env.create(new URL('../../', import.meta.url), {
   // Node
   NODE_ENV: Env.schema.enum(['development', 'production', 'test'] as const),
   PORT: Env.schema.number(),

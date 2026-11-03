@@ -2,7 +2,7 @@ import cache from '@adonisjs/cache/services/main'
 import logger from '@adonisjs/core/services/logger'
 import { type AtUriString, xrpcSafe } from '@atproto/lex'
 import { AtUri, asAtUriString } from '@atproto/syntax'
-import * as lexicon from '#lexicons'
+import * as lexicon from '#lexicons/index'
 import { type CatalogApp, apps } from '#shared/apps'
 
 type ListingCardGet = lexicon.fyi.atstore.directory.getListing.ListingCardGet
@@ -39,7 +39,7 @@ type AtStoreListing = Pick<
 >
 
 /**
- * App from our catalog (`shared/apps.ts`), augmented with remote info.
+ * App from our catalog (`app/shared/apps.ts`), augmented with remote info.
  */
 export interface App extends AtStoreListingDetail, CatalogApp {}
 
