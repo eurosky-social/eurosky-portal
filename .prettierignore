@@ -5,5 +5,4 @@ pnpm-lock.yaml
 .adonisjs/**
 app/lexicons/**
 lexicons/**
-app/database/schema.ts
 coverage

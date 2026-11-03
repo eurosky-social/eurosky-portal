@@ -1,6 +1,6 @@
 import { toJsxRuntime } from 'hast-util-to-jsx-runtime'
 import { Fragment, jsx, jsxs } from 'react/jsx-runtime'
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import * as components from './RichTextComponents'
 import { Text } from '~/lib/text'
 import { useMarkdown } from '~/utils/use_markdown'

@@ -21,7 +21,6 @@ import {
   toPreview,
   toValue,
 } from '#utils/activity'
-import type { ActivityRecordSchema } from '#database/schema'
 import { pdsClient } from '#utils/pds'
 import { decodeToken, encodeToken } from '#utils/token'
 
@@ -423,7 +422,7 @@ export class ActivityService {
       seen += records.length
 
       const prefix = `at://${did}/${collection}/`
-      const update: Array<Partial<ActivityRecordSchema>> = []
+      const update: Array<Partial<ActivityRecord>> = []
       const remove: Array<string> = []
 
       for (const record of records) {

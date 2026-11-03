@@ -1,14 +1,18 @@
 {
-  "extends": "@adonisjs/tsconfig/tsconfig.app.json",
   "compilerOptions": {
-    "rootDir": "./",
+    "emitDecoratorMetadata": false,
+    "erasableSyntaxOnly": true,
+    "experimentalDecorators": false,
     "jsx": "react",
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
     "noUncheckedIndexedAccess": true,
     "outDir": "./build",
-    "strict": true
+    "rootDir": "./",
+    "strict": true,
+    "verbatimModuleSyntax": true
   },
-  "exclude": ["inertia/**", "node_modules/**", "build/**", "tests/inertia/**"],
+  "exclude": ["build/**", "inertia/**", "node_modules/**", "tests/inertia/**"],
+  "extends": "@adonisjs/tsconfig/tsconfig.app.json",
   "references": [{ "path": "./tsconfig.inertia.json" }]
 }

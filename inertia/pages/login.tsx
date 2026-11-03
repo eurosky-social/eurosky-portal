@@ -5,7 +5,7 @@ import { Button } from '~/lib/button'
 import { ErrorMessage, Field, FieldGroup, Label } from '~/lib/fieldset'
 import { Input } from '~/lib/input'
 import { Text, TextLink } from '~/lib/text'
-import { InertiaProps } from '~/types'
+import type { InertiaProps } from '~/types'
 import Card from '~/lib/card'
 import { useT } from '~/lib/i18n'
 import { MigrationNotice } from '~/components/MigrationNotice'
@@ -13,7 +13,7 @@ import { NewTab } from '~/components/NewTab'
 import { links } from '#shared/links'
 import Layout from '~/layouts/default'
 import type { ReactElement } from 'react'
-import { Data } from '@generated/data'
+import type { Data } from '@generated/data'
 
 export default function Login({ migrationUrl }: InertiaProps<{ migrationUrl?: string }>) {
   const { locale, tPlain, t } = useT()

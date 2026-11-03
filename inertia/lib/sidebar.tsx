@@ -6,7 +6,7 @@ import { LayoutGroup, motion } from 'motion/react'
 import React, { forwardRef, useId } from 'react'
 import { TouchTarget } from './button'
 import { Link } from './link'
-import { LinkProps } from '@adonisjs/inertia/react'
+import type { LinkProps } from '@adonisjs/inertia/react'
 
 export function Sidebar({ className, ...props }: React.ComponentPropsWithoutRef<'nav'>) {
   return <nav {...props} className={clsx(className, 'flex h-full min-h-0 flex-col')} />

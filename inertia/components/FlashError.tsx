@@ -1,5 +1,5 @@
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid'
-import { Data } from '@generated/data'
+import type { Data } from '@generated/data'
 import { usePage } from '@inertiajs/react'
 import { useEffect, useRef, useState } from 'react'
 import { useT } from '~/lib/i18n'
