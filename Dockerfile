@@ -42,22 +42,29 @@ RUN \
 
 RUN git clone https://github.com/bluesky-social/goat.git && cd goat && git checkout v0.2.3 && go build -o /tmp/goat-build .
 
-FROM base AS base-deps
+FROM base AS production-deps
 WORKDIR /app
 COPY package.json pnpm-*.yaml ./
 
 # Install the pnpm version from `packageManager`
 RUN npm install --global "$(node --print "require('./package.json').packageManager.split('+')[0]")"
 RUN --mount=id=pnpm,target=/pnpm/store,type=cache pnpm fetch
-
-FROM base-deps AS production-deps
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --prod --offline
 
 # ----------------------------
 # Stage 2: Build the application
 # ----------------------------
-FROM base-deps AS build
+FROM --platform=$BUILDPLATFORM node:26-trixie-slim AS build
+SHELL ["/bin/bash", "-o", "pipefail", "-o", "errexit", "-c"]
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+ENV NODE_ENV=production
 WORKDIR /app
+COPY package.json pnpm-*.yaml ./
+
+# Install the pnpm version from `packageManager`
+RUN npm install --global "$(node --print "require('./package.json').packageManager.split('+')[0]")"
+RUN --mount=id=pnpm,target=/pnpm/store,type=cache pnpm fetch
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --offline
 COPY . .
 RUN node ace build
