@@ -3,7 +3,7 @@
  */
 
 import { l } from '@atproto/lex'
-import * as RichtextFacet from '../richtext/facet.defs.js'
+import * as RichtextFacet from '../richtext/facet.defs.ts'
 
 const $nsid = 'pub.leaflet.blocks.text'
 

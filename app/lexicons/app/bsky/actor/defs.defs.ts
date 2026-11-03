@@ -3,13 +3,13 @@
  */
 
 import { l } from '@atproto/lex'
-import * as EmbedExternal from '../embed/external.defs.js'
-import * as LabelDefs from '../../../com/atproto/label/defs.defs.js'
-import * as GraphDefs from '../graph/defs.defs.js'
-import * as NotificationDefs from '../notification/defs.defs.js'
-import * as RepoStrongRef from '../../../com/atproto/repo/strongRef.defs.js'
-import * as FeedThreadgate from '../feed/threadgate.defs.js'
-import * as FeedPostgate from '../feed/postgate.defs.js'
+import * as EmbedExternal from '../embed/external.defs.ts'
+import * as LabelDefs from '../../../com/atproto/label/defs.defs.ts'
+import * as GraphDefs from '../graph/defs.defs.ts'
+import * as NotificationDefs from '../notification/defs.defs.ts'
+import * as RepoStrongRef from '../../../com/atproto/repo/strongRef.defs.ts'
+import * as FeedThreadgate from '../feed/threadgate.defs.ts'
+import * as FeedPostgate from '../feed/postgate.defs.ts'
 
 const $nsid = 'app.bsky.actor.defs'
 

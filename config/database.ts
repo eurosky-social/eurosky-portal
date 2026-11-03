@@ -3,7 +3,7 @@ import app from '@adonisjs/core/services/app'
 import { defineConfig } from '@adonisjs/lucid'
 
 const dbConfig = defineConfig({
-  prettyPrintDebugQueries: !app.inProduction,
+  prettyPrintDebugQueries: app.inDev,
   /**
    * Default connection used for all queries.
    */
@@ -15,7 +15,7 @@ const dbConfig = defineConfig({
      */
     sqlite: {
       client: 'better-sqlite3',
-      debug: !app.inProduction,
+      debug: app.inDev,
 
       connection: {
         /**

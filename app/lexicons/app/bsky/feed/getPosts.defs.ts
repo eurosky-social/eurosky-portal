@@ -3,7 +3,7 @@
  */
 
 import { l } from '@atproto/lex'
-import * as FeedDefs from './defs.defs.js'
+import * as FeedDefs from './defs.defs.ts'
 
 const $nsid = 'app.bsky.feed.getPosts'
 

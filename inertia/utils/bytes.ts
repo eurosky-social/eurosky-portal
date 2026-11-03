@@ -15,8 +15,8 @@ const units = [
   { label: 'MiB', unit: 'megabyte' },
   { label: 'GiB', unit: 'gigabyte' },
   { label: 'TiB', unit: 'terabyte' },
+  // Largest unit `Intl.NumberFormat` supports.
   { label: 'PiB', unit: 'petabyte' },
-  { label: 'EiB', unit: 'exabyte' },
 ] as const
 
 /**

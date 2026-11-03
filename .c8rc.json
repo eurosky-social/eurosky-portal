@@ -1,0 +1,15 @@
+{
+  "all": true,
+  "exclude": ["app/lexicons/**"],
+  "include": [
+    "app/**",
+    "commands/**",
+    "config/**",
+    "inertia/utils/**",
+    "providers/**",
+    "shared/**",
+    "start/**"
+  ],
+  "reporter": ["lcov", "text"],
+  "skipFull": true
+}

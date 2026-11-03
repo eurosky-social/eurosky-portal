@@ -3,10 +3,10 @@
  */
 
 import { l } from '@atproto/lex'
-import * as RepoStrongRef from '../../../com/atproto/repo/strongRef.defs.js'
-import * as LabelDefs from '../../../com/atproto/label/defs.defs.js'
-import * as ActorDefs from '../actor/defs.defs.js'
-import * as EmbedDefs from './defs.defs.js'
+import * as RepoStrongRef from '../../../com/atproto/repo/strongRef.defs.ts'
+import * as LabelDefs from '../../../com/atproto/label/defs.defs.ts'
+import * as ActorDefs from '../actor/defs.defs.ts'
+import * as EmbedDefs from './defs.defs.ts'
 
 const $nsid = 'app.bsky.embed.external'
 

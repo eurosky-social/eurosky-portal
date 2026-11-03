@@ -114,7 +114,7 @@ interface GetRecordsOptions {
   /**
    * Total records to return.
    */
-  limit: number | undefined
+  limit?: number | undefined
 
   /**
    * Cursor.

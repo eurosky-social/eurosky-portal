@@ -3,7 +3,7 @@
  */
 
 import { l } from '@atproto/lex'
-import * as ActorDefs from './defs.defs.js'
+import * as ActorDefs from './defs.defs.ts'
 
 const $nsid = 'app.bsky.actor.getProfile'
 

@@ -3,15 +3,15 @@
  */
 
 import { l } from '@atproto/lex'
-import * as EmbedImages from '../embed/images.defs.js'
-import * as EmbedVideo from '../embed/video.defs.js'
-import * as EmbedGallery from '../embed/gallery.defs.js'
-import * as EmbedExternal from '../embed/external.defs.js'
-import * as EmbedRecord from '../embed/record.defs.js'
-import * as EmbedRecordWithMedia from '../embed/recordWithMedia.defs.js'
-import * as RichtextFacet from '../richtext/facet.defs.js'
-import * as LabelDefs from '../../../com/atproto/label/defs.defs.js'
-import * as RepoStrongRef from '../../../com/atproto/repo/strongRef.defs.js'
+import * as EmbedImages from '../embed/images.defs.ts'
+import * as EmbedVideo from '../embed/video.defs.ts'
+import * as EmbedGallery from '../embed/gallery.defs.ts'
+import * as EmbedExternal from '../embed/external.defs.ts'
+import * as EmbedRecord from '../embed/record.defs.ts'
+import * as EmbedRecordWithMedia from '../embed/recordWithMedia.defs.ts'
+import * as RichtextFacet from '../richtext/facet.defs.ts'
+import * as LabelDefs from '../../../com/atproto/label/defs.defs.ts'
+import * as RepoStrongRef from '../../../com/atproto/repo/strongRef.defs.ts'
 
 const $nsid = 'app.bsky.feed.post'
 

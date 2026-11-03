@@ -3,10 +3,10 @@
  */
 
 import { l } from '@atproto/lex'
-import * as BlocksText from './text.defs.js'
-import * as BlocksHeader from './header.defs.js'
-import * as BlocksImage from './image.defs.js'
-import * as BlocksUnorderedList from './unorderedList.defs.js'
+import * as BlocksText from './text.defs.ts'
+import * as BlocksHeader from './header.defs.ts'
+import * as BlocksImage from './image.defs.ts'
+import * as BlocksUnorderedList from './unorderedList.defs.ts'
 
 const $nsid = 'pub.leaflet.blocks.orderedList'
 

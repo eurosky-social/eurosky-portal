@@ -3,10 +3,10 @@
  */
 
 import { l } from '@atproto/lex'
-import * as LabelDefs from '../../../com/atproto/label/defs.defs.js'
-import * as ActorDefs from '../actor/defs.defs.js'
-import * as RichtextFacet from '../richtext/facet.defs.js'
-import * as FeedDefs from '../feed/defs.defs.js'
+import * as LabelDefs from '../../../com/atproto/label/defs.defs.ts'
+import * as ActorDefs from '../actor/defs.defs.ts'
+import * as RichtextFacet from '../richtext/facet.defs.ts'
+import * as FeedDefs from '../feed/defs.defs.ts'
 
 const $nsid = 'app.bsky.graph.defs'
 

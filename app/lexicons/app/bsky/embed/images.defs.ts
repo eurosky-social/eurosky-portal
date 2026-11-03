@@ -3,7 +3,7 @@
  */
 
 import { l } from '@atproto/lex'
-import * as EmbedDefs from './defs.defs.js'
+import * as EmbedDefs from './defs.defs.ts'
 
 const $nsid = 'app.bsky.embed.images'
 

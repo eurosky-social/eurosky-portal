@@ -3,9 +3,9 @@
  */
 
 import { l } from '@atproto/lex'
-import * as LabelDefs from '../../../com/atproto/label/defs.defs.js'
-import * as ActorDefs from '../actor/defs.defs.js'
-import * as ModerationDefs from '../../../com/atproto/moderation/defs.defs.js'
+import * as LabelDefs from '../../../com/atproto/label/defs.defs.ts'
+import * as ActorDefs from '../actor/defs.defs.ts'
+import * as ModerationDefs from '../../../com/atproto/moderation/defs.defs.ts'
 
 const $nsid = 'app.bsky.labeler.defs'
 

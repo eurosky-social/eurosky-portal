@@ -98,22 +98,18 @@ export default defineConfig({
   |
   | List of test suites to organize tests by their type. Feel free to remove
   | and add additional suites.
+  | There are also tests using `node:test`, which are not included here.
   |
   */
   tests: {
     suites: [
       {
-        files: ['tests/unit/**/*.spec.{ts,js}'],
-        name: 'unit',
-        timeout: 2000,
-      },
-      {
-        files: ['tests/functional/**/*.spec.{ts,js}'],
-        name: 'functional',
+        files: ['tests/adonis/**/*.spec.{js,ts}'],
+        name: 'adonis',
         timeout: 30000,
       },
       {
-        files: ['tests/browser/**/*.spec.{ts,js}'],
+        files: ['tests/browser/**/*.spec.{js,ts}'],
         name: 'browser',
         timeout: 300000,
       },

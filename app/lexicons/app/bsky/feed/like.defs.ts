@@ -3,7 +3,7 @@
  */
 
 import { l } from '@atproto/lex'
-import * as RepoStrongRef from '../../../com/atproto/repo/strongRef.defs.js'
+import * as RepoStrongRef from '../../../com/atproto/repo/strongRef.defs.ts'
 
 const $nsid = 'app.bsky.feed.like'
 

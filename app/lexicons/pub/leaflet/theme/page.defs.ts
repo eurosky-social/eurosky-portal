@@ -3,7 +3,7 @@
  */
 
 import { l } from '@atproto/lex'
-import * as ThemeColor from './color.defs.js'
+import * as ThemeColor from './color.defs.ts'
 
 const $nsid = 'pub.leaflet.theme.page'
 
