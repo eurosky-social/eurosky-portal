@@ -44,7 +44,10 @@ export const loginRequestValidator = vine.create({
       }
       return value
     }),
-    vine.atproto.handleUsername(),
+    // Values that do not look like handles, such as `@username`, end up here.
+    vine.atproto.handleUsername().parse((value) => {
+      return typeof value === 'string' && value.startsWith('@') ? value.slice(1) : value
+    }),
   ]),
 })
 

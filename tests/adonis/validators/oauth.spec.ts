@@ -5,6 +5,7 @@ test.group('validators / oauth / loginRequestValidator', function () {
   for (const [input, expected] of [
     ['a', 'a'],
     ['a.b.com', 'a.b.com'],
+    ['@a', 'a'],
     ['@a.pds.example.com', 'a.pds.example.com'],
     ['a@pds.example.com', 'a.pds.example.com'],
     ['@a@pds.example.com', 'a.pds.example.com'],
@@ -35,18 +36,4 @@ test.group('validators / oauth / loginRequestValidator', function () {
       )
     })
   }
-
-  test('should reject `@a`', async function ({ assert }) {
-    const [error] = await loginRequestValidator.tryValidate({ input: '@a' })
-
-    // To do: should be valid, as `a` (like `@a.pds.example.com` is `a.pds.example.com`).
-    // The `@` is only stripped for values that already look like handles;
-    // `@a` does not, so `vine.atproto.handleUsername()` gets and rejects it.
-    assert.deepEqual(
-      error?.messages.map(function (message: { rule: string }) {
-        return message.rule
-      }),
-      ['at-handle-username']
-    )
-  })
 })
