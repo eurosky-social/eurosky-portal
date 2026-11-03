@@ -1,0 +1,17 @@
+/**
+ * Tests of front end code, type checked with the front end, plus Node types.
+ */
+{
+  "extends": "../../inertia/tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "types": ["node", "vite/client"]
+  },
+  "include": [
+    "./**/*.ts",
+    "../../inertia/**/*.ts",
+    "../../inertia/**/*.tsx",
+    "../../.adonisjs/client/**/*.ts",
+    "../../.adonisjs/server/**/*.ts"
+  ]
+}

@@ -3,8 +3,8 @@
  */
 
 import { l } from '@atproto/lex'
-import * as PagesLinearDocument from './pages/linearDocument.defs.js'
-import * as PagesCanvas from './pages/canvas.defs.js'
+import * as PagesLinearDocument from './pages/linearDocument.defs.ts'
+import * as PagesCanvas from './pages/canvas.defs.ts'
 
 const $nsid = 'pub.leaflet.content'
 

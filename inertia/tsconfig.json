@@ -6,6 +6,7 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
     "noUncheckedIndexedAccess": true,
+    "rewriteRelativeImportExtensions": true,
     "paths": {
       "~/*": ["./*"],
       "@generated/*": ["../.adonisjs/client/*"]

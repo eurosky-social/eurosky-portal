@@ -20,3 +20,6 @@ public/assets
 
 # Platform specific
 .DS_Store
+
+# Coverage
+coverage

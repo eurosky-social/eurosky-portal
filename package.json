@@ -15,41 +15,54 @@
     "db:migrate": "node ace migration:run",
     "format:check": "prettier --check .",
     "format": "prettier --write .",
-    "i18n:check": "node ace i18n:check",
-    "lex:build": "pnpm lex build --clear --indexFile --out ./app/lexicons --pretty",
+    "lex:build": "pnpm lex build --clear --import-ext .ts --indexFile --out ./app/lexicons --pretty",
     "lex": "./node_modules/.bin/lex",
     "lint": "eslint .",
     "release": "changeset publish",
     "start": "node bin/server.js",
-    "test": "node ace test",
-    "typecheck": "tsc --noEmit && tsc --noEmit --project inertia/tsconfig.json",
+    "test": "c8 --reports-dir=coverage/plain node --run test:plain && c8 --reports-dir=coverage/adonis node --run test:adonis",
+    "test:adonis": "node ace test",
+    "test:plain": "node --conditions=source --env-file=.env.test --test 'tests/**/*.test.ts'",
+    "typecheck": "tsc --noEmit && tsc --noEmit --project inertia/tsconfig.json && tsc --project tests/inertia/tsconfig.json",
     "version-package": "changeset version"
   },
   "imports": {
-    "#controllers/*": "./app/controllers/*.js",
-    "#collections/*": "./app/collections/*.js",
-    "#exceptions/*": "./app/exceptions/*.js",
-    "#jobs/*": "./app/jobs/*.js",
-    "#models/*": "./app/models/*.js",
-    "#mails/*": "./app/mails/*.js",
-    "#services/*": "./app/services/*.js",
-    "#listeners/*": "./app/listeners/*.js",
-    "#lexicons": "./app/lexicons/index.js",
-    "#events/*": "./app/events/*.js",
-    "#extensions/*": "./app/extensions/*.js",
-    "#generated/*": "./.adonisjs/server/*.js",
-    "#middleware/*": "./app/middleware/*.js",
-    "#transformers/*": "./app/transformers/*.js",
-    "#utils/*": "./app/utils/*.js",
-    "#validators/*": "./app/validators/*.js",
-    "#providers/*": "./providers/*.js",
-    "#policies/*": "./app/policies/*.js",
-    "#abilities/*": "./app/abilities/*.js",
-    "#database/*": "./database/*.js",
-    "#tests/*": "./tests/*.js",
-    "#start/*": "./start/*.js",
-    "#config/*": "./config/*.js",
-    "#shared/*": "./shared/*.js"
+    "#*": {
+      "source": "./app/*.ts",
+      "default": "./app/*.js"
+    },
+    "#config/*": {
+      "source": "./config/*.ts",
+      "default": "./config/*.js"
+    },
+    "#database/*": {
+      "source": "./database/*.ts",
+      "default": "./database/*.js"
+    },
+    "#generated/*": {
+      "source": "./.adonisjs/server/*.ts",
+      "default": "./.adonisjs/server/*.js"
+    },
+    "#lexicons": {
+      "source": "./app/lexicons/index.ts",
+      "default": "./app/lexicons/index.js"
+    },
+    "#providers/*": {
+      "source": "./providers/*.ts",
+      "default": "./providers/*.js"
+    },
+    "#shared/*": {
+      "source": "./shared/*.ts",
+      "default": "./shared/*.js"
+    },
+    "#start/*": {
+      "source": "./start/*.ts",
+      "default": "./start/*.js"
+    },
+    "#tests/*": {
+      "source": "./tests/*.ts",
+      "default": "./tests/*.js"
+    }
   },
   "devDependencies": {
     "@adonisjs/assembler": "^8.6.0",
@@ -58,6 +71,7 @@
     "@adonisjs/tsconfig": "^2.0.0",
     "@changesets/changelog-github": "^1.0.1",
     "@changesets/cli": "^3.0.3",
+    "@japa/api-client": "^3.2.1",
     "@japa/assert": "^4.2.0",
     "@japa/browser-client": "^2.3.0",
     "@japa/plugin-adonisjs": "^5.2.0",
@@ -70,6 +84,7 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.2",
+    "c8": "^12.0.0",
     "eslint": "^10.13.0",
     "hot-hook": "^1.0.0",
     "pino-pretty": "^13.2.0",

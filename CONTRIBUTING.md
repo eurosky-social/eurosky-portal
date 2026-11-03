@@ -76,7 +76,7 @@ app/
   validators/     VineJS request validators
   lexicons/       Generated, typed AT Protocol lexicon clients (do not edit by hand)
   utils/          Helpers (OAuth scopes, PDS clients, rich text, embeds, telemetry, ...)
-commands/         Ace commands (i18n:check, portal:backfill-handles, portal:resync-collection, storage:recategorize)
+commands/         Ace commands (portal:backfill-handles, portal:resync-collection, storage:recategorize)
 config/           Framework and package configuration
 database/
   migrations/     Database migrations
@@ -110,8 +110,7 @@ A request hits a route in [`start/routes.ts`](start/routes.ts) (OAuth routes are
 | `pnpm lint`       | ESLint                                                 |
 | `pnpm format`     | Format with Prettier (`pnpm format:check` only checks) |
 | `pnpm typecheck`  | TypeScript checks for server and front end             |
-| `pnpm i18n:check` | Verify every locale has the same translation keys      |
-| `pnpm test`       | Run the Japa test runner                               |
+| `pnpm test`       | Run tests with coverage                                |
 | `pnpm build`      | Production build into `build/`                         |
 | `pnpm changeset`  | Add a changeset describing your change (see below)     |
 | `node ace list`   | List all Ace commands, including project-specific ones |
@@ -138,7 +137,7 @@ Strings live in these places, and every locale must define the same keys:
 - **Messages**, for the front end and the server (validation messages, flash errors and similar): `shared/i18n/<locale>.ts`
 - Longer content, the FAQ and explore page, is in `data/<locale>/` (`faq.json`, `explore.md`).
 
-English (`en`) is the reference locale. When you add a key, add it to every locale; if you can't translate it, copy the English text and mention it in your pull request so a translator can follow up. `pnpm i18n:check` runs in CI and fails if keys are missing or placeholders differ; it does not check `data/`.
+English (`en`) is the reference locale. When you add a key, add it to every locale; if you can't translate it, copy the English text and mention it in your pull request so a translator can follow up. Tests fail if keys are missing or placeholders (variables) differ; tests do not check translations in `data/`.
 
 To add a new locale, also add it to `locales` and `localeNames` in [`shared/locale.ts`](shared/locale.ts), and to `catalogs` in [`inertia/lib/i18n.tsx`](inertia/lib/i18n.tsx).
 
@@ -164,13 +163,16 @@ Scopes are defined in [`app/utils/oauth.ts`](app/utils/oauth.ts). Keep sign-in s
 
 ## Checks
 
-Every push and pull request runs the [`checks` workflow](.github/workflows/checks.yaml): translations, linting, formatting and type checking. Run the same thing locally before pushing:
+Every push and pull request runs the [`checks` workflow](.github/workflows/checks.yaml): linting, formatting, type checking, and tests. Run the same thing locally before pushing:
 
 ```sh
-pnpm i18n:check && pnpm lint && pnpm format:check && pnpm typecheck
+pnpm format && pnpm lint && pnpm typecheck && pnpm test
 ```
 
-There are currently no automated tests. Tests use [Japa](https://japa.dev) (configured in `tests/bootstrap.ts`), and contributions that add tests, especially around the OAuth and activity flows, are very welcome. Until coverage improves, describe in your pull request how you tested the change manually.
+Tests mirror the source tree (`tests/app/utils/x.test.ts` for `app/utils/x.ts`):
+
+- `tests/**/*.test.ts` (`pnpm test:plain`) — uses `node:test`
+- `tests/adonis/**/*.spec.ts` (`pnpm test:adonis`) — for code that needs the app such as routes, uses Japa
 
 ## Submitting a pull request
 

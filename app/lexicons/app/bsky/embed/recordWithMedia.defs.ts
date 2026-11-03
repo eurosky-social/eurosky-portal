@@ -3,11 +3,11 @@
  */
 
 import { l } from '@atproto/lex'
-import * as EmbedImages from './images.defs.js'
-import * as EmbedVideo from './video.defs.js'
-import * as EmbedGallery from './gallery.defs.js'
-import * as EmbedExternal from './external.defs.js'
-import * as EmbedRecord from './record.defs.js'
+import * as EmbedImages from './images.defs.ts'
+import * as EmbedVideo from './video.defs.ts'
+import * as EmbedGallery from './gallery.defs.ts'
+import * as EmbedExternal from './external.defs.ts'
+import * as EmbedRecord from './record.defs.ts'
 
 const $nsid = 'app.bsky.embed.recordWithMedia'
 

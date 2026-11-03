@@ -3,17 +3,17 @@
  */
 
 import { l } from '@atproto/lex'
-import * as RepoStrongRef from '../../../com/atproto/repo/strongRef.defs.js'
-import * as FeedDefs from '../feed/defs.defs.js'
-import * as GraphDefs from '../graph/defs.defs.js'
-import * as LabelerDefs from '../labeler/defs.defs.js'
-import * as ActorDefs from '../actor/defs.defs.js'
-import * as EmbedImages from './images.defs.js'
-import * as EmbedVideo from './video.defs.js'
-import * as EmbedGallery from './gallery.defs.js'
-import * as EmbedExternal from './external.defs.js'
-import * as EmbedRecordWithMedia from './recordWithMedia.defs.js'
-import * as LabelDefs from '../../../com/atproto/label/defs.defs.js'
+import * as RepoStrongRef from '../../../com/atproto/repo/strongRef.defs.ts'
+import * as FeedDefs from '../feed/defs.defs.ts'
+import * as GraphDefs from '../graph/defs.defs.ts'
+import * as LabelerDefs from '../labeler/defs.defs.ts'
+import * as ActorDefs from '../actor/defs.defs.ts'
+import * as EmbedImages from './images.defs.ts'
+import * as EmbedVideo from './video.defs.ts'
+import * as EmbedGallery from './gallery.defs.ts'
+import * as EmbedExternal from './external.defs.ts'
+import * as EmbedRecordWithMedia from './recordWithMedia.defs.ts'
+import * as LabelDefs from '../../../com/atproto/label/defs.defs.ts'
 
 const $nsid = 'app.bsky.embed.record'
 
