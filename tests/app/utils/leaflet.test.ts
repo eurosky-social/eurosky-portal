@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import { jsonToLex } from '@atproto/lex'
-import * as lexicon from '#lexicons'
+import * as lexicon from '#lexicons/index'
 import { toHast } from '#utils/leaflet'
 
 // Raw (`bafkrei`), then all-zero SHA-256 hash.

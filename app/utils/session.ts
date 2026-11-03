@@ -13,7 +13,7 @@ import type { FavoriteIntent } from '#services/favorite_service'
  */
 export type FlashMessage = {
   /**
-   * Message key (in `shared/i18n/`).
+   * Message key (in `app/shared/i18n/`).
    */
   key: MessageKey
 

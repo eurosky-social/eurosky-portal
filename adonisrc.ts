@@ -18,6 +18,23 @@ export default defineConfig({
 
   /*
   |--------------------------------------------------------------------------
+  | Directories
+  |--------------------------------------------------------------------------
+  |
+  | Everything imported through `#*` (`package.json`) lives in `app/`;
+  | `config/` stays, as Adonis expects it there (`indexEntities`).
+  |
+  */
+  directories: {
+    factories: 'app/database/factories',
+    migrations: 'app/database/migrations',
+    providers: 'app/providers',
+    seeders: 'app/database/seeders',
+    start: 'app/start',
+  },
+
+  /*
+  |--------------------------------------------------------------------------
   | Commands
   |--------------------------------------------------------------------------
   |

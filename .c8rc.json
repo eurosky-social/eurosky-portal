@@ -1,15 +1,7 @@
 {
   "all": true,
   "exclude": ["app/lexicons/**"],
-  "include": [
-    "app/**",
-    "commands/**",
-    "config/**",
-    "inertia/utils/**",
-    "providers/**",
-    "shared/**",
-    "start/**"
-  ],
+  "include": ["app/**", "commands/**", "config/**", "inertia/utils/**"],
   "reporter": ["lcov", "text"],
   "skipFull": true
 }

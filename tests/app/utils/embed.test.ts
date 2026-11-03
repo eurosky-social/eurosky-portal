@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import { type BlobRef, parseCid } from '@atproto/lex'
-import * as lexicon from '#lexicons'
+import * as lexicon from '#lexicons/index'
 import { toEmbed } from '#utils/embed'
 
 // Raw (`bafkrei`), then all-zero SHA-256 hash.

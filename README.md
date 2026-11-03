@@ -59,15 +59,15 @@ flowchart LR
 
 **5. Showing files: PDS → Portal.** The files page lists the files (blobs, such as images and videos) that apps have uploaded to a person's repository, and how much space each kind takes. A background job lists the blobs on the person's PDS and stores only their metadata (CID, type and size), for up to 5,000 per account. While the page is in use, new blobs are picked up every few minutes and removed ones once a day. Previews and downloads are loaded by the browser, from the Bluesky CDN or straight from the PDS.
 
-**6. App discovery.** The apps directory is a curated list in [`shared/apps.ts`](shared/apps.ts). Names, icons and descriptions are fetched from [atstore](https://atstore.fyi), and favorites are written as `fyi.atstore.listing.favorite` records into the person's own repository on their PDS.
+**6. App discovery.** The apps directory is a curated list in [`app/shared/apps.ts`](app/shared/apps.ts). Names, icons and descriptions are fetched from [atstore](https://atstore.fyi), and favorites are written as `fyi.atstore.listing.favorite` records into the person's own repository on their PDS.
 
 ### Inside the Portal
 
 The Portal is a single [AdonisJS](https://adonisjs.com) application with a React front end rendered through [Inertia](https://inertiajs.com) (server-side rendering included). It runs as one process and one container:
 
-- **HTTP server**: routes in [`start/routes.ts`](start/routes.ts), controllers in [`app/controllers`](app/controllers).
-- **Database**: SQLite (via Lucid and `better-sqlite3`) for accounts, OAuth states and sessions, cached activity, file metadata, the cache store and the job queue. Migrations live in [`database/migrations`](database/migrations).
-- **Background work**: the queue worker ([`providers/queue_worker_provider.ts`](providers/queue_worker_provider.ts)) and the Jetstream subscriber ([`providers/jetstream_provider.ts`](providers/jetstream_provider.ts)) start inside the web process.
+- **HTTP server**: routes in [`app/start/routes.ts`](app/start/routes.ts), controllers in [`app/controllers`](app/controllers).
+- **Database**: SQLite (via Lucid and `better-sqlite3`) for accounts, OAuth states and sessions, cached activity, file metadata, the cache store and the job queue. Migrations live in [`app/database/migrations`](app/database/migrations).
+- **Background work**: the queue worker ([`app/providers/queue_worker_provider.ts`](app/providers/queue_worker_provider.ts)) and the Jetstream subscriber ([`app/providers/jetstream_provider.ts`](app/providers/jetstream_provider.ts)) start inside the web process.
 - **Front end**: pages and components in [`inertia/`](inertia), built with Vite and Tailwind CSS.
 - **Lexicons**: AT Protocol schemas the Portal uses are pinned in [`lexicons.json`](lexicons.json) and compiled into typed clients in [`app/lexicons`](app/lexicons).
 - **Observability** (optional): OpenTelemetry tracing and Plausible analytics, both off by default.
@@ -110,7 +110,7 @@ Pre-built images are published to `ghcr.io/eurosky-social/eurosky-portal` (`dev`
 
 ## Configuration
 
-Configuration is read from environment variables and validated at start-up in [`start/env.ts`](start/env.ts).
+Configuration is read from environment variables and validated at start-up in [`app/start/env.ts`](app/start/env.ts).
 
 | Variable                        | Required | Description                                                                                                                                                          |
 | ------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

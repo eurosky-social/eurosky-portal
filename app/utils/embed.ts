@@ -1,5 +1,5 @@
 import type { AtUriString, BlobRef } from '@atproto/lex'
-import * as lexicon from '#lexicons'
+import * as lexicon from '#lexicons/index'
 import { type BlobLocator, type Context, toBlobLocator } from '#utils/blob'
 
 type LexiconEmbed = NonNullable<lexicon.app.bsky.feed.post.Main['embed']>

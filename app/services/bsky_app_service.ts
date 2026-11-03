@@ -1,7 +1,7 @@
 import logger from '@adonisjs/core/services/logger'
 import cache from '@adonisjs/cache/services/main'
 import { type AtUriString, type l, xrpcSafe } from '@atproto/lex'
-import * as lexicon from '#lexicons'
+import * as lexicon from '#lexicons/index'
 import { captureException } from '#utils/telemetry'
 
 export type BskyAppProfile = Pick<

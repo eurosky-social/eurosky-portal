@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import * as lexicon from '#lexicons'
+import * as lexicon from '#lexicons/index'
 import { isSupportedCollection, toPreview, toValue } from '#utils/activity'
 
 const createdAt = '2026-01-01T00:00:00.000Z'

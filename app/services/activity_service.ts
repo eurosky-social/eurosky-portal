@@ -10,7 +10,7 @@ import {
   XrpcResponseError,
 } from '@atproto/lex'
 import BackfillJob from '#jobs/backfill_job'
-import * as lexicon from '#lexicons'
+import * as lexicon from '#lexicons/index'
 import Account from '#models/account'
 import ActivityRecord from '#models/activity_record'
 import {

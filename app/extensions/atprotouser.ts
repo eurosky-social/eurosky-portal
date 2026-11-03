@@ -1,7 +1,7 @@
 import { AtprotoUser } from '@thisismissem/adonisjs-atproto-oauth'
 import logger from '@adonisjs/core/services/logger'
 
-import * as lexicon from '#lexicons'
+import * as lexicon from '#lexicons/index'
 import Account from '#models/account'
 import { captureException } from '#utils/telemetry'
 

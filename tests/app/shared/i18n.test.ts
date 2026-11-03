@@ -15,7 +15,7 @@ import {
 import { isMessageKey } from '#shared/i18n'
 import { defaultLocale, locales } from '#shared/locale'
 
-// Catalogs in `shared/i18n/$locale.ts`, used on the client and the server.
+// Catalogs in `app/shared/i18n/$locale.ts`, used on the client and the server.
 const catalogs = new Map(
   await Promise.all(
     locales.map(async function (locale) {

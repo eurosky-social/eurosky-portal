@@ -2,7 +2,7 @@ import cache from '@adonisjs/cache/services/main'
 import { type AtUriString, XrpcResponseError } from '@atproto/lex'
 import { currentDatetimeString } from '@atproto/syntax'
 import type { AtprotoUser } from '@thisismissem/adonisjs-atproto-oauth'
-import * as lexicon from '#lexicons'
+import * as lexicon from '#lexicons/index'
 
 /**
  * Favorite record.
