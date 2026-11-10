@@ -1,14 +1,15 @@
 import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
 import { controllers } from '#generated/controllers'
+import { throttleAuth } from '#start/limiter'
 
 // This is necessary for handling the controllers not yet being updated
 try {
   router.post('/oauth/logout', [controllers.Oauth, 'logout']).use(middleware.auth())
 
   router.group(() => {
-    router.post('/oauth/login', [controllers.Oauth, 'login'])
-    router.post('/oauth/signup', [controllers.Oauth, 'signup'])
+    router.post('/oauth/login', [controllers.Oauth, 'login']).use(throttleAuth)
+    router.post('/oauth/signup', [controllers.Oauth, 'signup']).use(throttleAuth)
     router.get('/oauth/callback', [controllers.Oauth, 'callback'])
   })
 } catch (err) {

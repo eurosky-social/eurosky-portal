@@ -67,6 +67,36 @@ test.group('logging in and out', function (group) {
     assert.deepEqual(pds.authorizeCalls, [])
   })
 
+  test('should limit logging in from one IP w/ forms', async function ({ assert, client }) {
+    const pds = await signIn({ did })
+    for (let index = 0; index < 10; index++) await request()
+    const response = await request()
+
+    response.assertFlashMessage('errorMessage', { key: 'errors.E_TOO_MANY_REQUESTS' })
+    assert.equal(pds.authorizeCalls.length, 10)
+
+    function request() {
+      return client
+        .post('/oauth/login')
+        .form({ input: did })
+        .withCsrfToken()
+        .withInertia()
+        .redirects(0)
+    }
+  })
+
+  test('should limit logging in from one IP outside forms', async function ({ client }) {
+    await signIn({ did })
+    for (let index = 0; index < 10; index++) await request()
+    const response = await request()
+
+    response.assertStatus(429)
+
+    function request() {
+      return client.post('/oauth/login').form({ input: did }).withCsrfToken().redirects(0)
+    }
+  })
+
   test('should end the session on the PDS when logging out', async function ({ assert, client }) {
     const { revokeCalls, user } = await signIn({ did })
     await client.post('/oauth/logout').withCsrfToken().loginAs(user).redirects(0)

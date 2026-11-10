@@ -3,6 +3,7 @@ import app from '@adonisjs/core/services/app'
 import type { Config } from '@japa/runner/types'
 import { pluginAdonisJS } from '@japa/plugin-adonisjs'
 import testUtils from '@adonisjs/core/services/test_utils'
+import limiter from '@adonisjs/limiter/services/main'
 import { apiClient } from '@japa/api-client'
 import { browserClient } from '@japa/browser-client'
 import { authApiClient } from '@adonisjs/auth/plugins/api_client'
@@ -51,6 +52,8 @@ export const runnerHooks: Required<Pick<Config, 'setup' | 'teardown'>> = {
  */
 export const configureSuite: Config['configureSuite'] = (suite) => {
   if (['adonis', 'browser'].includes(suite.name)) {
+    suite.onGroup((group) => group.each.setup(() => limiter.clear()))
+    suite.onTest((test) => test.setup(() => limiter.clear()))
     return suite.setup(() => testUtils.httpServer().start())
   }
 }

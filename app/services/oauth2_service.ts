@@ -65,6 +65,7 @@ export interface Oauth2Error {
     | 'invalid_request'
     | 'invalid_token'
     | 'session_invalidated'
+    | 'temporarily_unavailable'
     | 'unsupported_grant_type'
 }
 

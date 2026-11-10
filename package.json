@@ -66,6 +66,7 @@
     "@adonisjs/cors": "^3.0.0",
     "@adonisjs/i18n": "^3.0.1",
     "@adonisjs/inertia": "^5.0.5",
+    "@adonisjs/limiter": "^3.0.1",
     "@adonisjs/lucid": "^22.4.2",
     "@adonisjs/otel": "^1.2.4",
     "@adonisjs/queue": "^0.7.0",

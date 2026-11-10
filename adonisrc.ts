@@ -80,6 +80,7 @@ export default defineConfig({
     () => import('#providers/automigrate_provider'),
     () => import('@adonisjs/queue/queue_provider'),
     () => import('@adonisjs/cors/cors_provider'),
+    () => import('@adonisjs/limiter/limiter_provider'),
     () => import('@adonisjs/inertia/inertia_provider'),
     () => import('@adonisjs/auth/auth_provider'),
     () => import('#providers/api_provider'),

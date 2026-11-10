@@ -339,6 +339,69 @@ test.group('oauth2 / POST /oauth2/token', function (group) {
     return testUtils.db().wrapInGlobalTransaction()
   })
 
+  test('should limit failures with a wrong secret', async function ({ client }) {
+    for (let index = 0; index < 10; index++) await request('b')
+    // Even with the right secret.
+    const response = await request(clientSecret)
+
+    response.assertBody({ error: 'temporarily_unavailable' })
+    response.assertHeader('retry-after', '600')
+    response.assertStatus(429)
+
+    function request(secret: string) {
+      return client.post('/oauth2/token').form({
+        client_id: clientId,
+        client_secret: secret,
+        code: 'a',
+        grant_type: 'authorization_code',
+        redirect_uri: redirectUri,
+      })
+    }
+  })
+
+  test('should limit failures with unknown codes', async function ({ client }) {
+    for (let index = 0; index < 10; index++) await request()
+    const response = await request()
+
+    response.assertStatus(429)
+
+    function request() {
+      return client.post('/oauth2/token').form({
+        client_id: clientId,
+        client_secret: clientSecret,
+        code: 'a',
+        grant_type: 'authorization_code',
+        redirect_uri: redirectUri,
+      })
+    }
+  })
+
+  test('should not limit successes', async function ({ assert, client }) {
+    await Account.create({ did })
+    const tokens = await connect()
+    if ('error' in tokens) throw new Error('Expected tokens')
+    const refreshToken = tokens.refresh_token
+    const statuses: Array<number> = []
+    for (let index = 0; index < 12; index++) {
+      const response = await request()
+      statuses.push(response.status())
+    }
+
+    assert.deepEqual(
+      statuses,
+      Array.from({ length: 12 }, () => 200)
+    )
+
+    function request() {
+      return client.post('/oauth2/token').form({
+        client_id: clientId,
+        client_secret: clientSecret,
+        grant_type: 'refresh_token',
+        refresh_token: refreshToken,
+      })
+    }
+  })
+
   test('should give tokens for a code', async function ({ client }) {
     await Account.create({ did })
     const code = await oauth2Service.issueCode({

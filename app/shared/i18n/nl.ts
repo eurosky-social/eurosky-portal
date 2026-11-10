@@ -84,6 +84,7 @@ const nl = {
     '{orgName} is jouw Europese thuis in de Atmosphere – een wereldwijd netwerk van sociale apps en diensten.',
   'dashboard.yourApps.text': 'Je favoriete apps.',
   'dashboard.yourApps.viewAll': 'Bekijk al je apps',
+  'errors.E_TOO_MANY_REQUESTS': 'Te veel pogingen, probeer het over een minuut opnieuw.',
   'errors.E_UNAUTHORIZED_ACCESS': 'Log in om deze pagina te bekijken.',
   'errors.notFound.title': 'Pagina niet gevonden',
   'errors.serverError.heading': 'Er is iets misgegaan',
