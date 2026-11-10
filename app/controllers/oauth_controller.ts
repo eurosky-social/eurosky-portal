@@ -544,8 +544,8 @@ function checkAuthInput(
   value: string,
   i18n: I18n
 ): AllowedIdInput | ServiceUrlInput | UnresolvedInput {
-  // OAuth server (example: `https://eurosky.social`).
-  if (isUriString(value)) {
+  // OAuth server (example: `https://eurosky.social`) but not a DID.
+  if (isUriString(value) && !isIdentifier(value)) {
     // Reject early if external logins are not allowed (example:
     // `https://bsky.social`).
     if (
