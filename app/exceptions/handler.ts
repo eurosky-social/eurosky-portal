@@ -2,6 +2,8 @@ import app from '@adonisjs/core/services/app'
 import { type HttpContext, ExceptionHandler } from '@adonisjs/core/http'
 import type { StatusPageRange, StatusPageRenderer } from '@adonisjs/core/types/http'
 import logger from '@adonisjs/core/services/logger'
+import { errors as limiterErrors } from '@adonisjs/limiter'
+import { flashSessionValue } from '#utils/session'
 
 export default class HttpExceptionHandler extends ExceptionHandler {
   /**
@@ -77,6 +79,12 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    * response to the client
    */
   override async handle(error: unknown, ctx: HttpContext) {
+    // Forms go back, showing the error, instead of to a page of text.
+    if (error instanceof limiterErrors.E_TOO_MANY_REQUESTS && ctx.request.header('x-inertia')) {
+      flashSessionValue(ctx.session, 'errorMessage', { key: 'errors.E_TOO_MANY_REQUESTS' })
+      return ctx.response.redirect().back()
+    }
+
     return super.handle(error, ctx)
   }
 

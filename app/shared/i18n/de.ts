@@ -88,6 +88,7 @@ const de = {
     '{orgName} ist dein europäisches Zuhause in der Atmosphere – einem globalen Netzwerk aus sozialen Apps und Diensten.',
   'dashboard.yourApps.text': 'Deine Lieblings-Apps.',
   'dashboard.yourApps.viewAll': 'Alle deine Apps ansehen',
+  'errors.E_TOO_MANY_REQUESTS': 'Zu viele Versuche, bitte versuche es in einer Minute erneut.',
   'errors.E_UNAUTHORIZED_ACCESS': 'Melde dich an, um diese Seite zu sehen.',
   'errors.notFound.title': 'Seite nicht gefunden',
   'errors.serverError.heading': 'Etwas ist schiefgelaufen',

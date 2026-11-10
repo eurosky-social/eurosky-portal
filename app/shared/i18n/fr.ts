@@ -87,6 +87,7 @@ const fr = {
     '{orgName} est votre foyer européen sur l’Atmosphere – un réseau mondial d’applications et de services sociaux.',
   'dashboard.yourApps.text': 'Vos applications favorites.',
   'dashboard.yourApps.viewAll': 'Voir toutes vos applications',
+  'errors.E_TOO_MANY_REQUESTS': 'Trop de tentatives, veuillez réessayer dans une minute.',
   'errors.E_UNAUTHORIZED_ACCESS': 'Connectez-vous pour voir cette page.',
   'errors.notFound.title': 'Page introuvable',
   'errors.serverError.heading': 'Une erreur s’est produite',

@@ -6,6 +6,7 @@ import oauth2Service, {
   type Oauth2Request,
   type Oauth2Tokens,
 } from '#services/oauth2_service'
+import { tokenFailures } from '#start/limiter'
 import { createState, importScopes, parseScopes, serializeScopes } from '#utils/oauth'
 import { flashSessionValue, pullSessionValue, putSessionValue } from '#utils/session'
 import { captureException } from '#utils/telemetry'
@@ -110,10 +111,18 @@ export default class Oauth2Controller {
     const clientId = getString(request.input('client_id'))
     const clientSecret = getString(request.input('client_secret'))
     const grantType = getString(request.input('grant_type'))
+    const failuresKey = 'oauth2_token_' + request.ip()
+
+    // Too many failures from this IP.
+    if (await tokenFailures.isBlocked(failuresKey)) {
+      response.header('retry-after', String(await tokenFailures.availableIn(failuresKey)))
+      return response.tooManyRequests({ error: 'temporarily_unavailable' } satisfies Oauth2Error)
+    }
 
     const client = oauth2Service.authenticateClient(clientId, clientSecret)
 
     if (!client) {
+      await tokenFailures.increment(failuresKey)
       return response.unauthorized({ error: 'invalid_client' } satisfies Oauth2Error)
     }
 
@@ -137,7 +146,12 @@ export default class Oauth2Controller {
       return response.badRequest({ error: 'unsupported_grant_type' } satisfies Oauth2Error)
     }
 
-    return 'error' in result ? response.badRequest(result) : response.ok(result)
+    if ('error' in result) {
+      if (result.error === 'invalid_grant') await tokenFailures.increment(failuresKey)
+      return response.badRequest(result)
+    }
+
+    return response.ok(result)
   }
 
   /**

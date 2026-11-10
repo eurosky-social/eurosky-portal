@@ -83,6 +83,7 @@ const en = {
     '{orgName} is your European home on the Atmosphere – a global network of social apps and services.',
   'dashboard.yourApps.text': 'Your favorite apps.',
   'dashboard.yourApps.viewAll': 'View all your apps',
+  'errors.E_TOO_MANY_REQUESTS': 'Too many attempts, please try again in a minute.',
   'errors.E_UNAUTHORIZED_ACCESS': 'Sign in to see this page.',
   'errors.notFound.title': 'Page not found',
   'errors.serverError.heading': 'Something went wrong',

@@ -10,6 +10,7 @@
 import { middleware } from '#start/kernel'
 import { controllers } from '#generated/controllers'
 import router from '@adonisjs/core/services/router'
+import { throttleActivityDetail, throttleFavorites } from '#start/limiter'
 import '#start/routes/oauth'
 
 router
@@ -24,9 +25,13 @@ router
   .group(() => {
     router.post('/account/dismiss-welcome', [controllers.Account, 'dismissWelcome'])
     router.get('/activity', [controllers.Activity, 'show'])
-    router.get('/activity/:collection/:rkey', [controllers.Activity, 'detail'])
-    router.post('/apps/:rkey/favorite', [controllers.Discover, 'favorite'])
-    router.delete('/apps/:rkey/favorite', [controllers.Discover, 'unfavorite'])
+    router
+      .get('/activity/:collection/:rkey', [controllers.Activity, 'detail'])
+      .use(throttleActivityDetail)
+    router.post('/apps/:rkey/favorite', [controllers.Discover, 'favorite']).use(throttleFavorites)
+    router
+      .delete('/apps/:rkey/favorite', [controllers.Discover, 'unfavorite'])
+      .use(throttleFavorites)
     router.get('/connections', [controllers.Connections, 'show'])
     router.delete('/connections/:clientId', [controllers.Connections, 'destroy'])
     router.get('/dashboard', [controllers.Dashboard, 'show'])

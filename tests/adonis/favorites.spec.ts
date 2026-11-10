@@ -51,3 +51,36 @@ test.group('favorites / asking for more scopes', function (group) {
     )
   })
 })
+
+test.group('favorites / limits', function (group) {
+  group.each.setup(function () {
+    return testUtils.db().wrapInGlobalTransaction()
+  })
+
+  group.each.teardown(function () {
+    FavoriteService.prototype.favorite = favorite
+    restorePds()
+  })
+
+  test('should limit favoriting by person', async function ({ assert, client }) {
+    if (!app) throw new Error('Expected an app')
+    const { user } = await signIn({ did })
+    // Not to L2 (the database): that is locked by the global transaction.
+    await cache.set({ key: `atstore:listing:${app.atUri}`, skipL2Write: true, value: {} })
+    const path = '/apps/' + new AtUri(app.atUri).rkey + '/favorite'
+    let calls = 0
+    FavoriteService.prototype.favorite = async function () {
+      calls++
+    }
+
+    for (let index = 0; index < 30; index++) await request()
+    const response = await request()
+
+    response.assertFlashMessage('errorMessage', { key: 'errors.E_TOO_MANY_REQUESTS' })
+    assert.equal(calls, 30)
+
+    function request() {
+      return client.post(path).withCsrfToken().loginAs(user).withInertia().redirects(0)
+    }
+  })
+})

@@ -87,6 +87,7 @@ const ca = {
     '{orgName} és la vostra llar europea a l’Atmosphere, una xarxa global d’aplicacions i serveis socials.',
   'dashboard.yourApps.text': 'Les vostres aplicacions preferides.',
   'dashboard.yourApps.viewAll': 'Vegeu totes les aplicacions',
+  'errors.E_TOO_MANY_REQUESTS': 'Massa intents, torna-ho a provar d’aquí a un minut.',
   'errors.E_UNAUTHORIZED_ACCESS': 'Inicieu la sessió per veure aquesta pàgina.',
   'errors.notFound.title': 'No s’ha trobat la pàgina',
   'errors.serverError.heading': 'S’ha produït un error',
