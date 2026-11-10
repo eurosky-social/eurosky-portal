@@ -77,3 +77,27 @@ export function redactCallbackParams(value: string, isQuery = false): string {
 
   return changed ? value.slice(0, index + 1) + params.toString() : value
 }
+
+/**
+ * Parse scopes.
+ *
+ * @param value
+ *   Space-separated scopes (such as `scope` of a token), if any.
+ * @returns
+ *   Scopes.
+ */
+export function parseScopes(value: string | undefined): Set<string> {
+  return new Set((value ?? '').split(' ').filter(Boolean))
+}
+
+/**
+ * Serialize scopes.
+ *
+ * @param scopes
+ *   Scopes.
+ * @returns
+ *   Space-separated scopes, sorted.
+ */
+export function serializeScopes(scopes: Iterable<string>): string {
+  return [...scopes].sort().join(' ')
+}
