@@ -1,6 +1,12 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { createState, getHandleDomains, redactCallbackParams } from '#utils/oauth'
+import {
+  createState,
+  getHandleDomains,
+  parseScopes,
+  redactCallbackParams,
+  serializeScopes,
+} from '#utils/oauth'
 import { testEnv } from '../../env.ts'
 
 test('createState', function () {
@@ -78,5 +84,39 @@ test('redactCallbackParams', function () {
     const result = redactCallbackParams('code=a', true)
 
     assert.equal(result, 'code=REDACTED')
+  })
+})
+
+test('parseScopes', function () {
+  test('should parse scopes', function () {
+    const result = parseScopes('a b')
+
+    assert.deepEqual(result, new Set(['a', 'b']))
+  })
+
+  test('should ignore repeated and extra spaces', function () {
+    const result = parseScopes(' a  a b ')
+
+    assert.deepEqual(result, new Set(['a', 'b']))
+  })
+
+  test('should support nothing', function () {
+    const result = parseScopes(undefined)
+
+    assert.deepEqual(result, new Set())
+  })
+})
+
+test('serializeScopes', function () {
+  test('should sort', function () {
+    const result = serializeScopes(new Set(['b', 'a']))
+
+    assert.equal(result, 'a b')
+  })
+
+  test('should support nothing', function () {
+    const result = serializeScopes(new Set())
+
+    assert.equal(result, '')
   })
 })

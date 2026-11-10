@@ -9,7 +9,7 @@ import {
 } from '#services/favorite_service'
 import AppsTransformer from '#transformers/apps_transformer'
 import AppTransformer from '#transformers/app_transformer'
-import { createState, favoriteScope, loginScopes } from '#utils/oauth'
+import { createState, favoriteScope, parseScopes, serializeScopes } from '#utils/oauth'
 import { flashSessionValue, putSessionValue } from '#utils/session'
 import { captureException } from '#utils/telemetry'
 import { appValidator } from '#validators/apps'
@@ -86,8 +86,9 @@ export default class DiscoverController {
         putSessionValue(session, 'favorite_intent', intent)
         session.setIntendedUrl(response.redirect().getPreviousUrl('/apps'))
 
+        const { scope } = await user.getTokenInfo()
         const authorizationUrl = await oauth.authorize(user.did, {
-          scope: [...loginScopes, favoriteScope].join(' '),
+          scope: serializeScopes(parseScopes(scope).add(favoriteScope)),
           state: createState(session),
           ui_locales: i18n.locale,
         })
