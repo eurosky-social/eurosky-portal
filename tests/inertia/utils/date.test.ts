@@ -4,7 +4,7 @@ import { formatDate, parseDate } from '../../../inertia/utils/date.ts'
 
 const date = new Date(Date.UTC(2026, 0, 1, 13, 5))
 test('formatDate', function () {
-  test('should format in `TZ` (`UTC` in `.env.test`)', function () {
+  test('should format in `TZ` (`UTC` in `tests/env.ts`)', function () {
     const result = formatDate(date, 'en')
 
     assert.equal(result, 'Jan 1, 2026, 1:05 PM')

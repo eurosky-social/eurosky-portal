@@ -1,5 +1,6 @@
 import cache from '@adonisjs/cache/services/main'
 import { test } from '@japa/runner'
+import { testEnv } from '../env.ts'
 
 const tree = { children: [{ type: 'text', value: 'a' }], type: 'root' }
 
@@ -46,6 +47,6 @@ test.group('auth / GET /login', function () {
   test('should include the migration service', async function ({ client }) {
     const response = await client.get('/login').withInertia()
 
-    response.assertInertiaPropsContains({ migrationUrl: 'https://move.example.com/' })
+    response.assertInertiaPropsContains({ migrationUrl: testEnv.MIGRATION_SERVICE })
   })
 })

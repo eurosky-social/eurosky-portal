@@ -10,8 +10,8 @@
 |
 */
 
-process.env.NODE_ENV = 'test'
-
+// First: before the app reads its environment.
+import '../tests/env.ts'
 import 'reflect-metadata'
 import { Ignitor, prettyPrintError } from '@adonisjs/core'
 import { configure, processCLIArgs, run } from '@japa/runner'

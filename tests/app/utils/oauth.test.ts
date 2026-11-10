@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import { createState, getHandleDomains, redactCallbackParams } from '#utils/oauth'
+import { testEnv } from '../../env.ts'
 
 test('createState', function () {
   test('should return 32 random characters', function () {
@@ -44,7 +45,7 @@ test('getHandleDomains', function () {
   test('should use `ATPROTO_HANDLE_DOMAIN`, with a dot', function () {
     const result = getHandleDomains()
 
-    assert.deepEqual(result, ['.pds.example.com'])
+    assert.deepEqual(result, ['.' + testEnv.ATPROTO_HANDLE_DOMAIN])
   })
 })
 

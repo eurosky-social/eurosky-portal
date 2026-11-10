@@ -22,7 +22,7 @@
     "start": "node bin/server.js",
     "test": "c8 sh -c 'node --run test:plain && node --run test:adonis'",
     "test:adonis": "node bin/test.ts",
-    "test:plain": "node --env-file=.env.test --test 'tests/**/*.test.ts'",
+    "test:plain": "node --import ./tests/env.ts --test 'tests/**/*.test.ts'",
     "typecheck": "tsc --noEmit && tsc --noEmit --project inertia/tsconfig.json && tsc --project tests/inertia/tsconfig.json",
     "version-package": "changeset version"
   },

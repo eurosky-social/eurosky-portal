@@ -10,8 +10,9 @@
 */
 
 import { Env } from '@adonisjs/core/env'
+import { commaSeparated } from '#utils/env'
 
-const validateDomain = Env.schema.string({ format: 'url', tld: true, protocol: false })
+const validateDomain = Env.schema.string({ format: 'url', protocol: false, tld: true })
 
 export default await Env.create(new URL('../../', import.meta.url), {
   // Node
@@ -37,12 +38,7 @@ export default await Env.create(new URL('../../', import.meta.url), {
 
   // AT Protocol OAuth:
   // Comma-separated list of domains, the first one is the default:
-  ATPROTO_HANDLE_DOMAIN: (key: string, value?: string) => {
-    if (!value) {
-      return undefined
-    }
-    return value.split(',').map((domain) => validateDomain(key, domain.trim()))
-  },
+  ATPROTO_HANDLE_DOMAIN: commaSeparated(validateDomain),
   ALLOW_EXTERNAL_LOGINS: Env.schema.boolean.optional(),
   // Milliseconds to resolve an identity (handle > DID > PDS > authorization server):
   ATPROTO_RESOLVE_TIMEOUT: Env.schema.number.optional(),
