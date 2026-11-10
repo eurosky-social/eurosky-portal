@@ -1,15 +1,18 @@
 import { test } from '@japa/runner'
 import { loginRequestValidator } from '#validators/oauth'
+import { testEnv } from '../../env.ts'
+
+const domain = testEnv.ATPROTO_HANDLE_DOMAIN
 
 test.group('validators / oauth / loginRequestValidator', function () {
   for (const [input, expected] of [
     ['a', 'a'],
     ['a.b.com', 'a.b.com'],
     ['@a', 'a'],
-    ['@a.pds.example.com', 'a.pds.example.com'],
-    ['a@pds.example.com', 'a.pds.example.com'],
-    ['@a@pds.example.com', 'a.pds.example.com'],
-    ['A@PDS.EXAMPLE.COM', 'A.pds.example.com'],
+    [`@a.${domain}`, `a.${domain}`],
+    [`a@${domain}`, `a.${domain}`],
+    [`@a@${domain}`, `a.${domain}`],
+    [`A@${domain.toUpperCase()}`, `A.${domain}`],
     ['did:web:a.com', 'did:web:a.com'],
     ['https://a.com', 'https://a.com'],
   ]) {
