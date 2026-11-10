@@ -11,16 +11,16 @@ export interface ApiDefinition {
   home: typeof routes['home']
   account: {
     create: typeof routes['account.create']
+    dismissWelcome: typeof routes['account.dismiss_welcome']
     onboarding: typeof routes['account.onboarding']
     storeAcceptance: typeof routes['account.store_acceptance']
-    dismissWelcome: typeof routes['account.dismiss_welcome']
   }
   auth: {
     login: typeof routes['auth.login']
   }
-  dashboard: {
-    show: typeof routes['dashboard.show']
-    apps: typeof routes['dashboard.apps']
+  activity: {
+    show: typeof routes['activity.show']
+    detail: typeof routes['activity.detail']
   }
   discover: {
     favorite: typeof routes['discover.favorite']
@@ -28,15 +28,26 @@ export interface ApiDefinition {
     apps: typeof routes['discover.apps']
     app: typeof routes['discover.app']
   }
-  activity: {
-    show: typeof routes['activity.show']
-    detail: typeof routes['activity.detail']
+  connections: {
+    show: typeof routes['connections.show']
+    destroy: typeof routes['connections.destroy']
+  }
+  dashboard: {
+    show: typeof routes['dashboard.show']
+    apps: typeof routes['dashboard.apps']
   }
   files: {
     show: typeof routes['files.show']
   }
-  legal: {
-    show: typeof routes['legal.show']
+  oauth2: {
+    authorize: typeof routes['oauth2.authorize']
+    decide: typeof routes['oauth2.decide']
+    revoke: typeof routes['oauth2.revoke']
+    token: typeof routes['oauth2.token']
+  }
+  healthChecks: {
+    live: typeof routes['health_checks.live']
+    ready: typeof routes['health_checks.ready']
   }
   explore: {
     learnMore: typeof routes['explore.learn_more']
@@ -44,8 +55,7 @@ export interface ApiDefinition {
   faq: {
     show: typeof routes['faq.show']
   }
-  healthChecks: {
-    live: typeof routes['health_checks.live']
-    ready: typeof routes['health_checks.ready']
+  legal: {
+    show: typeof routes['legal.show']
   }
 }

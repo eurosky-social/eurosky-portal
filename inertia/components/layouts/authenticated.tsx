@@ -18,6 +18,7 @@ import {
   Cog6ToothIcon,
   GlobeAltIcon,
   HomeIcon,
+  LinkIcon,
   StarIcon,
 } from '@heroicons/react/24/solid'
 import { Form } from '@adonisjs/inertia/react'
@@ -33,7 +34,7 @@ import { useT } from '~/lib/i18n'
 
 export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedProps> }) {
   const {
-    props: { authorizationServer },
+    props: { authorizationServer, showConnections },
     url,
   } = usePage()
   const { t, tPlain } = useT()
@@ -74,6 +75,12 @@ export function AuthenticatedLayout(props: { children: ReactElement<Data.SharedP
                     <CircleStackIcon />
                     <SidebarLabel>{t('sidebar.yourFiles')}</SidebarLabel>
                   </SidebarItem>
+                  {(showConnections || url == '/connections') && (
+                    <SidebarItem route="connections.show" current={url == '/connections'}>
+                      <LinkIcon />
+                      <SidebarLabel>{t('sidebar.connections')}</SidebarLabel>
+                    </SidebarItem>
+                  )}
                   <SidebarItem href={manageUrl} target="_blank" as={'a'}>
                     <Cog6ToothIcon />
                     <SidebarLabel>

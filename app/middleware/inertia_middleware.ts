@@ -4,6 +4,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
 import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
 import Account from '#models/account'
+import oauth2Service from '#services/oauth2_service'
 import AccountTransformer from '#transformers/account_transformer'
 import { type FlashMessage, getFlashedSessionValue } from '#utils/session'
 import { captureMessage } from '#utils/telemetry'
@@ -86,6 +87,12 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
       flash: ctx.inertia.always({
         error: error,
       }),
+      showConnections: ctx.inertia.always(
+        auth?.user && account && oauth2Service.isAllowed(account.did)
+          ? (await oauth2Service.hasConnections(account.did)) ||
+              Boolean(oauth2Service.getClient()?.connectUrl)
+          : false
+      ),
       isAuthenticated: !!auth?.user,
       locale: ctx.inertia.always(isLocale(i18n?.locale) ? i18n.locale : defaultLocale),
       theme: ctx.inertia.always(theme),

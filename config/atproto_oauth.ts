@@ -5,7 +5,7 @@ import {
 } from '@thisismissem/adonisjs-atproto-oauth'
 import { brand } from '#shared/brand'
 import env from '#start/env'
-import { favoriteScope, loginScopes } from '#utils/oauth'
+import { favoriteScope, importScopes, loginScopes } from '#utils/oauth'
 
 export default defineConfig({
   publicUrl: env.get('APP_URL'),
@@ -17,7 +17,7 @@ export default defineConfig({
     // All scopes ever requested;
     // logging in only asks for `loginScopes`,
     // more are requested when needed.
-    scope: [...loginScopes, favoriteScope].join(' '),
+    scope: [favoriteScope, ...importScopes, ...loginScopes].join(' '),
     // logo_uri: 'https://my-app.com/logo.png',
     tos_uri: new URL('/legal/terms', env.get('APP_URL')).toString(),
     policy_uri: new URL('/legal/privacy', env.get('APP_URL')).toString(),

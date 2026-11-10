@@ -9,6 +9,7 @@ import {
   isHandleString,
 } from '@atproto/lex'
 import { type HandleString, INVALID_HANDLE } from '@atproto/syntax'
+import type { AtprotoUser } from '@thisismissem/adonisjs-atproto-oauth'
 import { DateTime } from 'luxon'
 import env from '#start/env'
 import Account from '#models/account'
@@ -21,7 +22,16 @@ import jetstreamService from '#services/jetstream_service'
 import { SlingshotService } from '#services/slingshot_service'
 import { loginRequestValidator, signupRequestValidator } from '#validators/oauth'
 import { createFieldError } from '#utils/errors'
-import { createState, getHandleDomains, loginScopes } from '#utils/oauth'
+import { oauth2Callback } from '#controllers/oauth2_controller'
+import oauth2Service from '#services/oauth2_service'
+import {
+  createState,
+  getHandleDomains,
+  importScopes,
+  loginScopes,
+  parseScopes,
+  serializeScopes,
+} from '#utils/oauth'
 import {
   flashSessionValue,
   forgetSessionValue,
@@ -129,8 +139,10 @@ export default class OAuthController {
       resolvedValue = result.value
     }
 
-    // Drop stale favorite flows.
+    // Drop stale flows.
     forgetSessionValue(session, 'favorite_intent')
+    forgetSessionValue(session, 'import_scopes_intent')
+    forgetSessionValue(session, 'oauth2_intent')
     putSessionValue(session, 'source', 'login')
     putSessionValue(session, 'handle', input)
 
@@ -170,8 +182,10 @@ export default class OAuthController {
   async signup({ i18n, inertia, logger, oauth, request, session }: HttpContext) {
     await request.validateUsing(signupRequestValidator)
 
-    // Drop stale favorite flows.
+    // Drop stale flows.
     forgetSessionValue(session, 'favorite_intent')
+    forgetSessionValue(session, 'import_scopes_intent')
+    forgetSessionValue(session, 'oauth2_intent')
     putSessionValue(session, 'source', 'signup')
     putSessionValue(session, 'terms_accepted', DateTime.now().toISO())
 
@@ -213,7 +227,14 @@ export default class OAuthController {
   }
 
   async logout({ auth, oauth, session, request, response, logger }: HttpContext) {
-    await oauth.logout(auth.user?.did)
+    const { did } = auth.getUserOrFail()
+    const connected = await oauth2Service.hasConnections(did)
+
+    // If connected services import with the session, keep the oauth session.
+    if (!connected) {
+      await oauth.logout(did)
+    }
+
     await auth.use('web').logout()
 
     AuthLoggedOut.dispatch({
@@ -229,11 +250,18 @@ export default class OAuthController {
   }
 
   async callback(ctx: HttpContext) {
-    const favoriteIntent = pullSessionValue(ctx.session, 'favorite_intent')
     const oauthState = pullSessionValue(ctx.session, 'oauth_state')
-    return favoriteIntent
-      ? this.#favoriteCallback(ctx, favoriteIntent, oauthState)
-      : this.#loginCallback(ctx, oauthState)
+
+    const favoriteIntent = pullSessionValue(ctx.session, 'favorite_intent')
+    if (favoriteIntent) return this.#favoriteCallback(ctx, favoriteIntent, oauthState)
+
+    const importScopesIntent = pullSessionValue(ctx.session, 'import_scopes_intent')
+    if (importScopesIntent) return this.#importScopesCallback(ctx, oauthState)
+
+    const oauth2Intent = pullSessionValue(ctx.session, 'oauth2_intent')
+    if (oauth2Intent) return oauth2Callback(ctx, oauth2Intent, oauthState)
+
+    return this.#loginCallback(ctx, oauthState)
   }
 
   /**
@@ -286,10 +314,92 @@ export default class OAuthController {
   }
 
   /**
+   * Finish asking for the scopes of connected services after logging in,
+   * whether granted or not.
+   *
+   * See `#importScopesUrl`.
+   */
+  async #importScopesCallback(
+    { auth, logger, oauth, response, session }: HttpContext,
+    oauthState: string | undefined
+  ) {
+    try {
+      const { state, user } = await oauth.handleCallback()
+
+      if (!oauthState || oauthState !== state) {
+        throw new Error('OAuth state does not match this session')
+      }
+
+      const { scope } = await user.getTokenInfo()
+
+      // Another account was chosen, or not everything was granted.
+      if (user.did !== auth.user?.did || !parseScopes(scope).isSupersetOf(importScopes)) {
+        flashSessionValue(session, 'errorMessage', { key: 'oauth2.importScopesMissing' })
+      }
+    } catch (err) {
+      const denied =
+        err instanceof OAuthCallbackError &&
+        err.params.get('error')?.toLowerCase() === 'access_denied'
+
+      if (!denied) {
+        logger.error({ err }, 'oauth2: cannot finish asking for import scopes')
+        captureException(err, { tags: { component: 'oauth2' } })
+      }
+
+      flashSessionValue(session, 'errorMessage', { key: 'oauth2.importScopesMissing' })
+    }
+
+    return response.redirect().toIntendedRoute('dashboard.show')
+  }
+
+  /**
+   * Get the URL to ask for the scopes of connected services, if the session
+   * on the PDS lacks them.
+   *
+   * Logging in replaces the session on the PDS,
+   * with only `loginScopes`;
+   * connected services import with that session,
+   * so ask for their scopes again,
+   * now that it is known who logged in.
+   *
+   * @param context
+   *   Context.
+   * @param user
+   *   User that logged in.
+   * @returns
+   *   URL, if needed.
+   */
+  async #importScopesUrl(
+    { i18n, logger, oauth, session }: Pick<HttpContext, 'i18n' | 'logger' | 'oauth' | 'session'>,
+    user: AtprotoUser
+  ): Promise<string | undefined> {
+    if (!(await oauth2Service.hasConnections(user.did))) return
+
+    const { scope } = await user.getTokenInfo()
+    const granted = parseScopes(scope)
+
+    if (granted.isSupersetOf(importScopes)) return
+
+    try {
+      putSessionValue(session, 'import_scopes_intent', true)
+      return await oauth.authorize(user.did, {
+        scope: serializeScopes(granted.union(importScopes)),
+        state: createState(session),
+        ui_locales: i18n.locale,
+      })
+    } catch (err) {
+      logger.error({ err }, 'oauth2: cannot ask for import scopes')
+      captureException(err, { tags: { component: 'oauth2' } })
+      forgetSessionValue(session, 'import_scopes_intent')
+      flashSessionValue(session, 'errorMessage', { key: 'oauth2.importScopesMissing' })
+    }
+  }
+
+  /**
    * Finish logging in or signing up.
    */
   async #loginCallback(
-    { auth, logger, oauth, request, response, session }: HttpContext,
+    { auth, i18n, logger, oauth, request, response, session }: HttpContext,
     oauthState: string | undefined
   ) {
     const termsAccepted = pullSessionValue(session, 'terms_accepted') ?? 'invalid'
@@ -405,6 +515,10 @@ export default class OAuthController {
       }).catch((err: unknown) => {
         logger.warn({ err }, 'plausible: cannot track auth flow succeeded')
       })
+
+      const importScopesUrl = await this.#importScopesUrl({ i18n, logger, oauth, session }, user)
+      if (importScopesUrl) return response.redirect(importScopesUrl)
+
       return response.redirect().toIntendedRoute('dashboard.show')
     } catch (err) {
       if (err instanceof OAuthCallbackError) {

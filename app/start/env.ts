@@ -13,6 +13,7 @@ import { Env } from '@adonisjs/core/env'
 import { commaSeparated } from '#utils/env'
 
 const validateDomain = Env.schema.string({ format: 'url', protocol: false, tld: true })
+const validateUrl = Env.schema.string({ format: 'url', protocol: true, tld: false })
 
 export default await Env.create(new URL('../../', import.meta.url), {
   // Node
@@ -46,6 +47,17 @@ export default await Env.create(new URL('../../', import.meta.url), {
   MIGRATION_SERVICE: Env.schema.string.optional({ format: 'url', tld: true, protocol: true }),
   ATPROTO_OAUTH_CLIENT_ID: Env.schema.string.optional({ format: 'url', tld: true, protocol: true }),
   ATPROTO_OAUTH_JWT_PRIVATE_KEY: Env.schema.secret.optional(),
+
+  OAUTH2_ALLOWED_DIDS: commaSeparated(),
+  OAUTH2_CLIENT_CONNECT_URL: Env.schema.string.optional({
+    format: 'url',
+    protocol: true,
+    tld: false,
+  }),
+  OAUTH2_CLIENT_ID: Env.schema.string.optional(),
+  OAUTH2_CLIENT_NAME: Env.schema.string.optional(),
+  OAUTH2_CLIENT_REDIRECT_URIS: commaSeparated(validateUrl),
+  OAUTH2_CLIENT_SECRET: Env.schema.secret.optional(),
 
   // OpenTelemetry for observability
   OTEL_ENABLED: Env.schema.boolean.optional(),

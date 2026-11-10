@@ -48,29 +48,11 @@ const routes = {
     tokens: [[0,"login"]],
     types: placeholder as Registry['auth.login']['types'],
   },
-  'dashboard.show': {
-    methods: ["GET","HEAD"],
-    pattern: '/dashboard',
-    tokens: [[0,"dashboard"]],
-    types: placeholder as Registry['dashboard.show']['types'],
-  },
-  'dashboard.apps': {
-    methods: ["GET","HEAD"],
-    pattern: '/dashboard/apps',
-    tokens: [[0,"dashboard"],[0,"apps"]],
-    types: placeholder as Registry['dashboard.apps']['types'],
-  },
-  'discover.favorite': {
+  'account.dismiss_welcome': {
     methods: ["POST"],
-    pattern: '/apps/:rkey/favorite',
-    tokens: [[0,"apps"],[1,"rkey"],[0,"favorite"]],
-    types: placeholder as Registry['discover.favorite']['types'],
-  },
-  'discover.unfavorite': {
-    methods: ["DELETE"],
-    pattern: '/apps/:rkey/favorite',
-    tokens: [[0,"apps"],[1,"rkey"],[0,"favorite"]],
-    types: placeholder as Registry['discover.unfavorite']['types'],
+    pattern: '/account/dismiss-welcome',
+    tokens: [[0,"account"],[0,"dismiss-welcome"]],
+    types: placeholder as Registry['account.dismiss_welcome']['types'],
   },
   'activity.show': {
     methods: ["GET","HEAD"],
@@ -84,6 +66,60 @@ const routes = {
     tokens: [[0,"activity"],[1,"collection"],[1,"rkey"]],
     types: placeholder as Registry['activity.detail']['types'],
   },
+  'discover.favorite': {
+    methods: ["POST"],
+    pattern: '/apps/:rkey/favorite',
+    tokens: [[0,"apps"],[1,"rkey"],[0,"favorite"]],
+    types: placeholder as Registry['discover.favorite']['types'],
+  },
+  'discover.unfavorite': {
+    methods: ["DELETE"],
+    pattern: '/apps/:rkey/favorite',
+    tokens: [[0,"apps"],[1,"rkey"],[0,"favorite"]],
+    types: placeholder as Registry['discover.unfavorite']['types'],
+  },
+  'connections.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/connections',
+    tokens: [[0,"connections"]],
+    types: placeholder as Registry['connections.show']['types'],
+  },
+  'connections.destroy': {
+    methods: ["DELETE"],
+    pattern: '/connections/:clientId',
+    tokens: [[0,"connections"],[1,"clientId"]],
+    types: placeholder as Registry['connections.destroy']['types'],
+  },
+  'dashboard.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/dashboard',
+    tokens: [[0,"dashboard"]],
+    types: placeholder as Registry['dashboard.show']['types'],
+  },
+  'dashboard.apps': {
+    methods: ["GET","HEAD"],
+    pattern: '/dashboard/apps',
+    tokens: [[0,"dashboard"],[0,"apps"]],
+    types: placeholder as Registry['dashboard.apps']['types'],
+  },
+  'files.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/files',
+    tokens: [[0,"files"]],
+    types: placeholder as Registry['files.show']['types'],
+  },
+  'oauth2.authorize': {
+    methods: ["GET","HEAD"],
+    pattern: '/oauth2/authorize',
+    tokens: [[0,"oauth2"],[0,"authorize"]],
+    types: placeholder as Registry['oauth2.authorize']['types'],
+  },
+  'oauth2.decide': {
+    methods: ["POST"],
+    pattern: '/oauth2/authorize',
+    tokens: [[0,"oauth2"],[0,"authorize"]],
+    types: placeholder as Registry['oauth2.decide']['types'],
+  },
   'account.onboarding': {
     methods: ["GET","HEAD"],
     pattern: '/onboarding',
@@ -96,17 +132,17 @@ const routes = {
     tokens: [[0,"onboarding"]],
     types: placeholder as Registry['account.store_acceptance']['types'],
   },
-  'files.show': {
+  'health_checks.live': {
     methods: ["GET","HEAD"],
-    pattern: '/files',
-    tokens: [[0,"files"]],
-    types: placeholder as Registry['files.show']['types'],
+    pattern: '/_health',
+    tokens: [[0,"_health"]],
+    types: placeholder as Registry['health_checks.live']['types'],
   },
-  'account.dismiss_welcome': {
-    methods: ["POST"],
-    pattern: '/account/dismiss-welcome',
-    tokens: [[0,"account"],[0,"dismiss-welcome"]],
-    types: placeholder as Registry['account.dismiss_welcome']['types'],
+  'health_checks.ready': {
+    methods: ["GET","HEAD"],
+    pattern: '/_readiness',
+    tokens: [[0,"_readiness"]],
+    types: placeholder as Registry['health_checks.ready']['types'],
   },
   'discover.apps': {
     methods: ["GET","HEAD"],
@@ -120,12 +156,6 @@ const routes = {
     tokens: [[0,"apps"],[1,"rkey"]],
     types: placeholder as Registry['discover.app']['types'],
   },
-  'legal.show': {
-    methods: ["GET","HEAD"],
-    pattern: '/legal/:document',
-    tokens: [[0,"legal"],[1,"document"]],
-    types: placeholder as Registry['legal.show']['types'],
-  },
   'explore.learn_more': {
     methods: ["GET","HEAD"],
     pattern: '/explore/learn-more',
@@ -138,17 +168,23 @@ const routes = {
     tokens: [[0,"faq"]],
     types: placeholder as Registry['faq.show']['types'],
   },
-  'health_checks.live': {
+  'legal.show': {
     methods: ["GET","HEAD"],
-    pattern: '/_health',
-    tokens: [[0,"_health"]],
-    types: placeholder as Registry['health_checks.live']['types'],
+    pattern: '/legal/:document',
+    tokens: [[0,"legal"],[1,"document"]],
+    types: placeholder as Registry['legal.show']['types'],
   },
-  'health_checks.ready': {
-    methods: ["GET","HEAD"],
-    pattern: '/_readiness',
-    tokens: [[0,"_readiness"]],
-    types: placeholder as Registry['health_checks.ready']['types'],
+  'oauth2.revoke': {
+    methods: ["POST"],
+    pattern: '/oauth2/revoke',
+    tokens: [[0,"oauth2"],[0,"revoke"]],
+    types: placeholder as Registry['oauth2.revoke']['types'],
+  },
+  'oauth2.token': {
+    methods: ["POST"],
+    pattern: '/oauth2/token',
+    tokens: [[0,"oauth2"],[0,"token"]],
+    types: placeholder as Registry['oauth2.token']['types'],
   },
 } as const satisfies Record<string, AdonisEndpoint>
 

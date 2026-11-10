@@ -24,6 +24,11 @@ export interface FakePds {
   authorizeCalls: Array<{ input: string; scope: string | undefined }>
 
   /**
+   * Error `authorize` throws, if any (such as when the PDS is down).
+   */
+  authorizeError: Error | undefined
+
+  /**
    * DID of the account chosen on the PDS, as the callback returns it.
    */
   callbackDid: DidString
@@ -117,6 +122,7 @@ export async function signIn(options: SignInOptions): Promise<FakePds> {
 
   const pds: FakePds = {
     authorizeCalls: [],
+    authorizeError: undefined,
     callbackDid: did,
     callbackError: undefined,
     revokeCalls: [],
@@ -126,6 +132,7 @@ export async function signIn(options: SignInOptions): Promise<FakePds> {
 
   const methods = {
     async authorize(input, authorizeOptions) {
+      if (pds.authorizeError) throw pds.authorizeError
       pds.authorizeCalls.push({ input, scope: authorizeOptions?.scope })
       return new URL('/oauth/authorize', issuer)
     },

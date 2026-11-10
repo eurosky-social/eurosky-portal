@@ -16,6 +16,7 @@ declare module '@adonisjs/inertia/types' {
     'activity/show': ExtractProps<(typeof import('../../inertia/pages/activity/show.tsx'))['default']>
     'apps/detail': ExtractProps<(typeof import('../../inertia/pages/apps/detail.tsx'))['default']>
     'apps/show': ExtractProps<(typeof import('../../inertia/pages/apps/show.tsx'))['default']>
+    'connections/show': ExtractProps<(typeof import('../../inertia/pages/connections/show.tsx'))['default']>
     'create-account': ExtractProps<(typeof import('../../inertia/pages/create-account.tsx'))['default']>
     'dashboard/apps': ExtractProps<(typeof import('../../inertia/pages/dashboard/apps.tsx'))['default']>
     'dashboard/show': ExtractProps<(typeof import('../../inertia/pages/dashboard/show.tsx'))['default']>
@@ -26,6 +27,7 @@ declare module '@adonisjs/inertia/types' {
     'files/show': ExtractProps<(typeof import('../../inertia/pages/files/show.tsx'))['default']>
     'home': ExtractProps<(typeof import('../../inertia/pages/home.tsx'))['default']>
     'login': ExtractProps<(typeof import('../../inertia/pages/login.tsx'))['default']>
+    'oauth2/authorize': ExtractProps<(typeof import('../../inertia/pages/oauth2/authorize.tsx'))['default']>
     'onboarding': ExtractProps<(typeof import('../../inertia/pages/onboarding.tsx'))['default']>
   }
 }
