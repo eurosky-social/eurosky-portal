@@ -51,6 +51,13 @@ const de = {
   'common.breadcrumb': 'Brotkrümelnavigation',
   'common.opensInNewTab': '(öffnet in einem neuen Tab)',
   'common.someone': 'jemand',
+  'connections.connect': '{name} verbinden',
+  'connections.disconnect': 'Trennen',
+  'connections.none': 'Du hast keine Dienste verbunden.',
+  'connections.since': 'Verbunden am {date, date, medium}',
+  'connections.subtitle':
+    'Dienste, die deinem Konto Inhalte hinzufügen können, etwa Fotos und Videos. Trenne einen Dienst, um das zu beenden.',
+  'connections.title': 'Verbundene Dienste',
   'createAccount.haveAccount': 'Du hast bereits ein {orgName}-Konto? <signIn>Anmelden</signIn>',
   'createAccount.pageTitle': 'Konto erstellen',
   'createAccount.subtitle':
@@ -187,6 +194,23 @@ const de = {
     'Ein unbekannter Fehler ist aufgetreten, versuche es später erneut.',
   'oauth.unknownError': 'Unbekannter Fehler aufgetreten',
   'oauth.unsupportedAccount': '{productTitle} ist derzeit nur für {orgName}-Konten verfügbar.',
+  'oauth2.account': 'Du verbindest {handle}.',
+  'oauth2.allow': 'Erlauben',
+  'oauth2.deny': 'Ablehnen',
+  'oauth2.disconnect': 'Du kannst die Verbindung jederzeit unter Verbundene Dienste trennen.',
+  'oauth2.expired':
+    'Diese Anfrage ist abgelaufen, bitte beginne erneut bei dem Dienst, den du verbinden wolltest.',
+  'oauth2.importScopesMissing':
+    'Verbundene Dienste können deinem Konto nichts hinzufügen, bis du es erlaubst. Melde dich erneut an, um es zu erlauben.',
+  'oauth2.invalidText':
+    'Diese Anfrage stammt nicht von einem uns bekannten Dienst. Geh zurück zum Dienst und versuche es erneut.',
+  'oauth2.invalidTitle': 'Dieser Dienst kann nicht verbunden werden',
+  'oauth2.media':
+    '{name} kann dann deine Fotos und Videos in deinem Konto posten und ihre Dateien hochladen.',
+  'oauth2.otherAccount':
+    'Fahre mit dem Konto fort, mit dem du angemeldet bist, um einen Dienst zu verbinden.',
+  'oauth2.pageTitle': 'Einen Dienst verbinden',
+  'oauth2.title': '{name} verbinden?',
   'onboarding.alternative':
     'Alternativ kannst du dich auch <logout>abmelden</logout> und {productTitle} nicht nutzen.',
   'onboarding.notice.bothUpdated':
@@ -200,6 +224,7 @@ const de = {
   'policy.accept':
     'Ich stimme den <terms>Nutzungsbedingungen</terms> und der <privacy>Datenschutzerklärung</privacy> zu',
   'sidebar.applications': 'Apps',
+  'sidebar.connections': 'Verbundene Dienste',
   'sidebar.contactUs': 'Kontakt',
   'sidebar.dashboard': 'Dashboard',
   'sidebar.discover': 'Entdecken',

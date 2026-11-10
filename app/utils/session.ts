@@ -6,6 +6,7 @@ import type { Session } from '@adonisjs/session'
 import type { MessageKey } from '#shared/i18n'
 import type { Source } from '#events/auth_flow_completed'
 import type { FavoriteIntent } from '#services/favorite_service'
+import type { Oauth2Request } from '#services/oauth2_service'
 
 /**
  * Message to show on the next page;
@@ -63,6 +64,20 @@ interface SessionValues {
    * Handle or other input that started a login.
    */
   handle: string
+  /**
+   * Asking for the scopes of connected services after logging in (see
+   * `OAuthController`).
+   */
+  import_scopes_intent: true
+  /**
+   * Request of a client of our OAuth 2.0 server while asking for more scopes
+   * on the PDS (see `Oauth2Controller`).
+   */
+  oauth2_intent: Oauth2Request
+  /**
+   * Request of a client of our OAuth 2.0 server while on the consent page.
+   */
+  oauth2_request: Oauth2Request
   /**
    * State tying an OAuth flow to this browser (see `createState`).
    */

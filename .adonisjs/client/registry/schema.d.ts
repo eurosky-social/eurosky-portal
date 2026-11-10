@@ -99,56 +99,17 @@ export interface Registry {
       rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/auth_controller').default['login']>>>
     }
   }
-  'dashboard.show': {
-    methods: ["GET","HEAD"]
-    pattern: '/dashboard'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/dashboard_controller').default['show']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/dashboard_controller').default['show']>>>
-      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/dashboard_controller').default['show']>>>
-    }
-  }
-  'dashboard.apps': {
-    methods: ["GET","HEAD"]
-    pattern: '/dashboard/apps'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/dashboard_controller').default['apps']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/dashboard_controller').default['apps']>>>
-      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/dashboard_controller').default['apps']>>>
-    }
-  }
-  'discover.favorite': {
+  'account.dismiss_welcome': {
     methods: ["POST"]
-    pattern: '/apps/:rkey/favorite'
+    pattern: '/account/dismiss-welcome'
     types: {
       body: {}
-      paramsTuple: [ParamValue]
-      params: { rkey: ParamValue }
+      paramsTuple: []
+      params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/discover_controller').default['favorite']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/discover_controller').default['favorite']>>>
-      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/discover_controller').default['favorite']>>>
-    }
-  }
-  'discover.unfavorite': {
-    methods: ["DELETE"]
-    pattern: '/apps/:rkey/favorite'
-    types: {
-      body: {}
-      paramsTuple: [ParamValue]
-      params: { rkey: ParamValue }
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/discover_controller').default['unfavorite']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/discover_controller').default['unfavorite']>>>
-      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/discover_controller').default['unfavorite']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/account_controller').default['dismissWelcome']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/account_controller').default['dismissWelcome']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/account_controller').default['dismissWelcome']>>>
     }
   }
   'activity.show': {
@@ -177,6 +138,123 @@ export interface Registry {
       rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/activity_controller').default['detail']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
+  'discover.favorite': {
+    methods: ["POST"]
+    pattern: '/apps/:rkey/favorite'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { rkey: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/discover_controller').default['favorite']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/discover_controller').default['favorite']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/discover_controller').default['favorite']>>>
+    }
+  }
+  'discover.unfavorite': {
+    methods: ["DELETE"]
+    pattern: '/apps/:rkey/favorite'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { rkey: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/discover_controller').default['unfavorite']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/discover_controller').default['unfavorite']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/discover_controller').default['unfavorite']>>>
+    }
+  }
+  'connections.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/connections'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/connections_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/connections_controller').default['show']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/connections_controller').default['show']>>>
+    }
+  }
+  'connections.destroy': {
+    methods: ["DELETE"]
+    pattern: '/connections/:clientId'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/connections').connectionValidator)>>
+      paramsTuple: [ParamValue]
+      params: { clientId: ParamValue }
+      query: ExtractQuery<InferInput<(typeof import('#validators/connections').connectionValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/connections_controller').default['destroy']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/connections_controller').default['destroy']>>> | { status: 422; response: { errors: SimpleError[] } }
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/connections_controller').default['destroy']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'dashboard.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/dashboard'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/dashboard_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/dashboard_controller').default['show']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/dashboard_controller').default['show']>>>
+    }
+  }
+  'dashboard.apps': {
+    methods: ["GET","HEAD"]
+    pattern: '/dashboard/apps'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/dashboard_controller').default['apps']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/dashboard_controller').default['apps']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/dashboard_controller').default['apps']>>>
+    }
+  }
+  'files.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/files'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: ExtractQueryForGet<InferInput<(typeof import('#validators/files').filesQueryValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/files_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/files_controller').default['show']>>> | { status: 422; response: { errors: SimpleError[] } }
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/files_controller').default['show']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'oauth2.authorize': {
+    methods: ["GET","HEAD"]
+    pattern: '/oauth2/authorize'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/oauth2_controller').default['authorize']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/oauth2_controller').default['authorize']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/oauth2_controller').default['authorize']>>>
+    }
+  }
+  'oauth2.decide': {
+    methods: ["POST"]
+    pattern: '/oauth2/authorize'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/oauth2_controller').default['decide']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/oauth2_controller').default['decide']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/oauth2_controller').default['decide']>>>
+    }
+  }
   'account.onboarding': {
     methods: ["GET","HEAD"]
     pattern: '/onboarding'
@@ -203,30 +281,30 @@ export interface Registry {
       rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/account_controller').default['storeAcceptance']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
-  'files.show': {
+  'health_checks.live': {
     methods: ["GET","HEAD"]
-    pattern: '/files'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: ExtractQueryForGet<InferInput<(typeof import('#validators/files').filesQueryValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/files_controller').default['show']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/files_controller').default['show']>>> | { status: 422; response: { errors: SimpleError[] } }
-      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/files_controller').default['show']>>> | { status: 422; response: { errors: SimpleError[] } }
-    }
-  }
-  'account.dismiss_welcome': {
-    methods: ["POST"]
-    pattern: '/account/dismiss-welcome'
+    pattern: '/_health'
     types: {
       body: {}
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/account_controller').default['dismissWelcome']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/account_controller').default['dismissWelcome']>>>
-      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/account_controller').default['dismissWelcome']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/health_checks_controller').default['live']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/health_checks_controller').default['live']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/health_checks_controller').default['live']>>>
+    }
+  }
+  'health_checks.ready': {
+    methods: ["GET","HEAD"]
+    pattern: '/_readiness'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/health_checks_controller').default['ready']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/health_checks_controller').default['ready']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/health_checks_controller').default['ready']>>>
     }
   }
   'discover.apps': {
@@ -255,19 +333,6 @@ export interface Registry {
       rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/discover_controller').default['app']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
-  'legal.show': {
-    methods: ["GET","HEAD"]
-    pattern: '/legal/:document'
-    types: {
-      body: {}
-      paramsTuple: [ParamValue]
-      params: { document: ParamValue }
-      query: ExtractQueryForGet<InferInput<(typeof import('#validators/legal').legalValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/legal_controller').default['show']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/legal_controller').default['show']>>> | { status: 422; response: { errors: SimpleError[] } }
-      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/legal_controller').default['show']>>> | { status: 422; response: { errors: SimpleError[] } }
-    }
-  }
   'explore.learn_more': {
     methods: ["GET","HEAD"]
     pattern: '/explore/learn-more'
@@ -294,30 +359,43 @@ export interface Registry {
       rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/faq_controller').default['show']>>>
     }
   }
-  'health_checks.live': {
+  'legal.show': {
     methods: ["GET","HEAD"]
-    pattern: '/_health'
+    pattern: '/legal/:document'
     types: {
       body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/health_checks_controller').default['live']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/health_checks_controller').default['live']>>>
-      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/health_checks_controller').default['live']>>>
+      paramsTuple: [ParamValue]
+      params: { document: ParamValue }
+      query: ExtractQueryForGet<InferInput<(typeof import('#validators/legal').legalValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/legal_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/legal_controller').default['show']>>> | { status: 422; response: { errors: SimpleError[] } }
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/legal_controller').default['show']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
-  'health_checks.ready': {
-    methods: ["GET","HEAD"]
-    pattern: '/_readiness'
+  'oauth2.revoke': {
+    methods: ["POST"]
+    pattern: '/oauth2/revoke'
     types: {
       body: {}
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/health_checks_controller').default['ready']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/health_checks_controller').default['ready']>>>
-      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/health_checks_controller').default['ready']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/oauth2_controller').default['revoke']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/oauth2_controller').default['revoke']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/oauth2_controller').default['revoke']>>>
+    }
+  }
+  'oauth2.token': {
+    methods: ["POST"]
+    pattern: '/oauth2/token'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/oauth2_controller').default['token']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/oauth2_controller').default['token']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/oauth2_controller').default['token']>>>
     }
   }
 }

@@ -51,6 +51,13 @@ const fr = {
   'common.breadcrumb': 'Fil d’Ariane',
   'common.opensInNewTab': '(s’ouvre dans un nouvel onglet)',
   'common.someone': 'quelqu’un',
+  'connections.connect': 'Connecter {name}',
+  'connections.disconnect': 'Déconnecter',
+  'connections.none': 'Vous n’avez connecté aucun service.',
+  'connections.since': 'Connecté le {date, date, medium}',
+  'connections.subtitle':
+    'Les services qui peuvent ajouter du contenu à votre compte, comme des photos et des vidéos. Déconnectez un service pour arrêter.',
+  'connections.title': 'Services connectés',
   'createAccount.haveAccount': 'Vous avez déjà un compte {orgName}? <signIn>Se connecter</signIn>',
   'createAccount.pageTitle': 'Créer un compte',
   'createAccount.subtitle': 'Avant de commencer, veuillez consulter et accepter nos conditions.',
@@ -188,6 +195,23 @@ const fr = {
   'oauth.unknownError': 'Une erreur inconnue s’est produite',
   'oauth.unsupportedAccount':
     '{productTitle} n’est actuellement disponible que pour les comptes {orgName}.',
+  'oauth2.account': 'Vous connectez {handle}.',
+  'oauth2.allow': 'Autoriser',
+  'oauth2.deny': 'Refuser',
+  'oauth2.disconnect': 'Vous pouvez le déconnecter à tout moment dans Services connectés.',
+  'oauth2.expired':
+    'Cette demande a expiré, veuillez recommencer depuis le service que vous connectiez.',
+  'oauth2.importScopesMissing':
+    'Les services connectés ne peuvent rien ajouter à votre compte tant que vous ne l’autorisez pas. Reconnectez-vous pour l’autoriser.',
+  'oauth2.invalidText':
+    'Cette demande ne provient pas d’un service que nous connaissons. Retournez sur le service et réessayez.',
+  'oauth2.invalidTitle': 'Impossible de connecter ce service',
+  'oauth2.media':
+    '{name} pourra publier vos photos et vidéos sur votre compte et en téléverser les fichiers.',
+  'oauth2.otherAccount':
+    'Continuez avec le compte avec lequel vous êtes connecté pour connecter un service.',
+  'oauth2.pageTitle': 'Connecter un service',
+  'oauth2.title': 'Connecter {name} ?',
   'onboarding.alternative':
     'Vous pouvez aussi <logout>vous déconnecter</logout> et ne pas utiliser {productTitle}.',
   'onboarding.notice.bothUpdated':
@@ -201,6 +225,7 @@ const fr = {
   'policy.accept':
     'J’accepte les <terms>conditions d’utilisation</terms> et la <privacy>politique de confidentialité</privacy>',
   'sidebar.applications': 'Applications',
+  'sidebar.connections': 'Services connectés',
   'sidebar.contactUs': 'Nous contacter',
   'sidebar.dashboard': 'Tableau de bord',
   'sidebar.discover': 'Découvrir',

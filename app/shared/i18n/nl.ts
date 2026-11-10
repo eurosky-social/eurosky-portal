@@ -49,6 +49,13 @@ const nl = {
   'common.breadcrumb': 'Kruimelpad',
   'common.opensInNewTab': '(opent in een nieuw tabblad)',
   'common.someone': 'iemand',
+  'connections.connect': '{name} koppelen',
+  'connections.disconnect': 'Ontkoppelen',
+  'connections.none': 'Je hebt geen diensten gekoppeld.',
+  'connections.since': 'Gekoppeld op {date, date, medium}',
+  'connections.subtitle':
+    'Diensten die dingen aan je account kunnen toevoegen, zoals foto’s en video’s. Ontkoppel een dienst om dat te stoppen.',
+  'connections.title': 'Gekoppelde diensten',
   'createAccount.haveAccount': 'Heb je al een {orgName} account? <signIn>Inloggen</signIn>',
   'createAccount.pageTitle': 'Account aanmaken',
   'createAccount.subtitle': 'Voor we beginnen, bekijk en accepteer je onze voorwaarden.',
@@ -182,6 +189,23 @@ const nl = {
   'oauth.unknownError': 'Onbekende fout opgetreden',
   'oauth.unsupportedAccount':
     '{productTitle} is momenteel alleen beschikbaar voor {orgName} accounts.',
+  'oauth2.account': 'Je koppelt {handle}.',
+  'oauth2.allow': 'Toestaan',
+  'oauth2.deny': 'Weigeren',
+  'oauth2.disconnect': 'Je kunt de koppeling altijd verbreken bij Gekoppelde diensten.',
+  'oauth2.expired':
+    'Dat verzoek is verlopen, begin opnieuw bij de dienst die je aan het koppelen was.',
+  'oauth2.importScopesMissing':
+    'Gekoppelde diensten kunnen niets aan je account toevoegen tot je dat toestaat. Log opnieuw in om het toe te staan.',
+  'oauth2.invalidText':
+    'Dit verzoek komt niet van een dienst die we kennen. Ga terug naar de dienst en probeer het opnieuw.',
+  'oauth2.invalidTitle': 'Deze dienst kan niet gekoppeld worden',
+  'oauth2.media':
+    '{name} kan dan je foto’s en video’s op je account plaatsen en de bestanden ervan uploaden.',
+  'oauth2.otherAccount':
+    'Ga verder met het account waarmee je bent ingelogd om een dienst te koppelen.',
+  'oauth2.pageTitle': 'Een dienst koppelen',
+  'oauth2.title': '{name} koppelen?',
   'onboarding.alternative':
     'Je kunt ook <logout>Uitloggen</logout> en {productTitle} niet gebruiken.',
   'onboarding.notice.bothUpdated': 'Onze Gebruiksvoorwaarden en Privacybeleid zijn bijgewerkt',
@@ -193,6 +217,7 @@ const nl = {
   'policy.accept':
     'Ik ga akkoord met de <terms>Gebruiksvoorwaarden</terms> en het <privacy>Privacybeleid</privacy>',
   'sidebar.applications': 'Applicaties',
+  'sidebar.connections': 'Gekoppelde diensten',
   'sidebar.contactUs': 'Contact',
   'sidebar.dashboard': 'Dashboard',
   'sidebar.discover': 'Ontdekken',

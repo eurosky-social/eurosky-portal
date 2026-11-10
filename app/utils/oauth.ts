@@ -49,6 +49,19 @@ export function getHandleDomains(): string[] {
 }
 
 /**
+ * Scopes to import from a connected service (see `Oauth2Controller`).
+ * Write posts, upload images and videos;
+ * requested when connecting, if not granted yet.
+ *
+ * `update` is there for `putRecord` so resent items land on the same records.
+ */
+export const importScopes: ReadonlySet<string> = new Set([
+  'blob:image/*',
+  'blob:video/*',
+  'repo:app.bsky.feed.post?action=create&action=update',
+])
+
+/**
  * Scopes requested when logging in.
  *
  * See: https://atproto.com/guides/scopes

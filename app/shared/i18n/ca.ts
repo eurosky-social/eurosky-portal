@@ -50,6 +50,13 @@ const ca = {
   'common.breadcrumb': 'Camí de navegació',
   'common.opensInNewTab': '(s’obre en una pestanya nova)',
   'common.someone': 'algú',
+  'connections.connect': 'Connecta {name}',
+  'connections.disconnect': 'Desconnecta',
+  'connections.none': 'No has connectat cap servei.',
+  'connections.since': 'Connectat el {date, date, medium}',
+  'connections.subtitle':
+    'Serveis que poden afegir contingut al teu compte, com ara fotos i vídeos. Desconnecta un servei per aturar-ho.',
+  'connections.title': 'Serveis connectats',
   'createAccount.haveAccount': 'Ja teniu un compte {orgName}? <signIn>Inicia la sessió</signIn>',
   'createAccount.pageTitle': 'Creeu un compte',
   'createAccount.subtitle': 'Abans de començar, reviseu i accepteu les nostres condicions.',
@@ -188,6 +195,23 @@ const ca = {
   'oauth.unknownError': 'S’ha produït un error desconegut',
   'oauth.unsupportedAccount':
     'Actualment, {productTitle} només està disponible per als comptes {orgName}.',
+  'oauth2.account': 'Estàs connectant {handle}.',
+  'oauth2.allow': 'Permet',
+  'oauth2.deny': 'Denega',
+  'oauth2.disconnect': 'El pots desconnectar en qualsevol moment a Serveis connectats.',
+  'oauth2.expired':
+    'Aquesta sol·licitud ha caducat, torna a començar des del servei que estaves connectant.',
+  'oauth2.importScopesMissing':
+    'Els serveis connectats no poden afegir res al teu compte fins que ho permetis. Torna a iniciar la sessió per permetre-ho.',
+  'oauth2.invalidText':
+    'Aquesta sol·licitud no prové d’un servei que coneguem. Torna al servei i torna-ho a provar.',
+  'oauth2.invalidTitle': 'No es pot connectar aquest servei',
+  'oauth2.media':
+    '{name} podrà publicar les teves fotos i vídeos al teu compte i pujar-ne els fitxers.',
+  'oauth2.otherAccount':
+    'Continua amb el compte amb què has iniciat la sessió per connectar un servei.',
+  'oauth2.pageTitle': 'Connecta un servei',
+  'oauth2.title': 'Vols connectar {name}?',
   'onboarding.alternative':
     'Alternativament, podeu <logout>tancar la sessió</logout> i no utilitzar {productTitle}.',
   'onboarding.notice.bothUpdated':
@@ -200,6 +224,7 @@ const ca = {
   'policy.accept':
     'Acepto les <terms>condicions d’ús</terms> i la <privacy>política de privadesa</privacy>',
   'sidebar.applications': 'Aplicacions',
+  'sidebar.connections': 'Serveis connectats',
   'sidebar.contactUs': 'Contacteu amb nosaltres',
   'sidebar.dashboard': 'Tauler',
   'sidebar.discover': 'Descobreix',

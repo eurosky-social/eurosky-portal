@@ -7,6 +7,7 @@ export const controllers = {
   Account: () => import('#controllers/account_controller'),
   Activity: () => import('#controllers/activity_controller'),
   Auth: () => import('#controllers/auth_controller'),
+  Connections: () => import('#controllers/connections_controller'),
   Dashboard: () => import('#controllers/dashboard_controller'),
   Discover: () => import('#controllers/discover_controller'),
   Explore: () => import('#controllers/explore_controller'),
@@ -16,4 +17,5 @@ export const controllers = {
   Home: () => import('#controllers/home_controller'),
   Legal: () => import('#controllers/legal_controller'),
   Oauth: () => import('#controllers/oauth_controller'),
+  Oauth2: () => import('#controllers/oauth2_controller'),
 }

@@ -48,6 +48,13 @@ const en = {
   'common.breadcrumb': 'Breadcrumb',
   'common.opensInNewTab': '(opens in a new tab)',
   'common.someone': 'someone',
+  'connections.connect': 'Connect {name}',
+  'connections.disconnect': 'Disconnect',
+  'connections.none': 'You have not connected any services.',
+  'connections.since': 'Connected on {date, date, medium}',
+  'connections.subtitle':
+    'Services that can add things to your account, such as photos and videos. Disconnect a service to stop that.',
+  'connections.title': 'Connected services',
   'createAccount.haveAccount': 'Already have a {orgName} account? <signIn>Sign in</signIn>',
   'createAccount.pageTitle': 'Create account',
   'createAccount.subtitle': 'Before we get started, please review and accept our terms.',
@@ -179,6 +186,22 @@ const en = {
   'oauth.unknownCallbackError': 'An unknown error occurred, please try again later.',
   'oauth.unknownError': 'Unknown error occurred',
   'oauth.unsupportedAccount': 'Currently {productTitle} is only available for {orgName} accounts.',
+  'oauth2.account': 'You are connecting {handle}.',
+  'oauth2.allow': 'Allow',
+  'oauth2.deny': 'Deny',
+  'oauth2.disconnect': 'You can disconnect it at any time in Connected services.',
+  'oauth2.expired':
+    'That request expired, please start again from the service you were connecting.',
+  'oauth2.importScopesMissing':
+    'Connected services cannot add things to your account until you allow it. Log in again to allow it.',
+  'oauth2.invalidText':
+    'This request is not from a service we know. Go back to the service and try again.',
+  'oauth2.invalidTitle': 'Cannot connect this service',
+  'oauth2.media':
+    '{name} will be able to post your photos and videos to your account, and upload their files.',
+  'oauth2.otherAccount': 'Continue with the account you are logged in with to connect a service.',
+  'oauth2.pageTitle': 'Connect a service',
+  'oauth2.title': 'Connect {name}?',
   'onboarding.alternative':
     'Alternatively, you can <logout>Logout</logout> and not use {productTitle}.',
   'onboarding.notice.bothUpdated': 'Our Terms of service and Privacy policy have been updated',
@@ -190,6 +213,7 @@ const en = {
   'policy.accept':
     'I agree to the <terms>Terms of service</terms> and the <privacy>Privacy policy</privacy>',
   'sidebar.applications': 'Applications',
+  'sidebar.connections': 'Connected services',
   'sidebar.contactUs': 'Contact us',
   'sidebar.dashboard': 'Dashboard',
   'sidebar.discover': 'Discover',
