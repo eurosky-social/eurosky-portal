@@ -48,6 +48,33 @@ export default class AutomigrateProvider {
       logger.info('Migrations finished')
     })
 
+    await renameMovedMigrations()
     await migrator.run()
   }
+}
+
+/**
+ * Rename migrations that ran when they were in `database/migrations/`, before
+ * they moved to `app/database/migrations/`;
+ * Lucid tracks migrations by path, so it would otherwise run them again.
+ *
+ * @returns
+ *   Nothing.
+ */
+export async function renameMovedMigrations(): Promise<undefined> {
+  if (!(await db.connection().schema.hasTable('adonis_schema'))) return
+
+  const moved = await db
+    .from('adonis_schema')
+    .whereLike('name', 'database/migrations/%')
+    .select('id')
+
+  if (moved.length === 0) return
+
+  await db
+    .from('adonis_schema')
+    .whereLike('name', 'database/migrations/%')
+    .update({ name: db.raw(`'app/' || name`) })
+
+  logger.info({ count: moved.length }, 'Renamed migrations moved to `app/database/migrations/`')
 }
