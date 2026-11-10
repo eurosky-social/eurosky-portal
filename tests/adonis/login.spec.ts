@@ -1,10 +1,12 @@
 import testUtils from '@adonisjs/core/services/test_utils'
+import i18nManager from '@adonisjs/i18n/services/main'
 import { test } from '@japa/runner'
 import { DateTime } from 'luxon'
 import Account from '#models/account'
 import jetstreamService from '#services/jetstream_service'
 import { restorePds, signIn } from './helpers.ts'
 
+const i18n = i18nManager.locale(i18nManager.defaultLocale)
 const did = 'did:web:a.com'
 
 test.group('logging in and out', function (group) {
@@ -30,6 +32,39 @@ test.group('logging in and out', function (group) {
       .redirects(0)
 
     response.assertHeader('location', '/dashboard')
+  })
+
+  test('should start logging in with a DID', async function ({ assert, client }) {
+    const pds = await signIn({ did })
+    await client
+      .post('/oauth/login')
+      .form({ input: did })
+      .withCsrfToken()
+      .withInertia()
+      .redirects(0)
+
+    assert.deepEqual(
+      pds.authorizeCalls.map(function (d) {
+        return d.input
+      }),
+      [did]
+    )
+  })
+
+  test('should not start logging in at other services', async function ({ assert, client }) {
+    const pds = await signIn({ did })
+    const response = await client
+      .post('/oauth/login')
+      .form({ input: 'https://b.example.com' })
+      .withCsrfToken()
+      .withInertia()
+      .redirects(0)
+
+    response.assertFlashMessage('inputErrorsBag', {
+      input: [i18n.t('oauth.unsupportedAccount')],
+      old_input: ['https://b.example.com'],
+    })
+    assert.deepEqual(pds.authorizeCalls, [])
   })
 
   test('should end the session on the PDS when logging out', async function ({ assert, client }) {
