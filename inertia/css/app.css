@@ -13,8 +13,8 @@
 }
 
 @theme {
-  --default-font-family: Inter, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, Sans-Serif;
-  --default-mono-font-family: 'IBM Plex Mono', monospace;
+  --default-font-family:
+    'Inter Variable', BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, Sans-Serif;
   --text-tiny: 0.625rem;
   /* Warm neutrals from eurosky.tech. */
   --color-neutral-50: #f7f6f2;

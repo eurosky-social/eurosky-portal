@@ -1,3 +1,5 @@
+import '@fontsource-variable/inter'
+import '@fontsource-variable/inter/wght-italic.css'
 import './css/app.css'
 import type { ReactElement } from 'react'
 import { client } from './client'

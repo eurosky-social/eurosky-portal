@@ -1,3 +1,4 @@
+import app from '@adonisjs/core/services/app'
 import { defineConfig } from '@adonisjs/shield'
 
 const shieldConfig = defineConfig({
@@ -9,12 +10,32 @@ const shieldConfig = defineConfig({
     /**
      * Enable the Content-Security-Policy header.
      */
-    enabled: false,
+    enabled: true,
 
     /**
      * Per-resource CSP directives.
      */
-    directives: {},
+    directives: {
+      baseUri: ["'self'"],
+      // Opening and downloading blobs fetches them from any PDS.
+      // Vite uses a web socket in dev.
+      connectSrc: ["'self'", 'https:', ...(app.inDev ? ['ws:'] : [])],
+      defaultSrc: ["'self'"],
+      formAction: ["'self'"],
+      frameAncestors: ["'none'"],
+      // Avatars, blobs, and app icons come from any PDS.
+      imgSrc: ["'self'", 'blob:', 'https:'],
+      // Videos come from any PDS.
+      mediaSrc: ["'self'", 'blob:', 'https:'],
+      objectSrc: ["'none'"],
+      // React refreshes with an inline script in development.
+      scriptSrc: ["'self'", ...(app.inDev ? ['@nonce'] : [])],
+      // `style` attributes (from React, also rendered on the server) and
+      // `style` elements added by scripts, in production too.
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      // Vite pings for a restarted server from a worker in development.
+      workerSrc: ["'self'", ...(app.inDev ? ['blob:'] : [])],
+    },
 
     /**
      * Report violations without blocking resources.
