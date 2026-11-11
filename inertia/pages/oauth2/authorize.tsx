@@ -62,6 +62,7 @@ export default function AuthorizePage(
               </h1>
               <Text>{t('oauth2.account', { handle: properties.handle })}</Text>
               <Text>{t('oauth2.media', { name: properties.clientName })}</Text>
+              <Text>{t('oauth2.public')}</Text>
               <Text>{t('oauth2.disconnect')}</Text>
               <div className="flex flex-wrap justify-center gap-4">
                 <Form route="oauth2.decide">

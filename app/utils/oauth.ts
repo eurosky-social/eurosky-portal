@@ -34,6 +34,19 @@ export function createState(session: Session): string {
 export const favoriteScope = 'repo:fyi.atstore.listing.favorite?action=create&action=delete'
 
 /**
+ * Get the token from an `Authorization: Bearer` header.
+ *
+ * @param value
+ *   Header value.
+ * @returns
+ *   Token, if any.
+ */
+export function getBearerToken(value: string | undefined): string | undefined {
+  const match = value?.match(/^bearer +(\S+)$/i)
+  return match?.[1]
+}
+
+/**
  * Get the configured handle domains, each with a leading dot.
  *
  * The first one is the default, used to complete bare usernames

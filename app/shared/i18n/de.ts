@@ -211,6 +211,7 @@ const de = {
   'oauth2.otherAccount':
     'Fahre mit dem Konto fort, mit dem du angemeldet bist, um einen Dienst zu verbinden.',
   'oauth2.pageTitle': 'Einen Dienst verbinden',
+  'oauth2.public': 'Alles in deinem Konto ist öffentlich, also auch diese Beiträge.',
   'oauth2.title': '{name} verbinden?',
   'onboarding.alternative':
     'Alternativ kannst du dich auch <logout>abmelden</logout> und {productTitle} nicht nutzen.',

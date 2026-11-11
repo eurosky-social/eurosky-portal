@@ -7,15 +7,20 @@ import oauth2Service, {
   type Oauth2Tokens,
 } from '#services/oauth2_service'
 import { tokenFailures } from '#start/limiter'
-import { createState, importScopes, parseScopes, serializeScopes } from '#utils/oauth'
+import {
+  createState,
+  getBearerToken,
+  importScopes,
+  parseScopes,
+  serializeScopes,
+} from '#utils/oauth'
 import { flashSessionValue, pullSessionValue, putSessionValue } from '#utils/session'
 import { captureException } from '#utils/telemetry'
 
 /**
  * OAuth 2.0 server.
  *
- * Follows what the Data Transfer Project does (see `OAuth2DataGenerator.java`
- * there):
+ * Follows what DTP does (see `OAuth2DataGenerator.java` there):
  * the code grant without PKCE,
  * `client_secret_post`,
  * and revoking with the access token as a bearer token.
@@ -211,19 +216,6 @@ function errorUrl(redirectUri: string, state: string | undefined, error = 'acces
   url.searchParams.set('error', error)
   if (state !== undefined) url.searchParams.set('state', state)
   return url.href
-}
-
-/**
- * Get the token from an `Authorization: Bearer` header.
- *
- * @param value
- *   Header value.
- * @returns
- *   Token, if any.
- */
-function getBearerToken(value: string | undefined): string | undefined {
-  const match = value?.match(/^bearer +(\S+)$/i)
-  return match?.[1]
 }
 
 /**

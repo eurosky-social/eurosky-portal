@@ -55,8 +55,8 @@ export interface Oauth2Connection {
 }
 
 /**
- * Error, as defined in RFC 6749 and by the Data Transfer Project
- * (`session_invalidated`, which stops all transfers of a token).
+ * Error, as defined in RFC 6749 and by DTP (`session_invalidated`, which stops
+ * all transfers of a token).
  */
 export interface Oauth2Error {
   error:
@@ -255,8 +255,8 @@ export class Oauth2Service {
    * Get a new access token (`refresh_token` grant).
    *
    * Refresh tokens are not rotated:
-   * the Data Transfer Project keeps the old one when no new one comes back,
-   * and a retried request then still works.
+   * DTP keeps the old one when no new one comes back and a retried request
+   * then still works.
    *
    * @param options
    *   Configuration.

@@ -44,6 +44,7 @@ router
   })
   .use([middleware.auth(), middleware.legalRoadblock()])
 
+router.post('/_dtp/media', [controllers.Dtp, 'media']).as('dtp.media')
 router.get('/_health', [controllers.HealthChecks, 'live'])
 router.get('/_readiness', [controllers.HealthChecks, 'ready'])
 router.get('/apps', [controllers.Discover, 'apps'])

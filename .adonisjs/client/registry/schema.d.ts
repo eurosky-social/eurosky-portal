@@ -281,6 +281,19 @@ export interface Registry {
       rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/account_controller').default['storeAcceptance']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
+  'dtp.media': {
+    methods: ["POST"]
+    pattern: '/_dtp/media'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/dtp_controller').default['media']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/dtp_controller').default['media']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/dtp_controller').default['media']>>>
+    }
+  }
   'health_checks.live': {
     methods: ["GET","HEAD"]
     pattern: '/_health'

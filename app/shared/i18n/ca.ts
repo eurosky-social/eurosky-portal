@@ -212,6 +212,8 @@ const ca = {
   'oauth2.otherAccount':
     'Continua amb el compte amb què has iniciat la sessió per connectar un servei.',
   'oauth2.pageTitle': 'Connecta un servei',
+  'oauth2.public':
+    'Tot el que hi ha al teu compte és públic, així que aquestes publicacions també ho seran.',
   'oauth2.title': 'Vols connectar {name}?',
   'onboarding.alternative':
     'Alternativament, podeu <logout>tancar la sessió</logout> i no utilitzar {productTitle}.',
