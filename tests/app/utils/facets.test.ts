@@ -56,6 +56,20 @@ test('segment', function () {
     ])
   })
 
+  // This is what Leaflet does, but not Bluesky.
+  // Which is why we have our own parser instead of say `@atcute/bluesky-richtext-parser`.
+  test('should support unsorted facets', function () {
+    const a = { index: { byteEnd: 3, byteStart: 2 } }
+    const b = { index: { byteEnd: 1, byteStart: 0 } }
+    const result = segment('abc', [a, b])
+
+    assert.deepEqual(result, [
+      { facets: [b], text: 'a' },
+      { facets: [], text: 'b' },
+      { facets: [a], text: 'c' },
+    ])
+  })
+
   test('should support facets past the end', function () {
     const facet = { index: { byteEnd: 9, byteStart: 1 } }
     const result = segment('ab', [facet])
