@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto'
 import testUtils from '@adonisjs/core/services/test_utils'
 import { parse as parseTid } from '@atcute/tid'
+import { TokenRefreshError, TokenRevokedError } from '@atproto/oauth-client-node'
 import { isValidTid } from '@atproto/syntax'
 import { test } from '@japa/runner'
 import sharp, { type Sharp } from 'sharp'
@@ -67,6 +68,42 @@ test.group('dtp / POST /_dtp/media', function (group) {
 
     assert.equal(response.status, 401)
     assert.deepEqual(await response.json(), { error: 'session_invalidated' })
+  })
+
+  test('should be `session_invalidated` when the session on the PDS ended', async function ({
+    assert,
+  }) {
+    const pds = await signIn({ did })
+    pds.restoreError = new TokenRefreshError(did, 'The session was revoked')
+    const token = await connect()
+    const response = await send(token, multipart(photo, 'image/png', red))
+
+    assert.equal(response.status, 401)
+    assert.containSubset(await response.json(), { error: 'session_invalidated' })
+  })
+
+  test('should be `session_invalidated` when the session on the PDS ends while importing', async function ({
+    assert,
+  }) {
+    const pds = await signIn({ did })
+    pds.fetchError = new TokenRevokedError(did)
+    const token = await connect()
+    const response = await send(token, multipart(photo, 'image/png', red))
+
+    assert.equal(response.status, 401)
+    assert.containSubset(await response.json(), { error: 'session_invalidated' })
+  })
+
+  test('should be `server_error` when restoring a session fails otherwise', async function ({
+    assert,
+  }) {
+    const pds = await signIn({ did })
+    pds.restoreError = new Error('Network down')
+    const token = await connect()
+    const response = await send(token, multipart(photo, 'image/png', red))
+
+    assert.equal(response.status, 500)
+    assert.deepEqual(await response.json(), { error: 'server_error' })
   })
 
   test('should import a photo as a post', async function ({ assert }) {
