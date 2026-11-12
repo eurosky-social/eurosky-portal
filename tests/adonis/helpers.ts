@@ -45,9 +45,20 @@ export interface FakePds {
   blobs: Array<{ cid: string; data: Uint8Array; mimeType: string }>
 
   /**
+   * Error requests of sessions throw, if any (such as when a session was
+   * revoked while in use).
+   */
+  fetchError: Error | undefined
+
+  /**
    * Records put in repos.
    */
   records: Array<{ collection: string; record?: unknown; repo: string; rkey: string }>
+
+  /**
+   * Error `restore` throws, if any (such as when a session expired).
+   */
+  restoreError: Error | undefined
 
   /**
    * DIDs of calls to `revoke` (logging out).
@@ -152,7 +163,9 @@ export async function signIn(options: SignInOptions): Promise<FakePds> {
     blobs: [],
     callbackDid: did,
     callbackError: undefined,
+    fetchError: undefined,
     records: [],
+    restoreError: undefined,
     revokeCalls: [],
     scope,
     user: new AtprotoUser(createSession(did)),
@@ -170,6 +183,7 @@ export async function signIn(options: SignInOptions): Promise<FakePds> {
       return { session: createSession(pds.callbackDid), state: parameters.get('state') }
     },
     async restore(identifier) {
+      if (pds.restoreError) throw pds.restoreError
       if (identifier !== did) throw new Error('Cannot restore `' + identifier + '`')
       return createSession(did)
     },
@@ -210,6 +224,7 @@ export async function signIn(options: SignInOptions): Promise<FakePds> {
       server: { issuer },
       sub: sessionDid,
       async fetchHandler(pathname: string, init?: RequestInit) {
+        if (pds.fetchError) throw pds.fetchError
         return handleXrpc(sessionDid, new URL(pathname, issuer), init)
       },
       async getTokenInfo() {

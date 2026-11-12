@@ -2,6 +2,7 @@ import { Exception } from '@adonisjs/core/exceptions'
 import type { HttpContext } from '@adonisjs/core/http'
 import logger from '@adonisjs/core/services/logger'
 import type { DidString } from '@atproto/lex'
+import { TokenInvalidError, TokenRefreshError, TokenRevokedError } from '@atproto/oauth-client-node'
 import {
   isMultipartRequest,
   MaxFileSizeExceededError,
@@ -130,6 +131,26 @@ export default class DtpController {
       })
     } catch (error) {
       if (error instanceof ImageError) throw invalidRequest(error.message)
+
+      // Stop transfers if the session ended as nothing can be imported until
+      // the person logs in again.
+      // Check causes as clients wrap errors of sessions.
+      let cause = error
+
+      while (cause instanceof Error) {
+        if (
+          cause instanceof TokenInvalidError ||
+          cause instanceof TokenRefreshError ||
+          cause instanceof TokenRevokedError
+        ) {
+          throw new DtpException(401, {
+            error: 'session_invalidated',
+            error_description: 'Session on the PDS ended',
+          })
+        }
+
+        cause = cause.cause
+      }
 
       logger.error({ err: error }, 'dtp: cannot import photo')
       captureException(error, { tags: { component: 'dtp' } })
