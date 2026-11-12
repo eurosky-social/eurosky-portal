@@ -1,4 +1,5 @@
 import { test } from '@japa/runner'
+import type { Nodes } from 'hast'
 
 test.group('faq / GET /faq', function () {
   test('should render `faq/show`', async function ({ client }) {
@@ -15,12 +16,12 @@ test.group('faq / GET /faq', function () {
     assert.notEqual(response.inertiaProps.faq.length, 0)
   })
 
-  test('should include answers as HTML', async function ({ assert, client }) {
+  test('should include answers as hast trees', async function ({ assert, client }) {
     const response = await client.get('/faq').withInertia()
-    const faq: Array<{ answer: string; question: string }> = response.inertiaProps.faq
+    const faq: Array<{ answer: Nodes; question: string }> = response.inertiaProps.faq
 
     for (const [index, entry] of faq.entries()) {
-      assert.equal(entry.answer.trimStart().startsWith('<'), true, String(index))
+      assert.equal(entry.answer.type, 'root', String(index))
     }
   })
 })

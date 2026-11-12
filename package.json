@@ -93,7 +93,6 @@
     "@vinejs/vine": "^4.4.0",
     "better-sqlite3": "^13.0.3",
     "clsx": "^2.1.1",
-    "edge-markdown": "^1.10.2",
     "edge.js": "^6.5.1",
     "hast-util-from-html": "^2.1.0",
     "hast-util-sanitize": "^5.0.2",
