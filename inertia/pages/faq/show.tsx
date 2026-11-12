@@ -1,11 +1,16 @@
 import { ArrowDownIcon } from '@heroicons/react/24/solid'
 import { Head } from '@inertiajs/react'
-import MarkdownDocument from '~/components/MarkdownDocument'
+import type { Nodes } from 'hast'
+import { toJsxRuntime } from 'hast-util-to-jsx-runtime'
+import { Fragment, jsx, jsxs } from 'react/jsx-runtime'
+import type { Jsonify } from '#shared/json'
 import { PageHeader } from '~/components/PageHeader'
 import type { InertiaProps } from '~/types'
 import { useT } from '~/lib/i18n'
 
-export default function Faq(props: InertiaProps<{ faq: { question: string; answer: string }[] }>) {
+export default function Faq(
+  props: InertiaProps<{ faq: Array<{ answer: Jsonify<Nodes>; question: string }> }>
+) {
   const { tPlain, t } = useT()
 
   return (
@@ -21,10 +26,9 @@ export default function Faq(props: InertiaProps<{ faq: { question: string; answe
             {entry.question}
             <ArrowDownIcon className="w-6 h-6 flex text-charcoal dark:text-neutral-400 transition-transform" />
           </summary>
-          <MarkdownDocument
-            className="px-6 pt-4 pb-6 text-charcoal! dark:text-neutral-400! leading-relaxed border-stone-light dark:border-neutral-800 border-t"
-            document={entry.answer}
-          />
+          <div className="markdown-document text-grey-800 px-6 pt-4 pb-6 text-charcoal! dark:text-neutral-400! leading-relaxed border-stone-light dark:border-neutral-800 border-t">
+            {toJsxRuntime(entry.answer, { Fragment, jsx, jsxs })}
+          </div>
         </details>
       ))}
     </>
