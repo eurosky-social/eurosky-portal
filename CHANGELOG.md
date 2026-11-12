@@ -1,5 +1,23 @@
 # eurosky-portal
 
+## 1.9.1
+
+### Patch Changes
+
+- [#321](https://github.com/eurosky-social/eurosky-portal/pull/321) [`0f4ef3a`](https://github.com/eurosky-social/eurosky-portal/commit/0f4ef3ae90c7e26838e5f3915936ed26e05de06f) Thanks [@wooorm](https://github.com/wooorm)! - Fix login with a DID
+
+- [#329](https://github.com/eurosky-social/eurosky-portal/pull/329) [`e19b585`](https://github.com/eurosky-social/eurosky-portal/commit/e19b5858a6bf956a0e20aab194fc312cf6746328) Thanks [@wooorm](https://github.com/wooorm)! - Fix transfers continuing after session end
+
+- [#319](https://github.com/eurosky-social/eurosky-portal/pull/319) [`d6b54dd`](https://github.com/eurosky-social/eurosky-portal/commit/d6b54dd4722b42b087e9ddbb5f3aee405cd12e0b) Thanks [@wooorm](https://github.com/wooorm)! - Fix scopes lost when logging in again
+
+- [#324](https://github.com/eurosky-social/eurosky-portal/pull/324) [`2ee962f`](https://github.com/eurosky-social/eurosky-portal/commit/2ee962f58a4ed7dcc51fa3ac5129d3ce1991ffee) Thanks [@wooorm](https://github.com/wooorm)! - Add Content Security Policy
+
+- [#327](https://github.com/eurosky-social/eurosky-portal/pull/327) [`a1b2a13`](https://github.com/eurosky-social/eurosky-portal/commit/a1b2a13e968e62662c7713c63e1a0fa9c82239bd) Thanks [@wooorm](https://github.com/wooorm)! - Fix tests and dev server interfering
+
+- [#323](https://github.com/eurosky-social/eurosky-portal/pull/323) [`61d4e9c`](https://github.com/eurosky-social/eurosky-portal/commit/61d4e9c61bcb10d028946c57429d2ab5afeb3a36) Thanks [@wooorm](https://github.com/wooorm)! - Add rate limiting
+
+- [#316](https://github.com/eurosky-social/eurosky-portal/pull/316) [`8f7ebdf`](https://github.com/eurosky-social/eurosky-portal/commit/8f7ebdf2c8552a8086cdf4142fb4c5813e982670) Thanks [@wooorm](https://github.com/wooorm)! - Fix migrations after moving them to `app/`
+
 ## 1.9.0
 
 ### Minor Changes
