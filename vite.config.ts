@@ -31,6 +31,8 @@ export default defineConfig({
 
   server: {
     allowedHosts: VITE_ALIAS_HOSTS,
+    // Don’t let dev server and tests interfere.
+    ws: process.env.NODE_ENV === 'test' ? false : undefined,
     watch: {
       ignored: ['**/storage/**', '**/tmp/**'],
     },
