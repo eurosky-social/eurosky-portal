@@ -206,6 +206,7 @@ const nl = {
   'oauth2.otherAccount':
     'Ga verder met het account waarmee je bent ingelogd om een dienst te koppelen.',
   'oauth2.pageTitle': 'Een dienst koppelen',
+  'oauth2.public': 'Alles op je account is openbaar, dus deze berichten ook.',
   'oauth2.title': '{name} koppelen?',
   'onboarding.alternative':
     'Je kunt ook <logout>Uitloggen</logout> en {productTitle} niet gebruiken.',

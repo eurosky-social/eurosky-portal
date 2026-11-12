@@ -1,4 +1,5 @@
 import cache from '@adonisjs/cache/services/main'
+import app from '@adonisjs/core/services/app'
 import { Client, type DidString } from '@atproto/lex'
 import { SlingshotService } from '#services/slingshot_service'
 
@@ -25,4 +26,19 @@ export async function pdsClient(did: DidString): Promise<{ client: Client; pds: 
   })
   if (!resolved) throw new Error(`Cannot resolve PDS for \`${did}\``)
   return { client: new Client(resolved.pds), pds: resolved.pds }
+}
+
+/**
+ * Get a client for the repo of a person with their PDS session.
+ *
+ * @param did
+ *   DID of the person.
+ * @returns
+ *   Client.
+ * @throws
+ *   When there is no session or it cannot be restored.
+ */
+export async function pdsSessionClient(did: DidString): Promise<Client> {
+  const { client } = await app.container.make('atproto.oauth.client')
+  return new Client(await client.restore(did))
 }

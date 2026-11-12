@@ -10,6 +10,7 @@ export const controllers = {
   Connections: () => import('#controllers/connections_controller'),
   Dashboard: () => import('#controllers/dashboard_controller'),
   Discover: () => import('#controllers/discover_controller'),
+  Dtp: () => import('#controllers/dtp_controller'),
   Explore: () => import('#controllers/explore_controller'),
   Faq: () => import('#controllers/faq_controller'),
   Files: () => import('#controllers/files_controller'),

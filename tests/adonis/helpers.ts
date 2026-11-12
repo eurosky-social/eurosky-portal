@@ -2,9 +2,10 @@ import cache from '@adonisjs/cache/services/main'
 import type { Env } from '@adonisjs/core/env'
 import app from '@adonisjs/core/services/app'
 import type { ContainerBindings } from '@adonisjs/core/types'
-import type { DidString, HandleString } from '@atproto/lex'
+import { cidForRawBytes, type DidString, type HandleString, lexParse } from '@atproto/lex'
 import type { NodeOAuthClient, OAuthSession } from '@atproto/oauth-client-node'
 import { AtprotoUser } from '@thisismissem/adonisjs-atproto-oauth'
+import vine from '@vinejs/vine'
 import { DateTime } from 'luxon'
 import Account from '#models/account'
 import env from '#start/env'
@@ -39,6 +40,16 @@ export interface FakePds {
   callbackError: Error | undefined
 
   /**
+   * Blobs uploaded to repos.
+   */
+  blobs: Array<{ cid: string; data: Uint8Array; mimeType: string }>
+
+  /**
+   * Records put in repos.
+   */
+  records: Array<{ collection: string; record?: unknown; repo: string; rkey: string }>
+
+  /**
    * DIDs of calls to `revoke` (logging out).
    */
   revokeCalls: Array<string>
@@ -52,6 +63,11 @@ export interface FakePds {
    * Signed in user, to pass to `loginAs` of a request.
    */
   user: AtprotoUser
+
+  /**
+   * Whether XRPC requests to the PDS fail.
+   */
+  xrpcFails: boolean
 }
 
 /**
@@ -73,6 +89,16 @@ interface SignInOptions {
    */
   scope?: string
 }
+
+/**
+ * Input of `putRecord`, as far as the fake PDS needs it.
+ */
+const putRecordValidator = vine.create({
+  collection: vine.string(),
+  record: vine.any(),
+  repo: vine.string(),
+  rkey: vine.string(),
+})
 
 /**
  * Issuer of the fake PDS.
@@ -123,11 +149,14 @@ export async function signIn(options: SignInOptions): Promise<FakePds> {
   const pds: FakePds = {
     authorizeCalls: [],
     authorizeError: undefined,
+    blobs: [],
     callbackDid: did,
     callbackError: undefined,
+    records: [],
     revokeCalls: [],
     scope,
     user: new AtprotoUser(createSession(did)),
+    xrpcFails: false,
   }
 
   const methods = {
@@ -180,6 +209,9 @@ export async function signIn(options: SignInOptions): Promise<FakePds> {
       did: sessionDid,
       server: { issuer },
       sub: sessionDid,
+      async fetchHandler(pathname: string, init?: RequestInit) {
+        return handleXrpc(sessionDid, new URL(pathname, issuer), init)
+      },
       async getTokenInfo() {
         return { aud: issuer, iss: issuer, scope: pds.scope, sub: sessionDid }
       },
@@ -188,6 +220,44 @@ export async function signIn(options: SignInOptions): Promise<FakePds> {
     // Only what the app uses of a session:
     // a real one needs a server agent, with DPoP keys and server metadata.
     return session as unknown as OAuthSession
+  }
+
+  /**
+   * Answer XRPC requests to the repo, recording what was written.
+   */
+  async function handleXrpc(repo: DidString, url: URL, init?: RequestInit): Promise<Response> {
+    const headers = new Headers(init?.headers)
+
+    if (pds.xrpcFails) {
+      return Response.json({ error: 'InternalServerError' }, { status: 500 })
+    }
+
+    if (url.pathname === '/xrpc/com.atproto.repo.uploadBlob') {
+      const data = new Uint8Array(await new Response(init?.body).arrayBuffer())
+      const mimeType = headers.get('content-type') ?? 'application/octet-stream'
+      const cid = await cidForRawBytes(data)
+      pds.blobs.push({ cid: cid.toString(), data, mimeType })
+      const blob = {
+        $type: 'blob',
+        mimeType,
+        ref: { $link: cid.toString() },
+        size: data.byteLength,
+      }
+      return Response.json({ blob })
+    }
+
+    if (url.pathname === '/xrpc/com.atproto.repo.putRecord') {
+      const body = await new Response(init?.body).text()
+      const input = await putRecordValidator.validate(lexParse(body))
+      const cid = await cidForRawBytes(new TextEncoder().encode(body))
+      pds.records.push(input)
+      return Response.json({
+        cid: cid.toString(),
+        uri: `at://${repo}/${input.collection}/${input.rkey}`,
+      })
+    }
+
+    return Response.json({ error: 'MethodNotImplemented' }, { status: 501 })
   }
 }
 

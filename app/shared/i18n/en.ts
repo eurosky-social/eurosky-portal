@@ -202,6 +202,7 @@ const en = {
     '{name} will be able to post your photos and videos to your account, and upload their files.',
   'oauth2.otherAccount': 'Continue with the account you are logged in with to connect a service.',
   'oauth2.pageTitle': 'Connect a service',
+  'oauth2.public': 'Everything on your account is public, so these posts will be too.',
   'oauth2.title': 'Connect {name}?',
   'onboarding.alternative':
     'Alternatively, you can <logout>Logout</logout> and not use {productTitle}.',

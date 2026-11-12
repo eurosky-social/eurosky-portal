@@ -25,6 +25,7 @@ export type ScannedRoutes = {
     'oauth2.decide': { paramsTuple?: []; params?: {} }
     'account.onboarding': { paramsTuple?: []; params?: {} }
     'account.store_acceptance': { paramsTuple?: []; params?: {} }
+    'dtp.media': { paramsTuple?: []; params?: {} }
     'health_checks.live': { paramsTuple?: []; params?: {} }
     'health_checks.ready': { paramsTuple?: []; params?: {} }
     'discover.apps': { paramsTuple?: []; params?: {} }
@@ -85,6 +86,7 @@ export type ScannedRoutes = {
     'discover.favorite': { paramsTuple: [ParamValue]; params: {'rkey': ParamValue} }
     'oauth2.decide': { paramsTuple?: []; params?: {} }
     'account.store_acceptance': { paramsTuple?: []; params?: {} }
+    'dtp.media': { paramsTuple?: []; params?: {} }
     'oauth2.revoke': { paramsTuple?: []; params?: {} }
     'oauth2.token': { paramsTuple?: []; params?: {} }
   }

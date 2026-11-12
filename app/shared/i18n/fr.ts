@@ -212,6 +212,8 @@ const fr = {
   'oauth2.otherAccount':
     'Continuez avec le compte avec lequel vous êtes connecté pour connecter un service.',
   'oauth2.pageTitle': 'Connecter un service',
+  'oauth2.public':
+    'Tout ce qui est sur votre compte est public, ces publications le seront donc aussi.',
   'oauth2.title': 'Connecter {name} ?',
   'onboarding.alternative':
     'Vous pouvez aussi <logout>vous déconnecter</logout> et ne pas utiliser {productTitle}.',

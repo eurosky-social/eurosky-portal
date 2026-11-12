@@ -134,6 +134,12 @@ const routes = {
     tokens: [[0,"onboarding"]],
     types: placeholder as Registry['account.store_acceptance']['types'],
   },
+  'dtp.media': {
+    methods: ["POST"],
+    pattern: '/_dtp/media',
+    tokens: [[0,"_dtp"],[0,"media"]],
+    types: placeholder as Registry['dtp.media']['types'],
+  },
   'health_checks.live': {
     methods: ["GET","HEAD"],
     pattern: '/_health',

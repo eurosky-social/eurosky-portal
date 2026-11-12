@@ -45,6 +45,9 @@ export interface ApiDefinition {
     revoke: typeof routes['oauth2.revoke']
     token: typeof routes['oauth2.token']
   }
+  dtp: {
+    media: typeof routes['dtp.media']
+  }
   healthChecks: {
     live: typeof routes['health_checks.live']
     ready: typeof routes['health_checks.ready']
