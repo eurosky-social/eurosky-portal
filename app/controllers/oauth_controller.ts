@@ -1,5 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
+import app from '@adonisjs/core/services/app'
 import type { I18n } from '@adonisjs/i18n'
+import { ActorResolutionError } from '@atcute/identity-resolver'
 import { OAuthCallbackError, OAuthResolverError } from '@atproto/oauth-client-node'
 import {
   isUriString,
@@ -8,7 +10,6 @@ import {
   type UriString,
   isHandleString,
 } from '@atproto/lex'
-import { type HandleString, INVALID_HANDLE } from '@atproto/syntax'
 import type { AtprotoUser } from '@thisismissem/adonisjs-atproto-oauth'
 import { DateTime } from 'luxon'
 import env from '#start/env'
@@ -18,8 +19,8 @@ import AuthFlowStarted from '#events/auth_flow_started'
 import AuthLoggedOut from '#events/auth_logged_out'
 import activityService from '#services/activity_service'
 import { type FavoriteIntent, FavoriteService } from '#services/favorite_service'
+import IdentityService from '#services/identity_service'
 import jetstreamService from '#services/jetstream_service'
-import { SlingshotService } from '#services/slingshot_service'
 import { loginRequestValidator, signupRequestValidator } from '#validators/oauth'
 import { createFieldError } from '#utils/errors'
 import { oauth2Callback } from '#controllers/oauth2_controller'
@@ -84,12 +85,6 @@ function isIdentifier(input: string): input is AtIdentifierString {
 }
 
 export default class OAuthController {
-  protected slingshot: SlingshotService
-
-  constructor() {
-    this.slingshot = new SlingshotService()
-  }
-
   async login({ i18n, inertia, logger, oauth, session, request }: HttpContext) {
     const data = await request.validateUsing(loginRequestValidator, {
       meta: {
@@ -441,23 +436,15 @@ export default class OAuthController {
       session.regenerate()
       await auth.use('web').logout()
 
-      const resolved = await oauth
-        .resolveIdentity(did, AbortSignal.timeout(resolveIdentityTimeout))
-        .catch((error: unknown) => {
-          // Timeout.
-          if (error instanceof DOMException && error.name === 'AbortError') {
-            return
-          }
+      const identity = await app.container.make(IdentityService)
+      const resolved = await identity.resolveDid(did).catch((error: unknown) => {
+        if (error instanceof ActorResolutionError) {
+          logger.error(error, 'Failed to resolve DID: %s', did)
+          return
+        }
 
-          logger.error(error, 'Failed to resolve handle: %s', did)
-
-          // They *did* complete oauth flow, so this is probably an invalid handle.
-          if (error instanceof OAuthResolverError) {
-            return { did, handle: INVALID_HANDLE as HandleString }
-          }
-
-          throw error
-        })
+        throw error
+      })
 
       const existingAccount = await Account.findBy({ did })
 

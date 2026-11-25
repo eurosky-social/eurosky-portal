@@ -20,8 +20,8 @@ export default class PortalBackfillHandles extends BaseCommand {
 
   override async run() {
     const { default: Account } = await import('#models/account')
-    const { SlingshotService } = await import('#services/slingshot_service')
-    const slingshot = new SlingshotService()
+    const { default: IdentityService } = await import('#services/identity_service')
+    const identity = await this.app.container.make(IdentityService)
 
     let page = 0
     let hasMore = true
@@ -43,7 +43,7 @@ export default class PortalBackfillHandles extends BaseCommand {
 
       await Promise.all(
         result.all().map(async (account) => {
-          const resolved = await slingshot.resolveMiniDoc(account.did).catch((error: unknown) => {
+          const resolved = await identity.resolveDid(account.did).catch((error: unknown) => {
             this.logger.error(`Unable to resolve handle for ${account.did}: ${error}`)
             return undefined
           })

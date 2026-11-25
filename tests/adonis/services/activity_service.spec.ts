@@ -1,9 +1,13 @@
 import testUtils from '@adonisjs/core/services/test_utils'
+import { AtUri } from '@atproto/syntax'
 import { test } from '@japa/runner'
 import { DateTime } from 'luxon'
+import * as lexicon from '#lexicons/index'
 import Account from '#models/account'
 import ActivityRecord from '#models/activity_record'
 import activityService from '#services/activity_service'
+import { pdsUrl } from '../../pds.ts'
+import { restoreOauth, signIn } from '../helpers.ts'
 
 const did = 'did:web:a.com'
 const ip = '127.0.0.1'
@@ -209,5 +213,61 @@ test.group('services / activity / prune', function (group) {
     const oldest = await ActivityRecord.query().where('did', did).orderBy('rkey').first()
 
     assert.equal(oldest?.rkey, '0002')
+  })
+})
+
+test.group('services / activity / with a PDS', function (group) {
+  group.each.setup(function () {
+    return testUtils.db().wrapInGlobalTransaction()
+  })
+  group.each.teardown(restoreOauth)
+
+  test('should backfill records from the repo', async function ({ assert }) {
+    const { did, repo } = await signIn()
+    await repo.create(lexicon.app.bsky.feed.post.main, {
+      createdAt: '2026-01-01T00:00:00.000Z',
+      text: 'a',
+    })
+    await activityService.backfill(did)
+    const rows = await ActivityRecord.query().where('did', did)
+    const account = await Account.findOrFail(did)
+
+    assert.deepEqual(
+      rows.map(function (row) {
+        return [row.collection, row.text]
+      }),
+      [['app.bsky.feed.post', 'a']]
+    )
+    assert.isNotNull(account.lastActivitySyncAt)
+  })
+
+  test('should get a record from the repo', async function ({ assert }) {
+    const { did, repo } = await signIn()
+    const { uri } = await repo.create(lexicon.app.bsky.feed.post.main, {
+      createdAt: '2026-01-01T00:00:00.000Z',
+      text: 'a',
+    })
+    await activityService.backfill(did)
+    const result = await activityService.getRecord(did, 'app.bsky.feed.post', new AtUri(uri).rkey)
+
+    assert.equal(result?.pds, pdsUrl())
+    assert.equal(result?.uri, uri)
+    assert.containSubset(result?.value, { text: 'a' })
+  })
+
+  test('should drop records deleted from the repo', async function ({ assert }) {
+    const { did, repo } = await signIn()
+    const { uri } = await repo.create(lexicon.app.bsky.feed.post.main, {
+      createdAt: '2026-01-01T00:00:00.000Z',
+      text: 'a',
+    })
+    const { rkey } = new AtUri(uri)
+    await activityService.backfill(did)
+    await repo.delete(lexicon.app.bsky.feed.post.main, { rkey })
+    const result = await activityService.getRecord(did, 'app.bsky.feed.post', rkey)
+    const rows = await ActivityRecord.query().where('did', did)
+
+    assert.isUndefined(result)
+    assert.deepEqual(rows, [])
   })
 })

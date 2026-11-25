@@ -33,7 +33,7 @@ flowchart LR
     oldpds[(Previous PDS<br/>e.g. bsky.social)]
     plc[(PLC directory)]
     jet[Jetstream<br/>jetstream1.eurosky.network]
-    ext[Public services<br/>Slingshot, Bluesky AppView, atstore]
+    ext[Public services<br/>Bluesky AppView, atstore]
 
     user -->|sign up / sign in| portal
     portal -->|OAuth: register / authorize| pds
@@ -44,7 +44,8 @@ flowchart LR
     haul -->|update DID to point at new PDS| plc
     pds -->|commits| jet
     jet -->|live activity for recently active accounts| portal
-    portal -->|read records, resolve identities, app listings| ext
+    portal -->|resolve DIDs| plc
+    portal -->|read records, app listings| ext
 ```
 
 ### How it fits together
@@ -55,7 +56,7 @@ flowchart LR
 
 **3. Signing in: Portal ↔ PDS.** Sign-in is AT Protocol OAuth (with granular scopes) using [`@thisismissem/adonisjs-atproto-oauth`](https://github.com/thisismissem/adonisjs-atproto-oauth). The Portal resolves the handle or DID, checks that its authorization server is the configured Eurosky PDS (unless `ALLOW_EXTERNAL_LOGINS=true`), and redirects the person to the PDS to approve. OAuth session tokens are stored server-side in the Portal's database; the browser only holds an encrypted session cookie. By default the Portal asks for the minimum scopes; extra scopes (for example writing an app "favorite" record) are requested step by step when a feature needs them.
 
-**4. Showing activity: PDS → Jetstream → Portal.** The Portal shows a person's recent posts, likes, follows and long-form documents. On first sign-in a background job backfills recent records by reading them directly from the person's PDS (located via the Slingshot identity resolver). After that, the Portal subscribes to a Jetstream firehose and mirrors new commits for recently active accounts. Only a bounded preview of recent records is cached; the PDS remains the source of truth.
+**4. Showing activity: PDS → Jetstream → Portal.** The Portal shows a person's recent posts, likes, follows and long-form documents. On first sign-in a background job backfills recent records by reading them directly from the person's PDS (located through their DID document, from the PLC directory or `did:web`). After that, the Portal subscribes to a Jetstream firehose and mirrors new commits for recently active accounts. Only a bounded preview of recent records is cached; the PDS remains the source of truth.
 
 **5. Showing files: PDS → Portal.** The files page lists the files (blobs, such as images and videos) that apps have uploaded to a person's repository, and how much space each kind takes. A background job lists the blobs on the person's PDS and stores only their metadata (CID, type and size), for up to 5,000 per account. While the page is in use, new blobs are picked up every few minutes and removed ones once a day. Previews and downloads are loaded by the browser, from the Bluesky CDN or straight from the PDS.
 

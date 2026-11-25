@@ -1,25 +1,33 @@
-import cache from '@adonisjs/cache/services/main'
 import testUtils from '@adonisjs/core/services/test_utils'
+import type { DidString } from '@atproto/lex'
 import { test } from '@japa/runner'
+import sharp from 'sharp'
 import { DateTime } from 'luxon'
 import Account from '#models/account'
 import Blob from '#models/blob'
+import * as lexicon from '#lexicons/index'
 import storageService from '#services/storage_service'
+import { createAccount, pdsUrl } from '../../pds.ts'
+import { restoreOauth, signIn } from '../helpers.ts'
 
-const did = 'did:web:a.com'
 const now = DateTime.now()
-// Cached so that there is no network.
-const resolved = {
-  key: `pds-resolve:${did}`,
-  value: { did, handle: 'b.com', pds: 'https://c.com' },
-}
-const image = { category: 'image', cid: 'd', creator: did, mimeType: 'image/png', size: 1 }
+const image = { category: 'image', cid: 'd', mimeType: 'image/png', size: 1 }
 const otherImage = { ...image, cid: 'e', size: 2 }
-const video = { category: 'video', cid: 'f', creator: did, mimeType: 'video/mp4', size: 4 }
+const video = { category: 'video', cid: 'f', mimeType: 'video/mp4', size: 4 }
+
+/**
+ * DID of an account on the PDS of the tests, made for each test.
+ */
+let did: DidString
 
 test.group('services / storage / getStorage', function (group) {
   group.each.setup(function () {
     return testUtils.db().wrapInGlobalTransaction()
+  })
+
+  group.each.setup(async function () {
+    const account = await createAccount()
+    did = account.did
   })
 
   test('should be syncing before the first backfill', async function ({ assert }) {
@@ -37,19 +45,17 @@ test.group('services / storage / getStorage', function (group) {
   })
 
   test('should include the PDS', async function ({ assert }) {
-    await cache.set(resolved)
     await Account.create({ did, lastStorageFullSyncAt: now, lastStorageSyncAt: now })
-    await Blob.create(image)
+    await createBlobs(image)
     const result = await storageService.getStorage({ did })
     const pds = 'pds' in result ? result.pds : undefined
 
-    assert.equal(pds, 'https://c.com')
+    assert.equal(pds, pdsUrl())
   })
 
   test('should list biggest first', async function ({ assert }) {
-    await cache.set(resolved)
     await Account.create({ did, lastStorageFullSyncAt: now, lastStorageSyncAt: now })
-    await Blob.createMany([image, video])
+    await createBlobs(image, video)
     const result = await storageService.getStorage({ did })
     const blobs = 'blobs' in result ? result.blobs : []
 
@@ -62,9 +68,8 @@ test.group('services / storage / getStorage', function (group) {
   })
 
   test('should break down by category, biggest first', async function ({ assert }) {
-    await cache.set(resolved)
     await Account.create({ did, lastStorageFullSyncAt: now, lastStorageSyncAt: now })
-    await Blob.createMany([image, otherImage, video])
+    await createBlobs(image, otherImage, video)
     const result = await storageService.getStorage({ did })
     const breakdown = 'breakdown' in result ? result.breakdown : []
 
@@ -75,9 +80,8 @@ test.group('services / storage / getStorage', function (group) {
   })
 
   test('should count all files in `total`', async function ({ assert }) {
-    await cache.set(resolved)
     await Account.create({ did, lastStorageFullSyncAt: now, lastStorageSyncAt: now })
-    await Blob.createMany([image, video])
+    await createBlobs(image, video)
     const result = await storageService.getStorage({ did })
     const total = 'total' in result ? result.total : undefined
 
@@ -85,9 +89,8 @@ test.group('services / storage / getStorage', function (group) {
   })
 
   test('should support `category`', async function ({ assert }) {
-    await cache.set(resolved)
     await Account.create({ did, lastStorageFullSyncAt: now, lastStorageSyncAt: now })
-    await Blob.createMany([image, video])
+    await createBlobs(image, video)
     const result = await storageService.getStorage({ category: 'image', did })
     const blobs = 'blobs' in result ? result.blobs : []
 
@@ -100,9 +103,8 @@ test.group('services / storage / getStorage', function (group) {
   })
 
   test('should count files in `category` in `total`', async function ({ assert }) {
-    await cache.set(resolved)
     await Account.create({ did, lastStorageFullSyncAt: now, lastStorageSyncAt: now })
-    await Blob.createMany([image, video])
+    await createBlobs(image, video)
     const result = await storageService.getStorage({ category: 'image', did })
     const total = 'total' in result ? result.total : undefined
 
@@ -110,10 +112,9 @@ test.group('services / storage / getStorage', function (group) {
   })
 
   test('should list 48 per page', async function ({ assert }) {
-    await cache.set(resolved)
     await Account.create({ did, lastStorageFullSyncAt: now, lastStorageSyncAt: now })
-    await Blob.createMany(
-      Array.from({ length: 49 }, function (_, index) {
+    await createBlobs(
+      ...Array.from({ length: 49 }, function (_, index) {
         return { ...image, cid: `a${index}`, size: index + 1 }
       })
     )
@@ -124,9 +125,8 @@ test.group('services / storage / getStorage', function (group) {
   })
 
   test('should not have `next` on the last page', async function ({ assert }) {
-    await cache.set(resolved)
     await Account.create({ did, lastStorageFullSyncAt: now, lastStorageSyncAt: now })
-    await Blob.create(image)
+    await createBlobs(image)
     const result = await storageService.getStorage({ did })
     const next = 'next' in result ? result.next : undefined
 
@@ -134,10 +134,9 @@ test.group('services / storage / getStorage', function (group) {
   })
 
   test('should list the next page with `next`', async function ({ assert }) {
-    await cache.set(resolved)
     await Account.create({ did, lastStorageFullSyncAt: now, lastStorageSyncAt: now })
-    await Blob.createMany(
-      Array.from({ length: 49 }, function (_, index) {
+    await createBlobs(
+      ...Array.from({ length: 49 }, function (_, index) {
         return { ...image, cid: `a${index}`, size: index + 1 }
       })
     )
@@ -161,3 +160,50 @@ test.group('services / storage / getStorage', function (group) {
     )
   })
 })
+
+test.group('services / storage / backfill', function (group) {
+  group.each.setup(function () {
+    return testUtils.db().wrapInGlobalTransaction()
+  })
+  group.each.teardown(restoreOauth)
+
+  test('should store blobs in the repo', async function ({ assert }) {
+    const { did, repo } = await signIn()
+    const data = await sharp({
+      create: { background: '#ff0000', channels: 3, height: 1, width: 1 },
+    })
+      .png()
+      .toBuffer()
+    const { body } = await repo.uploadBlob(data, { encoding: 'image/png' })
+    // Blobs only stay when used.
+    await repo.create(lexicon.app.bsky.feed.post.main, {
+      createdAt: '2026-01-01T00:00:00.000Z',
+      embed: lexicon.app.bsky.embed.images.main.build({
+        images: [{ alt: '', image: body.blob }],
+      }),
+      text: 'a',
+    })
+    await storageService.backfill(did)
+    const rows = await Blob.query().where('creator', did)
+    const account = await Account.findOrFail(did)
+
+    assert.deepEqual(
+      rows.map(function (row) {
+        return [row.category, row.mimeType, row.size]
+      }),
+      [['image', 'image/png', data.byteLength]]
+    )
+    assert.isNotNull(account.lastStorageFullSyncAt)
+  })
+})
+
+/**
+ * Store blobs of the account of the test.
+ */
+async function createBlobs(...blobs: Array<typeof image>): Promise<undefined> {
+  await Blob.createMany(
+    blobs.map(function (blob) {
+      return { ...blob, creator: did }
+    })
+  )
+}

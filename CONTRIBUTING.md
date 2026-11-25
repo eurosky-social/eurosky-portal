@@ -55,7 +55,7 @@ Open <http://127.0.0.1:4075> and sign in.
 - **Use the URL from `APP_URL`.** AT Protocol OAuth is strict about redirect URLs, so in development the app redirects any request on another host (for example `localhost` instead of `127.0.0.1`) to the host configured in `APP_URL`.
 - **OAuth client.** Leave `ATPROTO_OAUTH_CLIENT_ID` unset locally. Production uses a published client metadata document instead.
 - **Which PDS you sign in to.** `.env.example` sets `OAUTH_SERVICE=https://pds.rip/` (a test PDS) and `ALLOW_EXTERNAL_LOGINS=true`, so you can sign in with an existing account on any PDS. Using "Create account" creates a real account on whatever `OAUTH_SERVICE` points to, so do not point it at the production Eurosky PDS when testing sign-up.
-- **External services.** In development the Portal still talks to public network services: Slingshot (identity resolution), the public Bluesky AppView (profiles and posts), atstore (app listings) and a Eurosky Jetstream (live activity). You need internet access, and some features degrade gracefully if one is unavailable.
+- **External services.** In development the Portal still talks to public network services: the PLC directory and DNS (identity resolution), the public Bluesky AppView (profiles and posts), atstore (app listings) and a Eurosky Jetstream (live activity). You need internet access, and some features degrade gracefully if one is unavailable.
 - **Resetting state.** Stop the server and delete `tmp/db.sqlite3*`, then run `pnpm db:migrate` again.
 - **Optional extras.** OpenTelemetry (`OTEL_ENABLED`) and Plausible (`PLAUSIBLE_ENABLED`) are off by default and not needed for development.
 
@@ -76,7 +76,7 @@ app/
   middleware/     Auth, guest, legal "roadblock" (re-accept updated terms), locale detection, ...
   models/         Lucid models: Account, ActivityRecord, Blob, OauthSession, OauthState
   providers/      App providers, including the queue worker and Jetstream subscriber
-  services/       Integrations: activity backfill, storage sync, Jetstream, Slingshot, Bluesky AppView, atstore, favorites, legal docs, Plausible
+  services/       Integrations: activity backfill, storage sync, Jetstream, Bluesky AppView, atstore, favorites, legal docs, Plausible
   shared/         Code used by both server and front end (app catalog, brand, locales, MIME types)
     i18n/         Translations, for server and front end (one file per locale)
   start/          Boot files: routes, env validation, middleware kernel, auto-migration

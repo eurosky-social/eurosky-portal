@@ -14,8 +14,8 @@ test.group('logging in and out', function (group) {
   })
   group.each.teardown(restoreOauth)
 
-  test('should log in', async function ({ cleanup, client }) {
-    const { did } = await signIn()
+  test('should log in, storing the handle', async function ({ assert, cleanup, client }) {
+    const { did, handle } = await signIn({ handle: null })
     // Already synced, so no backfill is queued.
     const account = await Account.findOrFail(did)
     await account.merge({ lastActivitySyncAt: DateTime.now() }).save()
@@ -29,8 +29,10 @@ test.group('logging in and out', function (group) {
       .qs({ code: 'c', state: 'd' })
       .withSession({ oauth_state: 'd', source: 'login' })
       .redirects(0)
+    await account.refresh()
 
     response.assertHeader('location', '/dashboard')
+    assert.equal(account.handle, handle)
   })
 
   test('should start logging in with a DID', async function ({ assert, client }) {

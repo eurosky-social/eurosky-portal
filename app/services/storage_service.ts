@@ -1,3 +1,4 @@
+import app from '@adonisjs/core/services/app'
 import logger from '@adonisjs/core/services/logger'
 import type { DidString } from '@atproto/lex'
 import { DateTime } from 'luxon'
@@ -5,6 +6,7 @@ import StorageBackfillJob from '#jobs/storage_backfill_job'
 import * as lexicon from '#lexicons/index'
 import Account from '#models/account'
 import Blob from '#models/blob'
+import IdentityService from '#services/identity_service'
 import type { Jsonify } from '#shared/json'
 import { normalizeMimeType, mediaType } from '#shared/mime'
 import { type StorageCategory, type StorageTab, isStorageCategory } from '#shared/storage'
@@ -293,6 +295,7 @@ export class StorageService {
       throw error
     }
 
+    const { pdsFetch } = await app.container.make(IdentityService)
     const knownRows = await Blob.query().where('creator', did).select('cid')
     const known = new Set(knownRows.map((row) => row.cid))
     const unknown = [...cids].filter((cid) => !known.has(cid))
@@ -309,7 +312,7 @@ export class StorageService {
       const results = await Promise.all(
         slice.map(async (cid) => {
           try {
-            return await this.#blob(pds, did, cid, backfillSignal)
+            return await this.#blob(pdsFetch, pds, did, cid, backfillSignal)
           } catch (err) {
             if (err instanceof RateLimitError) rateLimited = true
             errors.push(err)
@@ -509,6 +512,8 @@ export class StorageService {
   /**
    * `HEAD` a blob to get its metadata w/o downloading it.
    *
+   * @param fetch
+   *   Fetch for PDSes (`IdentityService#pdsFetch`).
    * @param pds
    *   PDS base URL.
    * @param did
@@ -522,6 +527,7 @@ export class StorageService {
    *   found.
    */
   async #blob(
+    fetch: typeof globalThis.fetch,
     pds: string,
     did: DidString,
     cid: string,
