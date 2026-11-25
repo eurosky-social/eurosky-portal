@@ -10,7 +10,19 @@
     "view": {
       "type": "object",
       "required": ["external"],
-      "properties": { "external": { "ref": "#viewExternal", "type": "ref" } }
+      "properties": {
+        "data": {
+          "refs": [
+            "#viewArticle",
+            "#viewArticlePublication",
+            "#viewGallery",
+            "#viewLivestream"
+          ],
+          "type": "union",
+          "description": "Hydrated modality-specific data for the external embed, when available."
+        },
+        "external": { "ref": "#viewExternal", "type": "ref" }
+      }
     },
     "colorRGB": {
       "type": "object",
@@ -55,12 +67,18 @@
             "type": "ref"
           },
           "maxLength": 3,
-          "description": "Available profile previews. Selected deterministically by DID; not a ranking."
+          "description": "Available profile previews. Selected deterministically by DID; not a ranking. Deprecated: use viewer.knownLikers instead."
         },
+        "viewer": { "ref": "#viewArticleViewerState", "type": "ref" },
         "createdAt": { "type": "string", "format": "datetime" },
         "likeCount": { "type": "integer", "minimum": 0 },
         "publisher": { "ref": "#viewArticlePublication", "type": "ref" },
         "updatedAt": { "type": "string", "format": "datetime" },
+        "providerId": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "Best-effort provider domain for cosmetic attribution, such as pckt.blog. Not verified provenance."
+        },
         "description": { "type": "string" },
         "readingTime": { "type": "integer", "minimum": 1 },
         "associatedRefs": {
@@ -98,11 +116,22 @@
             "type": "ref"
           },
           "maxLength": 3,
-          "description": "Available profile previews. Selected deterministically by DID; not a ranking."
+          "description": "Available profile previews. Selected deterministically by DID; not a ranking. Deprecated: use viewer.knownLikers instead."
         },
+        "viewer": { "ref": "#viewGalleryViewerState", "type": "ref" },
         "createdAt": { "type": "string", "format": "datetime" },
         "likeCount": { "type": "integer", "minimum": 0 },
         "updatedAt": { "type": "string", "format": "datetime" },
+        "photoCount": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Total number of gallery item backlinks, independent of the items included in this view."
+        },
+        "providerId": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "Best-effort provider domain for cosmetic attribution, such as grain.social. Not verified provenance."
+        },
         "description": { "type": "string" },
         "associatedRefs": {
           "type": "array",
@@ -178,6 +207,16 @@
         "createdAt": { "type": "string", "format": "datetime" },
         "startedAt": { "type": "string", "format": "datetime" },
         "updatedAt": { "type": "string", "format": "datetime" },
+        "lastSeenAt": {
+          "type": "string",
+          "format": "datetime",
+          "description": "When the livestream last reported that it was live. A livestream without endedAt is considered active until two minutes after its last heartbeat; clients can apply the same window to tell whether a cached view is still live."
+        },
+        "providerId": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "Best-effort provider domain for cosmetic attribution, such as stream.place. Not verified provenance."
+        },
         "description": { "type": "string" },
         "associatedRefs": {
           "type": "array",
@@ -249,8 +288,17 @@
           "type": "array",
           "items": { "ref": "com.atproto.label.defs#label", "type": "ref" }
         },
+        "viewer": {
+          "ref": "#viewArticlePublicationViewerState",
+          "type": "ref"
+        },
         "createdAt": { "type": "string", "format": "datetime" },
         "updatedAt": { "type": "string", "format": "datetime" },
+        "providerId": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "Best-effort provider domain for cosmetic attribution, such as pckt.blog. Not verified provenance."
+        },
         "description": { "type": "string" },
         "subscribers": {
           "type": "array",
@@ -274,6 +322,56 @@
           }
         }
       }
+    },
+    "viewArticleViewerState": {
+      "type": "object",
+      "properties": {
+        "like": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "The requesting account's site.standard.graph.recommend record for this article, if recommended."
+        },
+        "knownLikers": {
+          "type": "array",
+          "items": {
+            "ref": "app.bsky.actor.defs#profileViewBasic",
+            "type": "ref"
+          },
+          "maxLength": 3,
+          "description": "Up to 3 accounts the requesting account follows that recommended the subject, newest first. Never includes the requesting account."
+        },
+        "knownLikerCount": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Total number of accounts the requesting account follows that recommended the subject, including those in knownLikers."
+        }
+      },
+      "description": "Metadata about the requesting account's relationship with the subject article. Only has meaningful content for authed requests."
+    },
+    "viewGalleryViewerState": {
+      "type": "object",
+      "properties": {
+        "like": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "The requesting account's social.grain.favorite record for this gallery, if favorited."
+        },
+        "knownLikers": {
+          "type": "array",
+          "items": {
+            "ref": "app.bsky.actor.defs#profileViewBasic",
+            "type": "ref"
+          },
+          "maxLength": 3,
+          "description": "Up to 3 accounts the requesting account follows that favorited the subject, newest first. Never includes the requesting account."
+        },
+        "knownLikerCount": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Total number of accounts the requesting account follows that favorited the subject, including those in knownLikers."
+        }
+      },
+      "description": "Metadata about the requesting account's relationship with the subject gallery. Only has meaningful content for authed requests."
     },
     "viewExternalSourceTheme": {
       "type": "object",
@@ -305,6 +403,31 @@
           "description": "Hex color string, if available. Example: '#ffffff'."
         }
       }
+    },
+    "viewArticlePublicationViewerState": {
+      "type": "object",
+      "properties": {
+        "subscription": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "The requesting account's site.standard.graph.subscription record for this publication, if subscribed."
+        },
+        "knownSubscribers": {
+          "type": "array",
+          "items": {
+            "ref": "app.bsky.actor.defs#profileViewBasic",
+            "type": "ref"
+          },
+          "maxLength": 3,
+          "description": "Up to 3 accounts the requesting account follows that subscribed to the subject, newest first. Never includes the requesting account."
+        },
+        "knownSubscriberCount": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Total number of accounts the requesting account follows that subscribed to the subject, including those in knownSubscribers."
+        }
+      },
+      "description": "Metadata about the requesting account's relationship with the subject publication. Only has meaningful content for authed requests."
     }
   },
   "$type": "com.atproto.lexicon.schema",

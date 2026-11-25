@@ -10,12 +10,12 @@ type $nsid = typeof $nsid
 
 export { $nsid }
 
-/** A user favorite for an AT Store listing. Subject must be the at:// URI of a fyi.atstore.listing.detail record. */
+/** A user favorite for an AT Store app listing. Subject is the at:// URI of a fyi.atstore.listing.detail record. Games are favorited with games.atmosphere.fave instead, so the favorite is shared with atmosphere.games; AT Store counts both. */
 type Main = {
   $type: 'fyi.atstore.listing.favorite'
 
   /**
-   * AT URI of the fyi.atstore.listing.detail record being favorited.
+   * AT URI of the fyi.atstore.listing.detail record being favorited (a games.atmosphere.define URI is also accepted for older game favorites).
    */
   subject: l.AtUriString
   createdAt: l.DatetimeString
@@ -23,7 +23,7 @@ type Main = {
 
 export type { Main }
 
-/** A user favorite for an AT Store listing. Subject must be the at:// URI of a fyi.atstore.listing.detail record. */
+/** A user favorite for an AT Store app listing. Subject is the at:// URI of a fyi.atstore.listing.detail record. Games are favorited with games.atmosphere.fave instead, so the favorite is shared with atmosphere.games; AT Store counts both. */
 const main = /*#__PURE__*/ l.record<'any', Main>(
   'any',
   $nsid,

@@ -5,15 +5,29 @@
       "type": "object",
       "required": ["audience"],
       "properties": {
-        "tierIds": {
-          "type": "array",
-          "items": { "type": "string" },
-          "description": "Paid tier ids that grant access when audience is tiers. An empty selection grants no membership access."
-        },
         "audience": {
+          "refs": [
+            "pub.leaflet.audience#subscribers",
+            "pub.leaflet.audience#paid",
+            "pub.leaflet.audience#tiers"
+          ],
+          "type": "union",
+          "description": "Who can read past the delimiter."
+        },
+        "widerReleaseAt": {
           "type": "string",
-          "description": "Whether access is available to all subscribers, all paid members, or selected paid tiers.",
-          "knownValues": ["subscribers", "paid", "tiers"]
+          "format": "datetime",
+          "description": "When an early-access gate widens to widerReleaseAudience. Absent when the gate never widens."
+        },
+        "widerReleaseAudience": {
+          "refs": [
+            "pub.leaflet.audience#public",
+            "pub.leaflet.audience#subscribers",
+            "pub.leaflet.audience#paid",
+            "pub.leaflet.audience#tiers"
+          ],
+          "type": "union",
+          "description": "Who can read past the delimiter once widerReleaseAt passes, in addition to the original audience. public removes the gate entirely."
         }
       },
       "description": "Marks where members-only content begins and declares which publication members can read past it."

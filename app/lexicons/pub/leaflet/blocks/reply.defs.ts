@@ -3,6 +3,7 @@
  */
 
 import { l } from '@atproto/lex'
+import * as LeafletAudience from '../audience.defs.ts'
 
 const $nsid = 'pub.leaflet.blocks.reply'
 
@@ -18,6 +19,22 @@ type Main = {
    * Tells this block apart from the document's other blocks of its type; interaction records name it in their `block` field. Records without a matching key belong to the first block of the type.
    */
   key?: string
+
+  /**
+   * Who may reply. Absent means anyone. Checked when a reply is submitted.
+   */
+  audience?:
+    | l.$Typed<LeafletAudience.Subscribers>
+    | l.$Typed<LeafletAudience.Paid>
+    | l.$Typed<LeafletAudience.Tiers>
+    | l.$Typed<LeafletAudience.Follows>
+    | l.$Typed<LeafletAudience.Followers>
+    | l.Unknown$TypedObject
+
+  /**
+   * When the block stops taking replies. Absent means it never closes. Checked when a reply is submitted.
+   */
+  closesAt?: l.DatetimeString
 
   /**
    * Label for the button readers use to submit a reply.
@@ -43,6 +60,31 @@ const main = /*#__PURE__*/ l.typedObject<Main>(
   'main',
   /*#__PURE__*/ l.object({
     key: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ maxLength: 100 })),
+    audience: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.typedUnion(
+        [
+          /*#__PURE__*/ l.typedRef<LeafletAudience.Subscribers>(
+            (() => LeafletAudience.subscribers) as any,
+          ),
+          /*#__PURE__*/ l.typedRef<LeafletAudience.Paid>(
+            (() => LeafletAudience.paid) as any,
+          ),
+          /*#__PURE__*/ l.typedRef<LeafletAudience.Tiers>(
+            (() => LeafletAudience.tiers) as any,
+          ),
+          /*#__PURE__*/ l.typedRef<LeafletAudience.Follows>(
+            (() => LeafletAudience.follows) as any,
+          ),
+          /*#__PURE__*/ l.typedRef<LeafletAudience.Followers>(
+            (() => LeafletAudience.followers) as any,
+          ),
+        ],
+        false,
+      ),
+    ),
+    closesAt: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'datetime' }),
+    ),
     buttonText: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.string({ maxLength: 500, maxGraphemes: 50 }),
     ),

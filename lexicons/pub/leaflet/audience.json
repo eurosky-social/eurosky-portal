@@ -1,0 +1,45 @@
+{
+  "id": "pub.leaflet.audience",
+  "defs": {
+    "paid": {
+      "type": "object",
+      "properties": {},
+      "description": "All paid members of the document's publication."
+    },
+    "tiers": {
+      "type": "object",
+      "required": ["tierIds"],
+      "properties": {
+        "tierIds": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 100 },
+          "maxLength": 50,
+          "description": "Paid tier ids that grant access. An empty selection grants no membership access."
+        }
+      },
+      "description": "Active members of the selected paid tiers."
+    },
+    "public": {
+      "type": "object",
+      "properties": {},
+      "description": "Anyone, signed in or not."
+    },
+    "follows": {
+      "type": "object",
+      "properties": {},
+      "description": "Accounts the document's author follows."
+    },
+    "followers": {
+      "type": "object",
+      "properties": {},
+      "description": "Accounts following the document's author."
+    },
+    "subscribers": {
+      "type": "object",
+      "properties": {},
+      "description": "All free and paid subscribers to the document's publication."
+    }
+  },
+  "$type": "com.atproto.lexicon.schema",
+  "lexicon": 1
+}

@@ -53,7 +53,7 @@ type ListingCardGet = {
   $type?: 'fyi.atstore.directory.getListing#listingCardGet'
 
   /**
-   * AT URI of the fyi.atstore.listing.detail record.
+   * AT URI of the listing record: fyi.atstore.listing.detail for apps, games.atmosphere.define for games. Use as the subject of fyi.atstore.listing.review.
    */
   uri: l.AtUriString
   name: string
@@ -65,6 +65,11 @@ type ListingCardGet = {
   category: string
   priceLabel: string
   description: string
+
+  /**
+   * app for AT Store listings; game when the listing is (or is linked to) a games.atmosphere.define record from atmosphere.games.
+   */
+  listingType?: 'app' | 'game' | l.UnknownString
   reviewCount: number
   categorySlug: string | null
   heroImageUrl: string | null
@@ -93,6 +98,11 @@ const listingCardGet = /*#__PURE__*/ l.typedObject<ListingCardGet>(
     category: /*#__PURE__*/ l.string({ maxLength: 640 }),
     priceLabel: /*#__PURE__*/ l.string({ maxLength: 32 }),
     description: /*#__PURE__*/ l.string({ maxLength: 20000 }),
+    listingType: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string<{ maxLength: 32; knownValues: ['app', 'game'] }>({
+        maxLength: 32,
+      }),
+    ),
     reviewCount: /*#__PURE__*/ l.integer(),
     categorySlug: /*#__PURE__*/ l.nullable(
       /*#__PURE__*/ l.string({ maxLength: 512 }),

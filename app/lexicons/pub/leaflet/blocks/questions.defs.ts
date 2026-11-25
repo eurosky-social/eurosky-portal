@@ -3,6 +3,7 @@
  */
 
 import { l } from '@atproto/lex'
+import * as LeafletAudience from '../audience.defs.ts'
 
 const $nsid = 'pub.leaflet.blocks.questions'
 
@@ -20,9 +21,20 @@ type Main = {
   key?: string
 
   /**
-   * Who may ask: anyone, only accounts the author follows, or only accounts following the author. Defaults to anyone. Checked when a question is asked.
+   * Who may ask. Absent means anyone. Checked when a question is asked.
    */
-  audience?: 'anyone' | 'follows' | 'followers' | l.UnknownString
+  audience?:
+    | l.$Typed<LeafletAudience.Subscribers>
+    | l.$Typed<LeafletAudience.Paid>
+    | l.$Typed<LeafletAudience.Tiers>
+    | l.$Typed<LeafletAudience.Follows>
+    | l.$Typed<LeafletAudience.Followers>
+    | l.Unknown$TypedObject
+
+  /**
+   * When the block stops taking questions. Absent means it never closes. Checked when a question is submitted.
+   */
+  closesAt?: l.DatetimeString
 
   /**
    * Label for the button readers use to submit a question.
@@ -44,9 +56,29 @@ const main = /*#__PURE__*/ l.typedObject<Main>(
   /*#__PURE__*/ l.object({
     key: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ maxLength: 100 })),
     audience: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.string<{
-        knownValues: ['anyone', 'follows', 'followers']
-      }>(),
+      /*#__PURE__*/ l.typedUnion(
+        [
+          /*#__PURE__*/ l.typedRef<LeafletAudience.Subscribers>(
+            (() => LeafletAudience.subscribers) as any,
+          ),
+          /*#__PURE__*/ l.typedRef<LeafletAudience.Paid>(
+            (() => LeafletAudience.paid) as any,
+          ),
+          /*#__PURE__*/ l.typedRef<LeafletAudience.Tiers>(
+            (() => LeafletAudience.tiers) as any,
+          ),
+          /*#__PURE__*/ l.typedRef<LeafletAudience.Follows>(
+            (() => LeafletAudience.follows) as any,
+          ),
+          /*#__PURE__*/ l.typedRef<LeafletAudience.Followers>(
+            (() => LeafletAudience.followers) as any,
+          ),
+        ],
+        false,
+      ),
+    ),
+    closesAt: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'datetime' }),
     ),
     buttonText: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.string({ maxLength: 500, maxGraphemes: 50 }),

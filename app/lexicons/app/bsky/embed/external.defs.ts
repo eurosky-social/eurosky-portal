@@ -48,7 +48,20 @@ export const $safeParse = /*#__PURE__*/ main.safeParse.bind(main)
 export const $validate = /*#__PURE__*/ main.validate.bind(main)
 export const $safeValidate = /*#__PURE__*/ main.safeValidate.bind(main)
 
-type View = { $type?: 'app.bsky.embed.external#view'; external: ViewExternal }
+type View = {
+  $type?: 'app.bsky.embed.external#view'
+
+  /**
+   * Hydrated modality-specific data for the external embed, when available.
+   */
+  data?:
+    | l.$Typed<ViewArticle>
+    | l.$Typed<ViewArticlePublication>
+    | l.$Typed<ViewGallery>
+    | l.$Typed<ViewLivestream>
+    | l.Unknown$TypedObject
+  external: ViewExternal
+}
 
 export type { View }
 
@@ -56,6 +69,21 @@ const view = /*#__PURE__*/ l.typedObject<View>(
   $nsid,
   'view',
   /*#__PURE__*/ l.object({
+    data: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.typedUnion(
+        [
+          /*#__PURE__*/ l.typedRef<ViewArticle>((() => viewArticle) as any),
+          /*#__PURE__*/ l.typedRef<ViewArticlePublication>(
+            (() => viewArticlePublication) as any,
+          ),
+          /*#__PURE__*/ l.typedRef<ViewGallery>((() => viewGallery) as any),
+          /*#__PURE__*/ l.typedRef<ViewLivestream>(
+            (() => viewLivestream) as any,
+          ),
+        ],
+        false,
+      ),
+    ),
     external: /*#__PURE__*/ l.ref<ViewExternal>((() => viewExternal) as any),
   }),
 )
@@ -131,12 +159,20 @@ type ViewArticle = {
 
   /**
    * Available profile previews. Selected deterministically by DID; not a ranking.
+   *
+   * @deprecated use viewer.knownLikers instead.
    */
   likers?: ActorDefs.ProfileViewBasic[]
+  viewer?: ViewArticleViewerState
   createdAt?: l.DatetimeString
   likeCount?: number
   publisher?: ViewArticlePublication
   updatedAt?: l.DatetimeString
+
+  /**
+   * Best-effort provider domain for cosmetic attribution, such as pckt.blog. Not verified provenance.
+   */
+  providerId?: string
   description: string
   readingTime?: number
   associatedRefs?: RepoStrongRef.Main[]
@@ -165,6 +201,11 @@ const viewArticle = /*#__PURE__*/ l.typedObject<ViewArticle>(
         { maxLength: 3 },
       ),
     ),
+    viewer: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<ViewArticleViewerState>(
+        (() => viewArticleViewerState) as any,
+      ),
+    ),
     createdAt: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.string({ format: 'datetime' }),
     ),
@@ -178,6 +219,9 @@ const viewArticle = /*#__PURE__*/ l.typedObject<ViewArticle>(
     ),
     updatedAt: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.string({ format: 'datetime' }),
+    ),
+    providerId: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ maxLength: 128 }),
     ),
     description: /*#__PURE__*/ l.string(),
     readingTime: /*#__PURE__*/ l.optional(
@@ -215,11 +259,24 @@ type ViewGallery = {
 
   /**
    * Available profile previews. Selected deterministically by DID; not a ranking.
+   *
+   * @deprecated use viewer.knownLikers instead.
    */
   likers?: ActorDefs.ProfileViewBasic[]
+  viewer?: ViewGalleryViewerState
   createdAt?: l.DatetimeString
   likeCount?: number
   updatedAt?: l.DatetimeString
+
+  /**
+   * Total number of gallery item backlinks, independent of the items included in this view.
+   */
+  photoCount?: number
+
+  /**
+   * Best-effort provider domain for cosmetic attribution, such as grain.social. Not verified provenance.
+   */
+  providerId?: string
   description: string
   associatedRefs?: RepoStrongRef.Main[]
   associatedProfiles?: ActorDefs.ProfileViewBasic[]
@@ -256,6 +313,11 @@ const viewGallery = /*#__PURE__*/ l.typedObject<ViewGallery>(
         { maxLength: 3 },
       ),
     ),
+    viewer: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.ref<ViewGalleryViewerState>(
+        (() => viewGalleryViewerState) as any,
+      ),
+    ),
     createdAt: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.string({ format: 'datetime' }),
     ),
@@ -264,6 +326,12 @@ const viewGallery = /*#__PURE__*/ l.typedObject<ViewGallery>(
     ),
     updatedAt: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.string({ format: 'datetime' }),
+    ),
+    photoCount: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.integer({ minimum: 0 }),
+    ),
+    providerId: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ maxLength: 128 }),
     ),
     description: /*#__PURE__*/ l.string(),
     associatedRefs: /*#__PURE__*/ l.optional(
@@ -381,6 +449,16 @@ type ViewLivestream = {
   createdAt?: l.DatetimeString
   startedAt?: l.DatetimeString
   updatedAt?: l.DatetimeString
+
+  /**
+   * When the livestream last reported that it was live. A livestream without endedAt is considered active until two minutes after its last heartbeat; clients can apply the same window to tell whether a cached view is still live.
+   */
+  lastSeenAt?: l.DatetimeString
+
+  /**
+   * Best-effort provider domain for cosmetic attribution, such as stream.place. Not verified provenance.
+   */
+  providerId?: string
   description: string
   associatedRefs?: RepoStrongRef.Main[]
   associatedProfiles?: ActorDefs.ProfileViewBasic[]
@@ -412,6 +490,12 @@ const viewLivestream = /*#__PURE__*/ l.typedObject<ViewLivestream>(
     ),
     updatedAt: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.string({ format: 'datetime' }),
+    ),
+    lastSeenAt: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'datetime' }),
+    ),
+    providerId: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ maxLength: 128 }),
     ),
     description: /*#__PURE__*/ l.string(),
     associatedRefs: /*#__PURE__*/ l.optional(
@@ -519,8 +603,14 @@ type ViewArticlePublication = {
   theme?: ViewArticlePublicationTheme
   title: string
   labels?: LabelDefs.Label[]
+  viewer?: ViewArticlePublicationViewerState
   createdAt?: l.DatetimeString
   updatedAt?: l.DatetimeString
+
+  /**
+   * Best-effort provider domain for cosmetic attribution, such as pckt.blog. Not verified provenance.
+   */
+  providerId?: string
   description: string
 
   /**
@@ -555,11 +645,19 @@ const viewArticlePublication =
           /*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any),
         ),
       ),
+      viewer: /*#__PURE__*/ l.optional(
+        /*#__PURE__*/ l.ref<ViewArticlePublicationViewerState>(
+          (() => viewArticlePublicationViewerState) as any,
+        ),
+      ),
       createdAt: /*#__PURE__*/ l.optional(
         /*#__PURE__*/ l.string({ format: 'datetime' }),
       ),
       updatedAt: /*#__PURE__*/ l.optional(
         /*#__PURE__*/ l.string({ format: 'datetime' }),
+      ),
+      providerId: /*#__PURE__*/ l.optional(
+        /*#__PURE__*/ l.string({ maxLength: 128 }),
       ),
       description: /*#__PURE__*/ l.string(),
       subscribers: /*#__PURE__*/ l.optional(
@@ -591,6 +689,100 @@ const viewArticlePublication =
   )
 
 export { viewArticlePublication }
+
+/** Metadata about the requesting account's relationship with the subject article. Only has meaningful content for authed requests. */
+type ViewArticleViewerState = {
+  $type?: 'app.bsky.embed.external#viewArticleViewerState'
+
+  /**
+   * The requesting account's site.standard.graph.recommend record for this article, if recommended.
+   */
+  like?: l.AtUriString
+
+  /**
+   * Up to 3 accounts the requesting account follows that recommended the subject, newest first. Never includes the requesting account.
+   */
+  knownLikers?: ActorDefs.ProfileViewBasic[]
+
+  /**
+   * Total number of accounts the requesting account follows that recommended the subject, including those in knownLikers.
+   */
+  knownLikerCount?: number
+}
+
+export type { ViewArticleViewerState }
+
+/** Metadata about the requesting account's relationship with the subject article. Only has meaningful content for authed requests. */
+const viewArticleViewerState =
+  /*#__PURE__*/ l.typedObject<ViewArticleViewerState>(
+    $nsid,
+    'viewArticleViewerState',
+    /*#__PURE__*/ l.object({
+      like: /*#__PURE__*/ l.optional(
+        /*#__PURE__*/ l.string({ format: 'at-uri' }),
+      ),
+      knownLikers: /*#__PURE__*/ l.optional(
+        /*#__PURE__*/ l.array(
+          /*#__PURE__*/ l.ref<ActorDefs.ProfileViewBasic>(
+            (() => ActorDefs.profileViewBasic) as any,
+          ),
+          { maxLength: 3 },
+        ),
+      ),
+      knownLikerCount: /*#__PURE__*/ l.optional(
+        /*#__PURE__*/ l.integer({ minimum: 0 }),
+      ),
+    }),
+  )
+
+export { viewArticleViewerState }
+
+/** Metadata about the requesting account's relationship with the subject gallery. Only has meaningful content for authed requests. */
+type ViewGalleryViewerState = {
+  $type?: 'app.bsky.embed.external#viewGalleryViewerState'
+
+  /**
+   * The requesting account's social.grain.favorite record for this gallery, if favorited.
+   */
+  like?: l.AtUriString
+
+  /**
+   * Up to 3 accounts the requesting account follows that favorited the subject, newest first. Never includes the requesting account.
+   */
+  knownLikers?: ActorDefs.ProfileViewBasic[]
+
+  /**
+   * Total number of accounts the requesting account follows that favorited the subject, including those in knownLikers.
+   */
+  knownLikerCount?: number
+}
+
+export type { ViewGalleryViewerState }
+
+/** Metadata about the requesting account's relationship with the subject gallery. Only has meaningful content for authed requests. */
+const viewGalleryViewerState =
+  /*#__PURE__*/ l.typedObject<ViewGalleryViewerState>(
+    $nsid,
+    'viewGalleryViewerState',
+    /*#__PURE__*/ l.object({
+      like: /*#__PURE__*/ l.optional(
+        /*#__PURE__*/ l.string({ format: 'at-uri' }),
+      ),
+      knownLikers: /*#__PURE__*/ l.optional(
+        /*#__PURE__*/ l.array(
+          /*#__PURE__*/ l.ref<ActorDefs.ProfileViewBasic>(
+            (() => ActorDefs.profileViewBasic) as any,
+          ),
+          { maxLength: 3 },
+        ),
+      ),
+      knownLikerCount: /*#__PURE__*/ l.optional(
+        /*#__PURE__*/ l.integer({ minimum: 0 }),
+      ),
+    }),
+  )
+
+export { viewGalleryViewerState }
 
 /** The theme colors of an external source, such as a site.standard.publication. These colors may be used when rendering an embed from that source. */
 type ViewExternalSourceTheme = {
@@ -665,3 +857,50 @@ const viewArticlePublicationTheme =
   )
 
 export { viewArticlePublicationTheme }
+
+/** Metadata about the requesting account's relationship with the subject publication. Only has meaningful content for authed requests. */
+type ViewArticlePublicationViewerState = {
+  $type?: 'app.bsky.embed.external#viewArticlePublicationViewerState'
+
+  /**
+   * The requesting account's site.standard.graph.subscription record for this publication, if subscribed.
+   */
+  subscription?: l.AtUriString
+
+  /**
+   * Up to 3 accounts the requesting account follows that subscribed to the subject, newest first. Never includes the requesting account.
+   */
+  knownSubscribers?: ActorDefs.ProfileViewBasic[]
+
+  /**
+   * Total number of accounts the requesting account follows that subscribed to the subject, including those in knownSubscribers.
+   */
+  knownSubscriberCount?: number
+}
+
+export type { ViewArticlePublicationViewerState }
+
+/** Metadata about the requesting account's relationship with the subject publication. Only has meaningful content for authed requests. */
+const viewArticlePublicationViewerState =
+  /*#__PURE__*/ l.typedObject<ViewArticlePublicationViewerState>(
+    $nsid,
+    'viewArticlePublicationViewerState',
+    /*#__PURE__*/ l.object({
+      subscription: /*#__PURE__*/ l.optional(
+        /*#__PURE__*/ l.string({ format: 'at-uri' }),
+      ),
+      knownSubscribers: /*#__PURE__*/ l.optional(
+        /*#__PURE__*/ l.array(
+          /*#__PURE__*/ l.ref<ActorDefs.ProfileViewBasic>(
+            (() => ActorDefs.profileViewBasic) as any,
+          ),
+          { maxLength: 3 },
+        ),
+      ),
+      knownSubscriberCount: /*#__PURE__*/ l.optional(
+        /*#__PURE__*/ l.integer({ minimum: 0 }),
+      ),
+    }),
+  )
+
+export { viewArticlePublicationViewerState }
