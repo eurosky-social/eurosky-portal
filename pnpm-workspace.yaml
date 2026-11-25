@@ -1,10 +1,11 @@
 allowBuilds:
-  # No longer needs builds:
-  better-sqlite3: false
+  # Needed for the PDS in tests, which is on v12; the future v13 (which we use) needs no build.
+  better-sqlite3: true
   # Not needed.
   core-js: false
   esbuild: true
   msgpackr-extract: true
   # Not needed.
   protobufjs: false
+  sharp: false
 minimumReleaseAge: 1440

@@ -12,7 +12,7 @@ import { setEnv } from '../helpers.ts'
 const clientId = testEnv.OAUTH2_CLIENT_ID
 const clientName = testEnv.OAUTH2_CLIENT_NAME
 const clientSecret = testEnv.OAUTH2_CLIENT_SECRET
-const did = testEnv.OAUTH2_ALLOWED_DIDS
+const did = 'did:web:a.com'
 const redirectUri = testEnv.OAUTH2_CLIENT_REDIRECT_URIS
 
 const client = oauth2Service.getClient()!
@@ -189,7 +189,11 @@ test.group('services / oauth2 / hasConnections', function (group) {
   })
 })
 
-test.group('services / oauth2 / isAllowed', function () {
+test.group('services / oauth2 / isAllowed', function (group) {
+  group.each.setup(function () {
+    return setEnv('OAUTH2_ALLOWED_DIDS', [did])
+  })
+
   test('should allow DIDs in `OAUTH2_ALLOWED_DIDS`', function ({ assert }) {
     const result = oauth2Service.isAllowed(did)
     assert.equal(result, true)
@@ -440,6 +444,10 @@ test.group('services / oauth2 / verifyAccessToken', function (group) {
 test.group('services / oauth2 / not allowed', function (group) {
   group.each.setup(function () {
     return testUtils.db().wrapInGlobalTransaction()
+  })
+
+  group.each.setup(function () {
+    return setEnv('OAUTH2_ALLOWED_DIDS', [did])
   })
 
   test('should not exchange codes', async function ({ assert }) {

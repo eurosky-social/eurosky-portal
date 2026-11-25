@@ -15,13 +15,13 @@ jobs:
       - uses: actions/checkout@v7
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
-        with:
-          run_install: true
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
           node-version-file: '.node-version'
           cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
       - name: Run lint
         run: pnpm run lint
       - name: Check format
@@ -33,13 +33,13 @@ jobs:
       - uses: actions/checkout@v7
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
-        with:
-          run_install: true
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
           node-version-file: '.node-version'
           cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
       - name: Check typescript
         run: pnpm run typecheck
 
@@ -49,12 +49,12 @@ jobs:
       - uses: actions/checkout@v7
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
-        with:
-          run_install: true
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
           node-version-file: '.node-version'
           cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
       - name: Run tests
         run: pnpm test

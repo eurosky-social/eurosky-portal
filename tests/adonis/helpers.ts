@@ -2,23 +2,25 @@ import cache from '@adonisjs/cache/services/main'
 import type { Env } from '@adonisjs/core/env'
 import app from '@adonisjs/core/services/app'
 import type { ContainerBindings } from '@adonisjs/core/types'
-import { cidForRawBytes, type DidString, type HandleString, lexParse } from '@atproto/lex'
+import { Client, type DidString, type HandleString } from '@atproto/lex'
 import type { NodeOAuthClient, OAuthSession } from '@atproto/oauth-client-node'
 import { AtprotoUser } from '@thisismissem/adonisjs-atproto-oauth'
-import vine from '@vinejs/vine'
 import { DateTime } from 'luxon'
 import Account from '#models/account'
 import env from '#start/env'
-import { testEnv } from '../env.ts'
+import { createAccount, getAccount, pdsUrl } from '../pds.ts'
 
 /**
- * Fake PDS, in place of the AT Protocol OAuth client of the app:
- * it has sessions without network,
- * and records what the app asks of it.
+ * Fake AT Protocol OAuth client, which {@linkcode signIn} puts in place of the
+ * one of the app:
+ * logging in on a PDS needs a browser,
+ * so its sessions use access tokens of accounts on the PDS of the tests (see
+ * `tests/pds.ts`) instead.
  *
- * Change fields to change what it does next.
+ * Records what the app asks of it;
+ * change fields to change what it does next.
  */
-export interface FakePds {
+export interface FakeOauth {
   /**
    * Calls to `authorize` (logging in, asking for more scopes).
    */
@@ -40,20 +42,10 @@ export interface FakePds {
   callbackError: Error | undefined
 
   /**
-   * Blobs uploaded to repos.
-   */
-  blobs: Array<{ cid: string; data: Uint8Array; mimeType: string }>
-
-  /**
    * Error requests of sessions throw, if any (such as when a session was
    * revoked while in use).
    */
   fetchError: Error | undefined
-
-  /**
-   * Records put in repos.
-   */
-  records: Array<{ collection: string; record?: unknown; repo: string; rkey: string }>
 
   /**
    * Error `restore` throws, if any (such as when a session expired).
@@ -66,19 +58,40 @@ export interface FakePds {
   revokeCalls: Array<string>
 
   /**
-   * Space-separated scopes granted to sessions.
+   * Space-separated scopes granted to sessions;
+   * not enforced, as sessions use access tokens with full access.
    */
   scope: string
+}
+
+/**
+ * Signed in person.
+ */
+export interface SignedIn {
+  /**
+   * DID of the account.
+   */
+  did: DidString
 
   /**
-   * Signed in user, to pass to `loginAs` of a request.
+   * Handle of the account on the PDS.
+   */
+  handle: HandleString
+
+  /**
+   * Fake AT Protocol OAuth client.
+   */
+  oauth: FakeOauth
+
+  /**
+   * Client for the repo of the account, to check what the app did.
+   */
+  repo: Client
+
+  /**
+   * User, to pass to `loginAs` of a request.
    */
   user: AtprotoUser
-
-  /**
-   * Whether XRPC requests to the PDS fail.
-   */
-  xrpcFails: boolean
 }
 
 /**
@@ -86,12 +99,9 @@ export interface FakePds {
  */
 interface SignInOptions {
   /**
-   * DID of the account.
-   */
-  did: DidString
-
-  /**
-   * Handle of the account (default: `a` on `ATPROTO_HANDLE_DOMAIN`).
+   * Handle of the account in the database of the app (default: the handle on
+   * the PDS);
+   * `null` for none.
    */
   handle?: HandleString | null
 
@@ -102,22 +112,12 @@ interface SignInOptions {
 }
 
 /**
- * Input of `putRecord`, as far as the fake PDS needs it.
- */
-const putRecordValidator = vine.create({
-  collection: vine.string(),
-  record: vine.any(),
-  repo: vine.string(),
-  rkey: vine.string(),
-})
-
-/**
- * Issuer of the fake PDS.
+ * Issuer of the OAuth server, as the fake client reports it.
  */
 const issuer = env.get('OAUTH_SERVICE')
 
 /**
- * AT Protocol OAuth client of the app, to put back in {@linkcode restorePds}.
+ * AT Protocol OAuth client of the app, to put back in {@linkcode restoreOauth}.
  *
  * Not configured in tests (the app only does that in the `web` environment;
  * configuring uses the network),
@@ -126,69 +126,65 @@ const issuer = env.get('OAUTH_SERVICE')
 const realOauth = await app.container.make('atproto.oauth.client')
 
 /**
- * Undo {@linkcode signIn}: put the real AT Protocol OAuth client back.
+ * Undo {@linkcode signIn}: put the AT Protocol OAuth client of the app back.
  *
  * @returns
  *   Nothing.
  */
-export function restorePds(): undefined {
+export function restoreOauth(): undefined {
   app.container.bindValue('atproto.oauth.client', realOauth)
 }
 
 /**
- * Set up an account that accepted the terms and sign in to it, with a
- * {@linkcode FakePds};
- * undo with {@linkcode restorePds}.
+ * Create an account on the PDS of the tests that accepted the terms, and sign
+ * in to it with a {@linkcode FakeOauth} client;
+ * undo with {@linkcode restoreOauth}.
  *
  * @param options
  *   Configuration.
  * @returns
- *   Fake PDS.
+ *   Signed in person.
  */
-export async function signIn(options: SignInOptions): Promise<FakePds> {
-  const { did, handle = `a.${testEnv.ATPROTO_HANDLE_DOMAIN}`, scope = 'atproto' } = options
+export async function signIn(options: SignInOptions = {}): Promise<SignedIn> {
+  const account = await createAccount()
+  const { did } = account
+  const { handle = account.handle, scope = 'atproto' } = options
   const legal = {
     effectiveAt: '2026-01-01',
     tree: { children: [{ type: 'text', value: 'a' }], type: 'root' },
   }
 
-  // Not to L2 (the database): that is locked by the global transaction.
-  await cache.set({ key: 'legal:privacy', skipL2Write: true, value: legal })
-  await cache.set({ key: 'legal:terms', skipL2Write: true, value: legal })
+  await cache.set({ key: 'legal:privacy', value: legal })
+  await cache.set({ key: 'legal:terms', value: legal })
   await Account.create({ did, handle, termsAcceptedAt: DateTime.now() })
 
-  const pds: FakePds = {
+  const oauth: FakeOauth = {
     authorizeCalls: [],
     authorizeError: undefined,
-    blobs: [],
     callbackDid: did,
     callbackError: undefined,
     fetchError: undefined,
-    records: [],
     restoreError: undefined,
     revokeCalls: [],
     scope,
-    user: new AtprotoUser(createSession(did)),
-    xrpcFails: false,
   }
 
   const methods = {
     async authorize(input, authorizeOptions) {
-      if (pds.authorizeError) throw pds.authorizeError
-      pds.authorizeCalls.push({ input, scope: authorizeOptions?.scope })
+      if (oauth.authorizeError) throw oauth.authorizeError
+      oauth.authorizeCalls.push({ input, scope: authorizeOptions?.scope })
       return new URL('/oauth/authorize', issuer)
     },
     async callback(parameters) {
-      if (pds.callbackError) throw pds.callbackError
-      return { session: createSession(pds.callbackDid), state: parameters.get('state') }
+      if (oauth.callbackError) throw oauth.callbackError
+      return { session: createSession(oauth.callbackDid), state: parameters.get('state') }
     },
     async restore(identifier) {
-      if (pds.restoreError) throw pds.restoreError
-      if (identifier !== did) throw new Error('Cannot restore `' + identifier + '`')
-      return createSession(did)
+      if (oauth.restoreError) throw oauth.restoreError
+      return createSession(identifier)
     },
     async revoke(identifier) {
-      pds.revokeCalls.push(identifier)
+      oauth.revokeCalls.push(identifier)
     },
   } satisfies Pick<NodeOAuthClient, 'authorize' | 'callback' | 'restore' | 'revoke'>
 
@@ -198,7 +194,11 @@ export async function signIn(options: SignInOptions): Promise<FakePds> {
     oauthResolver: {
       // The account signed in to, as the network would resolve it.
       async resolveFromIdentity() {
-        return { identityInfo: { did, handle }, metadata: { issuer }, pds: new URL(issuer) }
+        return {
+          identityInfo: { did, handle: account.handle },
+          metadata: { issuer },
+          pds: new URL(pdsUrl()),
+        }
       },
       async resolveFromService(): Promise<never> {
         throw new Error('No network in tests')
@@ -212,67 +212,40 @@ export async function signIn(options: SignInOptions): Promise<FakePds> {
     client,
   } as unknown as ContainerBindings['atproto.oauth.client'])
 
-  return pds
+  return {
+    did,
+    handle: account.handle,
+    oauth,
+    repo: new Client(createSession(did)),
+    user: new AtprotoUser(createSession(did)),
+  }
 
   /**
-   * Create a session, with the scopes of the PDS at the time they are asked
-   * for.
+   * Create a session for an account, with the scopes of the PDS at the time
+   * they are asked for.
    */
-  function createSession(sessionDid: DidString): OAuthSession {
+  function createSession(sessionDid: string): OAuthSession {
+    const sessionAccount = getAccount(sessionDid)
+
     const session = {
-      did: sessionDid,
+      did: sessionAccount.did,
       server: { issuer },
-      sub: sessionDid,
+      sub: sessionAccount.did,
       async fetchHandler(pathname: string, init?: RequestInit) {
-        if (pds.fetchError) throw pds.fetchError
-        return handleXrpc(sessionDid, new URL(pathname, issuer), init)
+        if (oauth.fetchError) throw oauth.fetchError
+
+        const headers = new Headers(init?.headers)
+        headers.set('authorization', 'Bearer ' + sessionAccount.accessJwt)
+        return fetch(new URL(pathname, pdsUrl()), { ...init, headers })
       },
       async getTokenInfo() {
-        return { aud: issuer, iss: issuer, scope: pds.scope, sub: sessionDid }
+        return { aud: issuer, iss: issuer, scope: oauth.scope, sub: sessionAccount.did }
       },
     }
 
     // Only what the app uses of a session:
     // a real one needs a server agent, with DPoP keys and server metadata.
     return session as unknown as OAuthSession
-  }
-
-  /**
-   * Answer XRPC requests to the repo, recording what was written.
-   */
-  async function handleXrpc(repo: DidString, url: URL, init?: RequestInit): Promise<Response> {
-    const headers = new Headers(init?.headers)
-
-    if (pds.xrpcFails) {
-      return Response.json({ error: 'InternalServerError' }, { status: 500 })
-    }
-
-    if (url.pathname === '/xrpc/com.atproto.repo.uploadBlob') {
-      const data = new Uint8Array(await new Response(init?.body).arrayBuffer())
-      const mimeType = headers.get('content-type') ?? 'application/octet-stream'
-      const cid = await cidForRawBytes(data)
-      pds.blobs.push({ cid: cid.toString(), data, mimeType })
-      const blob = {
-        $type: 'blob',
-        mimeType,
-        ref: { $link: cid.toString() },
-        size: data.byteLength,
-      }
-      return Response.json({ blob })
-    }
-
-    if (url.pathname === '/xrpc/com.atproto.repo.putRecord') {
-      const body = await new Response(init?.body).text()
-      const input = await putRecordValidator.validate(lexParse(body))
-      const cid = await cidForRawBytes(new TextEncoder().encode(body))
-      pds.records.push(input)
-      return Response.json({
-        cid: cid.toString(),
-        uri: `at://${repo}/${input.collection}/${input.rkey}`,
-      })
-    }
-
-    return Response.json({ error: 'MethodNotImplemented' }, { status: 501 })
   }
 }
 

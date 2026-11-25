@@ -40,7 +40,6 @@ export const testEnv = {
   OAUTH_SERVICE: 'https://pds.example.com/',
 
   // OAuth 2.0 server
-  OAUTH2_ALLOWED_DIDS: 'did:web:a.com',
   OAUTH2_CLIENT_CONNECT_URL: 'https://client.example.com/connect',
   OAUTH2_CLIENT_ID: 'client',
   OAUTH2_CLIENT_NAME: 'Client',
@@ -50,6 +49,9 @@ export const testEnv = {
   // Off in tests
   OTEL_ENABLED: 'false',
   PLAUSIBLE_ENABLED: 'false',
+
+  // Tests.
+  CACHE_STORE: 'memoryOnly',
 } as const
 
 // Does not exist.

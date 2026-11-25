@@ -8,10 +8,9 @@ import storageService from '#services/storage_service'
 
 const did = 'did:web:a.com'
 const now = DateTime.now()
-// Cached and in memory so that there is no network and no database.
+// Cached so that there is no network.
 const resolved = {
   key: `pds-resolve:${did}`,
-  skipL2Write: true,
   value: { did, handle: 'b.com', pds: 'https://c.com' },
 }
 const image = { category: 'image', cid: 'd', creator: did, mimeType: 'image/png', size: 1 }
