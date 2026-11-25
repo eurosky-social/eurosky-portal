@@ -1,6 +1,6 @@
 import { test } from '@japa/runner'
 import IdentityService from '#services/identity_service'
-import { testEnv } from '../../env.ts'
+import env from '#start/env'
 import { setEnv } from '../helpers.ts'
 
 // Not the one tests swap in (see `tests/pds.ts`).
@@ -28,7 +28,7 @@ test.group('services / identity', function () {
   test('should only read from our PDS w/o external logins', async function ({ assert }) {
     const other = 'https://pds.other.example/'
 
-    assert.deepEqual([...(identity.pdsOrigins ?? [])], [new URL(testEnv.OAUTH_SERVICE).origin])
+    assert.deepEqual([...(identity.pdsOrigins ?? [])], [new URL(env.get('OAUTH_SERVICE')).origin])
     assert.match(await rejection(identity.pdsFetch(other)), /not ours/)
     assert.match(await rejection(identity.pdsFetch(new Request(other))), /not ours/)
   })

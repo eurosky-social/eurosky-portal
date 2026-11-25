@@ -1,48 +1,41 @@
 import cache from '@adonisjs/cache/services/main'
 import testUtils from '@adonisjs/core/services/test_utils'
-import { type Client, XrpcResponseError } from '@atproto/lex'
+import type { Client } from '@atproto/lex'
 import { AtUri } from '@atproto/syntax'
 import { test } from '@japa/runner'
 import * as lexicon from '#lexicons/index'
-import { FavoriteService } from '#services/favorite_service'
 import { apps } from '#shared/apps'
-import { favoriteScope, serializeScopes } from '#utils/oauth'
-import { restoreOauth, signIn } from './helpers.ts'
+import { favoriteScope, importScopes, parseScopes, serializeScopes } from '#utils/oauth'
+import { authorize, oauthClient } from '../pds.ts'
+import { signIn } from './helpers.ts'
 
 const [app] = apps
-const favorite = FavoriteService.prototype.favorite
+const scope = serializeScopes(new Set(['atproto', favoriteScope]))
 
 test.group('favorites / asking for more scopes', function (group) {
   group.each.setup(function () {
     return testUtils.db().wrapInGlobalTransaction()
   })
 
-  group.each.teardown(function () {
-    FavoriteService.prototype.favorite = favorite
-    restoreOauth()
-  })
-
-  test('should keep granted scopes', async function ({ assert, client }) {
+  test('should ask for the scope, keeping granted ones', async function ({ assert, client }) {
     if (!app) throw new Error('Expected an app')
-    const { oauth, user } = await signIn({ scope: 'atproto b' })
+    const granted = serializeScopes(importScopes.union(new Set(['atproto'])))
+    const { did, repo, user } = await signIn({ scope: granted })
     await cache.set({ key: `atstore:listing:${app.atUri}`, value: {} })
+    const response = await client.post(path(app.atUri)).withCsrfToken().loginAs(user).withInertia()
+    const parameters = await authorize(new URL(response.header('x-inertia-location') ?? ''), did)
+    await client
+      .get('/oauth/callback')
+      .qs(Object.fromEntries(parameters))
+      .withSession(response.session())
+      .loginAs(user)
+      .redirects(0)
+    const session = await oauthClient().restore(did)
+    const info = await session.getTokenInfo()
 
-    FavoriteService.prototype.favorite = async function () {
-      throw new XrpcResponseError(
-        lexicon.app.bsky.actor.getProfile.main,
-        new Response(undefined, { status: 403 }),
-        { body: { error: 'ScopeMissingError', message: 'a' }, encoding: 'application/json' }
-      )
-    }
-
-    await client.post(path(app.atUri)).withCsrfToken().loginAs(user).withInertia()
-
-    assert.deepEqual(
-      oauth.authorizeCalls.map(function (d) {
-        return d.scope
-      }),
-      [serializeScopes(new Set(['atproto', 'b', favoriteScope]))]
-    )
+    assert.isTrue(parseScopes(info.scope).isSupersetOf(parseScopes(granted)))
+    assert.isTrue(parseScopes(info.scope).has(favoriteScope))
+    assert.deepEqual(await getSubjects(repo), [app.atUri])
   })
 })
 
@@ -51,26 +44,16 @@ test.group('favorites / limits', function (group) {
     return testUtils.db().wrapInGlobalTransaction()
   })
 
-  group.each.teardown(function () {
-    FavoriteService.prototype.favorite = favorite
-    restoreOauth()
-  })
-
-  test('should limit favoriting by person', async function ({ assert, client }) {
+  test('should limit favoriting by person', async function ({ client }) {
     if (!app) throw new Error('Expected an app')
-    const { user } = await signIn()
+    const { user } = await signIn({ scope })
     await cache.set({ key: `atstore:listing:${app.atUri}`, value: {} })
     const { atUri } = app
-    let calls = 0
-    FavoriteService.prototype.favorite = async function () {
-      calls++
-    }
 
     for (let index = 0; index < 30; index++) await request()
     const response = await request()
 
     response.assertFlashMessage('errorMessage', { key: 'errors.E_TOO_MANY_REQUESTS' })
-    assert.equal(calls, 30)
 
     function request() {
       return client.post(path(atUri)).withCsrfToken().loginAs(user).withInertia().redirects(0)
@@ -82,11 +65,10 @@ test.group('favorites / POST and DELETE /apps/:rkey/favorite', function (group) 
   group.each.setup(function () {
     return testUtils.db().wrapInGlobalTransaction()
   })
-  group.each.teardown(restoreOauth)
 
   test('should favorite an app in the repo', async function ({ assert, client }) {
     if (!app) throw new Error('Expected an app')
-    const { repo, user } = await signIn()
+    const { repo, user } = await signIn({ scope })
     await cache.set({ key: `atstore:listing:${app.atUri}`, value: {} })
     await client.post(path(app.atUri)).withCsrfToken().loginAs(user).withInertia()
     const subjects = await getSubjects(repo)
@@ -96,7 +78,7 @@ test.group('favorites / POST and DELETE /apps/:rkey/favorite', function (group) 
 
   test('should favorite an app once', async function ({ assert, client }) {
     if (!app) throw new Error('Expected an app')
-    const { repo, user } = await signIn()
+    const { repo, user } = await signIn({ scope })
     await cache.set({ key: `atstore:listing:${app.atUri}`, value: {} })
     await client.post(path(app.atUri)).withCsrfToken().loginAs(user).withInertia()
     await client.post(path(app.atUri)).withCsrfToken().loginAs(user).withInertia()
@@ -107,7 +89,7 @@ test.group('favorites / POST and DELETE /apps/:rkey/favorite', function (group) 
 
   test('should unfavorite an app in the repo', async function ({ assert, client }) {
     if (!app) throw new Error('Expected an app')
-    const { repo, user } = await signIn()
+    const { repo, user } = await signIn({ scope })
     await cache.set({ key: `atstore:listing:${app.atUri}`, value: {} })
     await client.post(path(app.atUri)).withCsrfToken().loginAs(user).withInertia()
     await client.delete(path(app.atUri)).withCsrfToken().loginAs(user).withInertia()

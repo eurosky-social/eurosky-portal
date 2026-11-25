@@ -1,68 +1,13 @@
 import cache from '@adonisjs/cache/services/main'
 import type { Env } from '@adonisjs/core/env'
-import app from '@adonisjs/core/services/app'
-import type { ContainerBindings } from '@adonisjs/core/types'
 import { Client, type DidString, type HandleString } from '@atproto/lex'
-import type { NodeOAuthClient, OAuthSession } from '@atproto/oauth-client-node'
+import type { ApiClient, ApiResponse } from '@japa/api-client'
 import { AtprotoUser } from '@thisismissem/adonisjs-atproto-oauth'
 import { DateTime } from 'luxon'
 import Account from '#models/account'
+import jetstreamService from '#services/jetstream_service'
 import env from '#start/env'
-import { createAccount, getAccount, pdsUrl } from '../pds.ts'
-
-/**
- * Fake AT Protocol OAuth client, which {@linkcode signIn} puts in place of the
- * one of the app:
- * logging in on a PDS needs a browser,
- * so its sessions use access tokens of accounts on the PDS of the tests (see
- * `tests/pds.ts`) instead.
- *
- * Records what the app asks of it;
- * change fields to change what it does next.
- */
-export interface FakeOauth {
-  /**
-   * Calls to `authorize` (logging in, asking for more scopes).
-   */
-  authorizeCalls: Array<{ input: string; scope: string | undefined }>
-
-  /**
-   * Error `authorize` throws, if any (such as when the PDS is down).
-   */
-  authorizeError: Error | undefined
-
-  /**
-   * DID of the account chosen on the PDS, as the callback returns it.
-   */
-  callbackDid: DidString
-
-  /**
-   * Error the callback throws, if any (such as when denied).
-   */
-  callbackError: Error | undefined
-
-  /**
-   * Error requests of sessions throw, if any (such as when a session was
-   * revoked while in use).
-   */
-  fetchError: Error | undefined
-
-  /**
-   * Error `restore` throws, if any (such as when a session expired).
-   */
-  restoreError: Error | undefined
-
-  /**
-   * DIDs of calls to `revoke` (logging out).
-   */
-  revokeCalls: Array<string>
-
-  /**
-   * Space-separated scopes granted to sessions;
-   * not enforced, as sessions use access tokens with full access.
-   */
-  scope: string
-}
+import { authorize, createAccount, oauthClient, pdsUrl } from '../pds.ts'
 
 /**
  * Signed in person.
@@ -79,12 +24,8 @@ export interface SignedIn {
   handle: HandleString
 
   /**
-   * Fake AT Protocol OAuth client.
-   */
-  oauth: FakeOauth
-
-  /**
-   * Client for the repo of the account, to check what the app did.
+   * Client for the repo of the account, with full access (not OAuth), to
+   * arrange and check things, as other apps would.
    */
   repo: Client
 
@@ -106,39 +47,14 @@ interface SignInOptions {
   handle?: HandleString | null
 
   /**
-   * Space-separated scopes granted on the PDS (default: `'atproto'`).
+   * Space-separated scopes to grant (default: `'atproto'`).
    */
   scope?: string
 }
 
 /**
- * Issuer of the OAuth server, as the fake client reports it.
- */
-const issuer = env.get('OAUTH_SERVICE')
-
-/**
- * AT Protocol OAuth client of the app, to put back in {@linkcode restoreOauth}.
- *
- * Not configured in tests (the app only does that in the `web` environment;
- * configuring uses the network),
- * so {@linkcode signIn} replaces it instead of its methods.
- */
-const realOauth = await app.container.make('atproto.oauth.client')
-
-/**
- * Undo {@linkcode signIn}: put the AT Protocol OAuth client of the app back.
- *
- * @returns
- *   Nothing.
- */
-export function restoreOauth(): undefined {
-  app.container.bindValue('atproto.oauth.client', realOauth)
-}
-
-/**
- * Create an account on the PDS of the tests that accepted the terms, and sign
- * in to it with a {@linkcode FakeOauth} client;
- * undo with {@linkcode restoreOauth}.
+ * Create an account on the PDS of the tests that accepted the terms, and log
+ * in to it with OAuth.
  *
  * @param options
  *   Configuration.
@@ -158,95 +74,135 @@ export async function signIn(options: SignInOptions = {}): Promise<SignedIn> {
   await cache.set({ key: 'legal:terms', value: legal })
   await Account.create({ did, handle, termsAcceptedAt: DateTime.now() })
 
-  const oauth: FakeOauth = {
-    authorizeCalls: [],
-    authorizeError: undefined,
-    callbackDid: did,
-    callbackError: undefined,
-    fetchError: undefined,
-    restoreError: undefined,
-    revokeCalls: [],
-    scope,
-  }
-
-  const methods = {
-    async authorize(input, authorizeOptions) {
-      if (oauth.authorizeError) throw oauth.authorizeError
-      oauth.authorizeCalls.push({ input, scope: authorizeOptions?.scope })
-      return new URL('/oauth/authorize', issuer)
-    },
-    async callback(parameters) {
-      if (oauth.callbackError) throw oauth.callbackError
-      return { session: createSession(oauth.callbackDid), state: parameters.get('state') }
-    },
-    async restore(identifier) {
-      if (oauth.restoreError) throw oauth.restoreError
-      return createSession(identifier)
-    },
-    async revoke(identifier) {
-      oauth.revokeCalls.push(identifier)
-    },
-  } satisfies Pick<NodeOAuthClient, 'authorize' | 'callback' | 'restore' | 'revoke'>
-
-  const client = {
-    ...methods,
-    // Finding the PDS of a service needs the network: fail, as if it is down.
-    oauthResolver: {
-      // The account signed in to, as the network would resolve it.
-      async resolveFromIdentity() {
-        return {
-          identityInfo: { did, handle: account.handle },
-          metadata: { issuer },
-          pds: new URL(pdsUrl()),
-        }
-      },
-      async resolveFromService(): Promise<never> {
-        throw new Error('No network in tests')
-      },
-    },
-  }
-
-  // The binding is a class with private fields, which only a cast can make;
-  // bound values take precedence over other bindings.
-  app.container.bindValue('atproto.oauth.client', {
-    client,
-  } as unknown as ContainerBindings['atproto.oauth.client'])
+  const client = oauthClient()
+  const { session } = await client.callback(
+    await authorize(await client.authorize(did, { scope }), did)
+  )
 
   return {
     did,
     handle: account.handle,
-    oauth,
-    repo: new Client(createSession(did)),
-    user: new AtprotoUser(createSession(did)),
+    repo: new Client({
+      did,
+      headers: { authorization: 'Bearer ' + account.accessJwt },
+      service: pdsUrl(),
+    }),
+    user: new AtprotoUser(session),
   }
+}
+
+/**
+ * Configuration for {@linkcode answerOnPds}.
+ */
+interface AnswerOptions {
+  /**
+   * DID of the account to sign in to on the PDS (default: the one asked for).
+   */
+  as?: DidString
 
   /**
-   * Create a session for an account, with the scopes of the PDS at the time
-   * they are asked for.
+   * Whether to deny.
    */
-  function createSession(sessionDid: string): OAuthSession {
-    const sessionAccount = getAccount(sessionDid)
+  deny?: boolean
 
-    const session = {
-      did: sessionAccount.did,
-      server: { issuer },
-      sub: sessionAccount.did,
-      async fetchHandler(pathname: string, init?: RequestInit) {
-        if (oauth.fetchError) throw oauth.fetchError
+  /**
+   * Scopes to grant (default: those asked for).
+   */
+  scope?: string
 
-        const headers = new Headers(init?.headers)
-        headers.set('authorization', 'Bearer ' + sessionAccount.accessJwt)
-        return fetch(new URL(pathname, pdsUrl()), { ...init, headers })
-      },
-      async getTokenInfo() {
-        return { aud: issuer, iss: issuer, scope: oauth.scope, sub: sessionAccount.did }
-      },
-    }
+  /**
+   * Session values to change when coming back.
+   */
+  session?: Record<string, unknown>
 
-    // Only what the app uses of a session:
-    // a real one needs a server agent, with DPoP keys and server metadata.
-    return session as unknown as OAuthSession
-  }
+  /**
+   * Signed in user, when coming back.
+   */
+  user?: AtprotoUser
+}
+
+/**
+ * Answer on the PDS of the tests, where a response of the app sends the person
+ * to, and come back to the app with that answer.
+ *
+ * @param client
+ *   Client of the test.
+ * @param response
+ *   Response that sends the person to the PDS.
+ * @param did
+ *   DID of the account asked for.
+ * @param options
+ *   Configuration.
+ * @returns
+ *   Response of the callback.
+ */
+export async function answerOnPds(
+  client: ApiClient,
+  response: ApiResponse,
+  did: DidString,
+  options: AnswerOptions = {}
+): Promise<ApiResponse> {
+  const location = response.header('x-inertia-location') ?? response.header('location') ?? ''
+  const parameters = await authorize(new URL(location), options.as ?? did, options)
+  const callback = client
+    .get('/oauth/callback')
+    .qs(Object.fromEntries(parameters))
+    .withSession({ ...response.session(), ...options.session })
+    .redirects(0)
+
+  return options.user ? callback.loginAs(options.user) : callback
+}
+
+/**
+ * Start logging in to an account on the PDS of the tests at the login form.
+ *
+ * @param client
+ *   Client of the test.
+ * @param did
+ *   DID of the account.
+ * @returns
+ *   Response, which sends the person to the PDS.
+ */
+export function startLogIn(client: ApiClient, did: DidString): Promise<ApiResponse> {
+  return client.post('/oauth/login').form({ input: did }).withCsrfToken().withInertia().redirects(0)
+}
+
+/**
+ * Prepare logging in: mark the account as synced, so that no backfill is
+ * queued, and do not watch it, as that connects to Jetstream.
+ *
+ * @param did
+ *   DID of the account.
+ * @param cleanup
+ *   Cleanup function of the test.
+ * @returns
+ *   Nothing.
+ */
+export async function prepareLogIn(
+  did: DidString,
+  cleanup: (handler: () => void) => void
+): Promise<undefined> {
+  const account = await Account.findOrFail(did)
+  await account.merge({ lastActivitySyncAt: DateTime.now() }).save()
+  jetstreamService.addDid = function () {}
+  cleanup(function () {
+    Reflect.deleteProperty(jetstreamService, 'addDid')
+  })
+}
+
+/**
+ * Log in to an account on the PDS of the tests through the app, as a person
+ * would: start at the login form, allow on the PDS, and come back.
+ *
+ * @param client
+ *   Client of the test.
+ * @param did
+ *   DID of the account.
+ * @returns
+ *   Response of the callback.
+ */
+export async function logIn(client: ApiClient, did: DidString): Promise<ApiResponse> {
+  return answerOnPds(client, await startLogIn(client, did), did)
 }
 
 /**

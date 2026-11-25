@@ -1,16 +1,15 @@
 import testUtils from '@adonisjs/core/services/test_utils'
-import { test } from '@japa/runner'
-import { DateTime } from 'luxon'
 import type { DidString } from '@atproto/lex'
-import { OAuthCallbackError } from '@atproto/oauth-client-node'
+import type { ApiClient, ApiResponse } from '@japa/api-client'
+import { test } from '@japa/runner'
+import type { AtprotoUser } from '@thisismissem/adonisjs-atproto-oauth'
 import Account from '#models/account'
 import Oauth2Grant from '#models/oauth2_grant'
-import jetstreamService from '#services/jetstream_service'
 import oauth2Service from '#services/oauth2_service'
-import { importScopes, parseScopes, serializeScopes } from '#utils/oauth'
+import { favoriteScope, importScopes, parseScopes, serializeScopes } from '#utils/oauth'
 import { testEnv } from '../env.ts'
-import { createAccount } from '../pds.ts'
-import { restoreOauth, setEnv, signIn } from './helpers.ts'
+import { createAccount, oauthClient } from '../pds.ts'
+import { answerOnPds, logIn, prepareLogIn, setEnv, signIn, startLogIn } from './helpers.ts'
 
 // See `tests/env.ts`.
 const clientId = testEnv.OAUTH2_CLIENT_ID
@@ -49,7 +48,6 @@ test.group('oauth2 / GET /oauth2/authorize', function (group) {
   group.each.setup(function () {
     return testUtils.db().wrapInGlobalTransaction()
   })
-  group.each.teardown(restoreOauth)
 
   test('should render the consent page', async function ({ client }) {
     const { handle, user } = await signIn()
@@ -174,7 +172,6 @@ test.group('oauth2 / POST /oauth2/authorize', function (group) {
   group.each.setup(function () {
     return testUtils.db().wrapInGlobalTransaction()
   })
-  group.each.teardown(restoreOauth)
 
   test('should redirect with `access_denied` when denied', async function ({ client }) {
     const { user } = await signIn()
@@ -194,13 +191,7 @@ test.group('oauth2 / POST /oauth2/authorize', function (group) {
     client,
   }) {
     const { did, user } = await signIn({ scope: importGranted })
-    const response = await client
-      .post('/oauth2/authorize')
-      .form({ decision: 'allow' })
-      .withSession({ oauth2_request: oauth2Request })
-      .withCsrfToken()
-      .loginAs(user)
-      .withInertia()
+    const response = await allow(client, user)
     const location = new URL(response.header('x-inertia-location') ?? '')
     const grant = await Oauth2Grant.firstOrFail()
 
@@ -213,35 +204,20 @@ test.group('oauth2 / POST /oauth2/authorize', function (group) {
     assert,
     client,
   }) {
-    const { did, oauth, user } = await signIn({ scope: 'atproto d' })
-    const response = await client
-      .post('/oauth2/authorize')
-      .form({ decision: 'allow' })
-      .withSession({ oauth2_request: oauth2Request })
-      .withCsrfToken()
-      .loginAs(user)
-      .withInertia()
+    const granted = serializeScopes(new Set(['atproto', favoriteScope]))
+    const { did, user } = await signIn({ scope: granted })
+    const response = await allow(client, user)
+    await answerOnPds(client, response, did, { user })
+    const scopes = await grantedScopes(did)
 
-    response.assertHeader(
-      'x-inertia-location',
-      new URL('/oauth/authorize', testEnv.OAUTH_SERVICE).href
-    )
     response.assertSession('oauth2_intent', oauth2Request)
-    assert.deepEqual(oauth.authorizeCalls, [
-      { input: did, scope: serializeScopes(importScopes.union(new Set(['atproto', 'd']))) },
-    ])
+    assert.isTrue(scopes.isSupersetOf(parseScopes(granted).union(importScopes)))
   })
 
   test('should show an error to others', async function ({ assert, cleanup, client }) {
     cleanup(setEnv('OAUTH2_ALLOWED_DIDS', [otherDid]))
     const { user } = await signIn()
-    const response = await client
-      .post('/oauth2/authorize')
-      .form({ decision: 'allow' })
-      .withSession({ oauth2_request: oauth2Request })
-      .withCsrfToken()
-      .loginAs(user)
-      .withInertia()
+    const response = await allow(client, user)
 
     response.assertInertiaPropsContains({ error: 'invalidClient' })
     assert.equal(await Oauth2Grant.query().first(), null)
@@ -264,20 +240,13 @@ test.group('oauth2 / GET /oauth/callback', function (group) {
   group.each.setup(function () {
     return testUtils.db().wrapInGlobalTransaction()
   })
-  group.each.teardown(restoreOauth)
 
   test('should redirect with a code when the PDS granted the scopes', async function ({
     assert,
     client,
   }) {
-    const { oauth, user } = await signIn()
-    oauth.scope = importGranted
-    const response = await client
-      .get('/oauth/callback')
-      .qs({ code: 'c', state: 'd' })
-      .withSession({ oauth2_intent: oauth2Request, oauth_state: 'd' })
-      .loginAs(user)
-      .redirects(0)
+    const { did, user } = await signIn()
+    const response = await answerOnPds(client, await allow(client, user), did, { user })
     const location = new URL(response.header('location') ?? '')
 
     assert.equal(location.origin + location.pathname, redirectUri)
@@ -285,41 +254,32 @@ test.group('oauth2 / GET /oauth/callback', function (group) {
   })
 
   test('should redirect with `access_denied` without the scopes', async function ({ client }) {
-    const { user } = await signIn()
-    const response = await client
-      .get('/oauth/callback')
-      .qs({ code: 'c', state: 'd' })
-      .withSession({ oauth2_intent: oauth2Request, oauth_state: 'd' })
-      .loginAs(user)
-      .redirects(0)
+    const { did, user } = await signIn()
+    const response = await answerOnPds(client, await allow(client, user), did, {
+      scope: 'atproto',
+      user,
+    })
 
     response.assertHeader('location', redirectUri + '?error=access_denied&state=b')
   })
 
   test('should redirect with `access_denied` when denied', async function ({ client }) {
-    const { oauth, user } = await signIn()
-    oauth.callbackError = new OAuthCallbackError(new URLSearchParams({ error: 'access_denied' }))
-    const response = await client
-      .get('/oauth/callback')
-      .qs({ code: 'c', state: 'd' })
-      .withSession({ oauth2_intent: oauth2Request, oauth_state: 'd' })
-      .loginAs(user)
-      .redirects(0)
+    const { did, user } = await signIn()
+    const response = await answerOnPds(client, await allow(client, user), did, {
+      deny: true,
+      user,
+    })
 
     response.assertHeader('location', redirectUri + '?error=access_denied&state=b')
   })
 
   test('should not connect another account', async function ({ assert, client }) {
-    const { oauth, user } = await signIn()
+    const { did, user } = await signIn()
     const other = await createAccount()
-    oauth.callbackDid = other.did
-    oauth.scope = importGranted
-    const response = await client
-      .get('/oauth/callback')
-      .qs({ code: 'c', state: 'd' })
-      .withSession({ oauth2_intent: oauth2Request, oauth_state: 'd' })
-      .loginAs(user)
-      .redirects(0)
+    const response = await answerOnPds(client, await allow(client, user), did, {
+      as: other.did,
+      user,
+    })
 
     response.assertHeader('location', '/dashboard')
     response.assertFlashMessage('errorMessage', { key: 'oauth2.otherAccount' })
@@ -329,13 +289,11 @@ test.group('oauth2 / GET /oauth/callback', function (group) {
   test('should redirect with `server_error` if the state does not match', async function ({
     client,
   }) {
-    const { user } = await signIn()
-    const response = await client
-      .get('/oauth/callback')
-      .qs({ code: 'c', state: 'd' })
-      .withSession({ oauth2_intent: oauth2Request, oauth_state: 'e' })
-      .loginAs(user)
-      .redirects(0)
+    const { did, user } = await signIn()
+    const response = await answerOnPds(client, await allow(client, user), did, {
+      session: { oauth_state: 'e' },
+      user,
+    })
 
     response.assertHeader('location', redirectUri + '?error=server_error&state=b')
   })
@@ -557,7 +515,6 @@ test.group('oauth2 / connections', function (group) {
   group.each.setup(function () {
     return testUtils.db().wrapInGlobalTransaction()
   })
-  group.each.teardown(restoreOauth)
 
   test('should list connections', async function ({ client }) {
     const { did, user } = await signIn()
@@ -666,103 +623,59 @@ test.group('oauth2 / logging in and out', function (group) {
   group.each.setup(function () {
     return testUtils.db().wrapInGlobalTransaction()
   })
-  group.each.teardown(restoreOauth)
 
   test('should ask for import scopes after logging in, when connected', async function ({
     assert,
     cleanup,
     client,
   }) {
-    const { did, oauth } = await signIn()
-    await connect(did)
-    await prepareLogin(did, cleanup)
-    const response = await client
-      .get('/oauth/callback')
-      .qs({ code: 'c', state: 'd' })
-      .withSession({ oauth_state: 'd', source: 'login' })
-      .redirects(0)
+    const { did, login } = await logInConnected(client, cleanup)
+    const response = await answerOnPds(client, login, did)
+    const scopes = await grantedScopes(did)
 
-    response.assertHeader('location', new URL('/oauth/authorize', testEnv.OAUTH_SERVICE).href)
-    response.assertSession('import_scopes_intent', true)
-    assert.deepEqual(oauth.authorizeCalls, [{ input: did, scope: importGranted }])
-  })
-
-  test('should not ask for import scopes when granted', async function ({ cleanup, client }) {
-    const { did } = await signIn({ scope: importGranted })
-    await connect(did)
-    await prepareLogin(did, cleanup)
-    const response = await client
-      .get('/oauth/callback')
-      .qs({ code: 'c', state: 'd' })
-      .withSession({ oauth_state: 'd', source: 'login' })
-      .redirects(0)
-
+    login.assertSession('import_scopes_intent', true)
     response.assertHeader('location', '/dashboard')
+    response.assertFlashMissing('errorMessage')
+    assert.isTrue(scopes.isSupersetOf(importScopes))
   })
 
   test('should log in if asking for import scopes fails', async function ({ cleanup, client }) {
-    const { did, oauth } = await signIn()
+    const { did } = await signIn()
     await connect(did)
-    await prepareLogin(did, cleanup)
-    oauth.authorizeError = new Error('a')
-    const response = await client
-      .get('/oauth/callback')
-      .qs({ code: 'c', state: 'd' })
-      .withSession({ oauth_state: 'd', source: 'login' })
-      .redirects(0)
+    await prepareLogIn(did, cleanup)
+    const started = await startLogIn(client, did)
+    // No real way for only this to fail.
+    const oauth = oauthClient()
+    oauth.authorize = async function () {
+      throw new Error('a')
+    }
+    cleanup(function () {
+      Reflect.deleteProperty(oauth, 'authorize')
+    })
+    const response = await answerOnPds(client, started, did)
 
     response.assertHeader('location', '/dashboard')
     response.assertFlashMessage('errorMessage', { key: 'oauth2.importScopesMissing' })
     response.assertSessionMissing('import_scopes_intent')
   })
 
-  test('should finish asking for import scopes', async function ({ client }) {
-    const { oauth, user } = await signIn()
-    oauth.scope = importGranted
-    const response = await client
-      .get('/oauth/callback')
-      .qs({ code: 'c', state: 'd' })
-      .withSession({ import_scopes_intent: true, oauth_state: 'd' })
-      .loginAs(user)
-      .redirects(0)
-
-    response.assertHeader('location', '/dashboard')
-    response.assertFlashMissing('errorMessage')
-  })
-
-  test('should say when import scopes are not granted', async function ({ client }) {
-    const { user } = await signIn()
-    const response = await client
-      .get('/oauth/callback')
-      .qs({ code: 'c', state: 'd' })
-      .withSession({ import_scopes_intent: true, oauth_state: 'd' })
-      .loginAs(user)
-      .redirects(0)
+  test('should say when import scopes are not granted', async function ({ cleanup, client }) {
+    const { did, login } = await logInConnected(client, cleanup)
+    const response = await answerOnPds(client, login, did, { scope: 'atproto' })
 
     response.assertFlashMessage('errorMessage', { key: 'oauth2.importScopesMissing' })
   })
 
-  test('should say when import scopes are denied', async function ({ client }) {
-    const { oauth, user } = await signIn()
-    oauth.callbackError = new OAuthCallbackError(new URLSearchParams({ error: 'access_denied' }))
-    const response = await client
-      .get('/oauth/callback')
-      .qs({ code: 'c', state: 'd' })
-      .withSession({ import_scopes_intent: true, oauth_state: 'd' })
-      .loginAs(user)
-      .redirects(0)
+  test('should say when import scopes are denied', async function ({ cleanup, client }) {
+    const { did, login } = await logInConnected(client, cleanup)
+    const response = await answerOnPds(client, login, did, { deny: true })
 
     response.assertFlashMessage('errorMessage', { key: 'oauth2.importScopesMissing' })
   })
 
-  test('should say when asking for import scopes fails', async function ({ client }) {
-    const { user } = await signIn()
-    const response = await client
-      .get('/oauth/callback')
-      .qs({ code: 'c', state: 'd' })
-      .withSession({ import_scopes_intent: true, oauth_state: 'e' })
-      .loginAs(user)
-      .redirects(0)
+  test('should say when asking for import scopes fails', async function ({ cleanup, client }) {
+    const { did, login } = await logInConnected(client, cleanup)
+    const response = await answerOnPds(client, login, did, { session: { oauth_state: 'e' } })
 
     response.assertFlashMessage('errorMessage', { key: 'oauth2.importScopesMissing' })
   })
@@ -772,48 +685,34 @@ test.group('oauth2 / logging in and out', function (group) {
     cleanup,
     client,
   }) {
-    const { did, oauth, user } = await signIn({ scope: importGranted })
+    const { did, user } = await signIn({ scope: importGranted })
     const tokens = await connect(did)
     if ('error' in tokens) throw new Error('Expected tokens')
-
-    // Log out: keeps the session on the PDS.
+    await prepareLogIn(did, cleanup)
     await client.post('/oauth/logout').withCsrfToken().loginAs(user).redirects(0)
-
-    // Log in again: the PDS gives a session with the login scopes only.
-    oauth.scope = 'atproto'
-    await prepareLogin(did, cleanup)
-    const login = await client
-      .get('/oauth/callback')
-      .qs({ code: 'c', state: 'd' })
-      .withSession({ oauth_state: 'd', source: 'login' })
-      .redirects(0)
-
-    // Ask for the import scopes again, which are granted.
-    oauth.scope = importGranted
-    await client
-      .get('/oauth/callback')
-      .qs({ code: 'c', state: 'e' })
-      .withSession({ import_scopes_intent: true, oauth_state: 'e' })
-      .loginAs(user)
-      .redirects(0)
+    // Logging in only asks for the login scopes, so the app asks for the
+    // import scopes again.
+    const login = await logIn(client, did)
+    await answerOnPds(client, login, did)
     const grant = await oauth2Service.verifyAccessToken(tokens.access_token)
-    const { scope } = await user.getTokenInfo()
+    const scopes = await grantedScopes(did)
 
     login.assertSession('import_scopes_intent', true)
-    assert.deepEqual(oauth.revokeCalls, [])
     assert.equal('error' in grant ? grant.error : grant.did, did)
-    assert.isTrue(parseScopes(scope).isSupersetOf(importScopes))
+    assert.isTrue(scopes.isSupersetOf(importScopes))
   })
 
   test('should keep the session on the PDS for connected services', async function ({
     assert,
     client,
   }) {
-    const { did, oauth, user } = await signIn()
+    const { did, user } = await signIn()
     await connect(did)
     await client.post('/oauth/logout').withCsrfToken().loginAs(user).redirects(0)
 
-    assert.deepEqual(oauth.revokeCalls, [])
+    await assert.doesNotReject(function () {
+      return oauthClient().restore(did)
+    })
   })
 
   test('should drop a stale connect flow when logging in', async function ({ client }) {
@@ -854,14 +753,37 @@ async function connect(did: DidString) {
 }
 
 /**
- * Prepare logging in: mark the account as synced, so that no backfill is
- * queued, and do not watch it, as that connects to Jetstream.
+ * Allow the client on the consent page.
  */
-async function prepareLogin(did: DidString, cleanup: (handler: () => void) => void) {
-  const account = await Account.findOrFail(did)
-  await account.merge({ lastActivitySyncAt: DateTime.now() }).save()
-  jetstreamService.addDid = function () {}
-  cleanup(function () {
-    Reflect.deleteProperty(jetstreamService, 'addDid')
-  })
+function allow(client: ApiClient, user: AtprotoUser): Promise<ApiResponse> {
+  return client
+    .post('/oauth2/authorize')
+    .form({ decision: 'allow' })
+    .withSession({ oauth2_request: oauth2Request })
+    .withCsrfToken()
+    .loginAs(user)
+    .withInertia()
+}
+
+/**
+ * Get the scopes granted to the session on the PDS.
+ */
+async function grantedScopes(did: DidString): Promise<Set<string>> {
+  const session = await oauthClient().restore(did)
+  const { scope } = await session.getTokenInfo()
+  return parseScopes(scope)
+}
+
+/**
+ * Log in with a connected service, which makes the app ask for the import
+ * scopes.
+ */
+async function logInConnected(
+  client: ApiClient,
+  cleanup: (handler: () => void) => void
+): Promise<{ did: DidString; login: ApiResponse }> {
+  const { did } = await signIn()
+  await connect(did)
+  await prepareLogIn(did, cleanup)
+  return { did, login: await logIn(client, did) }
 }

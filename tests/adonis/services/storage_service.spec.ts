@@ -8,7 +8,7 @@ import Blob from '#models/blob'
 import * as lexicon from '#lexicons/index'
 import storageService from '#services/storage_service'
 import { createAccount, pdsUrl } from '../../pds.ts'
-import { restoreOauth, signIn } from '../helpers.ts'
+import { signIn } from '../helpers.ts'
 
 const now = DateTime.now()
 const image = { category: 'image', cid: 'd', mimeType: 'image/png', size: 1 }
@@ -165,7 +165,6 @@ test.group('services / storage / backfill', function (group) {
   group.each.setup(function () {
     return testUtils.db().wrapInGlobalTransaction()
   })
-  group.each.teardown(restoreOauth)
 
   test('should store blobs in the repo', async function ({ assert }) {
     const { did, repo } = await signIn()

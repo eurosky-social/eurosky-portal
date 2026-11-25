@@ -7,7 +7,7 @@ import Account from '#models/account'
 import ActivityRecord from '#models/activity_record'
 import activityService from '#services/activity_service'
 import { pdsUrl } from '../../pds.ts'
-import { restoreOauth, signIn } from '../helpers.ts'
+import { signIn } from '../helpers.ts'
 
 const did = 'did:web:a.com'
 const ip = '127.0.0.1'
@@ -220,7 +220,6 @@ test.group('services / activity / with a PDS', function (group) {
   group.each.setup(function () {
     return testUtils.db().wrapInGlobalTransaction()
   })
-  group.each.teardown(restoreOauth)
 
   test('should backfill records from the repo', async function ({ assert }) {
     const { did, repo } = await signIn()

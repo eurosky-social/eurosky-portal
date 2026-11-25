@@ -1,12 +1,11 @@
 import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
-import { restoreOauth, signIn } from './helpers.ts'
+import { signIn } from './helpers.ts'
 
 test.group('activity / GET /activity/:collection/:rkey', function (group) {
   group.each.setup(function () {
     return testUtils.db().wrapInGlobalTransaction()
   })
-  group.each.teardown(restoreOauth)
 
   test('should limit viewing details by person', async function ({ client }) {
     const { user } = await signIn()
