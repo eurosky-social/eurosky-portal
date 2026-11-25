@@ -64,4 +64,7 @@ export default await Env.create(new URL('../../', import.meta.url), {
 
   // Plausible for analytics
   PLAUSIBLE_ENABLED: Env.schema.boolean.optional(),
+
+  // Cache: `memoryOnly` for tests, or a database normally (default: `default`).
+  CACHE_STORE: Env.schema.enum.optional(['default', 'memoryOnly'] as const),
 })

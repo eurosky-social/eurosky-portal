@@ -1,3 +1,4 @@
+import cache from '@adonisjs/cache/services/main'
 import { assert } from '@japa/assert'
 import app from '@adonisjs/core/services/app'
 import type { Config } from '@japa/runner/types'
@@ -12,6 +13,7 @@ import { inertiaApiClient } from '@adonisjs/inertia/plugins/api_client'
 import { sessionApiClient } from '@adonisjs/session/plugins/api_client'
 import { sessionBrowserClient } from '@adonisjs/session/plugins/browser_client'
 import { shieldApiClient } from '@adonisjs/shield/plugins/api_client'
+import { startPds } from './pds.ts'
 
 /**
  * This file is imported by the "bin/test.ts" entrypoint file
@@ -42,7 +44,7 @@ export const plugins: Config['plugins'] = [
  * The teardown functions are executed after all the tests
  */
 export const runnerHooks: Required<Pick<Config, 'setup' | 'teardown'>> = {
-  setup: [() => testUtils.db().migrate()],
+  setup: [() => testUtils.db().migrate(), startPds],
   teardown: [],
 }
 
@@ -52,8 +54,16 @@ export const runnerHooks: Required<Pick<Config, 'setup' | 'teardown'>> = {
  */
 export const configureSuite: Config['configureSuite'] = (suite) => {
   if (['adonis', 'browser'].includes(suite.name)) {
-    suite.onGroup((group) => group.each.setup(() => limiter.clear()))
-    suite.onTest((test) => test.setup(() => limiter.clear()))
+    suite.onGroup((group) => group.each.setup(reset))
+    suite.onTest((test) => test.setup(reset))
     return suite.setup(() => testUtils.httpServer().start())
   }
+}
+
+/**
+ * Clear state kept outside the database.
+ */
+async function reset(): Promise<undefined> {
+  await cache.clear()
+  await limiter.clear()
 }

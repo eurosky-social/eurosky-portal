@@ -7,6 +7,8 @@
     "app.bsky.feed.post",
     "app.bsky.graph.follow",
     "com.atproto.repo.describeRepo",
+    "com.atproto.server.createAccount",
+    "com.atproto.server.deactivateAccount",
     "com.atproto.sync.getBlob",
     "com.atproto.sync.getLatestCommit",
     "com.atproto.sync.listBlobs",
@@ -111,6 +113,14 @@
     "com.atproto.repo.strongRef": {
       "uri": "at://did:plc:6msi3pj7krzih5qxqtryxlzw/com.atproto.lexicon.schema/com.atproto.repo.strongRef",
       "cid": "bafyreifrkdbnkvfjujntdaeigolnrjj3srrs53tfixjhmacclps72qlov4"
+    },
+    "com.atproto.server.createAccount": {
+      "uri": "at://did:plc:6msi3pj7krzih5qxqtryxlzw/com.atproto.lexicon.schema/com.atproto.server.createAccount",
+      "cid": "bafyreie6o2sq47ukysnnnwxcb7eocpyyazetp5n3m4u3n5f7v5xr7qn62u"
+    },
+    "com.atproto.server.deactivateAccount": {
+      "uri": "at://did:plc:6msi3pj7krzih5qxqtryxlzw/com.atproto.lexicon.schema/com.atproto.server.deactivateAccount",
+      "cid": "bafyreicewuflgo55i4yr7wblmnfcfsrqehy6zrq5jcqap2igkniantarwu"
     },
     "com.atproto.sync.getBlob": {
       "uri": "at://did:plc:6msi3pj7krzih5qxqtryxlzw/com.atproto.lexicon.schema/com.atproto.sync.getBlob",
