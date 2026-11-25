@@ -131,9 +131,24 @@ Configuration is read from environment variables and validated at start-up in [`
 | `DATABASE_PATH`                 | no       | SQLite file path. Defaults to `tmp/db.sqlite3`.                                                                                                                      |
 | `DATABASE_AUTOMIGRATE`          | no       | Run pending migrations on start-up. Used in the Docker image.                                                                                                        |
 | `SESSION_DRIVER`                | yes      | `cookie` (as in `.env.example`), `memory` or `database`.                                                                                                             |
-| `OTEL_ENABLED`                  | no       | Enable OpenTelemetry. Configure the exporter with the standard `OTEL_EXPORTER_OTLP_*` variables.                                                                     |
+| `OTEL_ENABLED`                  | no       | Enable OpenTelemetry, configured with the standard `OTEL_*` variables; see [Monitoring](#monitoring).                                                                |
 | `PLAUSIBLE_ENABLED`             | no       | Send privacy-friendly analytics events to Plausible.                                                                                                                 |
 | `VITE_ALIAS_HOSTS`              | no       | Comma-separated hosts the Vite dev server accepts besides the default (`localhost`).                                                                                 |
+
+### Monitoring
+
+Logs are JSON on stdout.
+For Prometheus metrics on `http://127.0.0.1:9464/metrics` (requests by route, Node.js runtime), set:
+
+```sh
+OTEL_ENABLED=true
+OTEL_METRICS_EXPORTER=prometheus
+OTEL_EXPORTER_PROMETHEUS_HOST=127.0.0.1
+OTEL_TRACES_EXPORTER=none
+OTEL_LOGS_EXPORTER=none
+```
+
+OpenTelemetry only starts from the build (`node ace build`).
 
 ## Contributing
 
