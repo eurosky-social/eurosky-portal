@@ -3,7 +3,7 @@
  * started by `startPds` in `tests/pds.ts`, in its own process, as it brings
  * other versions of native dependencies (such as `sharp`).
  *
- * Prints its URL when ready,
+ * Prints the URLs of the PDS and PLC directory when ready (space-separated),
  * stops on `SIGTERM`.
  */
 
@@ -26,4 +26,4 @@ process.once('SIGTERM', async function () {
   process.exit()
 })
 
-process.stdout.write(network.pds.url + '\n')
+process.stdout.write(network.pds.url + ' ' + network.plc.url + '\n')

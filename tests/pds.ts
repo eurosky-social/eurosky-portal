@@ -2,8 +2,11 @@ import { type ChildProcess, spawn } from 'node:child_process'
 import { once } from 'node:events'
 import { randomUUID } from 'node:crypto'
 import { createInterface } from 'node:readline'
+import app from '@adonisjs/core/services/app'
+import { XrpcHandleResolver } from '@atcute/identity-resolver'
 import { Client, type DidString, type HandleString } from '@atproto/lex'
 import * as lexicon from '#lexicons/index'
+import IdentityService from '#services/identity_service'
 
 /**
  * Account on the PDS of the tests.
@@ -55,13 +58,22 @@ export async function startPds(): Promise<() => Promise<undefined>> {
         throw new Error('PDS of the tests stopped while starting')
       }),
     ])
-    url = new URL(String(line)).href
+    const [pds = '', plc = ''] = String(line).split(' ')
+    url = new URL(pds).href
+    const identity = new IdentityService()
+    // Local, and handles of the PDS are not in DNS.
+    identity.fetch = globalThis.fetch
+    identity.handleResolver = new XrpcHandleResolver({ serviceUrl: url })
+    identity.pdsOrigins = new Set([new URL(url).origin])
+    identity.plcUrl = new URL(plc).href
+    app.container.swap(IdentityService, () => identity)
   } catch (error) {
     await stop(server)
     throw error
   }
 
   return async function () {
+    app.container.restore(IdentityService)
     url = undefined
     await stop(server)
   }
