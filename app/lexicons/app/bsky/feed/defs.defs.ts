@@ -41,8 +41,18 @@ type PostView = {
   labels?: LabelDefs.Label[]
   record: l.LexMap
   viewer?: ViewerState
+
+  /**
+   * Present if the post has been edited. Timestamp when the version of the post in this view was indexed. indexedAt is unchanged by edits.
+   */
+  editedAt?: l.DatetimeString
   indexedAt: l.DatetimeString
   likeCount?: number
+
+  /**
+   * Approximate number of times the post has been viewed. Only included in authenticated responses to the post's author when eligible to see the count. Counts less than 100 are omitted.
+   */
+  viewCount?: number
   quoteCount?: number
   replyCount?: number
   threadgate?: ThreadgateView
@@ -96,8 +106,12 @@ const postView = /*#__PURE__*/ l.typedObject<PostView>(
     viewer: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.ref<ViewerState>((() => viewerState) as any),
     ),
+    editedAt: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'datetime' }),
+    ),
     indexedAt: /*#__PURE__*/ l.string({ format: 'datetime' }),
     likeCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
+    viewCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
     quoteCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
     replyCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
     threadgate: /*#__PURE__*/ l.optional(
@@ -210,6 +224,8 @@ type Interaction = {
     | 'app.bsky.feed.defs#interactionReply'
     | 'app.bsky.feed.defs#interactionQuote'
     | 'app.bsky.feed.defs#interactionShare'
+    | 'app.bsky.feed.defs#interactionFollow'
+    | 'app.bsky.feed.defs#interactionUnspecced'
     | l.UnknownString
 
   /**
@@ -218,9 +234,19 @@ type Interaction = {
   reqId?: string
 
   /**
+   * Additional data for the interaction, with an application-defined structure.
+   */
+  payload?: l.LexMap
+
+  /**
    * Context on a feed item that was originally supplied by the feed generator on getFeedSkeleton.
    */
   feedContext?: string
+
+  /**
+   * The view in which the interaction occurred.
+   */
+  viewContext?: 'feed' | 'thread' | l.UnknownString
 }
 
 export type { Interaction }
@@ -247,12 +273,21 @@ const interaction = /*#__PURE__*/ l.typedObject<Interaction>(
           'app.bsky.feed.defs#interactionReply',
           'app.bsky.feed.defs#interactionQuote',
           'app.bsky.feed.defs#interactionShare',
+          'app.bsky.feed.defs#interactionFollow',
+          'app.bsky.feed.defs#interactionUnspecced',
         ]
       }>(),
     ),
     reqId: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.string({ maxLength: 100 })),
+    payload: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.lexMap()),
     feedContext: /*#__PURE__*/ l.optional(
       /*#__PURE__*/ l.string({ maxLength: 2000 }),
+    ),
+    viewContext: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string<{
+        maxLength: 64
+        knownValues: ['feed', 'thread']
+      }>({ maxLength: 64 }),
     ),
   }),
 )
@@ -805,6 +840,19 @@ type ClickthroughEmbed = typeof ClickthroughEmbed
 
 export { ClickthroughEmbed }
 
+/** User followed the author of the feed item */
+const interactionFollow = /*#__PURE__*/ l.token($nsid, 'interactionFollow')
+
+export { interactionFollow }
+
+/** User followed the author of the feed item */
+const InteractionFollow = /*#__PURE__*/ interactionFollow.value
+
+/** User followed the author of the feed item */
+type InteractionFollow = typeof InteractionFollow
+
+export { InteractionFollow }
+
 /** User reposted the feed item */
 const interactionRepost = /*#__PURE__*/ l.token($nsid, 'interactionRepost')
 
@@ -877,6 +925,22 @@ const generatorViewerState = /*#__PURE__*/ l.typedObject<GeneratorViewerState>(
 )
 
 export { generatorViewerState }
+
+/** Application-defined interaction with the feed item */
+const interactionUnspecced = /*#__PURE__*/ l.token(
+  $nsid,
+  'interactionUnspecced',
+)
+
+export { interactionUnspecced }
+
+/** Application-defined interaction with the feed item */
+const InteractionUnspecced = /*#__PURE__*/ interactionUnspecced.value
+
+/** Application-defined interaction with the feed item */
+type InteractionUnspecced = typeof InteractionUnspecced
+
+export { InteractionUnspecced }
 
 type SkeletonReasonRepost = {
   $type?: 'app.bsky.feed.defs#skeletonReasonRepost'

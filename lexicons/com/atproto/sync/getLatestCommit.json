@@ -4,44 +4,25 @@
     "main": {
       "type": "query",
       "errors": [
-        {
-          "name": "RepoNotFound"
-        },
-        {
-          "name": "RepoTakendown"
-        },
-        {
-          "name": "RepoSuspended"
-        },
-        {
-          "name": "RepoDeactivated"
-        }
+        { "name": "RepoNotFound" },
+        { "name": "RepoTakendown" },
+        { "name": "RepoSuspended" },
+        { "name": "RepoDeactivated" }
       ],
       "output": {
         "schema": {
           "type": "object",
-          "required": [
-            "cid",
-            "rev"
-          ],
+          "required": ["cid", "rev"],
           "properties": {
-            "cid": {
-              "type": "string",
-              "format": "cid"
-            },
-            "rev": {
-              "type": "string",
-              "format": "tid"
-            }
+            "cid": { "type": "string", "format": "cid" },
+            "rev": { "type": "string", "format": "tid" }
           }
         },
         "encoding": "application/json"
       },
       "parameters": {
         "type": "params",
-        "required": [
-          "did"
-        ],
+        "required": ["did"],
         "properties": {
           "did": {
             "type": "string",

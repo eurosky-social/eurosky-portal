@@ -10,6 +10,22 @@
           "maxLength": 100,
           "description": "Tells this block apart from the document's other blocks of its type; interaction records name it in their `block` field. Records without a matching key belong to the first block of the type."
         },
+        "audience": {
+          "refs": [
+            "pub.leaflet.audience#subscribers",
+            "pub.leaflet.audience#paid",
+            "pub.leaflet.audience#tiers",
+            "pub.leaflet.audience#follows",
+            "pub.leaflet.audience#followers"
+          ],
+          "type": "union",
+          "description": "Who may reply. Absent means anyone. Checked when a reply is submitted."
+        },
+        "closesAt": {
+          "type": "string",
+          "format": "datetime",
+          "description": "When the block stops taking replies. Absent means it never closes. Checked when a reply is submitted."
+        },
         "buttonText": {
           "type": "string",
           "maxLength": 500,

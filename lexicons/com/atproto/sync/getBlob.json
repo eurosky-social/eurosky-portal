@@ -4,31 +4,16 @@
     "main": {
       "type": "query",
       "errors": [
-        {
-          "name": "BlobNotFound"
-        },
-        {
-          "name": "RepoNotFound"
-        },
-        {
-          "name": "RepoTakendown"
-        },
-        {
-          "name": "RepoSuspended"
-        },
-        {
-          "name": "RepoDeactivated"
-        }
+        { "name": "BlobNotFound" },
+        { "name": "RepoNotFound" },
+        { "name": "RepoTakendown" },
+        { "name": "RepoSuspended" },
+        { "name": "RepoDeactivated" }
       ],
-      "output": {
-        "encoding": "*/*"
-      },
+      "output": { "encoding": "*/*" },
       "parameters": {
         "type": "params",
-        "required": [
-          "did",
-          "cid"
-        ],
+        "required": ["did", "cid"],
         "properties": {
           "cid": {
             "type": "string",

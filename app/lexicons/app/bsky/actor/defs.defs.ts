@@ -1114,6 +1114,10 @@ type ProfileViewDetailed = {
   labels?: LabelDefs.Label[]
   status?: StatusView
   viewer?: ViewerState
+
+  /**
+   * @deprecated use links instead.
+   */
   website?: l.UriString
   pronouns?: string
   createdAt?: l.DatetimeString

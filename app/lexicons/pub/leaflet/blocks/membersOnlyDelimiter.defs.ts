@@ -3,6 +3,7 @@
  */
 
 import { l } from '@atproto/lex'
+import * as LeafletAudience from '../audience.defs.ts'
 
 const $nsid = 'pub.leaflet.blocks.membersOnlyDelimiter'
 
@@ -15,14 +16,28 @@ type Main = {
   $type?: 'pub.leaflet.blocks.membersOnlyDelimiter'
 
   /**
-   * Paid tier ids that grant access when audience is tiers. An empty selection grants no membership access.
+   * Who can read past the delimiter.
    */
-  tierIds?: string[]
+  audience:
+    | l.$Typed<LeafletAudience.Subscribers>
+    | l.$Typed<LeafletAudience.Paid>
+    | l.$Typed<LeafletAudience.Tiers>
+    | l.Unknown$TypedObject
 
   /**
-   * Whether access is available to all subscribers, all paid members, or selected paid tiers.
+   * When an early-access gate widens to widerReleaseAudience. Absent when the gate never widens.
    */
-  audience: 'subscribers' | 'paid' | 'tiers' | l.UnknownString
+  widerReleaseAt?: l.DatetimeString
+
+  /**
+   * Who can read past the delimiter once widerReleaseAt passes, in addition to the original audience. public removes the gate entirely.
+   */
+  widerReleaseAudience?:
+    | l.$Typed<LeafletAudience.Public>
+    | l.$Typed<LeafletAudience.Subscribers>
+    | l.$Typed<LeafletAudience.Paid>
+    | l.$Typed<LeafletAudience.Tiers>
+    | l.Unknown$TypedObject
 }
 
 export type { Main }
@@ -32,12 +47,42 @@ const main = /*#__PURE__*/ l.typedObject<Main>(
   $nsid,
   'main',
   /*#__PURE__*/ l.object({
-    tierIds: /*#__PURE__*/ l.optional(
-      /*#__PURE__*/ l.array(/*#__PURE__*/ l.string()),
+    audience: /*#__PURE__*/ l.typedUnion(
+      [
+        /*#__PURE__*/ l.typedRef<LeafletAudience.Subscribers>(
+          (() => LeafletAudience.subscribers) as any,
+        ),
+        /*#__PURE__*/ l.typedRef<LeafletAudience.Paid>(
+          (() => LeafletAudience.paid) as any,
+        ),
+        /*#__PURE__*/ l.typedRef<LeafletAudience.Tiers>(
+          (() => LeafletAudience.tiers) as any,
+        ),
+      ],
+      false,
     ),
-    audience: /*#__PURE__*/ l.string<{
-      knownValues: ['subscribers', 'paid', 'tiers']
-    }>(),
+    widerReleaseAt: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'datetime' }),
+    ),
+    widerReleaseAudience: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.typedUnion(
+        [
+          /*#__PURE__*/ l.typedRef<LeafletAudience.Public>(
+            (() => LeafletAudience['public']) as any,
+          ),
+          /*#__PURE__*/ l.typedRef<LeafletAudience.Subscribers>(
+            (() => LeafletAudience.subscribers) as any,
+          ),
+          /*#__PURE__*/ l.typedRef<LeafletAudience.Paid>(
+            (() => LeafletAudience.paid) as any,
+          ),
+          /*#__PURE__*/ l.typedRef<LeafletAudience.Tiers>(
+            (() => LeafletAudience.tiers) as any,
+          ),
+        ],
+        false,
+      ),
+    ),
   }),
 )
 

@@ -121,6 +121,11 @@ type ViewRecord = {
     | l.Unknown$TypedObject
   )[]
   labels?: LabelDefs.Label[]
+
+  /**
+   * Present if the record has been edited. Timestamp when the current version of the record was indexed. indexedAt is unchanged by edits.
+   */
+  editedAt?: l.DatetimeString
   indexedAt: l.DatetimeString
   likeCount?: number
   quoteCount?: number
@@ -179,6 +184,9 @@ const viewRecord = /*#__PURE__*/ l.typedObject<ViewRecord>(
       /*#__PURE__*/ l.array(
         /*#__PURE__*/ l.ref<LabelDefs.Label>((() => LabelDefs.label) as any),
       ),
+    ),
+    editedAt: /*#__PURE__*/ l.optional(
+      /*#__PURE__*/ l.string({ format: 'datetime' }),
     ),
     indexedAt: /*#__PURE__*/ l.string({ format: 'datetime' }),
     likeCount: /*#__PURE__*/ l.optional(/*#__PURE__*/ l.integer()),
