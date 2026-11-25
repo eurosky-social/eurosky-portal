@@ -1,7 +1,7 @@
 import { Exception } from '@adonisjs/core/exceptions'
 import type { HttpContext } from '@adonisjs/core/http'
 import logger from '@adonisjs/core/services/logger'
-import type { DidString } from '@atproto/lex'
+import { type DidString, XrpcAuthenticationError } from '@atproto/lex'
 import { TokenInvalidError, TokenRefreshError, TokenRevokedError } from '@atproto/oauth-client-node'
 import {
   isMultipartRequest,
@@ -141,7 +141,9 @@ export default class DtpController {
         if (
           cause instanceof TokenInvalidError ||
           cause instanceof TokenRefreshError ||
-          cause instanceof TokenRevokedError
+          cause instanceof TokenRevokedError ||
+          // PDS revoked token, refreshing failed.
+          (cause instanceof XrpcAuthenticationError && cause.error === 'invalid_token')
         ) {
           throw new DtpException(401, {
             error: 'session_invalidated',

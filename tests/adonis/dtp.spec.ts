@@ -1,21 +1,25 @@
 import { randomUUID } from 'node:crypto'
+import app from '@adonisjs/core/services/app'
 import testUtils from '@adonisjs/core/services/test_utils'
 import { parse as parseTid } from '@atcute/tid'
 import { type Client, type DidString, getBlobCidString } from '@atproto/lex'
-import { TokenRefreshError, TokenRevokedError } from '@atproto/oauth-client-node'
 import { AtUri } from '@atproto/syntax'
 import { test } from '@japa/runner'
 import sharp, { type Sharp } from 'sharp'
 import * as lexicon from '#lexicons/index'
 import oauth2Service from '#services/oauth2_service'
+import { importScopes, serializeScopes } from '#utils/oauth'
 import { testEnv } from '../env.ts'
-import { restoreOauth, signIn } from './helpers.ts'
+import { oauthClient } from '../pds.ts'
+import { signIn } from './helpers.ts'
 
 // See `tests/env.ts`.
 const clientId = testEnv.OAUTH2_CLIENT_ID
 const redirectUri = testEnv.OAUTH2_CLIENT_REDIRECT_URIS
 
 const url = new URL('/_dtp/media', testEnv.APP_URL)
+
+const scope = serializeScopes(importScopes.union(new Set(['atproto'])))
 
 /**
  * Photos (PNG, 10 by 20 pixels).
@@ -44,7 +48,6 @@ test.group('dtp / POST /_dtp/media', function (group) {
   group.each.setup(function () {
     return testUtils.db().wrapInGlobalTransaction()
   })
-  group.each.teardown(restoreOauth)
 
   test('should be `invalid_token` without a token', async function ({ assert }) {
     const response = await fetch(url, { method: 'POST' })
@@ -61,7 +64,7 @@ test.group('dtp / POST /_dtp/media', function (group) {
   })
 
   test('should be `session_invalidated` when disconnected', async function ({ assert }) {
-    const { did } = await signIn()
+    const { did } = await signIn({ scope })
     const token = await connect(did)
     await oauth2Service.disconnect(did, clientId)
     const response = await send(token, multipart(photo, 'image/png', red))
@@ -70,44 +73,37 @@ test.group('dtp / POST /_dtp/media', function (group) {
     assert.deepEqual(await response.json(), { error: 'session_invalidated' })
   })
 
-  test('should be `session_invalidated` when the session on the PDS ended', async function ({
-    assert,
-  }) {
-    const { did, oauth } = await signIn()
-    oauth.restoreError = new TokenRefreshError(did, 'The session was revoked')
+  test('should be `session_invalidated` without a session', async function ({ assert }) {
+    const { did } = await signIn({ scope })
     const token = await connect(did)
+    // Revokes on the PDS and forgets the session.
+    await oauthClient().revoke(did)
     const response = await send(token, multipart(photo, 'image/png', red))
 
     assert.equal(response.status, 401)
     assert.containSubset(await response.json(), { error: 'session_invalidated' })
   })
 
-  test('should be `session_invalidated` when the session on the PDS ends while importing', async function ({
+  test('should be `session_invalidated` when the PDS revoked the session', async function ({
     assert,
   }) {
-    const { did, oauth } = await signIn()
-    oauth.fetchError = new TokenRevokedError(did)
+    const { did } = await signIn({ scope })
     const token = await connect(did)
+    // Revoke on the PDS (such as when the person removes the app there), but
+    // keep the session.
+    const config = await app.container.make('atproto.oauth.config')
+    const { sessions } = config.stores
+    const session = await sessions.get(did)
+    await oauthClient().revoke(did)
+    if (session) await sessions.set(did, session)
     const response = await send(token, multipart(photo, 'image/png', red))
 
     assert.equal(response.status, 401)
     assert.containSubset(await response.json(), { error: 'session_invalidated' })
-  })
-
-  test('should be `server_error` when restoring a session fails otherwise', async function ({
-    assert,
-  }) {
-    const { did, oauth } = await signIn()
-    oauth.restoreError = new Error('Network down')
-    const token = await connect(did)
-    const response = await send(token, multipart(photo, 'image/png', red))
-
-    assert.equal(response.status, 500)
-    assert.deepEqual(await response.json(), { error: 'server_error' })
   })
 
   test('should import a photo as a post', async function ({ assert }) {
-    const { did, repo } = await signIn()
+    const { did, repo } = await signIn({ scope })
     const token = await connect(did)
     const response = await send(token, multipart(photo, 'image/png', red))
     const post = await getPost(repo)
@@ -124,7 +120,7 @@ test.group('dtp / POST /_dtp/media', function (group) {
   })
 
   test('should put the same photo in the same record', async function ({ assert }) {
-    const { did, repo } = await signIn()
+    const { did, repo } = await signIn({ scope })
     const token = await connect(did)
     await send(token, multipart(photo, 'image/png', red))
     await send(token, multipart(photo, 'image/png', red))
@@ -134,7 +130,7 @@ test.group('dtp / POST /_dtp/media', function (group) {
   })
 
   test('should put other photos in other records', async function ({ assert }) {
-    const { did, repo } = await signIn()
+    const { did, repo } = await signIn({ scope })
     const token = await connect(did)
     await send(token, multipart(photo, 'image/png', red))
     await send(token, multipart(photo, 'image/png', blue))
@@ -144,7 +140,7 @@ test.group('dtp / POST /_dtp/media', function (group) {
   })
 
   test('should truncate long captions', async function ({ assert }) {
-    const { did, repo } = await signIn()
+    const { did, repo } = await signIn({ scope })
     const token = await connect(did)
     const description = '👋🏽'.repeat(301)
     const metadata = { ...photo, payload: { ...photo.payload, description } }
@@ -156,7 +152,7 @@ test.group('dtp / POST /_dtp/media', function (group) {
   })
 
   test('should use the current time without an upload time', async function ({ assert }) {
-    const { did, repo } = await signIn()
+    const { did, repo } = await signIn({ scope })
     const token = await connect(did)
     const metadata = { ...photo, payload: { ...photo.payload, uploadedTime: null } }
     const before = Date.now()
@@ -169,7 +165,7 @@ test.group('dtp / POST /_dtp/media', function (group) {
   })
 
   test('should key posts by when photos were uploaded', async function ({ assert }) {
-    const { did, repo } = await signIn()
+    const { did, repo } = await signIn({ scope })
     const token = await connect(did)
     await send(token, multipart(photo, 'image/png', red))
     const {
@@ -181,7 +177,7 @@ test.group('dtp / POST /_dtp/media', function (group) {
   })
 
   test('should support upload times with an offset', async function ({ assert }) {
-    const { did, repo } = await signIn()
+    const { did, repo } = await signIn({ scope })
     const token = await connect(did)
     const uploadedTime = '2020-02-01T11:00:00+01:00'
     const metadata = { ...photo, payload: { ...photo.payload, uploadedTime } }
@@ -193,7 +189,7 @@ test.group('dtp / POST /_dtp/media', function (group) {
   })
 
   test('should use the current time for invalid upload times', async function ({ assert }) {
-    const { did, repo } = await signIn()
+    const { did, repo } = await signIn({ scope })
     const token = await connect(did)
     const metadata = { ...photo, payload: { ...photo.payload, uploadedTime: 'a' } }
     const before = Date.now()
@@ -205,7 +201,7 @@ test.group('dtp / POST /_dtp/media', function (group) {
   })
 
   test('should not support photos without a file', async function ({ assert }) {
-    const { did } = await signIn()
+    const { did } = await signIn({ scope })
     const token = await connect(did)
     const { body, contentType } = multipart(photo, 'image/png', red)
     const boundary = contentType.split('boundary=')[1] ?? ''
@@ -221,7 +217,7 @@ test.group('dtp / POST /_dtp/media', function (group) {
   })
 
   test('should not support multipart without parts', async function ({ assert }) {
-    const { did } = await signIn()
+    const { did } = await signIn({ scope })
     const token = await connect(did)
     const contentType = 'multipart/related; boundary=a'
     const response = await send(token, { body: Buffer.from('--a--\r\n'), contentType })
@@ -230,7 +226,7 @@ test.group('dtp / POST /_dtp/media', function (group) {
   })
 
   test('should not support more than two parts', async function ({ assert }) {
-    const { did } = await signIn()
+    const { did } = await signIn({ scope })
     const token = await connect(did)
     const { body, contentType } = multipart(photo, 'image/png', red)
     const boundary = contentType.split('boundary=')[1] ?? ''
@@ -242,7 +238,7 @@ test.group('dtp / POST /_dtp/media', function (group) {
   })
 
   test('should ignore albums', async function ({ assert }) {
-    const { did, repo } = await signIn()
+    const { did, repo } = await signIn({ scope })
     const token = await connect(did)
     const album = { ...photo, payload: { '@type': 'Album', 'id': 'a', 'name': 'b' } }
     const response = await send(token, {
@@ -256,7 +252,7 @@ test.group('dtp / POST /_dtp/media', function (group) {
   })
 
   test('should convert other images to JPEG', async function ({ assert }) {
-    const { did, repo } = await signIn()
+    const { did, repo } = await signIn({ scope })
     const token = await connect(did)
     const data = await rectangle('#ff0000').avif().toBuffer()
     const response = await send(token, multipart(photo, 'image/avif', data))
@@ -267,7 +263,7 @@ test.group('dtp / POST /_dtp/media', function (group) {
   })
 
   test('should not support other `apiVersion`s', async function ({ assert }) {
-    const { did, repo } = await signIn()
+    const { did, repo } = await signIn({ scope })
     const token = await connect(did)
     const metadata = { ...photo, apiVersion: '0.2.0' }
     const response = await send(token, multipart(metadata, 'image/png', red))
@@ -279,7 +275,7 @@ test.group('dtp / POST /_dtp/media', function (group) {
   })
 
   test('should not support videos', async function ({ assert }) {
-    const { did, repo } = await signIn()
+    const { did, repo } = await signIn({ scope })
     const token = await connect(did)
     const video = { ...photo, payload: { ...photo.payload, '@type': 'Video' } }
     const response = await send(token, multipart(video, 'video/mp4', Buffer.from('a')))
@@ -290,7 +286,7 @@ test.group('dtp / POST /_dtp/media', function (group) {
   })
 
   test('should not support other files', async function ({ assert }) {
-    const { did } = await signIn()
+    const { did } = await signIn({ scope })
     const token = await connect(did)
     const response = await send(token, multipart(photo, 'text/plain', Buffer.from('a')))
 
@@ -299,7 +295,7 @@ test.group('dtp / POST /_dtp/media', function (group) {
   })
 
   test('should make images over 2 MB smaller', async function ({ assert }) {
-    const { did, repo } = await signIn()
+    const { did, repo } = await signIn({ scope })
     const token = await connect(did)
     // Noise compresses badly: this is a bit over 2 MB.
     const data = await sharp({
@@ -325,7 +321,7 @@ test.group('dtp / POST /_dtp/media', function (group) {
   })
 
   test('should not support unreadable images', async function ({ assert }) {
-    const { did, repo } = await signIn()
+    const { did, repo } = await signIn({ scope })
     const token = await connect(did)
     const response = await send(token, multipart(photo, 'image/png', Buffer.from('a')))
     const { records } = await repo.list(lexicon.app.bsky.feed.post.main)
@@ -335,7 +331,7 @@ test.group('dtp / POST /_dtp/media', function (group) {
   })
 
   test('should not support invalid metadata', async function ({ assert }) {
-    const { did } = await signIn()
+    const { did } = await signIn({ scope })
     const token = await connect(did)
     const response = await send(token, multipart({ a: 'b' }, 'image/png', red))
 
@@ -343,7 +339,7 @@ test.group('dtp / POST /_dtp/media', function (group) {
   })
 
   test('should not support other bodies', async function ({ assert }) {
-    const { did } = await signIn()
+    const { did } = await signIn({ scope })
     const token = await connect(did)
     const response = await send(token, { body: Buffer.from('a'), contentType: 'text/plain' })
 
@@ -351,7 +347,7 @@ test.group('dtp / POST /_dtp/media', function (group) {
   })
 
   test('should import photos without a caption', async function ({ assert }) {
-    const { did, repo } = await signIn()
+    const { did, repo } = await signIn({ scope })
     const token = await connect(did)
     const metadata = { ...photo, payload: { ...photo.payload, description: null } }
     await send(token, multipart(metadata, 'image/png', red))
@@ -362,7 +358,7 @@ test.group('dtp / POST /_dtp/media', function (group) {
   })
 
   test('should not support bodies over 20 MB', async function ({ assert }) {
-    const { did } = await signIn()
+    const { did } = await signIn({ scope })
     const token = await connect(did)
     const response = await send(token, multipart(photo, 'image/png', Buffer.alloc(20_000_001)))
 
@@ -370,7 +366,7 @@ test.group('dtp / POST /_dtp/media', function (group) {
   })
 
   test('should not support metadata that is not JSON', async function ({ assert }) {
-    const { did } = await signIn()
+    const { did } = await signIn({ scope })
     const token = await connect(did)
     const { body, contentType } = multipart(photo, 'image/png', red)
     const response = await send(token, {
@@ -382,7 +378,7 @@ test.group('dtp / POST /_dtp/media', function (group) {
   })
 
   test('should not support a missing content type', async function ({ assert }) {
-    const { did } = await signIn()
+    const { did } = await signIn({ scope })
     const token = await connect(did)
     const response = await fetch(url, {
       body: new Uint8Array([97]),
@@ -394,7 +390,7 @@ test.group('dtp / POST /_dtp/media', function (group) {
   })
 
   test('should be `server_error` when the PDS rejects writes', async function ({ assert }) {
-    const { did, repo } = await signIn()
+    const { did, repo } = await signIn({ scope })
     const token = await connect(did)
     // Deactivated accounts cannot write.
     await repo.xrpc(lexicon.com.atproto.server.deactivateAccount.main, { body: {} })
