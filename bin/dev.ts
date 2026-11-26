@@ -27,6 +27,7 @@ const root = fileURLToPath(new URL('../', import.meta.url))
  */
 const generatedFrom = ['app', 'inertia/pages']
 
+let restarting = false
 let server: ChildProcess | undefined
 let timeout: NodeJS.Timeout | undefined
 
@@ -85,13 +86,17 @@ function start(): undefined {
 function restart(): undefined {
   const child = server
 
+  if (restarting) return
+
   if (!child || child.exitCode !== null) {
     codegen()
     start()
     return
   }
 
+  restarting = true
   child.once('exit', function () {
+    restarting = false
     codegen()
     start()
   })
