@@ -194,6 +194,16 @@ test.group('services / storage / backfill', function (group) {
     )
     assert.isNotNull(account.lastStorageFullSyncAt)
   })
+
+  test('should stop when aborted', async function ({ assert }) {
+    const { did } = await signIn()
+    await assert.rejects(function () {
+      return storageService.backfill(did, AbortSignal.abort())
+    })
+    const account = await Account.findOrFail(did)
+
+    assert.isNull(account.lastStorageFullSyncAt)
+  })
 })
 
 /**

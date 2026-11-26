@@ -240,6 +240,16 @@ test.group('services / activity / with a PDS', function (group) {
     assert.isNotNull(account.lastActivitySyncAt)
   })
 
+  test('should stop when aborted', async function ({ assert }) {
+    const { did } = await signIn()
+    await assert.rejects(function () {
+      return activityService.backfill(did, AbortSignal.abort())
+    })
+    const account = await Account.findOrFail(did)
+
+    assert.isNull(account.lastActivitySyncAt)
+  })
+
   test('should get a record from the repo', async function ({ assert }) {
     const { did, repo } = await signIn()
     const { uri } = await repo.create(lexicon.app.bsky.feed.post.main, {

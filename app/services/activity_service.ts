@@ -151,10 +151,12 @@ export class ActivityService {
    *
    * @param did
    *   DID.
+   * @param signal
+   *   Signal to stop, optional.
    * @returns
    *   Promise that resolves when done.
    */
-  async backfill(did: DidString): Promise<undefined> {
+  async backfill(did: DidString, signal = AbortSignal.any([])): Promise<undefined> {
     const { client } = await pdsClient(did)
 
     let describeResponse: XrpcResponse<typeof lexicon.com.atproto.repo.describeRepo.main>
@@ -162,7 +164,7 @@ export class ActivityService {
       describeResponse = await withRateLimitRetry(() =>
         client.xrpc(lexicon.com.atproto.repo.describeRepo.main, {
           params: { repo: did },
-          signal: AbortSignal.timeout(5000),
+          signal: AbortSignal.any([signal, AbortSignal.timeout(5000)]),
         })
       )
     } catch (err: unknown) {
@@ -190,7 +192,7 @@ export class ActivityService {
       await Promise.all(
         batch.map(async (collection) => {
           try {
-            await this.#syncCollection(client, did, collection, indexedAt)
+            await this.#syncCollection(client, did, collection, indexedAt, signal)
           } catch (err) {
             logger.warn({ collection, did, err }, 'activity: cannot backfill collection')
             errors.push(err)
@@ -395,6 +397,8 @@ export class ActivityService {
    *   NSID.
    * @param indexedAt
    *   Timestamp.
+   * @param signal
+   *   Signal to stop, optional.
    * @returns
    *   Promise that resolves when done.
    */
@@ -402,7 +406,8 @@ export class ActivityService {
     client: Client,
     did: DidString,
     collection: SupportedCollection,
-    indexedAt: DateTime
+    indexedAt: DateTime,
+    signal = AbortSignal.any([])
   ): Promise<undefined> {
     let cursor: string | undefined
     let seen = 0
@@ -413,7 +418,7 @@ export class ActivityService {
           cursor,
           limit: 100,
           repo: did,
-          signal: AbortSignal.timeout(10_000),
+          signal: AbortSignal.any([signal, AbortSignal.timeout(10_000)]),
         })
       )
 

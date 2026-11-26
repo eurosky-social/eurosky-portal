@@ -26,5 +26,10 @@ export default defineConfig({
      * Backfills are network-bound and can run for a while.
      */
     stalledThreshold: '10m',
+
+    /**
+     * Max timeout.
+     */
+    timeout: '5m',
   },
 })

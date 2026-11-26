@@ -29,7 +29,7 @@ export default class BackfillJob extends Job<Options> {
     }
 
     this.#start = Date.now()
-    await activityService.backfill(did)
+    await activityService.backfill(did, this.signal)
 
     ActivityBackfillCompleted.dispatch({
       durationMs: Date.now() - this.#start,

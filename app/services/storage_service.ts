@@ -26,12 +26,6 @@ const pageSize = 48
 const fullSyncAfterHours = 24
 
 /**
- * How long a backfill may take;
- * progress is kept, no new requests are made after this.
- */
-const backfillTimeout = 5 * 60 * 1000
-
-/**
  * Concurrent `HEAD` requests per user.
  */
 const headConcurrency = 10
@@ -233,12 +227,14 @@ export class StorageService {
    *
    * @param did
    *   DID.
+   * @param signal
+   *   Signal to stop, optional;
+   *   progress is kept, no new requests are made after it aborts.
    * @returns
    *   Promise that resolves when done.
    */
-  async backfill(did: DidString): Promise<undefined> {
+  async backfill(did: DidString, signal = AbortSignal.any([])): Promise<undefined> {
     const account = await Account.findOrFail(did)
-    const backfillSignal = AbortSignal.timeout(backfillTimeout)
     const cids = new Set<string>()
     let capped: boolean
     let didFullListing: boolean
@@ -255,7 +251,7 @@ export class StorageService {
         lexicon.com.atproto.sync.getLatestCommit.main,
         {
           params: { did },
-          signal: AbortSignal.any([backfillSignal, AbortSignal.timeout(5000)]),
+          signal: AbortSignal.any([signal, AbortSignal.timeout(5000)]),
         }
       )
       rev = latestCommit.body.rev
@@ -275,7 +271,7 @@ export class StorageService {
         const limit = Math.min(1000, maxBlobsPerUser - cids.size)
         const response = await resolved.client.xrpc(lexicon.com.atproto.sync.listBlobs.main, {
           params: { cursor, did, limit, since },
-          signal: AbortSignal.any([backfillSignal, AbortSignal.timeout(10_000)]),
+          signal: AbortSignal.any([signal, AbortSignal.timeout(10_000)]),
         })
         const page = response.body.cids.slice(0, limit)
         pages++
@@ -305,14 +301,14 @@ export class StorageService {
     let skipped = 0
     let index = 0
 
-    while (index < todo.length && !rateLimited && !backfillSignal.aborted) {
+    while (index < todo.length && !rateLimited && !signal.aborted) {
       const slice = todo.slice(index, index + headConcurrency)
 
       const errorsBefore = errors.length
       const results = await Promise.all(
         slice.map(async (cid) => {
           try {
-            return await this.#blob(pdsFetch, pds, did, cid, backfillSignal)
+            return await this.#blob(pdsFetch, pds, did, cid, signal)
           } catch (err) {
             if (err instanceof RateLimitError) rateLimited = true
             errors.push(err)
@@ -339,7 +335,7 @@ export class StorageService {
           rateLimited,
           remaining: unknown.length - index,
           skipped,
-          timedOut: backfillSignal.aborted,
+          timedOut: signal.aborted,
         },
         'storage: backfill incomplete'
       )
