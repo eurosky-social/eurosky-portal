@@ -37,10 +37,11 @@ export const http = defineConfig({
   allowMethodSpoofing: false,
 
   /**
-   * Enabling async local storage will let you access HTTP context
-   * from anywhere inside your application.
+   * Use an async local store so the HTTP context is available across async
+   * calls.
+   * Needed so logs from services include the request ID (`config/logger.ts`).
    */
-  useAsyncLocalStorage: false,
+  useAsyncLocalStorage: true,
 
   /**
    * Enable trusting the IP address from caddy

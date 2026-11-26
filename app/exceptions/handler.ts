@@ -55,12 +55,6 @@ export default class HttpExceptionHandler extends ExceptionHandler {
   protected override context(ctx: HttpContext) {
     return {
       /**
-       * Include the unique request ID for tracking
-       * this specific request across logs
-       */
-      requestId: ctx.request.id(),
-
-      /**
        * Add the authenticated user's ID if available
        * to identify which user encountered the error
        */

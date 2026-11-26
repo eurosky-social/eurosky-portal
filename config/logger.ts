@@ -1,6 +1,11 @@
 import env from '#start/env'
 import app from '@adonisjs/core/services/app'
+import { HttpContext } from '@adonisjs/core/http'
 import { defineConfig, syncDestination, targets } from '@adonisjs/core/logger'
+
+interface MixinResult {
+  request_id?: string
+}
 
 const loggerConfig = defineConfig({
   /**
@@ -11,14 +16,14 @@ const loggerConfig = defineConfig({
   loggers: {
     app: {
       /**
+       * Use sync destination in non-production for immediate flush.
+       */
+      destination: !app.inProduction ? await syncDestination() : undefined,
+
+      /**
        * Toggle this logger on/off.
        */
       enabled: true,
-
-      /**
-       * Logger name shown in log records.
-       */
-      name: env.get('APP_NAME'),
 
       /**
        * Minimum level to output (trace, debug, info, warn, error, fatal).
@@ -26,10 +31,32 @@ const loggerConfig = defineConfig({
       level: env.get('LOG_LEVEL'),
 
       /**
-       * Use sync destination in non-production for immediate flush.
+       * Pino mixing to get the request ID.
+       *
+       * @param _mergeObject
+       *   Fields passed when logging.
+       * @param _level
+       *   Level.
+       * @param logger
+       *   Logger.
+       * @returns
+       *   Fields to add.
        */
-      destination: !app.inProduction ? await syncDestination() : undefined,
 
+      mixin(_mergeObject, _level, logger): MixinResult {
+        const bindings = logger.bindings()
+        const id = HttpContext.get()?.request.id()
+        return 'request_id' in bindings || !id ? {} : { request_id: id }
+      },
+
+      /**
+       * Logger name shown in log records.
+       */
+      name: env.get('APP_NAME'),
+
+      /**
+       * Redact for privacy, security.
+       */
       redact: ['query.code', 'query.state'],
 
       /**
