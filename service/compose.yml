@@ -1,6 +1,7 @@
 services:
   caddy:
     container_name: caddy
+    logging: { options: { tag: caddy } }
     image: caddy:2
     network_mode: host
     depends_on:
@@ -18,6 +19,7 @@ services:
 
   eurosky-portal:
     container_name: eurosky-portal
+    logging: { options: { tag: eurosky-portal } }
     image: ghcr.io/eurosky-social/eurosky-portal:latest
     restart: unless-stopped
     volumes:
@@ -35,6 +37,7 @@ services:
 
   watchtower:
     container_name: watchtower
+    logging: { options: { tag: watchtower } }
     # we're using a fork of watchtower, as containrrr/watchtower hasn't been
     # updated in 2 years and is incompatible with latest docker on debian:
     image: nickfedor/watchtower:latest
