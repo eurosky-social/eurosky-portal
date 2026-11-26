@@ -132,8 +132,8 @@ export default class DtpController {
     } catch (error) {
       if (error instanceof ImageError) throw invalidRequest(error.message)
 
-      // Stop transfers if the session ended as nothing can be imported until
-      // the person logs in again.
+      // Stop transfers if the session ended or the account is not active.
+      // Nothing can be imported until the person logs in again or reactivates.
       // Check causes as clients wrap errors of sessions.
       let cause = error
 
@@ -148,6 +148,16 @@ export default class DtpController {
           throw new DtpException(401, {
             error: 'session_invalidated',
             error_description: 'Session on the PDS ended',
+          })
+        }
+
+        if (
+          cause instanceof XrpcAuthenticationError &&
+          (cause.error === 'AccountDeactivated' || cause.error === 'AccountTakedown')
+        ) {
+          throw new DtpException(401, {
+            error: 'session_invalidated',
+            error_description: 'Account on the PDS is not active',
           })
         }
 

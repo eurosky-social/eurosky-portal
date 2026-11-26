@@ -389,15 +389,16 @@ test.group('dtp / POST /_dtp/media', function (group) {
     assert.equal(response.status, 400)
   })
 
-  test('should be `server_error` when the PDS rejects writes', async function ({ assert }) {
+  test('should be `session_invalidated` when the account is deactivated', async function ({
+    assert,
+  }) {
     const { did, repo } = await signIn({ scope })
     const token = await connect(did)
-    // Deactivated accounts cannot write.
     await repo.xrpc(lexicon.com.atproto.server.deactivateAccount.main, { body: {} })
     const response = await send(token, multipart(photo, 'image/png', red))
 
-    assert.equal(response.status, 500)
-    assert.deepEqual(await response.json(), { error: 'server_error' })
+    assert.equal(response.status, 401)
+    assert.containSubset(await response.json(), { error: 'session_invalidated' })
   })
 })
 
