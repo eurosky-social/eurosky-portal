@@ -42,8 +42,22 @@ new Ignitor(APP_ROOT, { importer: IMPORTER })
     app.booting(async () => {
       await import('#start/env')
     })
-    app.listen('SIGTERM', () => app.terminate())
-    app.listenIf(app.managedByPm2, 'SIGINT', () => app.terminate())
+    app.listen('SIGTERM', terminate)
+    app.listenIf(app.managedByPm2, 'SIGINT', terminate)
+
+    /**
+     * Exit before Docker kills after 10 seconds, which can hang.
+     *
+     * @returns
+     *   Nothing.
+     */
+    function terminate(): Promise<void> {
+      setTimeout(() => {
+        console.error('Exiting while busy: %s', process.getActiveResourcesInfo().join(', '))
+        process.exit(1)
+      }, 8000).unref()
+      return app.terminate()
+    }
   })
   .httpServer()
   .start()

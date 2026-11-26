@@ -14,7 +14,7 @@ export default class StorageBackfillJob extends Job<Options> {
 
   async execute(): Promise<undefined> {
     const { did } = this.payload
-    await storageService.backfill(did)
+    await storageService.backfill(did, this.signal)
   }
 
   override async failed(err: Error): Promise<undefined> {
