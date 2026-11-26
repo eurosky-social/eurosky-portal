@@ -1,5 +1,31 @@
 # eurosky-portal
 
+## 1.9.1
+
+### Patch Changes
+
+- [#321](https://github.com/eurosky-social/eurosky-portal/pull/321) [`0f4ef3a`](https://github.com/eurosky-social/eurosky-portal/commit/0f4ef3ae90c7e26838e5f3915936ed26e05de06f) Thanks [@wooorm](https://github.com/wooorm)! - Fix login with a DID
+
+- [#333](https://github.com/eurosky-social/eurosky-portal/pull/333) [`eaaf732`](https://github.com/eurosky-social/eurosky-portal/commit/eaaf73284b525b8e4e4592f73776c8f14930d70a) Thanks [@wooorm](https://github.com/wooorm)! - Remove slingshot
+
+- [#329](https://github.com/eurosky-social/eurosky-portal/pull/329) [`e19b585`](https://github.com/eurosky-social/eurosky-portal/commit/e19b5858a6bf956a0e20aab194fc312cf6746328) Thanks [@wooorm](https://github.com/wooorm)! - Fix transfers continuing after session end
+
+- [#319](https://github.com/eurosky-social/eurosky-portal/pull/319) [`d6b54dd`](https://github.com/eurosky-social/eurosky-portal/commit/d6b54dd4722b42b087e9ddbb5f3aee405cd12e0b) Thanks [@wooorm](https://github.com/wooorm)! - Fix scopes lost when logging in again
+
+- [#324](https://github.com/eurosky-social/eurosky-portal/pull/324) [`2ee962f`](https://github.com/eurosky-social/eurosky-portal/commit/2ee962f58a4ed7dcc51fa3ac5129d3ce1991ffee) Thanks [@wooorm](https://github.com/wooorm)! - Add Content Security Policy
+
+- [#337](https://github.com/eurosky-social/eurosky-portal/pull/337) [`0c043a9`](https://github.com/eurosky-social/eurosky-portal/commit/0c043a9e1fab2ad9d3df29d96df269af5e906fbd) Thanks [@wooorm](https://github.com/wooorm)! - Add forced exit within seconds of SIGTERM
+
+- [#327](https://github.com/eurosky-social/eurosky-portal/pull/327) [`a1b2a13`](https://github.com/eurosky-social/eurosky-portal/commit/a1b2a13e968e62662c7713c63e1a0fa9c82239bd) Thanks [@wooorm](https://github.com/wooorm)! - Fix tests and dev server interfering
+
+- [#338](https://github.com/eurosky-social/eurosky-portal/pull/338) [`156eae4`](https://github.com/eurosky-social/eurosky-portal/commit/156eae42a7b7bd33862b6c77992d4faf4a838bc7) Thanks [@wooorm](https://github.com/wooorm)! - Add request IDs to all logs
+
+- [#323](https://github.com/eurosky-social/eurosky-portal/pull/323) [`61d4e9c`](https://github.com/eurosky-social/eurosky-portal/commit/61d4e9c61bcb10d028946c57429d2ab5afeb3a36) Thanks [@wooorm](https://github.com/wooorm)! - Add rate limiting
+
+- [#316](https://github.com/eurosky-social/eurosky-portal/pull/316) [`8f7ebdf`](https://github.com/eurosky-social/eurosky-portal/commit/8f7ebdf2c8552a8086cdf4142fb4c5813e982670) Thanks [@wooorm](https://github.com/wooorm)! - Fix migrations after moving them to `app/`
+
+- [#336](https://github.com/eurosky-social/eurosky-portal/pull/336) [`b58f764`](https://github.com/eurosky-social/eurosky-portal/commit/b58f764d52b82eba216251df17336c56d7cdc293) Thanks [@wooorm](https://github.com/wooorm)! - Add container logs tags
+
 ## 1.9.0
 
 ### Minor Changes
